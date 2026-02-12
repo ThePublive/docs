@@ -1,0 +1,77 @@
+---
+description: Create/upload a media asset
+---
+
+# Create Media
+
+<mark style="color:green;">`POST`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/media-library/`
+
+Creates a new media entry in the library.
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+| Content-Type | string | Yes | `application/json` |
+
+#### Request Body
+
+| Field | Type | Required | Description |
+| ----- | ---- | -------- | ----------- |
+| `filename`<mark style="color:red;">\*</mark> | string | Yes | Filename |
+| `path`<mark style="color:red;">\*</mark> | string | Yes | Media URL |
+| `alt_text` | string | No | Alt text for accessibility |
+| `caption` | string | No | Caption/description |
+| `source` | string | No | Source/credit |
+| `type` | string | No | `Image`, `Video`, or `File` |
+| `meta_data` | object | No | Metadata (width, height, etc.) |
+
+#### Example Request
+
+```bash
+curl -X POST \
+  'https://cms.thepublive.com/publisher/123/media-library/' \
+  -H 'username: YOUR_API_KEY' \
+  -H 'password: YOUR_API_SECRET' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "filename": "hero-image.jpg",
+    "path": "https://cdn.publive.com/images/hero-image.jpg",
+    "alt_text": "Hero banner image",
+    "source": "Staff Photographer"
+  }'
+```
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "status": "success",
+  "message": "Created Successfully",
+  "data": {
+    "id": 1000,
+    "filename": "hero-image.jpg",
+    "alt_text": "Hero banner image",
+    "caption": "",
+    "path": "https://cdn.publive.com/images/hero-image.jpg",
+    "source": "Staff Photographer",
+    "type": "Image",
+    "meta_data": {},
+    "date": "2026-02-12",
+    "member": "admin"
+  }
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+{% endtabs %}

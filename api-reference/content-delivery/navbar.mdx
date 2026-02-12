@@ -1,0 +1,74 @@
+---
+description: Fetch the navigation menu structure for your website
+---
+
+# Navbar
+
+<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/navbar/`
+
+Returns the navigation menu configuration with hierarchical support for nested menu items.
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+
+#### Response Fields
+
+Each navbar item contains:
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| `link` | string | URL path for the menu item |
+| `name` | string | Display text |
+| `children` | array/null | Nested child menu items (same structure) |
+| `open_new_tab` | boolean | Whether to open link in a new tab |
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "status": "ok",
+  "data": [
+    {
+      "link": "/news",
+      "name": "News",
+      "children": [
+        {
+          "link": "/news/politics",
+          "name": "Politics",
+          "children": null,
+          "open_new_tab": false
+        },
+        {
+          "link": "/news/business",
+          "name": "Business",
+          "children": null,
+          "open_new_tab": false
+        }
+      ],
+      "open_new_tab": false
+    },
+    {
+      "link": "/opinion",
+      "name": "Opinion",
+      "children": null,
+      "open_new_tab": false
+    }
+  ],
+  "message": ""
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+{% endtabs %}

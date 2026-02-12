@@ -1,0 +1,93 @@
+---
+description: Retrieve a single post by ID
+---
+
+# Retrieve Post
+
+<mark style="color:blue;">`GET`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/post/{id}/`
+
+Returns the complete details of a specific post.
+
+#### Path Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| id | integer | Post ID |
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "id": 50123,
+  "title": "Union Budget 2026 Highlights",
+  "english_title": "Union Budget 2026 Highlights",
+  "slug": "union-budget-2026-highlights",
+  "type": "Article",
+  "status": "Published",
+  "primary_category": {
+    "id": 100,
+    "name": "Business",
+    "slug": "business"
+  },
+  "contributors": [
+    {"id": 1, "name": "Jane Doe", "slug": "jane-doe"}
+  ],
+  "tags": [
+    {"id": 500, "name": "Budget 2026", "slug": "budget-2026"}
+  ],
+  "categories": [
+    {"id": 100, "name": "Business", "slug": "business"}
+  ],
+  "content": "<p>The Union Budget 2026 was presented today...</p>",
+  "banner_url": "https://cdn.publive.com/images/budget.jpg",
+  "banner_description": "Budget session in Parliament",
+  "short_description": "Key highlights from the budget",
+  "summary": "",
+  "seo_keyphrase": "union budget 2026",
+  "meta_data": {
+    "access_type": "Free"
+  },
+  "word_count": 1250,
+  "seo_score": 85,
+  "hide_banner_image": false,
+  "media_file_banner": {
+    "id": 999,
+    "filename": "budget.jpg",
+    "path": "https://cdn.publive.com/images/budget.jpg",
+    "alt_text": "Union Budget 2026",
+    "source": "PTI",
+    "meta_data": {"width": 1200, "height": 630}
+  },
+  "created_at": "2026-02-01T09:00:00Z",
+  "updated_at": "2026-02-01T12:30:00Z",
+  "published_at": "2026-02-01T09:00:00Z",
+  "source": "HeadlessCMS"
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+
+{% tab title="404: Not Found" %}
+```json
+{
+  "status": "error",
+  "message": "Not found"
+}
+```
+{% endtab %}
+{% endtabs %}

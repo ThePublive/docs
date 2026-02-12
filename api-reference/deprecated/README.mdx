@@ -1,0 +1,25 @@
+---
+description: Deprecated CDS endpoints and their modern replacements
+---
+
+# Deprecated Endpoints
+
+The following Content Delivery Service endpoints are deprecated. They still function but will be removed in a future version. Use the modern replacements listed below.
+
+{% hint style="warning" %}
+**Migration Required:** All deprecated endpoints should be replaced with the [Post Listing](../content-delivery/post-listing.md) endpoint using query filters.
+{% endhint %}
+
+## Migration Guide
+
+| Deprecated Endpoint | Replacement |
+| ------------------- | ----------- |
+| [Posts by Category](posts-by-category.md) `/posts_by_category/{id}/` | `/posts/?categories.id__eq={id}` |
+| [Posts by Tag](posts-by-tag.md) `/posts_by_tag/{id}/` | `/posts/?tags.id__eq={id}` |
+| [Posts by Author](posts-by-author.md) `/posts_by_author/{id}/` | `/posts/?contributors.id__eq={id}` |
+| [Latest Posts](latest-posts.md) `/latest-posts/{type}/` | `/posts/?type__eq={type}` |
+| [Homepage](homepage.md) `/homepage/` | `/posts/` |
+| [Related Posts](related-posts.md) `/related-posts/{id}/` | `/posts/?primary_category.id__eq={category_id}` |
+| [Featured Posts](featured-posts.md) `/featured-posts/` | No direct replacement |
+| [Post by Slug](post-by-slug.md) `/posts_by_slug/{slug}/` | `/post/{slug}/` |
+| [Search Posts](search-posts.md) `/search/` | `/posts/?title__contains={term}` |

@@ -1,0 +1,65 @@
+---
+description: Fetch publisher profile, branding, and configuration data
+---
+
+# Publisher Data
+
+<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/`
+
+Returns the complete publisher profile including branding, configuration, social links, ad settings, and metadata.
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+
+#### Response Fields
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| `name` | string | Publisher name |
+| `logo` | string | Logo URL |
+| `favicon` | string | Favicon URL |
+| `primary_color` | string | Brand primary color (hex) |
+| `secondary_color` | string | Brand secondary color (hex) |
+| `social_links` | object | Social media profile URLs |
+| `meta_title` | string | Default SEO meta title |
+| `meta_description` | string | Default SEO meta description |
+| `reader_login_config` | object | Reader login/paywall configuration |
+| `ad_configurations` | object | Advertisement configuration settings |
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "status": "ok",
+  "data": {
+    "name": "My Publication",
+    "logo": "https://cdn.publive.com/logos/my-pub-logo.png",
+    "favicon": "https://cdn.publive.com/logos/favicon.ico",
+    "primary_color": "#3B82F6",
+    "secondary_color": "#1E40AF",
+    "social_links": {
+      "twitter": "https://twitter.com/mypub",
+      "facebook": "https://facebook.com/mypub",
+      "instagram": "https://instagram.com/mypub"
+    },
+    "meta_title": "My Publication - Latest News",
+    "meta_description": "Your trusted source for news and analysis"
+  },
+  "message": ""
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+{% endtabs %}

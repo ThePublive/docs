@@ -1,0 +1,23 @@
+---
+description: "[DEPRECATED] Fetch posts by tag ID"
+---
+
+# Posts by Tag
+
+{% hint style="warning" %}
+**Deprecated:** Use `/posts/?tags.id__eq={tag_id}` instead. See [Post Listing](../content-delivery/post-listing.md).
+{% endhint %}
+
+<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/posts_by_tag/{tag_id}/`
+
+Returns posts tagged with a specific tag.
+
+#### Migration
+
+```bash
+# Old (deprecated)
+GET /posts_by_tag/500/
+
+# New (recommended)
+GET /posts/?tags.id__eq=500
+```

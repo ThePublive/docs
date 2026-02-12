@@ -1,0 +1,25 @@
+---
+description: "[DEPRECATED] Fetch posts by category ID"
+---
+
+# Posts by Category
+
+{% hint style="warning" %}
+**Deprecated:** Use `/posts/?categories.id__eq={category_id}` instead. See [Post Listing](../content-delivery/post-listing.md).
+{% endhint %}
+
+<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/posts_by_category/{category_id}/`
+
+Returns posts belonging to a specific category.
+
+#### Migration
+
+```bash
+# Old (deprecated)
+GET /posts_by_category/100/
+
+# New (recommended)
+GET /posts/?categories.id__eq=100
+```
+
+The new endpoint supports additional filtering, sorting, and pagination options.

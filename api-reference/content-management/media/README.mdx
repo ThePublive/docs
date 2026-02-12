@@ -1,0 +1,32 @@
+---
+description: Manage media assets (images, videos, files) via the CMS API
+---
+
+# Media Library
+
+The Media Library stores all media assets used across your content. Media items are referenced by ID in post fields like `banner_url`.
+
+## Media Object
+
+| Field | Type | Editable | Required | Description |
+| ----- | ---- | -------- | -------- | ----------- |
+| `id` | integer | No | — | Unique media identifier |
+| `filename` | string | Yes | Yes | Filename of the media object |
+| `alt_text` | string | Yes | No | Alt text for images |
+| `caption` | string | Yes | No | Media caption |
+| `path` | string (URL) | No | Yes | Media object URL |
+| `source` | string | Yes | No | Source/credit for the media |
+| `type` | string | No | — | `Image`, `Video`, or `File` (default: `Image`) |
+| `meta_data` | object | Yes | No | Metadata (width, height, etc.) |
+| `date` | string | No | — | Date added to library |
+| `member` | string | No | — | Member who uploaded the media |
+
+## Endpoints
+
+| Method | Endpoint | Description |
+| ------ | -------- | ----------- |
+| [GET](list-media.md) | `/media-library/` | List all media |
+| [POST](create-media.md) | `/media-library/` | Upload/create media |
+| [GET](retrieve-media.md) | `/media-library/{id}/` | Retrieve media |
+| [PATCH](update-media.md) | `/media-library/{id}/` | Update media metadata |
+| [DELETE](delete-media.md) | `/media-library/{id}/` | Delete media |

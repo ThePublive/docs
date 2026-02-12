@@ -1,0 +1,77 @@
+---
+description: Fetch a post by its legacy or relative URL path
+---
+
+# Post Details by URL
+
+<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/post/?legacy_url={url_path}`
+
+Returns a single post by matching its legacy or relative URL path. Useful for URL-based routing or migrating from legacy systems.
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+
+#### Query Parameters
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| legacy_url | string | Yes | Relative URL path (e.g., `/news/my-article-12345`) |
+
+#### Example Request
+
+```bash
+curl -X GET \
+  'https://cds.thepublive.com/publisher/123/post/?legacy_url=/business/union-budget-2026-highlights-12345' \
+  -H 'username: YOUR_API_KEY' \
+  -H 'password: YOUR_API_SECRET'
+```
+
+#### Response
+
+Returns the same post object as the [Post Details](post-details.md) endpoint.
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "status": "ok",
+  "data": {
+    "id": 12345,
+    "title": "Union Budget 2026 Highlights",
+    "slug": "union-budget-2026-highlights",
+    "type": "Article",
+    "primary_category": {
+      "id": 100,
+      "name": "Business",
+      "slug": "business"
+    },
+    "content_html": "<p>The Union Budget 2026 was presented today...</p>",
+    "absolute_url": "/business/union-budget-2026-highlights-12345"
+  },
+  "message": ""
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+
+{% tab title="404: Not Found" %}
+```json
+{
+  "status": "error",
+  "message": "Post not found"
+}
+```
+{% endtab %}
+{% endtabs %}

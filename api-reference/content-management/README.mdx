@@ -1,0 +1,62 @@
+---
+description: APIs for creating, updating, and managing content in your Publive CMS
+---
+
+# Content Management API
+
+The Content Management Service (CMS) provides full CRUD access to your content. Use these APIs to create, update, retrieve, and delete posts, categories, tags, and media programmatically.
+
+**Base URL:** `https://cms.thepublive.com/publisher/{publisher_id}/`
+
+{% hint style="info" %}
+All CMS endpoints require `username` and `password` authentication headers, plus `Content-Type: application/json` for POST and PATCH requests.
+{% endhint %}
+
+## Resources
+
+| Resource | Endpoints | Description |
+| -------- | --------- | ----------- |
+| [Categories](categories/README.md) | List, Create, Retrieve, Update, Delete | Manage content categories |
+| [Tags](tags/README.md) | List, Create, Retrieve, Update, Delete | Manage content tags |
+| [Posts](posts/README.md) | List, Create, Retrieve, Update, Delete | Manage articles, videos, galleries, and more |
+| [Media Library](media/README.md) | List, Create, Retrieve, Update, Delete | Manage images, videos, and files |
+
+## Common Patterns
+
+### Authentication
+
+```bash
+-H 'username: YOUR_API_KEY'
+-H 'password: YOUR_API_SECRET'
+-H 'Content-Type: application/json'
+```
+
+### Pagination
+
+All list endpoints return paginated results:
+
+```json
+{
+  "count": 245,
+  "next": "https://cms.thepublive.com/publisher/123/category/?page=2&limit=10",
+  "previous": null,
+  "results": [...]
+}
+```
+
+| Parameter | Default | Max |
+| --------- | ------- | --- |
+| `page` | 1 | 1000 |
+| `limit` | 10 | 50 |
+
+### Update Method
+
+All update endpoints use **PATCH** (partial update). You only need to send the fields you want to change.
+
+### Success Responses
+
+| Operation | Status | Message |
+| --------- | ------ | ------- |
+| Create | 201 | "Created Successfully" |
+| Update | 200 | "Updated Successfully" |
+| Delete | 200 | "Deleted successfully!" |

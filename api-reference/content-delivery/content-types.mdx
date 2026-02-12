@@ -1,0 +1,71 @@
+---
+description: Fetch all content types configured for your publication
+---
+
+# Content Types
+
+<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/content-types/`
+
+Returns all content types used on your publication. Content types define the different formats of content available (e.g., Article, Video, Web Story).
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+
+#### Response Fields
+
+Each content type contains:
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| `name` | string | Content type display name |
+| `api_slug` | string | API-friendly slug for single item queries |
+| `api_collections_slug` | string | API-friendly slug for collection queries |
+| `created_at` | datetime | When the content type was created |
+| `updated_at` | datetime | When the content type was last updated |
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "status": "ok",
+  "data": [
+    {
+      "name": "Article",
+      "api_slug": "article",
+      "api_collections_slug": "articles",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    },
+    {
+      "name": "Video",
+      "api_slug": "video",
+      "api_collections_slug": "videos",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    },
+    {
+      "name": "Web Story",
+      "api_slug": "web-story",
+      "api_collections_slug": "web-stories",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  ],
+  "message": ""
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+{% endtabs %}

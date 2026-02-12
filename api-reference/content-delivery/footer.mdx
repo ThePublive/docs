@@ -1,0 +1,76 @@
+---
+description: Fetch the footer configuration including links, social media, and branding
+---
+
+# Footer
+
+<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/footer/`
+
+Returns the footer configuration including social links, quick menu items, affiliate websites, and branding options.
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+
+#### Response Fields
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| `logo` | string/null | Footer logo URL |
+| `app_links` | object | App download links (iOS, Android, Web) |
+| `short_bio` | string | Short publisher description |
+| `textColor` | string | Footer text color (hex) |
+| `accentColor` | string | Footer accent color (hex) |
+| `newsletter` | boolean | Whether newsletter signup is enabled |
+| `socialLinks` | array | Social media links |
+| `addQuickMenu` | array | Quick navigation links |
+| `copyRightText` | string | Copyright notice text |
+| `latestStories` | boolean | Whether to show latest stories |
+| `addAffiliateWebsites` | array | Affiliate/partner website links |
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "status": "ok",
+  "data": {
+    "logo": "https://cdn.publive.com/logos/footer-logo.png",
+    "app_links": {
+      "ios": "https://apps.apple.com/app/mypub",
+      "android": "https://play.google.com/store/apps/mypub",
+      "web": "https://mypub.com"
+    },
+    "short_bio": "Your trusted source for news and insights.",
+    "textColor": "#FFFFFF",
+    "accentColor": "#3B82F6",
+    "newsletter": true,
+    "socialLinks": [
+      {"platform": "twitter", "url": "https://twitter.com/mypub"},
+      {"platform": "facebook", "url": "https://facebook.com/mypub"}
+    ],
+    "addQuickMenu": [
+      {"label": "About Us", "url": "/about"},
+      {"label": "Contact", "url": "/contact"},
+      {"label": "Privacy Policy", "url": "/privacy"}
+    ],
+    "copyRightText": "© 2026 My Publication. All rights reserved.",
+    "latestStories": true,
+    "addAffiliateWebsites": []
+  },
+  "message": ""
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+{% endtabs %}

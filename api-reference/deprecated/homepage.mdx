@@ -1,0 +1,23 @@
+---
+description: "[DEPRECATED] Fetch homepage posts"
+---
+
+# Homepage
+
+{% hint style="warning" %}
+**Deprecated:** Use `/posts/` instead. See [Post Listing](../content-delivery/post-listing.md).
+{% endhint %}
+
+<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/homepage/`
+
+Returns posts for the homepage.
+
+#### Migration
+
+```bash
+# Old (deprecated)
+GET /homepage/
+
+# New (recommended)
+GET /posts/?limit=20&sort_by=created_at&sort_order=desc
+```

@@ -1,0 +1,79 @@
+---
+description: Fetch all posts
+---
+
+# List Posts
+
+<mark style="color:blue;">`GET`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/post/`
+
+Returns a paginated list of all posts (including drafts, published, and scheduled).
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+
+#### Query Parameters
+
+| Name | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| page | integer | 1 | Page number (max: 1000) |
+| limit | integer | 10 | Items per page (max: 50) |
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "count": 33145,
+  "next": "https://cms.thepublive.com/publisher/123/post/?page=2&limit=10",
+  "previous": null,
+  "results": [
+    {
+      "id": 50123,
+      "title": "Union Budget 2026 Highlights",
+      "english_title": "Union Budget 2026 Highlights",
+      "slug": "union-budget-2026-highlights",
+      "type": "Article",
+      "status": "Published",
+      "primary_category": {
+        "id": 100,
+        "name": "Business",
+        "slug": "business"
+      },
+      "contributors": [
+        {"id": 1, "name": "Jane Doe"}
+      ],
+      "tags": [
+        {"id": 500, "name": "Budget 2026"}
+      ],
+      "categories": [
+        {"id": 100, "name": "Business"}
+      ],
+      "banner_url": "https://cdn.publive.com/images/budget.jpg",
+      "banner_description": "Budget session",
+      "short_description": "Key highlights from the budget",
+      "summary": "",
+      "content": "<p>Article content...</p>",
+      "word_count": 1250,
+      "seo_score": 85,
+      "hide_banner_image": false,
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T12:30:00Z",
+      "source": "HeadlessCMS"
+    }
+  ]
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+{% endtabs %}

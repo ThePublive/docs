@@ -1,0 +1,60 @@
+---
+description: Retrieve a single category by ID
+---
+
+# Retrieve Category
+
+<mark style="color:blue;">`GET`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/category/{id}/`
+
+Returns the details of a specific category.
+
+#### Path Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| id | integer | Category ID |
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "id": 14428,
+  "name": "News",
+  "english_name": "News",
+  "slug": "news",
+  "absolute_url": "/news",
+  "parent_category": null,
+  "category_brand_color": "#EF4444",
+  "content": "<p>Latest news and updates</p>",
+  "meta_title": "News - My Publication",
+  "meta_description": "Latest news and breaking stories",
+  "content_type": null
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+
+{% tab title="404: Not Found" %}
+```json
+{
+  "status": "error",
+  "message": "Not found"
+}
+```
+{% endtab %}
+{% endtabs %}

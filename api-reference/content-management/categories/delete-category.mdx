@@ -1,0 +1,55 @@
+---
+description: Delete a category
+---
+
+# Delete Category
+
+<mark style="color:red;">`DELETE`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/category/{id}/`
+
+Permanently deletes a category.
+
+{% hint style="danger" %}
+**Warning:** This action cannot be undone. Posts assigned to this category will need to be reassigned.
+{% endhint %}
+
+#### Path Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| id | integer | Category ID |
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "status": "success",
+  "message": "Deleted successfully!"
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+
+{% tab title="404: Not Found" %}
+```json
+{
+  "status": "error",
+  "message": "Not found"
+}
+```
+{% endtab %}
+{% endtabs %}

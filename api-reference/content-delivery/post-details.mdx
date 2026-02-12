@@ -1,0 +1,105 @@
+---
+description: Fetch details of a single post by ID or slug
+---
+
+# Post Details
+
+<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/post/{identifier}/`
+
+Returns the complete details of a single published post including full content, metadata, categories, tags, and contributors.
+
+#### Path Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| identifier | string/integer | Post ID or slug |
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+
+#### Response
+
+Returns the same post object structure as the [Post Listing](post-listing.md) endpoint, but for a single post.
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "status": "ok",
+  "data": {
+    "id": 12345,
+    "title": "Union Budget 2026 Highlights",
+    "slug": "union-budget-2026-highlights",
+    "type": "Article",
+    "banner_url": "https://cdn.publive.com/images/budget-2026.jpg",
+    "short_description": "Key takeaways from the Union Budget 2026",
+    "summary": "Here are the major announcements from the budget session.",
+    "primary_category": {
+      "id": 100,
+      "name": "Business",
+      "slug": "business"
+    },
+    "categories": [
+      {"id": 100, "name": "Business", "slug": "business"}
+    ],
+    "tags": [
+      {"id": 500, "name": "Budget 2026", "slug": "budget-2026"}
+    ],
+    "contributors": [
+      {"id": 1, "name": "Jane Doe", "slug": "jane-doe"}
+    ],
+    "content_html": "<p>The Union Budget 2026 was presented today...</p>",
+    "content_json": [
+      {
+        "type": "paragraph",
+        "data": {
+          "text": "The Union Budget 2026 was presented today..."
+        }
+      }
+    ],
+    "meta_data": {
+      "access_type": "Free"
+    },
+    "media_file_banner": {
+      "id": 999,
+      "filename": "budget-2026.jpg",
+      "path": "https://cdn.publive.com/images/budget-2026.jpg",
+      "alt_text": "Union Budget 2026",
+      "meta_data": {"width": 1200, "height": 630}
+    },
+    "word_count": 1250,
+    "access_type": "Free",
+    "hide_banner_image": false,
+    "banner_description": "Union Budget 2026 session in Parliament",
+    "language_code": "en",
+    "absolute_url": "/business/union-budget-2026-highlights-12345",
+    "formatted_first_published_at_datetime": "2026-02-01T09:00:00Z",
+    "formatted_last_published_at_datetime": "2026-02-01T12:30:00Z"
+  },
+  "message": ""
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+
+{% tab title="404: Not Found" %}
+```json
+{
+  "status": "error",
+  "message": "Post not found"
+}
+```
+{% endtab %}
+{% endtabs %}

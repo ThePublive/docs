@@ -1,0 +1,53 @@
+---
+description: Retrieve a single media asset by ID
+---
+
+# Retrieve Media
+
+<mark style="color:blue;">`GET`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/media-library/{id}/`
+
+Returns the details of a specific media asset.
+
+#### Path Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| id | integer | Media ID |
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "id": 999,
+  "filename": "budget-2026.jpg",
+  "alt_text": "Union Budget 2026",
+  "caption": "Budget session in Parliament",
+  "path": "https://cdn.publive.com/images/budget-2026.jpg",
+  "source": "PTI",
+  "type": "Image",
+  "meta_data": {
+    "width": 1200,
+    "height": 630
+  },
+  "date": "2026-02-01",
+  "member": "admin"
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+{% endtabs %}

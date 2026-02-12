@@ -1,0 +1,46 @@
+---
+description: Complete API reference for Publive's Content Delivery and Content Management services
+---
+
+# API Reference
+
+Publive provides two API services for working with your content:
+
+## Content Delivery Service (CDS)
+
+**Base URL:** `https://cds.thepublive.com/publisher/{publisher_id}/`
+
+Read-only APIs for fetching published content. Use the CDS to power your website and applications.
+
+{% content-ref url="content-delivery/README.md" %}
+[Content Delivery API](content-delivery/README.md)
+{% endcontent-ref %}
+
+## Content Management Service (CMS)
+
+**Base URL:** `https://cms.thepublive.com/publisher/{publisher_id}/`
+
+Full CRUD APIs for creating, updating, and managing content programmatically.
+
+{% content-ref url="content-management/README.md" %}
+[Content Management API](content-management/README.md)
+{% endcontent-ref %}
+
+## Authentication
+
+All API requests require `username` and `password` headers. See [Authentication](../getting-started/authentication.md) for details.
+
+## Common Patterns
+
+### Pagination
+
+Both APIs support `page` and `limit` query parameters:
+
+| Parameter | Default | Max |
+| --------- | ------- | --- |
+| `page` | 1 | 1000 |
+| `limit` | 10 | 50 |
+
+### Error Handling
+
+All error responses return a descriptive status and message. See [Error Codes](../reference/error-codes.md) for a full reference.

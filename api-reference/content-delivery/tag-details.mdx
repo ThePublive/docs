@@ -1,0 +1,75 @@
+---
+description: Fetch details of a single tag by ID or slug
+---
+
+# Tag Details
+
+<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/tag/{identifier}/`
+
+Returns detailed information about a single tag, including SEO metadata and social sharing tags.
+
+#### Path Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| identifier | string/integer | Tag ID or slug |
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+
+#### Response Fields
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| `id` | integer | Unique tag identifier |
+| `name` | string | Tag name |
+| `slug` | string | URL-friendly slug |
+| `display_name` | string/null | Alternative display name |
+| `meta_title` | string | SEO meta title |
+| `meta_description` | string | SEO meta description |
+| `og_title` | string | Open Graph title |
+| `og_description` | string | Open Graph description |
+| `og_image` | string | Open Graph image URL |
+| `twitter_title` | string | Twitter Card title |
+| `twitter_description` | string | Twitter Card description |
+| `twitter_image` | string | Twitter Card image URL |
+| `absolute_url` | string | Full public URL path |
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "status": "ok",
+  "data": {
+    "id": 500,
+    "name": "Breaking News",
+    "slug": "breaking-news",
+    "display_name": null,
+    "meta_title": "Breaking News - My Publication",
+    "meta_description": "Latest breaking news stories",
+    "og_title": "Breaking News",
+    "og_description": "Latest breaking news stories",
+    "og_image": null,
+    "twitter_title": "Breaking News",
+    "twitter_description": "Latest breaking news stories",
+    "twitter_image": null,
+    "absolute_url": "/tag/breaking-news"
+  },
+  "message": ""
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+{% endtabs %}

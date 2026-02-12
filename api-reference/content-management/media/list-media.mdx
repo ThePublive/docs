@@ -1,0 +1,61 @@
+---
+description: Fetch all media assets
+---
+
+# List Media
+
+<mark style="color:blue;">`GET`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/media-library/`
+
+Returns a paginated list of all media assets in your library.
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+
+#### Query Parameters
+
+| Name | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| page | integer | 1 | Page number (max: 1000) |
+| limit | integer | 10 | Items per page (max: 50) |
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "count": 15420,
+  "next": "https://cms.thepublive.com/publisher/123/media-library/?page=2&limit=10",
+  "previous": null,
+  "results": [
+    {
+      "id": 999,
+      "filename": "budget-2026.jpg",
+      "alt_text": "Union Budget 2026",
+      "caption": "Budget session in Parliament",
+      "path": "https://cdn.publive.com/images/budget-2026.jpg",
+      "source": "PTI",
+      "type": "Image",
+      "meta_data": {
+        "width": 1200,
+        "height": 630
+      },
+      "date": "2026-02-01",
+      "member": "admin"
+    }
+  ]
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+{% endtabs %}

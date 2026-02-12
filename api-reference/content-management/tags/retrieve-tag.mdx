@@ -1,0 +1,47 @@
+---
+description: Retrieve a single tag by ID
+---
+
+# Retrieve Tag
+
+<mark style="color:blue;">`GET`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/tag/{id}/`
+
+Returns the details of a specific tag.
+
+#### Path Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| id | integer | Tag ID |
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "id": 500,
+  "name": "Breaking News",
+  "english_name": "Breaking News",
+  "slug": "breaking-news",
+  "absolute_url": "/tag/breaking-news",
+  "meta_title": "Breaking News",
+  "meta_description": "Latest breaking news stories"
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+{% endtabs %}

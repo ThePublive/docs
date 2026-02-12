@@ -1,0 +1,21 @@
+---
+description: "[DEPRECATED] Fetch featured posts"
+---
+
+# Featured Posts
+
+{% hint style="warning" %}
+**Deprecated:** This endpoint has no direct replacement. Use the [Post Listing](../content-delivery/post-listing.md) endpoint with appropriate filters.
+{% endhint %}
+
+<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/featured-posts/`
+
+Returns featured/highlighted posts.
+
+#### Migration
+
+Use the Post Listing endpoint with sorting and filtering to curate featured content:
+
+```bash
+GET /posts/?sort_by=created_at&sort_order=desc&limit=5
+```

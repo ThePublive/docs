@@ -1,0 +1,92 @@
+---
+description: Fetch details of a single category by ID or slug
+---
+
+# Category Details
+
+<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/category/{identifier}/`
+
+Returns detailed information about a single category, including SEO metadata, Open Graph tags, and child categories.
+
+#### Path Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| identifier | string/integer | Category ID or slug |
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+
+#### Response Fields
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| `id` | integer | Unique category identifier |
+| `name` | string | Category name |
+| `slug` | string | URL-friendly slug |
+| `content` | string | Category description (HTML) |
+| `category_brand_color` | string/null | Brand color (hex) |
+| `child_categories` | array | List of child category objects |
+| `parent_category` | object/null | Parent category details |
+| `meta_title` | string | SEO meta title |
+| `meta_description` | string | SEO meta description |
+| `og_title` | string | Open Graph title |
+| `og_description` | string | Open Graph description |
+| `og_image` | string | Open Graph image URL |
+| `twitter_title` | string | Twitter Card title |
+| `twitter_description` | string | Twitter Card description |
+| `twitter_image` | string | Twitter Card image URL |
+| `absolute_url` | string | Full public URL path |
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "status": "ok",
+  "data": {
+    "id": 100,
+    "name": "News",
+    "slug": "news",
+    "content": "<p>Latest news and updates</p>",
+    "category_brand_color": "#EF4444",
+    "child_categories": [
+      {
+        "id": 101,
+        "name": "Politics",
+        "slug": "politics"
+      },
+      {
+        "id": 102,
+        "name": "Business",
+        "slug": "business"
+      }
+    ],
+    "parent_category": null,
+    "meta_title": "News - My Publication",
+    "meta_description": "Latest news and breaking stories",
+    "og_title": "News - My Publication",
+    "og_description": "Latest news and breaking stories",
+    "og_image": "https://cdn.publive.com/images/news-og.jpg",
+    "twitter_title": "News - My Publication",
+    "twitter_description": "Latest news and breaking stories",
+    "twitter_image": "https://cdn.publive.com/images/news-twitter.jpg",
+    "absolute_url": "/news"
+  },
+  "message": ""
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+{% endtabs %}

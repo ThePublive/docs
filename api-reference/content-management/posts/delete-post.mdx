@@ -1,0 +1,55 @@
+---
+description: Delete a post
+---
+
+# Delete Post
+
+<mark style="color:red;">`DELETE`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/post/{id}/`
+
+Permanently deletes a post.
+
+{% hint style="danger" %}
+**Warning:** This action cannot be undone. The post and all its associated data will be permanently removed.
+{% endhint %}
+
+#### Path Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| id | integer | Post ID |
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "status": "success",
+  "message": "Deleted successfully!"
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+
+{% tab title="404: Not Found" %}
+```json
+{
+  "status": "error",
+  "message": "Not found"
+}
+```
+{% endtab %}
+{% endtabs %}

@@ -1,0 +1,67 @@
+---
+description: Create a new tag
+---
+
+# Create Tag
+
+<mark style="color:green;">`POST`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/tag/`
+
+Creates a new tag.
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+| Content-Type | string | Yes | `application/json` |
+
+#### Request Body
+
+| Field | Type | Required | Description |
+| ----- | ---- | -------- | ----------- |
+| `name`<mark style="color:red;">\*</mark> | string | Yes | Tag name |
+| `english_name`<mark style="color:red;">\*</mark> | string | Yes | English name |
+| `meta_title` | string | No | SEO title |
+| `meta_description` | string | No | SEO description |
+| `content` | string | No | Tag description (HTML) |
+
+#### Example Request
+
+```bash
+curl -X POST \
+  'https://cms.thepublive.com/publisher/123/tag/' \
+  -H 'username: YOUR_API_KEY' \
+  -H 'password: YOUR_API_SECRET' \
+  -H 'Content-Type: application/json' \
+  -d '{"name": "AI Technology", "english_name": "AI Technology"}'
+```
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "status": "success",
+  "message": "Created Successfully",
+  "data": {
+    "id": 112200,
+    "name": "AI Technology",
+    "english_name": "AI Technology",
+    "slug": "ai-technology",
+    "absolute_url": "/tag/ai-technology",
+    "meta_title": "",
+    "meta_description": ""
+  }
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+{% endtabs %}

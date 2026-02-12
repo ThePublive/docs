@@ -1,0 +1,59 @@
+---
+description: Fetch all categories
+---
+
+# List Categories
+
+<mark style="color:blue;">`GET`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/category/`
+
+Returns a paginated list of all categories.
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+
+#### Query Parameters
+
+| Name | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| page | integer | 1 | Page number (max: 1000) |
+| limit | integer | 10 | Items per page (max: 50) |
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "count": 477,
+  "next": "https://cms.thepublive.com/publisher/123/category/?page=2&limit=10",
+  "previous": null,
+  "results": [
+    {
+      "id": 14428,
+      "name": "News",
+      "english_name": "News",
+      "slug": "news",
+      "absolute_url": "/news",
+      "parent_category": null,
+      "category_brand_color": "#EF4444",
+      "content": "",
+      "meta_title": "",
+      "meta_description": "",
+      "content_type": null
+    }
+  ]
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+{% endtabs %}

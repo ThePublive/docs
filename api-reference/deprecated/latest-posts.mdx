@@ -1,0 +1,23 @@
+---
+description: "[DEPRECATED] Fetch latest posts by type"
+---
+
+# Latest Posts
+
+{% hint style="warning" %}
+**Deprecated:** Use `/posts/?type__eq={post_type}` instead. See [Post Listing](../content-delivery/post-listing.md).
+{% endhint %}
+
+<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/latest-posts/{post_type}/`
+
+Returns the latest posts of a specific type.
+
+#### Migration
+
+```bash
+# Old (deprecated)
+GET /latest-posts/Article/
+
+# New (recommended)
+GET /posts/?type__eq=Article&sort_by=created_at&sort_order=desc
+```

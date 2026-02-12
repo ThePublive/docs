@@ -1,0 +1,23 @@
+---
+description: "[DEPRECATED] Fetch a post by slug"
+---
+
+# Post by Slug
+
+{% hint style="warning" %}
+**Deprecated:** Use `/post/{slug}/` instead. See [Post Details](../content-delivery/post-details.md).
+{% endhint %}
+
+<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/posts_by_slug/{post_slug}/`
+
+Returns a single post by its slug.
+
+#### Migration
+
+```bash
+# Old (deprecated)
+GET /posts_by_slug/union-budget-2026-highlights/
+
+# New (recommended)
+GET /post/union-budget-2026-highlights/
+```

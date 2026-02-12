@@ -1,0 +1,55 @@
+---
+description: Fetch all tags
+---
+
+# List Tags
+
+<mark style="color:blue;">`GET`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/tag/`
+
+Returns a paginated list of all tags.
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+
+#### Query Parameters
+
+| Name | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| page | integer | 1 | Page number (max: 1000) |
+| limit | integer | 10 | Items per page (max: 50) |
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "count": 112118,
+  "next": "https://cms.thepublive.com/publisher/123/tag/?page=2&limit=10",
+  "previous": null,
+  "results": [
+    {
+      "id": 500,
+      "name": "Breaking News",
+      "english_name": "Breaking News",
+      "slug": "breaking-news",
+      "absolute_url": "/tag/breaking-news",
+      "meta_title": "",
+      "meta_description": ""
+    }
+  ]
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+{% endtabs %}

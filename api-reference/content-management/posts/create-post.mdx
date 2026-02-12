@@ -1,0 +1,122 @@
+---
+description: Create a new post
+---
+
+# Create Post
+
+<mark style="color:green;">`POST`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/post/`
+
+Creates a new post. Posts are created with `Draft` status by default.
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+| Content-Type | string | Yes | `application/json` |
+
+#### Request Body
+
+| Field | Type | Required | Description |
+| ----- | ---- | -------- | ----------- |
+| `title`<mark style="color:red;">\*</mark> | string | Yes | Post headline |
+| `english_title`<mark style="color:red;">\*</mark> | string | Yes | English headline (for slug) |
+| `type`<mark style="color:red;">\*</mark> | string | Yes | `Article`, `Video`, `Web Story`, `Gallery`, `LiveBlog`, `CustomPage`, `BlankPage` |
+| `status`<mark style="color:red;">\*</mark> | string | Yes | `Draft`, `Published`, `Scheduled`, `Approval Pending` |
+| `primary_category`<mark style="color:red;">\*</mark> | integer | Yes | Category ID |
+| `contributors` | string | No | Comma-separated author IDs |
+| `content` | string | No | HTML body content |
+| `tags` | string | No | Comma-separated tag IDs |
+| `categories` | string | No | Comma-separated additional category IDs |
+| `banner_url` | integer | No | Media ID for featured image |
+| `banner_description` | string | No | Featured image caption |
+| `short_description` | string | No | SEO meta description |
+| `summary` | string | No | Post summary |
+| `seo_keyphrase` | string | No | Focus keyword |
+| `slug` | string | No | Custom slug (auto-generated if omitted) |
+| `meta_data` | object | No | Additional metadata (e.g., `{"access_type": "Paid"}`) |
+| `custom_published_at` | datetime | No | Backdated publish date |
+| `scheduled_at` | datetime | No | Future publish date (status must be `Scheduled`) |
+| `hide_banner_image` | boolean | No | Hide the featured image |
+
+#### Example Request
+
+```bash
+curl -X POST \
+  'https://cms.thepublive.com/publisher/123/post/' \
+  -H 'username: YOUR_API_KEY' \
+  -H 'password: YOUR_API_SECRET' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "title": "Getting Started with Publive API",
+    "english_title": "Getting Started with Publive API",
+    "type": "Article",
+    "status": "Draft",
+    "primary_category": 100,
+    "contributors": "1,2",
+    "tags": "500,501",
+    "content": "<p>Learn how to integrate Publive into your application...</p>",
+    "short_description": "A beginner guide to the Publive API"
+  }'
+```
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "status": "success",
+  "message": "Created successfully",
+  "data": {
+    "id": 50200,
+    "title": "Getting Started with Publive API",
+    "english_title": "Getting Started with Publive API",
+    "slug": "getting-started-with-publive-api",
+    "type": "Article",
+    "status": "Draft",
+    "primary_category": {
+      "id": 100,
+      "name": "Technology",
+      "slug": "technology"
+    },
+    "contributors": [
+      {"id": 1, "name": "Jane Doe"},
+      {"id": 2, "name": "John Smith"}
+    ],
+    "tags": [
+      {"id": 500, "name": "API"},
+      {"id": 501, "name": "Tutorial"}
+    ],
+    "content": "<p>Learn how to integrate Publive into your application...</p>",
+    "banner_url": null,
+    "banner_description": "",
+    "short_description": "A beginner guide to the Publive API",
+    "word_count": 12,
+    "created_at": "2026-02-12T10:00:00Z",
+    "updated_at": "2026-02-12T10:00:00Z",
+    "source": "HeadlessCMS"
+  }
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+
+{% tab title="400: Bad Request" %}
+```json
+{
+  "error": {
+    "code": "BAD_REQUEST_ERROR",
+    "description": "Something Went Wrong"
+  }
+}
+```
+{% endtab %}
+{% endtabs %}

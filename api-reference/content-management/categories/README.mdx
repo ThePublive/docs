@@ -1,0 +1,33 @@
+---
+description: Manage content categories via the CMS API
+---
+
+# Categories
+
+Categories provide hierarchical organization for your content. Every post must have a `primary_category` assigned before it can be published.
+
+## Category Object
+
+| Field | Type | Editable | Required | Description |
+| ----- | ---- | -------- | -------- | ----------- |
+| `id` | integer | No | — | Unique category identifier |
+| `name` | string | Yes | Yes | Category name |
+| `english_name` | string | No | Yes | English name (used for permalink generation) |
+| `slug` | string | Dashboard only | — | URL-friendly slug |
+| `content` | string (HTML) | Yes | No | Category description |
+| `category_brand_color` | string (hex) | Yes | No | Brand color for the category |
+| `child_categories` | array | No | — | List of subcategories |
+| `parent_category` | object | Yes | No | Parent category details |
+| `meta_title` | string | Yes | No | SEO meta title |
+| `meta_description` | string | Yes | No | SEO meta description |
+| `absolute_url` | string | Auto | — | Public-facing URL |
+
+## Endpoints
+
+| Method | Endpoint | Description |
+| ------ | -------- | ----------- |
+| [GET](list-categories.md) | `/category/` | List all categories |
+| [POST](create-category.md) | `/category/` | Create a new category |
+| [GET](retrieve-category.md) | `/category/{id}/` | Retrieve a category |
+| [PATCH](update-category.md) | `/category/{id}/` | Update a category |
+| [DELETE](delete-category.md) | `/category/{id}/` | Delete a category |

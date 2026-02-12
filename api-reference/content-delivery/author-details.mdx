@@ -1,0 +1,91 @@
+---
+description: Fetch details of a single author by ID or slug
+---
+
+# Author Details
+
+<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/author/{identifier}/`
+
+Returns detailed information about a single author, including their full profile, social links, and SEO metadata.
+
+#### Path Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| identifier | string/integer | Author ID or slug |
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+
+#### Response Fields
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| `id` | integer | Unique author identifier |
+| `name` | string | Author name |
+| `slug` | string | URL-friendly slug |
+| `email` | string | Author email |
+| `description` | string | Author bio |
+| `linkedin` | string | LinkedIn profile URL |
+| `twitter` | string | Twitter profile URL |
+| `instagram` | string | Instagram profile URL |
+| `facebook` | string | Facebook profile URL |
+| `avatar` | string/null | Profile image URL |
+| `created_at` | datetime | When the author was created |
+| `updated_at` | datetime | When the author was last updated |
+| `meta_title` | string | SEO meta title |
+| `meta_description` | string | SEO meta description |
+| `og_title` | string | Open Graph title |
+| `og_description` | string | Open Graph description |
+| `og_image` | string | Open Graph image URL |
+| `twitter_title` | string | Twitter Card title |
+| `twitter_description` | string | Twitter Card description |
+| `twitter_image` | string | Twitter Card image URL |
+| `absolute_url` | string | Full public URL path |
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "status": "ok",
+  "data": {
+    "id": 1,
+    "name": "Jane Doe",
+    "slug": "jane-doe",
+    "email": "jane@publication.com",
+    "description": "Senior correspondent covering technology and business.",
+    "linkedin": "https://linkedin.com/in/janedoe",
+    "twitter": "https://twitter.com/janedoe",
+    "instagram": "",
+    "facebook": "",
+    "avatar": "https://cdn.publive.com/avatars/jane-doe.jpg",
+    "created_at": "2025-01-15T10:00:00Z",
+    "updated_at": "2026-01-20T14:30:00Z",
+    "meta_title": "Jane Doe - My Publication",
+    "meta_description": "Articles by Jane Doe",
+    "og_title": "Jane Doe",
+    "og_description": "Articles by Jane Doe",
+    "og_image": "https://cdn.publive.com/avatars/jane-doe.jpg",
+    "twitter_title": "Jane Doe",
+    "twitter_description": "Articles by Jane Doe",
+    "twitter_image": "https://cdn.publive.com/avatars/jane-doe.jpg",
+    "absolute_url": "/author/jane-doe"
+  },
+  "message": ""
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+{% endtabs %}

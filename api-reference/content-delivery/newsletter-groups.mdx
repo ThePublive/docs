@@ -1,0 +1,61 @@
+---
+description: Fetch newsletter group listings
+---
+
+# Newsletter Groups
+
+<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/newsletter-groups/`
+
+Returns all configured newsletter groups with their metadata.
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+
+#### Response Fields
+
+Each newsletter group contains:
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| `id` | integer | Unique newsletter group identifier |
+| `name` | string | Newsletter group name |
+| `logo_url` | string | Logo image path (relative) |
+| `description` | string | Newsletter group description |
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "status": "ok",
+  "data": [
+    {
+      "id": 1,
+      "name": "Daily Digest",
+      "logo_url": "/media/newsletters/daily-digest.png",
+      "description": "Get the top stories delivered to your inbox every morning."
+    },
+    {
+      "id": 2,
+      "name": "Weekly Roundup",
+      "logo_url": "/media/newsletters/weekly-roundup.png",
+      "description": "A curated selection of the week's best stories."
+    }
+  ],
+  "message": ""
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+{% endtabs %}

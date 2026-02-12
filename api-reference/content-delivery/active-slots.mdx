@@ -1,0 +1,66 @@
+---
+description: Fetch advertisement slot configuration
+---
+
+# Active Slots
+
+<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/active-slots/`
+
+Returns the configured advertisement slots for your publication, including slot dimensions, content, and type.
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+
+#### Response Fields
+
+Each slot contains:
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| `id` | integer | Unique slot identifier |
+| `name` | string | Slot name |
+| `data` | object | Slot configuration (size, HTML content, `contains_ads` flag) |
+| `registered_slot` | object | Registered slot metadata |
+| `formatted_update_on` | string | Last updated timestamp |
+| `type` | string | Slot type: `Image`, `CodeEditor`, or `Editor` |
+
+{% tabs %}
+{% tab title="200: OK" %}
+```json
+{
+  "status": "ok",
+  "data": [
+    {
+      "id": 1,
+      "name": "Header Banner",
+      "data": {
+        "size": "728x90",
+        "html": "<div class=\"ad-slot\">...</div>",
+        "contains_ads": true
+      },
+      "registered_slot": {
+        "id": 10,
+        "name": "header_banner"
+      },
+      "formatted_update_on": "2026-02-01T10:00:00Z",
+      "type": "CodeEditor"
+    }
+  ],
+  "message": ""
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+{% endtabs %}

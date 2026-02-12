@@ -1,0 +1,53 @@
+---
+description: Read-only APIs for fetching published content from your Publive CMS
+---
+
+# Content Delivery API
+
+The Content Delivery Service (CDS) provides read-only access to your published content. Use these APIs to power your website, mobile app, or any frontend application.
+
+**Base URL:** `https://cds.thepublive.com/publisher/{publisher_id}/`
+
+{% hint style="info" %}
+All CDS endpoints are **GET** requests. Authentication requires `username` and `password` headers.
+{% endhint %}
+
+## Site Configuration
+
+| Endpoint | Description |
+| -------- | ----------- |
+| [Publisher Data](publisher-data.md) | Publisher profile, branding, and configuration |
+| [Navbar](navbar.md) | Navigation menu structure |
+| [Footer](footer.md) | Footer configuration and links |
+| [Active Slots](active-slots.md) | Advertisement slot configuration |
+| [Newsletter Groups](newsletter-groups.md) | Newsletter group listings |
+| [Content Types](content-types.md) | Available content types |
+
+## Content
+
+| Endpoint | Description |
+| -------- | ----------- |
+| [Category Listing](category-listing.md) | List all categories |
+| [Category Details](category-details.md) | Get a single category by ID or slug |
+| [Tag Listing](tag-listing.md) | List all tags |
+| [Tag Details](tag-details.md) | Get a single tag by ID or slug |
+| [Author Listing](author-listing.md) | List all authors |
+| [Author Details](author-details.md) | Get a single author by ID or slug |
+
+## Posts
+
+| Endpoint | Description |
+| -------- | ----------- |
+| [Post Listing](post-listing.md) | List and filter posts with advanced queries |
+| [Post Details](post-details.md) | Get a single post by ID or slug |
+| [Post Details by URL](post-details-by-url.md) | Get a post by its legacy/relative URL |
+| [Live Blog Updates](live-blog-updates.md) | Get live blog update entries for a post |
+
+## Pagination
+
+All list endpoints support pagination:
+
+| Parameter | Type | Default | Max |
+| --------- | ---- | ------- | --- |
+| `page` | integer | 1 | 1000 |
+| `limit` | integer | 10 | 50 |

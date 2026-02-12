@@ -1,0 +1,45 @@
+---
+description: Manage posts (articles, videos, galleries, live blogs) via the CMS API
+---
+
+# Posts
+
+Posts are the primary content entity in Publive. They support multiple content types and publishing workflows.
+
+## Post Object
+
+| Field | Type | Editable | Required | Description |
+| ----- | ---- | -------- | -------- | ----------- |
+| `id` | integer | No | — | Unique post identifier |
+| `title` | string | Yes | Yes | Post headline |
+| `english_title` | string | No | Yes | English headline (for slug generation) |
+| `slug` | string | No | — | URL-friendly identifier (auto-generated) |
+| `type` | string | No | Yes | `Article`, `Video`, `Web Story`, `Gallery`, `LiveBlog`, `CustomPage`, `BlankPage` |
+| `status` | string | Yes | Yes | `Draft`, `Published`, `Scheduled`, `Approval Pending` |
+| `primary_category` | integer | No | Yes | Category ID (mandatory for publishing) |
+| `contributors` | string | Yes | Yes | Comma-separated author IDs (e.g., `"12,15,27"`) |
+| `content` | string (HTML) | Yes | No | Post body content |
+| `tags` | string | Yes | No | Comma-separated tag IDs |
+| `categories` | string | Yes | No | Comma-separated additional category IDs |
+| `banner_url` | integer | Yes | No | Featured image media ID |
+| `banner_description` | string | Yes | No | Featured image caption |
+| `short_description` | string | Yes | No | SEO meta description |
+| `summary` | string | Yes | No | Summary displayed below title |
+| `seo_keyphrase` | string | Yes | No | Focus keyword for SEO |
+| `meta_data` | object | Yes | No | Key-value pairs (access_type, video URLs, etc.) |
+| `custom_published_at` | datetime | Yes | No | Backdated publish date |
+| `scheduled_at` | datetime | Yes | No | Future publish date (requires `Scheduled` status) |
+| `hide_banner_image` | boolean | Yes | No | Hide the featured image |
+| `word_count` | integer | No | — | Auto-calculated word count |
+| `seo_score` | integer | No | — | SEO score |
+| `source` | string | No | — | Content origin (e.g., `HeadlessCMS`) |
+
+## Endpoints
+
+| Method | Endpoint | Description |
+| ------ | -------- | ----------- |
+| [GET](list-posts.md) | `/post/` | List all posts |
+| [POST](create-post.md) | `/post/` | Create a new post |
+| [GET](retrieve-post.md) | `/post/{id}/` | Retrieve a post |
+| [PATCH](update-post.md) | `/post/{id}/` | Update a post |
+| [DELETE](delete-post.md) | `/post/{id}/` | Delete a post |

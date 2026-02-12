@@ -1,0 +1,25 @@
+---
+description: "[DEPRECATED] Search posts"
+---
+
+# Search Posts
+
+{% hint style="warning" %}
+**Deprecated:** Use `/posts/?title__contains={search_term}` instead. See [Post Listing](../content-delivery/post-listing.md).
+{% endhint %}
+
+<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/search/`
+
+Searches posts by keyword.
+
+#### Migration
+
+```bash
+# Old (deprecated)
+GET /search/?q=budget
+
+# New (recommended)
+GET /posts/?title__contains=budget
+```
+
+The new endpoint supports additional operators like `__eq`, `__in`, `__gte`, `__lte` for more precise filtering.

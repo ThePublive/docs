@@ -1,0 +1,92 @@
+---
+description: Create a new category
+---
+
+# Create Category
+
+<mark style="color:green;">`POST`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/category/`
+
+Creates a new category.
+
+#### Headers
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| username | string | Yes | API Key |
+| password | string | Yes | API Secret |
+| Content-Type | string | Yes | `application/json` |
+
+#### Request Body
+
+| Field | Type | Required | Description |
+| ----- | ---- | -------- | ----------- |
+| `name`<mark style="color:red;">\*</mark> | string | Yes | Category name |
+| `english_name`<mark style="color:red;">\*</mark> | string | Yes | English name (for permalink generation) |
+| `slug` | string | No | Custom slug (auto-generated if omitted) |
+| `meta_title` | string | No | SEO title |
+| `h1_tag` | string | No | H1 heading tag |
+| `meta_description` | string | No | SEO description |
+| `priority` | integer | No | Priority level (1-1000) |
+| `content` | string | No | Category description (HTML) |
+| `category_brand_color` | string | No | Brand color (hex) |
+| `content_type` | string | No | Content type filter (e.g., `Article`, `Web Story`) |
+
+#### Example Request
+
+```bash
+curl -X POST \
+  'https://cms.thepublive.com/publisher/123/category/' \
+  -H 'username: YOUR_API_KEY' \
+  -H 'password: YOUR_API_SECRET' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name": "Technology",
+    "english_name": "Technology",
+    "meta_title": "Technology News",
+    "priority": 100
+  }'
+```
+
+{% tabs %}
+{% tab title="201: Created" %}
+```json
+{
+  "status": "success",
+  "message": "Created Successfully",
+  "data": {
+    "id": 14500,
+    "name": "Technology",
+    "english_name": "Technology",
+    "slug": "technology",
+    "absolute_url": "/technology",
+    "parent_category": null,
+    "category_brand_color": null,
+    "content": "",
+    "meta_title": "Technology News",
+    "meta_description": "",
+    "content_type": null
+  }
+}
+```
+{% endtab %}
+
+{% tab title="401: Unauthorized" %}
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+{% endtab %}
+
+{% tab title="400: Bad Request" %}
+```json
+{
+  "error": {
+    "code": "BAD_REQUEST_ERROR",
+    "description": "Something Went Wrong"
+  }
+}
+```
+{% endtab %}
+{% endtabs %}
