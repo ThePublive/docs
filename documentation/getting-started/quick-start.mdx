@@ -1,8 +1,7 @@
 ---
-description: Get up and running with the Publive API in 5 minutes
+title: "Quick Start"
+description: "Get up and running with the Publive API in 5 minutes"
 ---
-
-# Quick Start
 
 This guide walks you through making your first API call to Publive.
 
@@ -15,9 +14,9 @@ Your API requests are authenticated using a `username` and `password` provided b
 3. Copy your **API Key** (username) and **API Secret** (password)
 4. Note your **Publisher ID** from the dashboard URL
 
-{% hint style="info" %}
+<Info>
 **Important:** Keep your API credentials secure. Never expose them in client-side code or public repositories.
-{% endhint %}
+</Info>
 
 ## Step 2: Make Your First API Call
 
@@ -63,9 +62,9 @@ curl -X GET \
 }
 ```
 
-{% hint style="success" %}
+<Tip>
 **That's it!** You've successfully fetched content from Publive. The response includes the full post object with title, content, categories, tags, authors, and metadata.
-{% endhint %}
+</Tip>
 
 ## Step 4: Create Content via CMS API
 
@@ -89,7 +88,7 @@ curl -X POST \
 
 ## What's Next?
 
-* [Authentication](authentication.md) — Learn about API authentication in detail
-* [Core Concepts](core-concepts.md) — Understand posts, categories, tags, and content types
-* [Content Delivery API](../api-reference/content-delivery/README.md) — Full CDS API reference
-* [Content Management API](../api-reference/content-management/README.md) — Full CMS API reference
+* [Authentication](/documentation/getting-started/authentication) — Learn about API authentication in detail
+* [Core Concepts](/documentation/getting-started/core-concepts) — Understand posts, categories, tags, and content types
+* [Content Delivery API](/api-reference/content-delivery/README) — Full CDS API reference
+* [Content Management API](/api-reference/content-management/README) — Full CMS API reference
