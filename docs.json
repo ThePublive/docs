@@ -3,12 +3,21 @@
   "theme": "mint",
   "name": "Publive API Docs",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#21263c",
+    "light": "#21263c",
+    "dark": "#21263c"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "https://dashboard.thepublive.com/v2/public/favicon.ico",
   "navigation": {
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Blog",
+          "icon": "newspaper",
+          "href": "https://blog.thepublive.com/"
+        }
+      ]
+    },
     "tabs": [
       {
         "tab": "Documentation",
@@ -190,31 +199,17 @@
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "https://cdn.prod.website-files.com/66826ebfedcc2d4a07df740c/6682747dedcc2d4a07e30c0e_publive-logo.svg",
+    "dark": "https://img-cdn.publive.online/publive/logo/publive-white-full-logo.svg"
   },
   "navbar": {
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:help@thepublive.com"
       }
     ],
     "primary": {
@@ -241,5 +236,12 @@
       "github": "https://github.com/mintlify",
       "linkedin": "https://linkedin.com/company/mintlify"
     }
+  },
+  "appearance": {
+    "strict": true,
+    "default": "light"
+  },
+  "background": {
+    "decoration": "grid"
   }
 }
