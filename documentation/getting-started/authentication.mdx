@@ -1,8 +1,7 @@
 ---
-description: How to authenticate your API requests to Publive
+title: "Authentication"
+description: "How to authenticate your API requests to Publive"
 ---
-
-# Authentication
 
 All Publive API requests require authentication via HTTP headers. Both the Content Delivery Service (CDS) and Content Management Service (CMS) use the same authentication method.
 
@@ -59,13 +58,13 @@ Common causes:
 * Invalid or expired API credentials
 * Using CMS credentials for a CDS endpoint (or vice versa)
 
-{% hint style="warning" %}
+<Warning>
 **Security Best Practices:**
 * Never expose API credentials in client-side JavaScript
 * Use environment variables to store credentials
 * Rotate API keys periodically
 * Use the CDS API (read-only) for public-facing applications and reserve CMS API access for server-side operations
-{% endhint %}
+</Warning>
 
 ## Publisher ID
 
