@@ -1,14 +1,13 @@
 ---
+title: "Related Posts"
 description: "[DEPRECATED] Fetch related posts"
 ---
 
-# Related Posts
+<Warning>
+**Deprecated:** Use `/posts/?primary_category.id__eq={category_id}` instead. See [Post Listing](/api-reference/content-delivery/post-listing).
+</Warning>
 
-{% hint style="warning" %}
-**Deprecated:** Use `/posts/?primary_category.id__eq={category_id}` instead. See [Post Listing](../content-delivery/post-listing.md).
-{% endhint %}
-
-<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/related-posts/{post_id}/`
+`GET` `https://cds.thepublive.com/publisher/{publisher_id}/related-posts/{post_id}/`
 
 Returns posts related to a specific post (based on category).
 

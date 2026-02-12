@@ -1,10 +1,9 @@
 ---
+title: "Author Details"
 description: Fetch details of a single author by ID or slug
 ---
 
-# Author Details
-
-<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/author/{identifier}/`
+`GET` `https://cds.thepublive.com/publisher/{publisher_id}/author/{identifier}/`
 
 Returns detailed information about a single author, including their full profile, social links, and SEO metadata.
 
@@ -47,8 +46,8 @@ Returns detailed information about a single author, including their full profile
 | `twitter_image` | string | Twitter Card image URL |
 | `absolute_url` | string | Full public URL path |
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "status": "ok",
@@ -78,14 +77,14 @@ Returns detailed information about a single author, including their full profile
   "message": ""
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

@@ -1,14 +1,13 @@
 ---
+title: "Post by Slug"
 description: "[DEPRECATED] Fetch a post by slug"
 ---
 
-# Post by Slug
+<Warning>
+**Deprecated:** Use `/post/{slug}/` instead. See [Post Details](/api-reference/content-delivery/post-details).
+</Warning>
 
-{% hint style="warning" %}
-**Deprecated:** Use `/post/{slug}/` instead. See [Post Details](../content-delivery/post-details.md).
-{% endhint %}
-
-<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/posts_by_slug/{post_slug}/`
+`GET` `https://cds.thepublive.com/publisher/{publisher_id}/posts_by_slug/{post_slug}/`
 
 Returns a single post by its slug.
 

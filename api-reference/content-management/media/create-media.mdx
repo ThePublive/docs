@@ -1,10 +1,9 @@
 ---
+title: "Create Media"
 description: Create/upload a media asset
 ---
 
-# Create Media
-
-<mark style="color:green;">`POST`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/media-library/`
+`POST` `https://cms.thepublive.com/publisher/{publisher_id}/media-library/`
 
 Creates a new media entry in the library.
 
@@ -20,8 +19,8 @@ Creates a new media entry in the library.
 
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
-| `filename`<mark style="color:red;">\*</mark> | string | Yes | Filename |
-| `path`<mark style="color:red;">\*</mark> | string | Yes | Media URL |
+| `filename`* | string | Yes | Filename |
+| `path`* | string | Yes | Media URL |
 | `alt_text` | string | No | Alt text for accessibility |
 | `caption` | string | No | Caption/description |
 | `source` | string | No | Source/credit |
@@ -44,8 +43,8 @@ curl -X POST \
   }'
 ```
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "status": "success",
@@ -64,14 +63,14 @@ curl -X POST \
   }
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

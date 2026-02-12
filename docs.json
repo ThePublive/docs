@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Publive API Docs",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
@@ -48,21 +48,114 @@
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "API Reference",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Overview",
             "pages": [
-              "api-reference/introduction"
+              "api-reference/README"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Content Delivery API",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "api-reference/content-delivery/README",
+              {
+                "group": "Site Configuration",
+                "pages": [
+                  "api-reference/content-delivery/publisher-data",
+                  "api-reference/content-delivery/navbar",
+                  "api-reference/content-delivery/footer",
+                  "api-reference/content-delivery/active-slots",
+                  "api-reference/content-delivery/newsletter-groups",
+                  "api-reference/content-delivery/content-types"
+                ]
+              },
+              {
+                "group": "Content",
+                "pages": [
+                  "api-reference/content-delivery/category-listing",
+                  "api-reference/content-delivery/category-details",
+                  "api-reference/content-delivery/tag-listing",
+                  "api-reference/content-delivery/tag-details",
+                  "api-reference/content-delivery/author-listing",
+                  "api-reference/content-delivery/author-details"
+                ]
+              },
+              {
+                "group": "Posts",
+                "pages": [
+                  "api-reference/content-delivery/post-listing",
+                  "api-reference/content-delivery/post-details",
+                  "api-reference/content-delivery/post-details-by-url",
+                  "api-reference/content-delivery/live-blog-updates"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Content Management API",
+            "pages": [
+              "api-reference/content-management/README",
+              {
+                "group": "Categories",
+                "pages": [
+                  "api-reference/content-management/categories/README",
+                  "api-reference/content-management/categories/list-categories",
+                  "api-reference/content-management/categories/create-category",
+                  "api-reference/content-management/categories/retrieve-category",
+                  "api-reference/content-management/categories/update-category",
+                  "api-reference/content-management/categories/delete-category"
+                ]
+              },
+              {
+                "group": "Tags",
+                "pages": [
+                  "api-reference/content-management/tags/README",
+                  "api-reference/content-management/tags/list-tags",
+                  "api-reference/content-management/tags/create-tag",
+                  "api-reference/content-management/tags/retrieve-tag",
+                  "api-reference/content-management/tags/update-tag",
+                  "api-reference/content-management/tags/delete-tag"
+                ]
+              },
+              {
+                "group": "Posts",
+                "pages": [
+                  "api-reference/content-management/posts/README",
+                  "api-reference/content-management/posts/list-posts",
+                  "api-reference/content-management/posts/create-post",
+                  "api-reference/content-management/posts/retrieve-post",
+                  "api-reference/content-management/posts/update-post",
+                  "api-reference/content-management/posts/delete-post"
+                ]
+              },
+              {
+                "group": "Media Library",
+                "pages": [
+                  "api-reference/content-management/media/README",
+                  "api-reference/content-management/media/list-media",
+                  "api-reference/content-management/media/create-media",
+                  "api-reference/content-management/media/retrieve-media",
+                  "api-reference/content-management/media/update-media",
+                  "api-reference/content-management/media/delete-media"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Deprecated",
+            "pages": [
+              "api-reference/deprecated/README",
+              "api-reference/deprecated/posts-by-category",
+              "api-reference/deprecated/posts-by-tag",
+              "api-reference/deprecated/posts-by-author",
+              "api-reference/deprecated/latest-posts",
+              "api-reference/deprecated/homepage",
+              "api-reference/deprecated/related-posts",
+              "api-reference/deprecated/featured-posts",
+              "api-reference/deprecated/post-by-slug",
+              "api-reference/deprecated/search-posts"
             ]
           }
         ]
@@ -102,15 +195,15 @@
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
     "socials": {

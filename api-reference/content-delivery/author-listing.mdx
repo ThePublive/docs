@@ -1,10 +1,9 @@
 ---
+title: "Author Listing"
 description: Fetch a list of all authors
 ---
 
-# Author Listing
-
-<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/authors/`
+`GET` `https://cds.thepublive.com/publisher/{publisher_id}/authors/`
 
 Returns a paginated list of all authors with their profile information and social links.
 
@@ -41,8 +40,8 @@ Each author contains:
 | `created_at` | datetime | When the author was created |
 | `updated_at` | datetime | When the author was last updated |
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "status": "ok",
@@ -67,14 +66,14 @@ Each author contains:
   "per_page": 10
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

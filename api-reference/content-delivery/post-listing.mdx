@@ -1,10 +1,9 @@
 ---
+title: "Post Listing"
 description: Fetch a paginated and filterable list of published posts
 ---
 
-# Post Listing
-
-<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/posts/`
+`GET` `https://cds.thepublive.com/publisher/{publisher_id}/posts/`
 
 Returns a paginated list of published posts with support for advanced filtering, sorting, and search. This is the primary endpoint for fetching content on your frontend.
 
@@ -70,9 +69,9 @@ Append operator suffixes to filterable fields to build queries:
 /posts/?type__eq=Article&primary_category.id__eq=100&sort_by=title&sort_order=asc
 ```
 
-{% hint style="info" %}
-**Tip:** This endpoint replaces several deprecated endpoints. Use filters instead of `/posts_by_category/`, `/posts_by_tag/`, `/posts_by_author/`, and `/search/`. See [Deprecated Endpoints](../deprecated/README.md).
-{% endhint %}
+<Info>
+**Tip:** This endpoint replaces several deprecated endpoints. Use filters instead of `/posts_by_category/`, `/posts_by_tag/`, `/posts_by_author/`, and `/search/`. See [Deprecated Endpoints](/api-reference/deprecated).
+</Info>
 
 #### Response Fields
 
@@ -106,8 +105,8 @@ Each post contains:
 | `formatted_first_published_at_datetime` | string | First published timestamp |
 | `formatted_last_published_at_datetime` | string | Last published timestamp |
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "status": "ok",
@@ -163,14 +162,14 @@ Each post contains:
   "per_page": 10
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

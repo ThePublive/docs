@@ -1,8 +1,7 @@
 ---
+title: "API Reference"
 description: Complete API reference for Publive's Content Delivery and Content Management services
 ---
-
-# API Reference
 
 Publive provides two API services for working with your content:
 
@@ -12,9 +11,7 @@ Publive provides two API services for working with your content:
 
 Read-only APIs for fetching published content. Use the CDS to power your website and applications.
 
-{% content-ref url="content-delivery/README.md" %}
-[Content Delivery API](content-delivery/README.md)
-{% endcontent-ref %}
+<Card title="Content Delivery API" href="/api-reference/content-delivery" />
 
 ## Content Management Service (CMS)
 
@@ -22,13 +19,11 @@ Read-only APIs for fetching published content. Use the CDS to power your website
 
 Full CRUD APIs for creating, updating, and managing content programmatically.
 
-{% content-ref url="content-management/README.md" %}
-[Content Management API](content-management/README.md)
-{% endcontent-ref %}
+<Card title="Content Management API" href="/api-reference/content-management" />
 
 ## Authentication
 
-All API requests require `username` and `password` headers. See [Authentication](../getting-started/authentication.md) for details.
+All API requests require `username` and `password` headers. See [Authentication](/getting-started/authentication) for details.
 
 ## Common Patterns
 
@@ -43,4 +38,4 @@ Both APIs support `page` and `limit` query parameters:
 
 ### Error Handling
 
-All error responses return a descriptive status and message. See [Error Codes](../reference/error-codes.md) for a full reference.
+All error responses return a descriptive status and message. See [Error Codes](/reference/error-codes) for a full reference.

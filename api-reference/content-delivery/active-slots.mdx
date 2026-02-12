@@ -1,10 +1,9 @@
 ---
+title: "Active Slots"
 description: Fetch advertisement slot configuration
 ---
 
-# Active Slots
-
-<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/active-slots/`
+`GET` `https://cds.thepublive.com/publisher/{publisher_id}/active-slots/`
 
 Returns the configured advertisement slots for your publication, including slot dimensions, content, and type.
 
@@ -28,8 +27,8 @@ Each slot contains:
 | `formatted_update_on` | string | Last updated timestamp |
 | `type` | string | Slot type: `Image`, `CodeEditor`, or `Editor` |
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "status": "ok",
@@ -53,14 +52,14 @@ Each slot contains:
   "message": ""
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

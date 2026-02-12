@@ -1,10 +1,9 @@
 ---
+title: "Delete Tag"
 description: Delete a tag
 ---
 
-# Delete Tag
-
-<mark style="color:red;">`DELETE`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/tag/{id}/`
+`DELETE` `https://cms.thepublive.com/publisher/{publisher_id}/tag/{id}/`
 
 Permanently deletes a tag.
 
@@ -21,22 +20,22 @@ Permanently deletes a tag.
 | username | string | Yes | API Key |
 | password | string | Yes | API Secret |
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "status": "success",
   "message": "Deleted successfully!"
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

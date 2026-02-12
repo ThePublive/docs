@@ -1,10 +1,9 @@
 ---
+title: "Create Tag"
 description: Create a new tag
 ---
 
-# Create Tag
-
-<mark style="color:green;">`POST`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/tag/`
+`POST` `https://cms.thepublive.com/publisher/{publisher_id}/tag/`
 
 Creates a new tag.
 
@@ -20,8 +19,8 @@ Creates a new tag.
 
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
-| `name`<mark style="color:red;">\*</mark> | string | Yes | Tag name |
-| `english_name`<mark style="color:red;">\*</mark> | string | Yes | English name |
+| `name`* | string | Yes | Tag name |
+| `english_name`* | string | Yes | English name |
 | `meta_title` | string | No | SEO title |
 | `meta_description` | string | No | SEO description |
 | `content` | string | No | Tag description (HTML) |
@@ -37,8 +36,8 @@ curl -X POST \
   -d '{"name": "AI Technology", "english_name": "AI Technology"}'
 ```
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "status": "success",
@@ -54,14 +53,14 @@ curl -X POST \
   }
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

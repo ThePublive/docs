@@ -1,10 +1,9 @@
 ---
+title: "Create Category"
 description: Create a new category
 ---
 
-# Create Category
-
-<mark style="color:green;">`POST`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/category/`
+`POST` `https://cms.thepublive.com/publisher/{publisher_id}/category/`
 
 Creates a new category.
 
@@ -20,8 +19,8 @@ Creates a new category.
 
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
-| `name`<mark style="color:red;">\*</mark> | string | Yes | Category name |
-| `english_name`<mark style="color:red;">\*</mark> | string | Yes | English name (for permalink generation) |
+| `name`* | string | Yes | Category name |
+| `english_name`* | string | Yes | English name (for permalink generation) |
 | `slug` | string | No | Custom slug (auto-generated if omitted) |
 | `meta_title` | string | No | SEO title |
 | `h1_tag` | string | No | H1 heading tag |
@@ -47,8 +46,8 @@ curl -X POST \
   }'
 ```
 
-{% tabs %}
-{% tab title="201: Created" %}
+<Tabs>
+<Tab title="201: Created">
 ```json
 {
   "status": "success",
@@ -68,18 +67,18 @@ curl -X POST \
   }
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="400: Bad Request" %}
+<Tab title="400: Bad Request">
 ```json
 {
   "error": {
@@ -88,5 +87,5 @@ curl -X POST \
   }
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

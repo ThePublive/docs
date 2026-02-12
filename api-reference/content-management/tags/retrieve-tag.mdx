@@ -1,10 +1,9 @@
 ---
+title: "Retrieve Tag"
 description: Retrieve a single tag by ID
 ---
 
-# Retrieve Tag
-
-<mark style="color:blue;">`GET`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/tag/{id}/`
+`GET` `https://cms.thepublive.com/publisher/{publisher_id}/tag/{id}/`
 
 Returns the details of a specific tag.
 
@@ -21,8 +20,8 @@ Returns the details of a specific tag.
 | username | string | Yes | API Key |
 | password | string | Yes | API Secret |
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "id": 500,
@@ -34,14 +33,14 @@ Returns the details of a specific tag.
   "meta_description": "Latest breaking news stories"
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

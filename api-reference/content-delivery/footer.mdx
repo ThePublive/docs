@@ -1,10 +1,9 @@
 ---
+title: "Footer"
 description: Fetch the footer configuration including links, social media, and branding
 ---
 
-# Footer
-
-<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/footer/`
+`GET` `https://cds.thepublive.com/publisher/{publisher_id}/footer/`
 
 Returns the footer configuration including social links, quick menu items, affiliate websites, and branding options.
 
@@ -31,8 +30,8 @@ Returns the footer configuration including social links, quick menu items, affil
 | `latestStories` | boolean | Whether to show latest stories |
 | `addAffiliateWebsites` | array | Affiliate/partner website links |
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "status": "ok",
@@ -63,14 +62,14 @@ Returns the footer configuration including social links, quick menu items, affil
   "message": ""
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

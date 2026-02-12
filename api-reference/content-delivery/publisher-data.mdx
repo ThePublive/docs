@@ -1,10 +1,9 @@
 ---
+title: "Publisher Data"
 description: Fetch publisher profile, branding, and configuration data
 ---
 
-# Publisher Data
-
-<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/`
+`GET` `https://cds.thepublive.com/publisher/{publisher_id}/`
 
 Returns the complete publisher profile including branding, configuration, social links, ad settings, and metadata.
 
@@ -30,8 +29,8 @@ Returns the complete publisher profile including branding, configuration, social
 | `reader_login_config` | object | Reader login/paywall configuration |
 | `ad_configurations` | object | Advertisement configuration settings |
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "status": "ok",
@@ -52,14 +51,14 @@ Returns the complete publisher profile including branding, configuration, social
   "message": ""
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

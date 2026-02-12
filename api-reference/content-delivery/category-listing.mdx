@@ -1,10 +1,9 @@
 ---
+title: "Category Listing"
 description: Fetch a list of all categories
 ---
 
-# Category Listing
-
-<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/categories/`
+`GET` `https://cds.thepublive.com/publisher/{publisher_id}/categories/`
 
 Returns a paginated list of all categories with their hierarchical structure.
 
@@ -35,8 +34,8 @@ Each category contains:
 | `category_brand_color` | string/null | Brand color (hex) |
 | `absolute_url` | string | Full public URL path |
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "status": "ok",
@@ -67,14 +66,14 @@ Each category contains:
   "per_page": 10
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

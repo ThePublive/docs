@@ -1,10 +1,9 @@
 ---
+title: "List Media"
 description: Fetch all media assets
 ---
 
-# List Media
-
-<mark style="color:blue;">`GET`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/media-library/`
+`GET` `https://cms.thepublive.com/publisher/{publisher_id}/media-library/`
 
 Returns a paginated list of all media assets in your library.
 
@@ -22,8 +21,8 @@ Returns a paginated list of all media assets in your library.
 | page | integer | 1 | Page number (max: 1000) |
 | limit | integer | 10 | Items per page (max: 50) |
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "count": 15420,
@@ -48,14 +47,14 @@ Returns a paginated list of all media assets in your library.
   ]
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

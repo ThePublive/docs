@@ -1,14 +1,13 @@
 ---
+title: "Latest Posts"
 description: "[DEPRECATED] Fetch latest posts by type"
 ---
 
-# Latest Posts
+<Warning>
+**Deprecated:** Use `/posts/?type__eq={post_type}` instead. See [Post Listing](/api-reference/content-delivery/post-listing).
+</Warning>
 
-{% hint style="warning" %}
-**Deprecated:** Use `/posts/?type__eq={post_type}` instead. See [Post Listing](../content-delivery/post-listing.md).
-{% endhint %}
-
-<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/latest-posts/{post_type}/`
+`GET` `https://cds.thepublive.com/publisher/{publisher_id}/latest-posts/{post_type}/`
 
 Returns the latest posts of a specific type.
 

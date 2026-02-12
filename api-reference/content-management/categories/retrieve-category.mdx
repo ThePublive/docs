@@ -1,10 +1,9 @@
 ---
+title: "Retrieve Category"
 description: Retrieve a single category by ID
 ---
 
-# Retrieve Category
-
-<mark style="color:blue;">`GET`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/category/{id}/`
+`GET` `https://cms.thepublive.com/publisher/{publisher_id}/category/{id}/`
 
 Returns the details of a specific category.
 
@@ -21,8 +20,8 @@ Returns the details of a specific category.
 | username | string | Yes | API Key |
 | password | string | Yes | API Secret |
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "id": 14428,
@@ -38,23 +37,23 @@ Returns the details of a specific category.
   "content_type": null
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="404: Not Found" %}
+<Tab title="404: Not Found">
 ```json
 {
   "status": "error",
   "message": "Not found"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

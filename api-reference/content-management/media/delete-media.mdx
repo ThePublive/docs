@@ -1,16 +1,15 @@
 ---
+title: "Delete Media"
 description: Delete a media asset
 ---
 
-# Delete Media
-
-<mark style="color:red;">`DELETE`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/media-library/{id}/`
+`DELETE` `https://cms.thepublive.com/publisher/{publisher_id}/media-library/{id}/`
 
 Permanently deletes a media asset from the library.
 
-{% hint style="danger" %}
+<Warning>
 **Warning:** This action cannot be undone. Posts referencing this media will lose their associated image/file.
-{% endhint %}
+</Warning>
 
 #### Path Parameters
 
@@ -25,22 +24,22 @@ Permanently deletes a media asset from the library.
 | username | string | Yes | API Key |
 | password | string | Yes | API Secret |
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "status": "success",
   "message": "Deleted successfully!"
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

@@ -1,10 +1,9 @@
 ---
+title: "Tag Details"
 description: Fetch details of a single tag by ID or slug
 ---
 
-# Tag Details
-
-<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/tag/{identifier}/`
+`GET` `https://cds.thepublive.com/publisher/{publisher_id}/tag/{identifier}/`
 
 Returns detailed information about a single tag, including SEO metadata and social sharing tags.
 
@@ -39,8 +38,8 @@ Returns detailed information about a single tag, including SEO metadata and soci
 | `twitter_image` | string | Twitter Card image URL |
 | `absolute_url` | string | Full public URL path |
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "status": "ok",
@@ -62,14 +61,14 @@ Returns detailed information about a single tag, including SEO metadata and soci
   "message": ""
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

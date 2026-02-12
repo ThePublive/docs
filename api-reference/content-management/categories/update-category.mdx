@@ -1,10 +1,9 @@
 ---
+title: "Update Category"
 description: Update an existing category
 ---
 
-# Update Category
-
-<mark style="color:orange;">`PATCH`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/category/{id}/`
+`PATCH` `https://cms.thepublive.com/publisher/{publisher_id}/category/{id}/`
 
 Updates an existing category. Only send the fields you want to change (partial update).
 
@@ -46,8 +45,8 @@ curl -X PATCH \
   -d '{"name": "Latest News", "meta_title": "Latest News Updates"}'
 ```
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "status": "success",
@@ -67,14 +66,14 @@ curl -X PATCH \
   }
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>
