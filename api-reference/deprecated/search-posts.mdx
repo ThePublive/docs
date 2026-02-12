@@ -1,14 +1,13 @@
 ---
+title: "Search Posts"
 description: "[DEPRECATED] Search posts"
 ---
 
-# Search Posts
+<Warning>
+**Deprecated:** Use `/posts/?title__contains={search_term}` instead. See [Post Listing](/api-reference/content-delivery/post-listing).
+</Warning>
 
-{% hint style="warning" %}
-**Deprecated:** Use `/posts/?title__contains={search_term}` instead. See [Post Listing](../content-delivery/post-listing.md).
-{% endhint %}
-
-<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/search/`
+`GET` `https://cds.thepublive.com/publisher/{publisher_id}/search/`
 
 Searches posts by keyword.
 

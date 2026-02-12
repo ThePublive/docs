@@ -1,10 +1,9 @@
 ---
+title: "Navbar"
 description: Fetch the navigation menu structure for your website
 ---
 
-# Navbar
-
-<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/navbar/`
+`GET` `https://cds.thepublive.com/publisher/{publisher_id}/navbar/`
 
 Returns the navigation menu configuration with hierarchical support for nested menu items.
 
@@ -26,8 +25,8 @@ Each navbar item contains:
 | `children` | array/null | Nested child menu items (same structure) |
 | `open_new_tab` | boolean | Whether to open link in a new tab |
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "status": "ok",
@@ -61,14 +60,14 @@ Each navbar item contains:
   "message": ""
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

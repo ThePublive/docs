@@ -1,10 +1,9 @@
 ---
+title: "Create Post"
 description: Create a new post
 ---
 
-# Create Post
-
-<mark style="color:green;">`POST`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/post/`
+`POST` `https://cms.thepublive.com/publisher/{publisher_id}/post/`
 
 Creates a new post. Posts are created with `Draft` status by default.
 
@@ -20,11 +19,11 @@ Creates a new post. Posts are created with `Draft` status by default.
 
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
-| `title`<mark style="color:red;">\*</mark> | string | Yes | Post headline |
-| `english_title`<mark style="color:red;">\*</mark> | string | Yes | English headline (for slug) |
-| `type`<mark style="color:red;">\*</mark> | string | Yes | `Article`, `Video`, `Web Story`, `Gallery`, `LiveBlog`, `CustomPage`, `BlankPage` |
-| `status`<mark style="color:red;">\*</mark> | string | Yes | `Draft`, `Published`, `Scheduled`, `Approval Pending` |
-| `primary_category`<mark style="color:red;">\*</mark> | integer | Yes | Category ID |
+| `title`* | string | Yes | Post headline |
+| `english_title`* | string | Yes | English headline (for slug) |
+| `type`* | string | Yes | `Article`, `Video`, `Web Story`, `Gallery`, `LiveBlog`, `CustomPage`, `BlankPage` |
+| `status`* | string | Yes | `Draft`, `Published`, `Scheduled`, `Approval Pending` |
+| `primary_category`* | integer | Yes | Category ID |
 | `contributors` | string | No | Comma-separated author IDs |
 | `content` | string | No | HTML body content |
 | `tags` | string | No | Comma-separated tag IDs |
@@ -61,8 +60,8 @@ curl -X POST \
   }'
 ```
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "status": "success",
@@ -98,18 +97,18 @@ curl -X POST \
   }
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="400: Bad Request" %}
+<Tab title="400: Bad Request">
 ```json
 {
   "error": {
@@ -118,5 +117,5 @@ curl -X POST \
   }
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

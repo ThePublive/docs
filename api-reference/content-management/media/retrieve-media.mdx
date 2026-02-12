@@ -1,10 +1,9 @@
 ---
+title: "Retrieve Media"
 description: Retrieve a single media asset by ID
 ---
 
-# Retrieve Media
-
-<mark style="color:blue;">`GET`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/media-library/{id}/`
+`GET` `https://cms.thepublive.com/publisher/{publisher_id}/media-library/{id}/`
 
 Returns the details of a specific media asset.
 
@@ -21,8 +20,8 @@ Returns the details of a specific media asset.
 | username | string | Yes | API Key |
 | password | string | Yes | API Secret |
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "id": 999,
@@ -40,14 +39,14 @@ Returns the details of a specific media asset.
   "member": "admin"
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

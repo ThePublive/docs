@@ -1,10 +1,9 @@
 ---
+title: "Update Post"
 description: Update an existing post
 ---
 
-# Update Post
-
-<mark style="color:orange;">`PATCH`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/post/{id}/`
+`PATCH` `https://cms.thepublive.com/publisher/{publisher_id}/post/{id}/`
 
 Updates an existing post. Only send the fields you want to change (partial update).
 
@@ -51,8 +50,8 @@ curl -X PATCH \
   -d '{"status": "Published", "title": "Updated Title"}'
 ```
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "status": "success",
@@ -71,14 +70,14 @@ curl -X PATCH \
   }
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

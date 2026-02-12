@@ -1,10 +1,9 @@
 ---
+title: "Update Media"
 description: Update media asset metadata
 ---
 
-# Update Media
-
-<mark style="color:orange;">`PATCH`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/media-library/{id}/`
+`PATCH` `https://cms.thepublive.com/publisher/{publisher_id}/media-library/{id}/`
 
 Updates metadata of an existing media asset. Only send the fields you want to change.
 
@@ -43,8 +42,8 @@ curl -X PATCH \
   -d '{"source": "Reuters", "alt_text": "Updated alt text"}'
 ```
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "status": "success",
@@ -61,14 +60,14 @@ curl -X PATCH \
   }
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

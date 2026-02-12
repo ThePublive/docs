@@ -1,25 +1,24 @@
 ---
+title: "Content Management API"
 description: APIs for creating, updating, and managing content in your Publive CMS
 ---
-
-# Content Management API
 
 The Content Management Service (CMS) provides full CRUD access to your content. Use these APIs to create, update, retrieve, and delete posts, categories, tags, and media programmatically.
 
 **Base URL:** `https://cms.thepublive.com/publisher/{publisher_id}/`
 
-{% hint style="info" %}
+<Info>
 All CMS endpoints require `username` and `password` authentication headers, plus `Content-Type: application/json` for POST and PATCH requests.
-{% endhint %}
+</Info>
 
 ## Resources
 
 | Resource | Endpoints | Description |
 | -------- | --------- | ----------- |
-| [Categories](categories/README.md) | List, Create, Retrieve, Update, Delete | Manage content categories |
-| [Tags](tags/README.md) | List, Create, Retrieve, Update, Delete | Manage content tags |
-| [Posts](posts/README.md) | List, Create, Retrieve, Update, Delete | Manage articles, videos, galleries, and more |
-| [Media Library](media/README.md) | List, Create, Retrieve, Update, Delete | Manage images, videos, and files |
+| [Categories](/api-reference/content-management/categories) | List, Create, Retrieve, Update, Delete | Manage content categories |
+| [Tags](/api-reference/content-management/tags) | List, Create, Retrieve, Update, Delete | Manage content tags |
+| [Posts](/api-reference/content-management/posts) | List, Create, Retrieve, Update, Delete | Manage articles, videos, galleries, and more |
+| [Media Library](/api-reference/content-management/media) | List, Create, Retrieve, Update, Delete | Manage images, videos, and files |
 
 ## Common Patterns
 

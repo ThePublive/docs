@@ -1,16 +1,15 @@
 ---
+title: "Live Blog Updates"
 description: Fetch live blog update entries for a specific post
 ---
 
-# Live Blog Updates
-
-<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/post/{post_id}/live-blog-updates/`
+`GET` `https://cds.thepublive.com/publisher/{publisher_id}/post/{post_id}/live-blog-updates/`
 
 Returns the list of live blog updates for a specific LiveBlog post. Each update contains its own title, content, author, and timestamp.
 
-{% hint style="info" %}
-This endpoint only returns data for posts with `type: "LiveBlog"`. For other post types, use the [Post Details](post-details.md) endpoint.
-{% endhint %}
+<Info>
+This endpoint only returns data for posts with `type: "LiveBlog"`. For other post types, use the [Post Details](/api-reference/content-delivery/post-details) endpoint.
+</Info>
 
 #### Path Parameters
 
@@ -46,8 +45,8 @@ Each live blog update contains:
 | `data.title` | string | Update title/headline |
 | `data.content` | string | Update body (HTML) |
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "status": "ok",
@@ -92,23 +91,23 @@ Each live blog update contains:
   "per_page": 10
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="404: Not Found" %}
+<Tab title="404: Not Found">
 ```json
 {
   "status": "error",
   "message": "Post not found"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

@@ -1,10 +1,9 @@
 ---
+title: "Post Details"
 description: Fetch details of a single post by ID or slug
 ---
 
-# Post Details
-
-<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/post/{identifier}/`
+`GET` `https://cds.thepublive.com/publisher/{publisher_id}/post/{identifier}/`
 
 Returns the complete details of a single published post including full content, metadata, categories, tags, and contributors.
 
@@ -23,10 +22,10 @@ Returns the complete details of a single published post including full content, 
 
 #### Response
 
-Returns the same post object structure as the [Post Listing](post-listing.md) endpoint, but for a single post.
+Returns the same post object structure as the [Post Listing](/api-reference/content-delivery/post-listing) endpoint, but for a single post.
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "status": "ok",
@@ -83,23 +82,23 @@ Returns the same post object structure as the [Post Listing](post-listing.md) en
   "message": ""
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="404: Not Found" %}
+<Tab title="404: Not Found">
 ```json
 {
   "status": "error",
   "message": "Post not found"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

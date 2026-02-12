@@ -1,10 +1,9 @@
 ---
+title: "Retrieve Post"
 description: Retrieve a single post by ID
 ---
 
-# Retrieve Post
-
-<mark style="color:blue;">`GET`</mark> `https://cms.thepublive.com/publisher/{publisher_id}/post/{id}/`
+`GET` `https://cms.thepublive.com/publisher/{publisher_id}/post/{id}/`
 
 Returns the complete details of a specific post.
 
@@ -21,8 +20,8 @@ Returns the complete details of a specific post.
 | username | string | Yes | API Key |
 | password | string | Yes | API Secret |
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "id": 50123,
@@ -71,23 +70,23 @@ Returns the complete details of a specific post.
   "source": "HeadlessCMS"
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="404: Not Found" %}
+<Tab title="404: Not Found">
 ```json
 {
   "status": "error",
   "message": "Not found"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

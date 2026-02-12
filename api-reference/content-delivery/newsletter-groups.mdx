@@ -1,10 +1,9 @@
 ---
+title: "Newsletter Groups"
 description: Fetch newsletter group listings
 ---
 
-# Newsletter Groups
-
-<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/newsletter-groups/`
+`GET` `https://cds.thepublive.com/publisher/{publisher_id}/newsletter-groups/`
 
 Returns all configured newsletter groups with their metadata.
 
@@ -26,8 +25,8 @@ Each newsletter group contains:
 | `logo_url` | string | Logo image path (relative) |
 | `description` | string | Newsletter group description |
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "status": "ok",
@@ -48,14 +47,14 @@ Each newsletter group contains:
   "message": ""
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>

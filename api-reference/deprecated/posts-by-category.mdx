@@ -1,14 +1,13 @@
 ---
+title: "Posts by Category"
 description: "[DEPRECATED] Fetch posts by category ID"
 ---
 
-# Posts by Category
+<Warning>
+**Deprecated:** Use `/posts/?categories.id__eq={category_id}` instead. See [Post Listing](/api-reference/content-delivery/post-listing).
+</Warning>
 
-{% hint style="warning" %}
-**Deprecated:** Use `/posts/?categories.id__eq={category_id}` instead. See [Post Listing](../content-delivery/post-listing.md).
-{% endhint %}
-
-<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/posts_by_category/{category_id}/`
+`GET` `https://cds.thepublive.com/publisher/{publisher_id}/posts_by_category/{category_id}/`
 
 Returns posts belonging to a specific category.
 

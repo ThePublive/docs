@@ -1,10 +1,9 @@
 ---
+title: "Category Details"
 description: Fetch details of a single category by ID or slug
 ---
 
-# Category Details
-
-<mark style="color:blue;">`GET`</mark> `https://cds.thepublive.com/publisher/{publisher_id}/category/{identifier}/`
+`GET` `https://cds.thepublive.com/publisher/{publisher_id}/category/{identifier}/`
 
 Returns detailed information about a single category, including SEO metadata, Open Graph tags, and child categories.
 
@@ -42,8 +41,8 @@ Returns detailed information about a single category, including SEO metadata, Op
 | `twitter_image` | string | Twitter Card image URL |
 | `absolute_url` | string | Full public URL path |
 
-{% tabs %}
-{% tab title="200: OK" %}
+<Tabs>
+<Tab title="200: OK">
 ```json
 {
   "status": "ok",
@@ -79,14 +78,14 @@ Returns detailed information about a single category, including SEO metadata, Op
   "message": ""
 }
 ```
-{% endtab %}
+</Tab>
 
-{% tab title="401: Unauthorized" %}
+<Tab title="401: Unauthorized">
 ```json
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-{% endtab %}
-{% endtabs %}
+</Tab>
+</Tabs>
