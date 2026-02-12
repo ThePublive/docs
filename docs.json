@@ -11,38 +11,68 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Documentation",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Getting Started",
             "pages": [
-              "index",
-              "quickstart",
-              "development"
+              "documentation/getting-started/introduction",
+              "documentation/getting-started/quick-start",
+              "documentation/getting-started/authentication",
+              "documentation/getting-started/core-concepts"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Guides",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "documentation/guides/README",
+              {
+                "group": "Frontend Integration",
+                "pages": [
+                  "documentation/guides/frontend-integration/README",
+                  "documentation/guides/frontend-integration/nextjs",
+                  "documentation/guides/frontend-integration/react",
+                  "documentation/guides/frontend-integration/vue",
+                  "documentation/guides/frontend-integration/angular"
+                ]
+              },
+              {
+                "group": "Workflows",
+                "pages": [
+                  "documentation/guides/workflows/README",
+                  "documentation/guides/workflows/maker-checker",
+                  "documentation/guides/workflows/approval-flow",
+                  "documentation/guides/workflows/state-management"
+                ]
+              },
+              {
+                "group": "Industry-Specific",
+                "pages": [
+                  "documentation/guides/industry-specific/README",
+                  "documentation/guides/industry-specific/media-publishing",
+                  "documentation/guides/industry-specific/bfsi-compliance",
+                  "documentation/guides/industry-specific/pharma-governance"
+                ]
+              }
             ]
           },
           {
-            "group": "Writing content",
+            "group": "Webhooks & Integrations",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
+              "documentation/webhooks-integrations/README",
+              "documentation/webhooks-integrations/webhooks",
+              "documentation/webhooks-integrations/ai-features",
+              "documentation/webhooks-integrations/third-party"
             ]
           },
           {
-            "group": "AI tools",
+            "group": "Reference",
             "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "documentation/reference/README",
+              "documentation/reference/error-codes",
+              "documentation/reference/rate-limits",
+              "documentation/reference/changelog",
+              "documentation/reference/migration-guides"
             ]
           }
         ]

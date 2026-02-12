@@ -1,8 +1,7 @@
 ---
-description: Multi-step content approval workflows
+title: "Approval Flows"
+description: "Multi-step content approval workflows"
 ---
-
-# Approval Flows
 
 Publive supports configurable approval workflows for content publishing. This guide covers how to implement approval flows using the CMS API.
 
@@ -74,6 +73,6 @@ curl -X PATCH \
   }'
 ```
 
-{% hint style="info" %}
+<Info>
 The `published_post` field in the post response references the live version, while edits can be made to the draft version independently.
-{% endhint %}
+</Info>
