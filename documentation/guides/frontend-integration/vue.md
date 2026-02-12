@@ -1,0 +1,88 @@
+---
+description: Integrate Publive with Vue.js
+---
+
+# Vue.js Integration
+
+Build a Vue.js application powered by the Publive CDS API.
+
+{% hint style="warning" %}
+**Important:** Use a backend proxy to protect your API credentials. Do not call the Publive API directly from the browser.
+{% endhint %}
+
+## Setup with Nuxt.js (Recommended)
+
+### 1. Create API Composable
+
+Create `composables/usePublive.js`:
+
+```javascript
+export const usePublive = () => {
+  const config = useRuntimeConfig();
+  const baseUrl = `https://cds.thepublive.com/publisher/${config.publivePublisherId}`;
+
+  const headers = {
+    'username': config.publiveApiKey,
+    'password': config.publiveApiSecret,
+  };
+
+  const fetchPosts = async (params = {}) => {
+    const query = new URLSearchParams({ limit: '10', ...params });
+    const { data } = await useFetch(`${baseUrl}/posts/?${query}`, { headers });
+    return data.value;
+  };
+
+  const fetchPost = async (slug) => {
+    const { data } = await useFetch(`${baseUrl}/post/${slug}/`, { headers });
+    return data.value;
+  };
+
+  return { fetchPosts, fetchPost };
+};
+```
+
+### 2. Create a Post Listing Page
+
+```vue
+<!-- pages/index.vue -->
+<template>
+  <main>
+    <h1>Latest Articles</h1>
+    <article v-for="post in posts" :key="post.id">
+      <img v-if="post.banner_url" :src="post.banner_url" :alt="post.title" />
+      <h2>
+        <NuxtLink :to="post.absolute_url">{{ post.title }}</NuxtLink>
+      </h2>
+      <p>{{ post.short_description }}</p>
+    </article>
+  </main>
+</template>
+
+<script setup>
+const { fetchPosts } = usePublive();
+const response = await fetchPosts({ limit: '20' });
+const posts = response?.data || [];
+</script>
+```
+
+### 3. Create a Post Detail Page
+
+```vue
+<!-- pages/[...slug].vue -->
+<template>
+  <article v-if="post">
+    <h1>{{ post.title }}</h1>
+    <div class="meta">
+      <span>{{ post.primary_category?.name }}</span>
+    </div>
+    <div v-html="post.content_html"></div>
+  </article>
+</template>
+
+<script setup>
+const route = useRoute();
+const { fetchPost } = usePublive();
+const response = await fetchPost(route.params.slug.join('/'));
+const post = response?.data;
+</script>
+```

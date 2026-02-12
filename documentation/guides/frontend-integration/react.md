@@ -1,0 +1,109 @@
+---
+description: Integrate Publive with a React single-page application
+---
+
+# React Integration
+
+Build a React SPA that fetches content from the Publive CDS API via a backend proxy.
+
+{% hint style="warning" %}
+**Important:** Do not call the Publive API directly from the browser. Use a backend proxy (Express, serverless function, etc.) to keep your credentials secure.
+{% endhint %}
+
+## Setup
+
+### 1. Create a Backend Proxy
+
+Create a simple Express endpoint (or use any server framework):
+
+```javascript
+// server/api/publive.js
+const express = require('express');
+const router = express.Router();
+
+const BASE_URL = 'https://cds.thepublive.com/publisher/YOUR_PUBLISHER_ID';
+const headers = {
+  'username': process.env.PUBLIVE_API_KEY,
+  'password': process.env.PUBLIVE_API_SECRET,
+};
+
+router.get('/posts', async (req, res) => {
+  const query = new URLSearchParams(req.query);
+  const response = await fetch(`${BASE_URL}/posts/?${query}`, { headers });
+  const data = await response.json();
+  res.json(data);
+});
+
+router.get('/post/:slug', async (req, res) => {
+  const response = await fetch(`${BASE_URL}/post/${req.params.slug}/`, { headers });
+  const data = await response.json();
+  res.json(data);
+});
+
+module.exports = router;
+```
+
+### 2. Create a React Hook
+
+```jsx
+// hooks/usePublive.js
+import { useState, useEffect } from 'react';
+
+export function usePosts(params = {}) {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const query = new URLSearchParams(params);
+    fetch(`/api/publive/posts?${query}`)
+      .then(res => res.json())
+      .then(data => {
+        setPosts(data.data || []);
+        setLoading(false);
+      });
+  }, [JSON.stringify(params)]);
+
+  return { posts, loading };
+}
+
+export function usePost(slug) {
+  const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`/api/publive/post/${slug}`)
+      .then(res => res.json())
+      .then(data => {
+        setPost(data.data);
+        setLoading(false);
+      });
+  }, [slug]);
+
+  return { post, loading };
+}
+```
+
+### 3. Use in Components
+
+```jsx
+// components/PostList.jsx
+import { usePosts } from '../hooks/usePublive';
+
+export default function PostList() {
+  const { posts, loading } = usePosts({ limit: 10 });
+
+  if (loading) return <p>Loading...</p>;
+
+  return (
+    <div>
+      {posts.map(post => (
+        <article key={post.id}>
+          <h2>{post.title}</h2>
+          <p>{post.short_description}</p>
+          <span>{post.primary_category?.name}</span>
+        </article>
+      ))}
+    </div>
+  );
+}
+```

@@ -1,0 +1,95 @@
+---
+description: Get up and running with the Publive API in 5 minutes
+---
+
+# Quick Start
+
+This guide walks you through making your first API call to Publive.
+
+## Step 1: Get Your API Credentials
+
+Your API requests are authenticated using a `username` and `password` provided by Publive.
+
+1. Log in to your [Publive Dashboard](https://app.thepublive.com)
+2. Navigate to **Settings** > **API Keys**
+3. Copy your **API Key** (username) and **API Secret** (password)
+4. Note your **Publisher ID** from the dashboard URL
+
+{% hint style="info" %}
+**Important:** Keep your API credentials secure. Never expose them in client-side code or public repositories.
+{% endhint %}
+
+## Step 2: Make Your First API Call
+
+Fetch your published posts using the Content Delivery API:
+
+```bash
+curl -X GET \
+  'https://cds.thepublive.com/publisher/YOUR_PUBLISHER_ID/posts/?limit=5' \
+  -H 'username: YOUR_API_KEY' \
+  -H 'password: YOUR_API_SECRET'
+```
+
+## Step 3: Understand the Response
+
+```json
+{
+  "status": "ok",
+  "data": [
+    {
+      "id": 12345,
+      "title": "My First Article",
+      "slug": "my-first-article",
+      "type": "Article",
+      "primary_category": {
+        "id": 1,
+        "name": "News",
+        "slug": "news"
+      },
+      "contributors": [
+        {
+          "id": 1,
+          "name": "John Doe",
+          "slug": "john-doe"
+        }
+      ],
+      "content_html": "<p>Article content here...</p>",
+      "absolute_url": "/news/my-first-article-12345"
+    }
+  ],
+  "message": "",
+  "page_no": 1,
+  "per_page": 5
+}
+```
+
+{% hint style="success" %}
+**That's it!** You've successfully fetched content from Publive. The response includes the full post object with title, content, categories, tags, authors, and metadata.
+{% endhint %}
+
+## Step 4: Create Content via CMS API
+
+To create a new post programmatically, use the Content Management API:
+
+```bash
+curl -X POST \
+  'https://cms.thepublive.com/publisher/YOUR_PUBLISHER_ID/post/' \
+  -H 'username: YOUR_API_KEY' \
+  -H 'password: YOUR_API_SECRET' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "title": "My API-Created Post",
+    "english_title": "My API-Created Post",
+    "type": "Article",
+    "status": "Draft",
+    "primary_category": 1,
+    "content": "<p>Hello from the API!</p>"
+  }'
+```
+
+## What's Next?
+
+* [Authentication](authentication.md) — Learn about API authentication in detail
+* [Core Concepts](core-concepts.md) — Understand posts, categories, tags, and content types
+* [Content Delivery API](../api-reference/content-delivery/README.md) — Full CDS API reference
+* [Content Management API](../api-reference/content-management/README.md) — Full CMS API reference

@@ -1,0 +1,134 @@
+---
+description: Understand the key entities and concepts in Publive
+---
+
+# Core Concepts
+
+This page explains the fundamental building blocks of Publive's content architecture.
+
+## Content Entities
+
+### Posts
+
+Posts are the primary content entity in Publive. Each post represents a piece of content (article, video, gallery, etc.) with associated metadata.
+
+**Post Types:**
+
+| Type | Description |
+| ---- | ----------- |
+| `Article` | Standard text-based article |
+| `Video` | Video content with embedded player |
+| `Web Story` | Visual story format |
+| `Gallery` | Image gallery |
+| `LiveBlog` | Real-time live blog with updates |
+| `CustomPage` | Custom page layout |
+| `BlankPage` | Blank page template |
+
+**Post Statuses:**
+
+| Status | Description |
+| ------ | ----------- |
+| `Draft` | Work in progress, not published |
+| `Published` | Live and publicly accessible |
+| `Scheduled` | Will be published at a future date/time |
+| `Approval Pending` | Submitted for review in maker-checker workflow |
+
+### Categories
+
+Categories provide hierarchical organization for your content. Every post must have a `primary_category` to be published. Categories support parent-child relationships for nested navigation.
+
+Key fields: `name`, `english_name`, `slug`, `parent_category`, `child_categories`, `category_brand_color`, SEO metadata.
+
+### Tags
+
+Tags provide flat, cross-cutting labels for content. Unlike categories, tags have no hierarchy. Posts can have multiple tags for flexible content discovery.
+
+Key fields: `name`, `english_name`, `slug`, SEO metadata.
+
+### Authors (Contributors)
+
+Authors represent content creators. Posts reference authors through the `contributors` field, which accepts comma-separated author IDs.
+
+Key fields: `name`, `slug`, `email`, `description`, social media links (`linkedin`, `twitter`, `instagram`, `facebook`), `avatar`.
+
+### Media Library
+
+The Media Library stores all media assets (images, videos, files) used across your content. Media items are referenced by ID in post fields like `banner_url`.
+
+Key fields: `filename`, `path` (URL), `alt_text`, `caption`, `source`, `type` (Image/Video/File), `meta_data` (dimensions).
+
+## Two APIs, Two Purposes
+
+### Content Delivery Service (CDS)
+**Base URL:** `https://cds.thepublive.com/publisher/{publisher_id}/`
+
+Read-only API for your frontend. Use this to:
+* Fetch published posts, categories, tags, and authors
+* Power your website navigation (navbar, footer)
+* Query content with advanced filters (`__eq`, `__contains`, `__in`, `__gte`, etc.)
+
+### Content Management Service (CMS)
+**Base URL:** `https://cms.thepublive.com/publisher/{publisher_id}/`
+
+Full CRUD API for managing content. Use this to:
+* Create, update, and delete posts, categories, tags, and media
+* Manage content workflows and publishing states
+* Integrate with your editorial tools and automation pipelines
+
+## Pagination
+
+Both APIs support pagination with these query parameters:
+
+| Parameter | Type | Default | Max | Description |
+| --------- | ---- | ------- | --- | ----------- |
+| `page` | integer | 1 | 1000 | Page number |
+| `limit` | integer | 10 | 50 | Items per page |
+
+Paginated responses include:
+
+```json
+{
+  "count": 245,
+  "next": "https://cms.thepublive.com/publisher/123/category/?page=2&limit=10",
+  "previous": null,
+  "results": [...]
+}
+```
+
+## Response Format
+
+### CDS API Responses
+
+```json
+{
+  "status": "ok",
+  "data": [...],
+  "message": "",
+  "page_no": 1,
+  "per_page": 10,
+  "Cache-Tags": ["PA.123", "CAT.456"]
+}
+```
+
+### CMS API Responses
+
+```json
+{
+  "count": 100,
+  "next": "...?page=2",
+  "previous": null,
+  "results": [...]
+}
+```
+
+## Cache Tags (CDS)
+
+CDS responses include `Cache-Tags` for CDN cache invalidation:
+
+| Tag Format | Entity |
+| ---------- | ------ |
+| `PA.{id}` | Publisher |
+| `CAT.{id}` | Category |
+| `TAG.{id}` | Tag |
+| `MEM.{id}` | Author/Member |
+| `PP.{id}` | Post |

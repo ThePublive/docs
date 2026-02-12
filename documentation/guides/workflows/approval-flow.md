@@ -1,0 +1,79 @@
+---
+description: Multi-step content approval workflows
+---
+
+# Approval Flows
+
+Publive supports configurable approval workflows for content publishing. This guide covers how to implement approval flows using the CMS API.
+
+## Content Statuses
+
+| Status | Description |
+| ------ | ----------- |
+| `Draft` | Work in progress, not visible to public |
+| `Approval Pending` | Submitted for review |
+| `Published` | Live and publicly accessible |
+| `Scheduled` | Will be published at a future date/time |
+
+## Basic Approval Flow
+
+### 1. Author Creates Draft
+
+The content creator writes the article and saves as draft.
+
+### 2. Author Submits for Review
+
+Update the post status to `Approval Pending`:
+
+```bash
+curl -X PATCH \
+  'https://cms.thepublive.com/publisher/123/post/{id}/' \
+  -H 'username: YOUR_API_KEY' \
+  -H 'password: YOUR_API_SECRET' \
+  -H 'Content-Type: application/json' \
+  -d '{"status": "Approval Pending"}'
+```
+
+### 3. Editor Reviews and Approves
+
+The editor can either publish or reject:
+
+```bash
+# Approve and publish
+curl -X PATCH ... -d '{"status": "Published"}'
+
+# Reject back to draft
+curl -X PATCH ... -d '{"status": "Draft"}'
+```
+
+### 4. Schedule for Later (Optional)
+
+Instead of immediate publishing, schedule for a future time:
+
+```bash
+curl -X PATCH \
+  'https://cms.thepublive.com/publisher/123/post/{id}/' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "status": "Scheduled",
+    "scheduled_at": "2026-03-01T09:00:00Z"
+  }'
+```
+
+## Backdated Publishing
+
+For content that needs a custom publication date (e.g., migrated content):
+
+```bash
+curl -X PATCH \
+  'https://cms.thepublive.com/publisher/123/post/{id}/' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "status": "Published",
+    "custom_published_at": "2025-12-15T10:00:00Z"
+  }'
+```
+
+{% hint style="info" %}
+The `published_post` field in the post response references the live version, while edits can be made to the draft version independently.
+{% endhint %}

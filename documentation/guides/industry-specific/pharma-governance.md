@@ -1,0 +1,74 @@
+---
+description: Implementing Publive for pharmaceutical content governance
+---
+
+# Pharma Governance
+
+Publive supports the strict content governance requirements of the pharmaceutical and healthcare industry.
+
+## Regulatory Requirements
+
+| Requirement | Publive Feature |
+| ----------- | --------------- |
+| Multi-step review process | Status workflow: Draft → Approval Pending → Published |
+| Content traceability | Full audit trail with `member`, `approver`, `updated_by` fields |
+| Version control | Draft/Published state separation |
+| Access restrictions | API key isolation, `access_type` metadata |
+| Scheduled publishing | `Scheduled` status with `scheduled_at` datetime |
+
+## Implementation Pattern
+
+### 1. Content Creation (Medical Writer)
+
+```bash
+curl -X POST \
+  'https://cms.thepublive.com/publisher/123/post/' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "title": "Drug Safety Update - Product XYZ",
+    "english_title": "Drug Safety Update - Product XYZ",
+    "type": "Article",
+    "status": "Draft",
+    "primary_category": 300,
+    "content": "<p>Updated safety information for Product XYZ...</p>",
+    "meta_data": {"access_type": "Paid", "compliance_level": "restricted"}
+  }'
+```
+
+### 2. Medical Review (Submit for Approval)
+
+```bash
+curl -X PATCH \
+  'https://cms.thepublive.com/publisher/123/post/{id}/' \
+  -H 'Content-Type: application/json' \
+  -d '{"status": "Approval Pending"}'
+```
+
+### 3. Regulatory Approval (Compliance Officer)
+
+```bash
+curl -X PATCH \
+  'https://cms.thepublive.com/publisher/123/post/{id}/' \
+  -H 'Content-Type: application/json' \
+  -d '{"status": "Published"}'
+```
+
+## Content Organization
+
+Recommended category structure for pharma:
+
+| Category | Purpose |
+| -------- | ------- |
+| Drug Safety | Safety updates and alerts |
+| Clinical Trials | Trial results and publications |
+| Regulatory Updates | Compliance and regulatory changes |
+| Patient Information | Public-facing health content |
+| Internal Communications | Staff-only content |
+
+## Best Practices
+
+1. **Enforce `Approval Pending`** for all content before publication
+2. **Use `meta_data`** to tag compliance classifications
+3. **Maintain separate API keys** for writers, reviewers, and publishers
+4. **Use `scheduled_at`** for coordinated release of regulatory content
+5. **Track `seo_keyphrase`** for medical terminology accuracy

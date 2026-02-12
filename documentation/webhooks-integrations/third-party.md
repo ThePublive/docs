@@ -1,0 +1,92 @@
+---
+description: Integrate Publive with third-party services
+---
+
+# Third-party Integrations
+
+Publive can be integrated with various external services to extend your content workflow.
+
+## Analytics
+
+### Google Analytics
+
+Track content performance by including analytics scripts in your frontend. Use the CDS API's `absolute_url` field for page path tracking.
+
+### Custom Analytics
+
+Use the CDS response fields to build custom analytics:
+
+| Field | Analytics Use |
+| ----- | ------------- |
+| `word_count` | Content length analysis |
+| `access_type` | Free vs. paid content performance |
+| `primary_category` | Category-level metrics |
+| `contributors` | Author performance tracking |
+| `type` | Content format analysis |
+
+## CDN Integration
+
+### Cache Invalidation
+
+CDS responses include `Cache-Tags` for CDN cache management:
+
+```json
+{
+  "Cache-Tags": ["PA.123", "CAT.100", "PP.12345"]
+}
+```
+
+Configure your CDN to:
+1. Cache CDS API responses
+2. Use `Cache-Tags` for targeted purging
+3. Set up webhook listeners (`post.published`, `post.updated`) to trigger cache purges
+
+## Search Integration
+
+### Algolia / Elasticsearch
+
+Sync Publive content to your search engine:
+
+1. **Initial sync**: Paginate through all posts via CMS API
+2. **Real-time sync**: Listen for `post.published` and `post.updated` webhooks
+3. **Index fields**: `title`, `content_html`, `short_description`, `tags`, `categories`
+
+```javascript
+// Example: Sync post to search index on webhook
+app.post('/webhook/publive', async (req, res) => {
+  const { event, data } = req.body;
+
+  if (event === 'post.published') {
+    await searchIndex.saveObject({
+      objectID: data.id,
+      title: data.title,
+      description: data.short_description,
+      category: data.primary_category?.name,
+      url: data.absolute_url,
+    });
+  }
+
+  res.sendStatus(200);
+});
+```
+
+## Email / Newsletter
+
+Use the CDS Newsletter Groups API to manage newsletter subscriptions:
+
+```bash
+GET /publisher/{id}/newsletter-groups/
+```
+
+Integrate with email services (Mailchimp, SendGrid) by syncing newsletter group data and using post content for email campaigns.
+
+## Social Media
+
+Posts include built-in social sharing metadata (via CDS):
+
+| Field | Platform |
+| ----- | -------- |
+| `og_title`, `og_description`, `og_image` | Facebook, LinkedIn |
+| `twitter_title`, `twitter_description`, `twitter_image` | Twitter/X |
+
+Use these fields to generate social media sharing links and preview cards.

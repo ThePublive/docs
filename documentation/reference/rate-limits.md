@@ -1,0 +1,67 @@
+---
+description: API rate limits and throttling policies
+---
+
+# Rate Limits
+
+Publive APIs enforce rate limits to ensure fair usage and service stability.
+
+## Limits
+
+| Service | Rate Limit | Window |
+| ------- | ---------- | ------ |
+| **CDS** (Content Delivery) | 1000 requests | Per minute |
+| **CMS** (Content Management) | 200 requests | Per minute |
+
+## Rate Limit Headers
+
+API responses include rate limit information in headers:
+
+| Header | Description |
+| ------ | ----------- |
+| `X-RateLimit-Limit` | Maximum requests allowed per window |
+| `X-RateLimit-Remaining` | Requests remaining in current window |
+| `X-RateLimit-Reset` | Unix timestamp when the window resets |
+
+## Handling Rate Limits
+
+When you exceed the rate limit, the API returns a `429 Too Many Requests` response:
+
+```json
+{
+  "status": "error",
+  "message": "Rate limit exceeded. Please retry after 60 seconds."
+}
+```
+
+### Recommended Strategy
+
+1. **Monitor** the `X-RateLimit-Remaining` header
+2. **Implement exponential backoff** when approaching limits
+3. **Cache responses** to reduce API calls (especially for CDS)
+4. **Use pagination** efficiently to minimize requests
+
+### Retry Example
+
+```javascript
+async function fetchWithRetry(url, headers, maxRetries = 3) {
+  for (let i = 0; i < maxRetries; i++) {
+    const response = await fetch(url, { headers });
+
+    if (response.status === 429) {
+      const retryAfter = Math.pow(2, i) * 1000; // Exponential backoff
+      await new Promise(resolve => setTimeout(resolve, retryAfter));
+      continue;
+    }
+
+    return response.json();
+  }
+  throw new Error('Max retries exceeded');
+}
+```
+
+## Best Practices
+
+- **CDS responses are cacheable** — use CDN caching with `Cache-Tags` for invalidation
+- **Batch operations** — minimize API calls by fetching larger page sizes (`limit=50`)
+- **Use webhooks** instead of polling for real-time updates

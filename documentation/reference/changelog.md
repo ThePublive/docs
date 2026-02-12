@@ -1,0 +1,40 @@
+---
+description: Publive API changelog and version history
+---
+
+# Changelog
+
+Track changes, new features, and updates to the Publive API.
+
+## February 2026
+
+### New Documentation Site
+- Launched comprehensive developer documentation with GitBook
+- Complete CDS and CMS API reference documentation
+- Added integration guides for Next.js, React, Vue.js, and Angular
+- Added industry-specific guides for Media, BFSI, and Pharma
+
+### API Updates
+- Advanced filtering operators on `/posts/` endpoint (`__eq`, `__contains`, `__in`, `__gte`, `__lte`, `__gt`, `__lt`)
+- Cache-Tags support in CDS responses for CDN integration
+- Live Blog Updates endpoint for real-time content
+
+## January 2026
+
+### Content Management
+- Media Library API with full CRUD support
+- Post scheduling with `scheduled_at` field
+- Backdated publishing with `custom_published_at` field
+
+### Deprecations
+- Deprecated single-purpose endpoints in favor of unified `/posts/` with filters
+- See [Migration Guides](migration-guides.md) for upgrade paths
+
+## 2025
+
+### Platform Launch
+- Initial release of CDS and CMS APIs
+- Support for Articles, Videos, Web Stories, Galleries, and Live Blogs
+- Category, Tag, Author, and Media management
+- Maker-checker workflow support
+- Basic authentication with username/password headers

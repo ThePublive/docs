@@ -1,0 +1,72 @@
+---
+description: Using Publive for media and digital publishing
+---
+
+# Media Publishing
+
+Publive is purpose-built for digital media organizations. This guide covers patterns for high-volume news publishing.
+
+## Multi-Format Content
+
+Publive supports all major content formats used in digital publishing:
+
+| Post Type | Use Case |
+| --------- | -------- |
+| `Article` | Standard news articles, features, opinion pieces |
+| `Video` | Video stories with embedded players |
+| `Web Story` | Visual stories for mobile-first audiences |
+| `Gallery` | Photo galleries and image collections |
+| `LiveBlog` | Real-time event coverage with updates |
+
+## Live Blog Coverage
+
+For breaking news and live events, use the LiveBlog post type:
+
+1. Create a LiveBlog post via CMS API
+2. Add updates using the Publive Dashboard
+3. Fetch updates via CDS API: `/post/{id}/live-blog-updates/`
+
+Live blog updates support pinned entries, author attribution, and rich HTML content.
+
+## Category-Based Navigation
+
+Structure your site navigation using the CDS Navbar and Category APIs:
+
+```javascript
+// Fetch navigation structure
+const navbar = await fetch('/publisher/123/navbar/');
+
+// Fetch category-specific content
+const techPosts = await fetch('/publisher/123/posts/?primary_category.id__eq=100');
+```
+
+## Content Delivery Optimization
+
+### Pagination Strategy
+
+For news sites with thousands of articles, use pagination efficiently:
+
+```
+/posts/?page=1&limit=20&sort_by=created_at&sort_order=desc
+```
+
+### Cache Tags
+
+CDS responses include `Cache-Tags` for CDN integration:
+
+```json
+{
+  "Cache-Tags": ["PA.123", "CAT.100", "PP.12345"]
+}
+```
+
+Use these tags for targeted cache invalidation when content is updated.
+
+## SEO
+
+Posts include built-in SEO fields:
+- `short_description` for meta descriptions
+- `seo_keyphrase` for focus keywords
+- `seo_score` for content optimization tracking
+
+Categories, tags, and authors include OG and Twitter Card metadata for social sharing.

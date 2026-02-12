@@ -1,0 +1,79 @@
+---
+description: How to authenticate your API requests to Publive
+---
+
+# Authentication
+
+All Publive API requests require authentication via HTTP headers. Both the Content Delivery Service (CDS) and Content Management Service (CMS) use the same authentication method.
+
+## Authentication Headers
+
+Include these headers with every API request:
+
+| Header | Type | Required | Description |
+| ------ | ---- | -------- | ----------- |
+| `username` | string | Yes | Your unique API key provided by Publive |
+| `password` | string | Yes | Your API secret provided by Publive |
+
+## Example Request
+
+```bash
+curl -X GET \
+  'https://cds.thepublive.com/publisher/{publisher_id}/posts/' \
+  -H 'username: YOUR_API_KEY' \
+  -H 'password: YOUR_API_SECRET'
+```
+
+For CMS API requests that send data, also include the `Content-Type` header:
+
+```bash
+curl -X POST \
+  'https://cms.thepublive.com/publisher/{publisher_id}/category/' \
+  -H 'username: YOUR_API_KEY' \
+  -H 'password: YOUR_API_SECRET' \
+  -H 'Content-Type: application/json' \
+  -d '{"name": "Technology", "english_name": "Technology"}'
+```
+
+## Getting Your Credentials
+
+1. Log in to your [Publive Dashboard](https://app.thepublive.com)
+2. Go to **Settings** > **API Keys**
+3. Your **API Key** is the `username` value
+4. Your **API Secret** is the `password` value
+5. Your **Publisher ID** is visible in your dashboard URL
+
+## Authentication Errors
+
+If authentication fails, the API returns a `401 Unauthorized` response:
+
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+
+Common causes:
+* Missing `username` or `password` header
+* Invalid or expired API credentials
+* Using CMS credentials for a CDS endpoint (or vice versa)
+
+{% hint style="warning" %}
+**Security Best Practices:**
+* Never expose API credentials in client-side JavaScript
+* Use environment variables to store credentials
+* Rotate API keys periodically
+* Use the CDS API (read-only) for public-facing applications and reserve CMS API access for server-side operations
+{% endhint %}
+
+## Publisher ID
+
+Every API endpoint requires your `publisher_id` in the URL path:
+
+```
+https://cds.thepublive.com/publisher/{publisher_id}/posts/
+https://cms.thepublive.com/publisher/{publisher_id}/post/
+```
+
+Your Publisher ID is a unique numeric identifier assigned to your organization. You can find it in your Publive Dashboard URL.

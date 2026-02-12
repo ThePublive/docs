@@ -1,0 +1,82 @@
+---
+description: Managing content state transitions in Publive
+---
+
+# State Management
+
+Understanding how content moves through different states is key to building reliable integrations with Publive.
+
+## State Diagram
+
+```
+                    ┌──────────────────┐
+                    │                  │
+                    ▼                  │
+┌───────┐    ┌──────────────┐    ┌───────────┐
+│ Draft │───▶│   Approval   │───▶│ Published │
+│       │    │   Pending    │    │           │
+└───┬───┘    └──────┬───────┘    └─────┬─────┘
+    │               │                  │
+    │               │ (reject)         │ (unpublish)
+    │               └──────────────────┘
+    │
+    │         ┌───────────┐
+    └────────▶│ Scheduled │──────▶ Published (at scheduled_at)
+              └───────────┘
+```
+
+## Valid State Transitions
+
+| From | To | Notes |
+| ---- | -- | ----- |
+| `Draft` | `Approval Pending` | Submit for review |
+| `Draft` | `Published` | Direct publish (if permissions allow) |
+| `Draft` | `Scheduled` | Requires `scheduled_at` datetime |
+| `Approval Pending` | `Published` | Approved by checker |
+| `Approval Pending` | `Draft` | Rejected by checker |
+| `Published` | `Draft` | Unpublish content |
+| `Scheduled` | `Draft` | Cancel scheduled publish |
+| `Scheduled` | `Published` | Auto-triggered at `scheduled_at` time |
+
+## Checking Post Status
+
+Use the CMS API to check current status:
+
+```bash
+curl -X GET \
+  'https://cms.thepublive.com/publisher/123/post/{id}/' \
+  -H 'username: YOUR_API_KEY' \
+  -H 'password: YOUR_API_SECRET'
+```
+
+The response includes:
+
+```json
+{
+  "id": 50123,
+  "title": "My Article",
+  "status": "Published",
+  "published_at": "2026-02-01T09:00:00Z",
+  "created_at": "2026-01-28T14:00:00Z",
+  "updated_at": "2026-02-01T09:00:00Z",
+  "approver": {"id": 5, "name": "Editor"},
+  "source": "HeadlessCMS"
+}
+```
+
+## Access Control
+
+The `access_type` field in `meta_data` controls content visibility:
+
+| Value | Description |
+| ----- | ----------- |
+| `Free` | Publicly accessible to all readers |
+| `Paid` | Behind paywall, requires subscription |
+
+```bash
+# Set content as paid/premium
+curl -X PATCH \
+  'https://cms.thepublive.com/publisher/123/post/{id}/' \
+  -H 'Content-Type: application/json' \
+  -d '{"meta_data": {"access_type": "Paid"}}'
+```

@@ -1,0 +1,68 @@
+---
+description: AI-powered features in Publive
+---
+
+# AI Features
+
+Publive includes built-in AI capabilities to help content teams work more efficiently.
+
+## Auto Tag Suggestions
+
+When creating or editing a post, Publive's AI analyzes the content and suggests relevant tags. This helps with:
+
+- Consistent content categorization
+- Improved content discovery
+- Reduced manual tagging effort
+
+Tags are suggested based on content analysis and can be accepted or dismissed by editors.
+
+## SEO Scoring
+
+Posts automatically receive an `seo_score` based on:
+
+| Factor | Description |
+| ------ | ----------- |
+| `seo_keyphrase` usage | Focus keyword density and placement |
+| `short_description` | Meta description quality and length |
+| `meta_title` | Title tag optimization |
+| Content length | `word_count` relative to post type |
+| Heading structure | Proper H1-H6 hierarchy in content |
+
+Access the SEO score via the CMS API:
+
+```json
+{
+  "id": 50123,
+  "seo_score": 85,
+  "seo_keyphrase": "union budget 2026"
+}
+```
+
+## Plagiarism Detection
+
+Publive checks content for plagiarism before publication, helping maintain editorial integrity and avoid copyright issues.
+
+## Indian Language Support
+
+AI features support Indian languages for:
+
+- Tag suggestions in Hindi, Tamil, Bengali, and other Indian languages
+- Content analysis for non-English articles
+- Multi-language SEO optimization
+
+The `language_code` field in posts indicates the content language:
+
+```json
+{
+  "language_code": "hi",
+  "title": "..."
+}
+```
+
+## Content Recommendations
+
+AI-powered content recommendations help:
+
+- Suggest related articles for readers
+- Identify content gaps in your coverage
+- Recommend trending topics for editorial planning

@@ -1,0 +1,81 @@
+---
+description: HTTP status codes and error response formats
+---
+
+# Error Codes
+
+## HTTP Status Codes
+
+| Status Code | Meaning | Description |
+| ----------- | ------- | ----------- |
+| `200` | OK | Request successful |
+| `201` | Created | Resource created successfully (CMS POST) |
+| `400` | Bad Request | Invalid request parameters or body |
+| `401` | Unauthorized | Missing or invalid `username`/`password` headers |
+| `403` | Forbidden | Insufficient permissions for this operation |
+| `404` | Not Found | Resource does not exist |
+| `429` | Too Many Requests | Rate limit exceeded |
+| `500` | Internal Server Error | Server-side error |
+
+## Error Response Format
+
+### CDS Errors
+
+```json
+{
+  "status": "error",
+  "message": "Unauthorized"
+}
+```
+
+### CMS Errors
+
+```json
+{
+  "error": {
+    "code": "BAD_REQUEST_ERROR",
+    "description": "Something Went Wrong"
+  }
+}
+```
+
+## Common Error Scenarios
+
+### 401 Unauthorized
+
+**Cause:** Missing or invalid authentication headers.
+
+**Solution:** Ensure both `username` and `password` headers are present and correct.
+
+```bash
+# Correct
+-H 'username: your_api_key' \
+-H 'password: your_api_secret'
+
+# Wrong - headers missing or incorrect key names
+-H 'Authorization: Bearer token'  # Not supported
+```
+
+### 400 Bad Request
+
+**Cause:** Invalid request body or missing required fields.
+
+**Common triggers:**
+- Missing required fields (`name`, `english_name` for categories; `title`, `type`, `status`, `primary_category` for posts)
+- Invalid field types (string where integer expected)
+- Invalid enum values (wrong `type` or `status` value for posts)
+
+### 404 Not Found
+
+**Cause:** The requested resource does not exist.
+
+**Common triggers:**
+- Invalid ID or slug in URL path
+- Resource was deleted
+- Wrong `publisher_id`
+
+### 429 Too Many Requests
+
+**Cause:** Rate limit exceeded.
+
+**Solution:** Implement exponential backoff and caching. See [Rate Limits](rate-limits.md).

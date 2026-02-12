@@ -1,0 +1,107 @@
+---
+description: Migrate from deprecated API endpoints to current versions
+---
+
+# Migration Guides
+
+## Migrating from Deprecated CDS Endpoints
+
+Several single-purpose CDS endpoints have been deprecated in favor of the unified [Post Listing](../api-reference/content-delivery/post-listing.md) endpoint with query filters.
+
+### Posts by Category
+
+```bash
+# Before (deprecated)
+GET /posts_by_category/100/
+
+# After
+GET /posts/?categories.id__eq=100
+```
+
+### Posts by Tag
+
+```bash
+# Before (deprecated)
+GET /posts_by_tag/500/
+
+# After
+GET /posts/?tags.id__eq=500
+```
+
+### Posts by Author
+
+```bash
+# Before (deprecated)
+GET /posts_by_author/1/
+
+# After
+GET /posts/?contributors.id__eq=1
+```
+
+### Latest Posts by Type
+
+```bash
+# Before (deprecated)
+GET /latest-posts/Article/
+
+# After
+GET /posts/?type__eq=Article&sort_by=created_at&sort_order=desc
+```
+
+### Homepage
+
+```bash
+# Before (deprecated)
+GET /homepage/
+
+# After
+GET /posts/?limit=20&sort_by=created_at&sort_order=desc
+```
+
+### Search
+
+```bash
+# Before (deprecated)
+GET /search/?q=budget
+
+# After
+GET /posts/?title__contains=budget
+```
+
+### Post by Slug
+
+```bash
+# Before (deprecated)
+GET /posts_by_slug/my-article-slug/
+
+# After
+GET /post/my-article-slug/
+```
+
+### Related Posts
+
+```bash
+# Before (deprecated)
+GET /related-posts/12345/
+
+# After (filter by same primary category)
+GET /posts/?primary_category.id__eq=100&limit=5
+```
+
+## Benefits of Migration
+
+The new `/posts/` endpoint provides:
+
+- **Advanced filtering** with operators (`__eq`, `__contains`, `__in`, `__gte`, `__lte`)
+- **Sorting** with `sort_by` and `sort_order` parameters
+- **Combined filters** for complex queries
+- **Consistent pagination** across all queries
+- **Cache-Tags** for CDN integration
+
+## Migration Checklist
+
+- [ ] Identify all deprecated endpoint calls in your codebase
+- [ ] Replace each with the equivalent `/posts/` query
+- [ ] Test that response data matches expected format
+- [ ] Update any response parsing (field names are consistent)
+- [ ] Monitor for deprecation warnings in API responses

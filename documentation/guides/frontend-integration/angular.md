@@ -1,0 +1,115 @@
+---
+description: Integrate Publive with Angular
+---
+
+# Angular Integration
+
+Build an Angular application powered by the Publive CDS API.
+
+{% hint style="warning" %}
+**Important:** Use a backend proxy or Angular Universal (SSR) to protect your API credentials.
+{% endhint %}
+
+## Setup
+
+### 1. Create a Publive Service
+
+```typescript
+// src/app/services/publive.service.ts
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({ providedIn: 'root' })
+export class PubliveService {
+  // Proxy URL - your backend handles auth
+  private apiUrl = '/api/publive';
+
+  constructor(private http: HttpClient) {}
+
+  getPosts(params: Record<string, string> = {}): Observable<any> {
+    return this.http.get(`${this.apiUrl}/posts`, { params });
+  }
+
+  getPost(slug: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/post/${slug}`);
+  }
+
+  getCategories(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/categories`);
+  }
+}
+```
+
+### 2. Create a Post List Component
+
+```typescript
+// src/app/components/post-list/post-list.component.ts
+import { Component, OnInit } from '@angular/core';
+import { PubliveService } from '../../services/publive.service';
+
+@Component({
+  selector: 'app-post-list',
+  template: `
+    <div *ngIf="loading">Loading...</div>
+    <article *ngFor="let post of posts">
+      <img *ngIf="post.banner_url" [src]="post.banner_url" [alt]="post.title" />
+      <h2>
+        <a [routerLink]="post.absolute_url">{{ post.title }}</a>
+      </h2>
+      <p>{{ post.short_description }}</p>
+      <span>{{ post.primary_category?.name }}</span>
+    </article>
+  `
+})
+export class PostListComponent implements OnInit {
+  posts: any[] = [];
+  loading = true;
+
+  constructor(private publive: PubliveService) {}
+
+  ngOnInit() {
+    this.publive.getPosts({ limit: '20' }).subscribe(response => {
+      this.posts = response.data || [];
+      this.loading = false;
+    });
+  }
+}
+```
+
+### 3. Create a Post Detail Component
+
+```typescript
+// src/app/components/post-detail/post-detail.component.ts
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { PubliveService } from '../../services/publive.service';
+
+@Component({
+  selector: 'app-post-detail',
+  template: `
+    <article *ngIf="post">
+      <h1>{{ post.title }}</h1>
+      <div class="meta">
+        <span>{{ post.primary_category?.name }}</span>
+      </div>
+      <div [innerHTML]="post.content_html"></div>
+    </article>
+  `
+})
+export class PostDetailComponent implements OnInit {
+  post: any;
+
+  constructor(
+    private route: ActivatedRoute,
+    private publive: PubliveService
+  ) {}
+
+  ngOnInit() {
+    const slug = this.route.snapshot.paramMap.get('slug');
+    this.publive.getPost(slug!).subscribe(response => {
+      this.post = response.data;
+    });
+  }
+}
+```
