@@ -1,6 +1,6 @@
 ---
-title: "Content Delivery API"
-description: Read-only APIs for fetching published content from your Publive CMS
+title: "Overview"
+description: "Read-only APIs for fetching published content from your Publive CMS"
 ---
 
 The Content Delivery Service (CDS) provides read-only access to your published content. Use these APIs to power your website, mobile app, or any frontend application.
@@ -8,45 +8,45 @@ The Content Delivery Service (CDS) provides read-only access to your published c
 **Base URL:** `https://cds.thepublive.com/publisher/{publisher_id}/`
 
 <Info>
-All CDS endpoints are **GET** requests. Authentication requires `username` and `password` headers.
+  All CDS endpoints are **GET** requests. Authentication requires `username` and `password` headers.
 </Info>
 
 ## Site Configuration
 
-| Endpoint | Description |
-| -------- | ----------- |
-| [Publisher Data](/api-reference/content-delivery/publisher-data) | Publisher profile, branding, and configuration |
-| [Navbar](/api-reference/content-delivery/navbar) | Navigation menu structure |
-| [Footer](/api-reference/content-delivery/footer) | Footer configuration and links |
-| [Active Slots](/api-reference/content-delivery/active-slots) | Advertisement slot configuration |
-| [Newsletter Groups](/api-reference/content-delivery/newsletter-groups) | Newsletter group listings |
-| [Content Types](/api-reference/content-delivery/content-types) | Available content types |
+| Endpoint                                                               | Description                                    |
+| ---------------------------------------------------------------------- | ---------------------------------------------- |
+| [Publisher Data](/api-reference/content-delivery/publisher-data)       | Publisher profile, branding, and configuration |
+| [Navbar](/api-reference/content-delivery/navbar)                       | Navigation menu structure                      |
+| [Footer](/api-reference/content-delivery/footer)                       | Footer configuration and links                 |
+| [Active Slots](/api-reference/content-delivery/active-slots)           | Advertisement slot configuration               |
+| [Newsletter Groups](/api-reference/content-delivery/newsletter-groups) | Newsletter group listings                      |
+| [Content Types](/api-reference/content-delivery/content-types)         | Available content types                        |
 
 ## Content
 
-| Endpoint | Description |
-| -------- | ----------- |
-| [Category Listing](/api-reference/content-delivery/category-listing) | List all categories |
+| Endpoint                                                             | Description                         |
+| -------------------------------------------------------------------- | ----------------------------------- |
+| [Category Listing](/api-reference/content-delivery/category-listing) | List all categories                 |
 | [Category Details](/api-reference/content-delivery/category-details) | Get a single category by ID or slug |
-| [Tag Listing](/api-reference/content-delivery/tag-listing) | List all tags |
-| [Tag Details](/api-reference/content-delivery/tag-details) | Get a single tag by ID or slug |
-| [Author Listing](/api-reference/content-delivery/author-listing) | List all authors |
-| [Author Details](/api-reference/content-delivery/author-details) | Get a single author by ID or slug |
+| [Tag Listing](/api-reference/content-delivery/tag-listing)           | List all tags                       |
+| [Tag Details](/api-reference/content-delivery/tag-details)           | Get a single tag by ID or slug      |
+| [Author Listing](/api-reference/content-delivery/author-listing)     | List all authors                    |
+| [Author Details](/api-reference/content-delivery/author-details)     | Get a single author by ID or slug   |
 
 ## Posts
 
-| Endpoint | Description |
-| -------- | ----------- |
-| [Post Listing](/api-reference/content-delivery/post-listing) | List and filter posts with advanced queries |
-| [Post Details](/api-reference/content-delivery/post-details) | Get a single post by ID or slug |
-| [Post Details by URL](/api-reference/content-delivery/post-details-by-url) | Get a post by its legacy/relative URL |
-| [Live Blog Updates](/api-reference/content-delivery/live-blog-updates) | Get live blog update entries for a post |
+| Endpoint                                                                   | Description                                 |
+| -------------------------------------------------------------------------- | ------------------------------------------- |
+| [Post Listing](/api-reference/content-delivery/post-listing)               | List and filter posts with advanced queries |
+| [Post Details](/api-reference/content-delivery/post-details)               | Get a single post by ID or slug             |
+| [Post Details by URL](/api-reference/content-delivery/post-details-by-url) | Get a post by its legacy/relative URL       |
+| [Live Blog Updates](/api-reference/content-delivery/live-blog-updates)     | Get live blog update entries for a post     |
 
 ## Pagination
 
 All list endpoints support pagination:
 
-| Parameter | Type | Default | Max |
-| --------- | ---- | ------- | --- |
-| `page` | integer | 1 | 1000 |
-| `limit` | integer | 10 | 50 |
+| Parameter | Type    | Default | Max  |
+| --------- | ------- | ------- | ---- |
+| `page`    | integer | 1       | 1000 |
+| `limit`   | integer | 10      | 50   |
