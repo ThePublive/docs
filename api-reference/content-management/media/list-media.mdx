@@ -26,9 +26,9 @@ Returns a paginated list of all media assets in your library.
   Items per page (max: 50)
 </ParamField>
 
-<Tabs>
-<Tab title="200: OK">
-```json
+<ResponseExample>
+
+```json 200
 {
   "count": 15420,
   "next": "https://cms.thepublive.com/publisher/123/media-library/?page=2&limit=10",
@@ -52,14 +52,12 @@ Returns a paginated list of all media assets in your library.
   ]
 }
 ```
-</Tab>
 
-<Tab title="401: Unauthorized">
-```json
+```json 401
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-</Tab>
-</Tabs>
+
+</ResponseExample>

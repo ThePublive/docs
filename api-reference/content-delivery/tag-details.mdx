@@ -22,27 +22,9 @@ Returns detailed information about a single tag, including SEO metadata and soci
   API Secret
 </ParamField>
 
-#### Response Fields
+<ResponseExample>
 
-| Field | Type | Description |
-| ----- | ---- | ----------- |
-| `id` | integer | Unique tag identifier |
-| `name` | string | Tag name |
-| `slug` | string | URL-friendly slug |
-| `display_name` | string/null | Alternative display name |
-| `meta_title` | string | SEO meta title |
-| `meta_description` | string | SEO meta description |
-| `og_title` | string | Open Graph title |
-| `og_description` | string | Open Graph description |
-| `og_image` | string | Open Graph image URL |
-| `twitter_title` | string | Twitter Card title |
-| `twitter_description` | string | Twitter Card description |
-| `twitter_image` | string | Twitter Card image URL |
-| `absolute_url` | string | Full public URL path |
-
-<Tabs>
-<Tab title="200: OK">
-```json
+```json 200
 {
   "status": "ok",
   "data": {
@@ -63,14 +45,12 @@ Returns detailed information about a single tag, including SEO metadata and soci
   "message": ""
 }
 ```
-</Tab>
 
-<Tab title="401: Unauthorized">
-```json
+```json 401
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-</Tab>
-</Tabs>
+
+</ResponseExample>

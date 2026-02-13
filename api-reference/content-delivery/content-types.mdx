@@ -18,21 +18,9 @@ Returns all content types used on your publication. Content types define the dif
   API Secret
 </ParamField>
 
-#### Response Fields
+<ResponseExample>
 
-Each content type contains:
-
-| Field | Type | Description |
-| ----- | ---- | ----------- |
-| `name` | string | Content type display name |
-| `api_slug` | string | API-friendly slug for single item queries |
-| `api_collections_slug` | string | API-friendly slug for collection queries |
-| `created_at` | datetime | When the content type was created |
-| `updated_at` | datetime | When the content type was last updated |
-
-<Tabs>
-<Tab title="200: OK">
-```json
+```json 200
 {
   "status": "ok",
   "data": [
@@ -61,14 +49,12 @@ Each content type contains:
   "message": ""
 }
 ```
-</Tab>
 
-<Tab title="401: Unauthorized">
-```json
+```json 401
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-</Tab>
-</Tabs>
+
+</ResponseExample>

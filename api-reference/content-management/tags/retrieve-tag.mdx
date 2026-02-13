@@ -22,9 +22,9 @@ Returns the details of a specific tag.
   API Secret
 </ParamField>
 
-<Tabs>
-<Tab title="200: OK">
-```json
+<ResponseExample>
+
+```json 200
 {
   "id": 500,
   "name": "Breaking News",
@@ -35,14 +35,12 @@ Returns the details of a specific tag.
   "meta_description": "Latest breaking news stories"
 }
 ```
-</Tab>
 
-<Tab title="401: Unauthorized">
-```json
+```json 401
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-</Tab>
-</Tabs>
+
+</ResponseExample>

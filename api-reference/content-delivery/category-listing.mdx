@@ -26,22 +26,9 @@ Returns a paginated list of all categories with their hierarchical structure.
   Items per page (max: 50)
 </ParamField>
 
-#### Response Fields
+<ResponseExample>
 
-Each category contains:
-
-| Field | Type | Description |
-| ----- | ---- | ----------- |
-| `id` | integer | Unique category identifier |
-| `name` | string | Category name |
-| `slug` | string | URL-friendly slug |
-| `parent_category` | object/null | Parent category details (if nested) |
-| `category_brand_color` | string/null | Brand color (hex) |
-| `absolute_url` | string | Full public URL path |
-
-<Tabs>
-<Tab title="200: OK">
-```json
+```json 200
 {
   "status": "ok",
   "data": [
@@ -71,14 +58,12 @@ Each category contains:
   "per_page": 10
 }
 ```
-</Tab>
 
-<Tab title="401: Unauthorized">
-```json
+```json 401
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-</Tab>
-</Tabs>
+
+</ResponseExample>

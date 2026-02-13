@@ -22,9 +22,9 @@ Returns the complete details of a specific post.
   API Secret
 </ParamField>
 
-<Tabs>
-<Tab title="200: OK">
-```json
+<ResponseExample>
+
+```json 200
 {
   "id": 50123,
   "title": "Union Budget 2026 Highlights",
@@ -72,23 +72,19 @@ Returns the complete details of a specific post.
   "source": "HeadlessCMS"
 }
 ```
-</Tab>
 
-<Tab title="401: Unauthorized">
-```json
+```json 401
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-</Tab>
 
-<Tab title="404: Not Found">
-```json
+```json 404
 {
   "status": "error",
   "message": "Not found"
 }
 ```
-</Tab>
-</Tabs>
+
+</ResponseExample>

@@ -18,20 +18,9 @@ Returns the navigation menu configuration with hierarchical support for nested m
   API Secret
 </ParamField>
 
-#### Response Fields
+<ResponseExample>
 
-Each navbar item contains:
-
-| Field | Type | Description |
-| ----- | ---- | ----------- |
-| `link` | string | URL path for the menu item |
-| `name` | string | Display text |
-| `children` | array/null | Nested child menu items (same structure) |
-| `open_new_tab` | boolean | Whether to open link in a new tab |
-
-<Tabs>
-<Tab title="200: OK">
-```json
+```json 200
 {
   "status": "ok",
   "data": [
@@ -64,14 +53,12 @@ Each navbar item contains:
   "message": ""
 }
 ```
-</Tab>
 
-<Tab title="401: Unauthorized">
-```json
+```json 401
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-</Tab>
-</Tabs>
+
+</ResponseExample>

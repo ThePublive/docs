@@ -22,35 +22,9 @@ Returns detailed information about a single author, including their full profile
   API Secret
 </ParamField>
 
-#### Response Fields
+<ResponseExample>
 
-| Field | Type | Description |
-| ----- | ---- | ----------- |
-| `id` | integer | Unique author identifier |
-| `name` | string | Author name |
-| `slug` | string | URL-friendly slug |
-| `email` | string | Author email |
-| `description` | string | Author bio |
-| `linkedin` | string | LinkedIn profile URL |
-| `twitter` | string | Twitter profile URL |
-| `instagram` | string | Instagram profile URL |
-| `facebook` | string | Facebook profile URL |
-| `avatar` | string/null | Profile image URL |
-| `created_at` | datetime | When the author was created |
-| `updated_at` | datetime | When the author was last updated |
-| `meta_title` | string | SEO meta title |
-| `meta_description` | string | SEO meta description |
-| `og_title` | string | Open Graph title |
-| `og_description` | string | Open Graph description |
-| `og_image` | string | Open Graph image URL |
-| `twitter_title` | string | Twitter Card title |
-| `twitter_description` | string | Twitter Card description |
-| `twitter_image` | string | Twitter Card image URL |
-| `absolute_url` | string | Full public URL path |
-
-<Tabs>
-<Tab title="200: OK">
-```json
+```json 200
 {
   "status": "ok",
   "data": {
@@ -79,14 +53,12 @@ Returns detailed information about a single author, including their full profile
   "message": ""
 }
 ```
-</Tab>
 
-<Tab title="401: Unauthorized">
-```json
+```json 401
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-</Tab>
-</Tabs>
+
+</ResponseExample>

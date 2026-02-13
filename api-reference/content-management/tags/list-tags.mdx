@@ -26,9 +26,9 @@ Returns a paginated list of all tags.
   Items per page (max: 50)
 </ParamField>
 
-<Tabs>
-<Tab title="200: OK">
-```json
+<ResponseExample>
+
+```json 200
 {
   "count": 112118,
   "next": "https://cms.thepublive.com/publisher/123/tag/?page=2&limit=10",
@@ -46,14 +46,12 @@ Returns a paginated list of all tags.
   ]
 }
 ```
-</Tab>
 
-<Tab title="401: Unauthorized">
-```json
+```json 401
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-</Tab>
-</Tabs>
+
+</ResponseExample>

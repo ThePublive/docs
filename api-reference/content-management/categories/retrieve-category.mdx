@@ -22,9 +22,9 @@ Returns the details of a specific category.
   API Secret
 </ParamField>
 
-<Tabs>
-<Tab title="200: OK">
-```json
+<ResponseExample>
+
+```json 200
 {
   "id": 14428,
   "name": "News",
@@ -39,23 +39,19 @@ Returns the details of a specific category.
   "content_type": null
 }
 ```
-</Tab>
 
-<Tab title="401: Unauthorized">
-```json
+```json 401
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-</Tab>
 
-<Tab title="404: Not Found">
-```json
+```json 404
 {
   "status": "error",
   "message": "Not found"
 }
 ```
-</Tab>
-</Tabs>
+
+</ResponseExample>

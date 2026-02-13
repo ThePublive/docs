@@ -74,9 +74,9 @@ curl -X POST \
   }'
 ```
 
-<Tabs>
-<Tab title="201: Created">
-```json
+<ResponseExample>
+
+```json 201
 {
   "status": "success",
   "message": "Created Successfully",
@@ -95,19 +95,15 @@ curl -X POST \
   }
 }
 ```
-</Tab>
 
-<Tab title="401: Unauthorized">
-```json
+```json 401
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-</Tab>
 
-<Tab title="400: Bad Request">
-```json
+```json 400
 {
   "error": {
     "code": "BAD_REQUEST_ERROR",
@@ -115,5 +111,5 @@ curl -X POST \
   }
 }
 ```
-</Tab>
-</Tabs>
+
+</ResponseExample>

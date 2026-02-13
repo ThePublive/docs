@@ -31,13 +31,11 @@ curl -X GET \
   -H 'password: YOUR_API_SECRET'
 ```
 
-#### Response
-
 Returns the same post object as the [Post Details](/api-reference/content-delivery/post-details) endpoint.
 
-<Tabs>
-<Tab title="200: OK">
-```json
+<ResponseExample>
+
+```json 200
 {
   "status": "ok",
   "data": {
@@ -56,23 +54,19 @@ Returns the same post object as the [Post Details](/api-reference/content-delive
   "message": ""
 }
 ```
-</Tab>
 
-<Tab title="401: Unauthorized">
-```json
+```json 401
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-</Tab>
 
-<Tab title="404: Not Found">
-```json
+```json 404
 {
   "status": "error",
   "message": "Post not found"
 }
 ```
-</Tab>
-</Tabs>
+
+</ResponseExample>

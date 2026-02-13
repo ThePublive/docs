@@ -49,9 +49,9 @@ curl -X PATCH \
   -d '{"name": "Breaking News Updated"}'
 ```
 
-<Tabs>
-<Tab title="200: OK">
-```json
+<ResponseExample>
+
+```json 200
 {
   "status": "success",
   "message": "Updated Successfully",
@@ -66,14 +66,12 @@ curl -X PATCH \
   }
 }
 ```
-</Tab>
 
-<Tab title="401: Unauthorized">
-```json
+```json 401
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-</Tab>
-</Tabs>
+
+</ResponseExample>

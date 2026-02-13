@@ -18,22 +18,9 @@ Returns the configured advertisement slots for your publication, including slot 
   API Secret
 </ParamField>
 
-#### Response Fields
+<ResponseExample>
 
-Each slot contains:
-
-| Field | Type | Description |
-| ----- | ---- | ----------- |
-| `id` | integer | Unique slot identifier |
-| `name` | string | Slot name |
-| `data` | object | Slot configuration (size, HTML content, `contains_ads` flag) |
-| `registered_slot` | object | Registered slot metadata |
-| `formatted_update_on` | string | Last updated timestamp |
-| `type` | string | Slot type: `Image`, `CodeEditor`, or `Editor` |
-
-<Tabs>
-<Tab title="200: OK">
-```json
+```json 200
 {
   "status": "ok",
   "data": [
@@ -56,14 +43,12 @@ Each slot contains:
   "message": ""
 }
 ```
-</Tab>
 
-<Tab title="401: Unauthorized">
-```json
+```json 401
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-</Tab>
-</Tabs>
+
+</ResponseExample>
