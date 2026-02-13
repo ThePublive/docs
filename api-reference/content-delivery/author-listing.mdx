@@ -26,28 +26,9 @@ Returns a paginated list of all authors with their profile information and socia
   Items per page (max: 50)
 </ParamField>
 
-#### Response Fields
+<ResponseExample>
 
-Each author contains:
-
-| Field | Type | Description |
-| ----- | ---- | ----------- |
-| `id` | integer | Unique author identifier |
-| `name` | string | Author name |
-| `slug` | string | URL-friendly slug |
-| `email` | string | Author email |
-| `description` | string | Author bio |
-| `linkedin` | string | LinkedIn profile URL |
-| `twitter` | string | Twitter profile URL |
-| `instagram` | string | Instagram profile URL |
-| `facebook` | string | Facebook profile URL |
-| `avatar` | string/null | Profile image URL |
-| `created_at` | datetime | When the author was created |
-| `updated_at` | datetime | When the author was last updated |
-
-<Tabs>
-<Tab title="200: OK">
-```json
+```json 200
 {
   "status": "ok",
   "data": [
@@ -71,14 +52,12 @@ Each author contains:
   "per_page": 10
 }
 ```
-</Tab>
 
-<Tab title="401: Unauthorized">
-```json
+```json 401
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-</Tab>
-</Tabs>
+
+</ResponseExample>

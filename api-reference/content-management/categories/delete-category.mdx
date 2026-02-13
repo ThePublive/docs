@@ -26,31 +26,27 @@ Permanently deletes a category.
   API Secret
 </ParamField>
 
-<Tabs>
-<Tab title="200: OK">
-```json
+<ResponseExample>
+
+```json 200
 {
   "status": "success",
   "message": "Deleted successfully!"
 }
 ```
-</Tab>
 
-<Tab title="401: Unauthorized">
-```json
+```json 401
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-</Tab>
 
-<Tab title="404: Not Found">
-```json
+```json 404
 {
   "status": "error",
   "message": "Not found"
 }
 ```
-</Tab>
-</Tabs>
+
+</ResponseExample>

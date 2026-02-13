@@ -18,20 +18,9 @@ Returns all configured newsletter groups with their metadata.
   API Secret
 </ParamField>
 
-#### Response Fields
+<ResponseExample>
 
-Each newsletter group contains:
-
-| Field | Type | Description |
-| ----- | ---- | ----------- |
-| `id` | integer | Unique newsletter group identifier |
-| `name` | string | Newsletter group name |
-| `logo_url` | string | Logo image path (relative) |
-| `description` | string | Newsletter group description |
-
-<Tabs>
-<Tab title="200: OK">
-```json
+```json 200
 {
   "status": "ok",
   "data": [
@@ -51,14 +40,12 @@ Each newsletter group contains:
   "message": ""
 }
 ```
-</Tab>
 
-<Tab title="401: Unauthorized">
-```json
+```json 401
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-</Tab>
-</Tabs>
+
+</ResponseExample>

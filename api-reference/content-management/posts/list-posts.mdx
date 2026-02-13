@@ -26,9 +26,9 @@ Returns a paginated list of all posts (including drafts, published, and schedule
   Items per page (max: 50)
 </ParamField>
 
-<Tabs>
-<Tab title="200: OK">
-```json
+<ResponseExample>
+
+```json 200
 {
   "count": 33145,
   "next": "https://cms.thepublive.com/publisher/123/post/?page=2&limit=10",
@@ -70,14 +70,12 @@ Returns a paginated list of all posts (including drafts, published, and schedule
   ]
 }
 ```
-</Tab>
 
-<Tab title="401: Unauthorized">
-```json
+```json 401
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-</Tab>
-</Tabs>
+
+</ResponseExample>

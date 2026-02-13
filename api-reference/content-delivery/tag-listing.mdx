@@ -26,20 +26,9 @@ Returns a paginated list of all tags.
   Items per page (max: 50)
 </ParamField>
 
-#### Response Fields
+<ResponseExample>
 
-Each tag contains:
-
-| Field | Type | Description |
-| ----- | ---- | ----------- |
-| `id` | integer | Unique tag identifier |
-| `name` | string | Tag name |
-| `slug` | string | URL-friendly slug |
-| `absolute_url` | string | Full public URL path |
-
-<Tabs>
-<Tab title="200: OK">
-```json
+```json 200
 {
   "status": "ok",
   "data": [
@@ -61,14 +50,12 @@ Each tag contains:
   "per_page": 10
 }
 ```
-</Tab>
 
-<Tab title="401: Unauthorized">
-```json
+```json 401
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-</Tab>
-</Tabs>
+
+</ResponseExample>

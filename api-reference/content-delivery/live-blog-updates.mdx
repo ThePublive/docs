@@ -34,23 +34,9 @@ This endpoint only returns data for posts with `type: "LiveBlog"`. For other pos
   Items per page (max: 50)
 </ParamField>
 
-#### Response Fields
+<ResponseExample>
 
-Each live blog update contains:
-
-| Field | Type | Description |
-| ----- | ---- | ----------- |
-| `id` | integer | Unique update identifier |
-| `author` | object | Author details (`id`, `name`, `slug`, `description`, social links, `avatar`) |
-| `created_at` | datetime | When the update was created |
-| `updated_at` | datetime | When the update was last modified |
-| `is_pinned` | boolean | Whether this update is pinned to the top |
-| `data.title` | string | Update title/headline |
-| `data.content` | string | Update body (HTML) |
-
-<Tabs>
-<Tab title="200: OK">
-```json
+```json 200
 {
   "status": "ok",
   "data": [
@@ -94,23 +80,19 @@ Each live blog update contains:
   "per_page": 10
 }
 ```
-</Tab>
 
-<Tab title="401: Unauthorized">
-```json
+```json 401
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-</Tab>
 
-<Tab title="404: Not Found">
-```json
+```json 404
 {
   "status": "error",
   "message": "Post not found"
 }
 ```
-</Tab>
-</Tabs>
+
+</ResponseExample>

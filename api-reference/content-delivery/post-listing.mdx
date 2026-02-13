@@ -84,41 +84,9 @@ Append operator suffixes to filterable fields to build queries:
 **Tip:** This endpoint replaces several deprecated endpoints. Use filters instead of `/posts_by_category/`, `/posts_by_tag/`, `/posts_by_author/`, and `/search/`. See [Deprecated Endpoints](/api-reference/deprecated).
 </Info>
 
-#### Response Fields
+<ResponseExample>
 
-Each post contains:
-
-| Field | Type | Description |
-| ----- | ---- | ----------- |
-| `id` | integer | Unique post identifier |
-| `title` | string | Post headline |
-| `slug` | string | URL-friendly slug |
-| `type` | string | Post type |
-| `banner_url` | string | Featured image URL |
-| `short_description` | string | Summary / meta description |
-| `summary` | string | Post summary below title |
-| `primary_category` | object | Primary category (`id`, `name`, `slug`) |
-| `categories` | array | All assigned categories |
-| `tags` | array | Assigned tags |
-| `contributors` | array | Authors/contributors |
-| `content_html` | string | Full HTML content |
-| `content_json` | array | Structured content blocks |
-| `meta_data` | object | SEO, access type, schema data |
-| `media_file_banner` | object | Banner media details (`id`, `filename`, `path`, `alt_text`, `meta_data`) |
-| `word_count` | integer | Article word count |
-| `access_type` | string | `Free` or `Paid` |
-| `language_code` | string | Content language code |
-| `blog_update` | array | Live blog updates (for LiveBlog type) |
-| `custom_entity` | object/null | Custom entity data |
-| `hide_banner_image` | boolean | Whether banner image is hidden |
-| `banner_description` | string | Banner image caption |
-| `absolute_url` | string | Full public URL path |
-| `formatted_first_published_at_datetime` | string | First published timestamp |
-| `formatted_last_published_at_datetime` | string | Last published timestamp |
-
-<Tabs>
-<Tab title="200: OK">
-```json
+```json 200
 {
   "status": "ok",
   "data": [
@@ -173,14 +141,12 @@ Each post contains:
   "per_page": 10
 }
 ```
-</Tab>
 
-<Tab title="401: Unauthorized">
-```json
+```json 401
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-</Tab>
-</Tabs>
+
+</ResponseExample>

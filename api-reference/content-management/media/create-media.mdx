@@ -62,9 +62,9 @@ curl -X POST \
   }'
 ```
 
-<Tabs>
-<Tab title="200: OK">
-```json
+<ResponseExample>
+
+```json 200
 {
   "status": "success",
   "message": "Created Successfully",
@@ -82,14 +82,12 @@ curl -X POST \
   }
 }
 ```
-</Tab>
 
-<Tab title="401: Unauthorized">
-```json
+```json 401
 {
   "status": "error",
   "message": "Unauthorized"
 }
 ```
-</Tab>
-</Tabs>
+
+</ResponseExample>
