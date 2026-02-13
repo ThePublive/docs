@@ -1,18 +1,22 @@
 ---
 title: "Publisher Data"
 description: Fetch publisher profile, branding, and configuration data
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/"
 ---
-
-`GET` `https://cds.thepublive.com/publisher/{publisher_id}/`
 
 Returns the complete publisher profile including branding, configuration, social links, ad settings, and metadata.
 
-#### Headers
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| username | string | Yes | API Key |
-| password | string | Yes | API Secret |
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
+
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
 
 #### Response Fields
 

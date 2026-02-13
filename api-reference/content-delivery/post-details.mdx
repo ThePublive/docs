@@ -1,24 +1,26 @@
 ---
 title: "Post Details"
 description: Fetch details of a single post by ID or slug
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/post/{identifier}/"
 ---
-
-`GET` `https://cds.thepublive.com/publisher/{publisher_id}/post/{identifier}/`
 
 Returns the complete details of a single published post including full content, metadata, categories, tags, and contributors.
 
-#### Path Parameters
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| identifier | string/integer | Post ID or slug |
+<ParamField path="identifier" type="string" required>
+  Post ID or slug
+</ParamField>
 
-#### Headers
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| username | string | Yes | API Key |
-| password | string | Yes | API Secret |
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
 
 #### Response
 

@@ -1,24 +1,26 @@
 ---
 title: "Post Details by URL"
 description: Fetch a post by its legacy or relative URL path
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/post/"
 ---
-
-`GET` `https://cds.thepublive.com/publisher/{publisher_id}/post/?legacy_url={url_path}`
 
 Returns a single post by matching its legacy or relative URL path. Useful for URL-based routing or migrating from legacy systems.
 
-#### Headers
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| username | string | Yes | API Key |
-| password | string | Yes | API Secret |
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
 
-#### Query Parameters
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| legacy_url | string | Yes | Relative URL path (e.g., `/news/my-article-12345`) |
+<ParamField query="legacy_url" type="string" required>
+  Relative URL path (e.g., `/news/my-article-12345`)
+</ParamField>
 
 #### Example Request
 

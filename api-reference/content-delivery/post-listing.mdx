@@ -1,27 +1,38 @@
 ---
 title: "Post Listing"
 description: Fetch a paginated and filterable list of published posts
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/posts/"
 ---
-
-`GET` `https://cds.thepublive.com/publisher/{publisher_id}/posts/`
 
 Returns a paginated list of published posts with support for advanced filtering, sorting, and search. This is the primary endpoint for fetching content on your frontend.
 
-#### Headers
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| username | string | Yes | API Key |
-| password | string | Yes | API Secret |
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
 
-#### Query Parameters
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
 
-| Name | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| page | integer | 1 | Page number (max: 1000) |
-| limit | integer | 10 | Items per page (max: 50) |
-| sort_by | string | created_at | Field to sort by |
-| sort_order | string | desc | Sort direction: `asc` or `desc` |
+<ParamField query="page" type="integer" default="1">
+  Page number (max: 1000)
+</ParamField>
+
+<ParamField query="limit" type="integer" default="10">
+  Items per page (max: 50)
+</ParamField>
+
+<ParamField query="sort_by" type="string" default="created_at">
+  Field to sort by
+</ParamField>
+
+<ParamField query="sort_order" type="string" default="desc">
+  Sort direction: `asc` or `desc`
+</ParamField>
 
 #### Advanced Filtering
 

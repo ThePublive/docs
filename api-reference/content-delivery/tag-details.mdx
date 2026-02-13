@@ -1,24 +1,26 @@
 ---
 title: "Tag Details"
 description: Fetch details of a single tag by ID or slug
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/tag/{identifier}/"
 ---
-
-`GET` `https://cds.thepublive.com/publisher/{publisher_id}/tag/{identifier}/`
 
 Returns detailed information about a single tag, including SEO metadata and social sharing tags.
 
-#### Path Parameters
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| identifier | string/integer | Tag ID or slug |
+<ParamField path="identifier" type="string" required>
+  Tag ID or slug
+</ParamField>
 
-#### Headers
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| username | string | Yes | API Key |
-| password | string | Yes | API Secret |
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
 
 #### Response Fields
 

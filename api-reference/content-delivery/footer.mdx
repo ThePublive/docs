@@ -1,18 +1,22 @@
 ---
 title: "Footer"
 description: Fetch the footer configuration including links, social media, and branding
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/footer/"
 ---
-
-`GET` `https://cds.thepublive.com/publisher/{publisher_id}/footer/`
 
 Returns the footer configuration including social links, quick menu items, affiliate websites, and branding options.
 
-#### Headers
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| username | string | Yes | API Key |
-| password | string | Yes | API Secret |
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
+
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
 
 #### Response Fields
 

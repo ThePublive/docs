@@ -1,43 +1,98 @@
 ---
 title: "Create Post"
 description: Create a new post
+api: "POST https://cms.thepublive.com/publisher/{publisher_id}/post/"
 ---
-
-`POST` `https://cms.thepublive.com/publisher/{publisher_id}/post/`
 
 Creates a new post. Posts are created with `Draft` status by default.
 
-#### Headers
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| username | string | Yes | API Key |
-| password | string | Yes | API Secret |
-| Content-Type | string | Yes | `application/json` |
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
 
-#### Request Body
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
 
-| Field | Type | Required | Description |
-| ----- | ---- | -------- | ----------- |
-| `title`* | string | Yes | Post headline |
-| `english_title`* | string | Yes | English headline (for slug) |
-| `type`* | string | Yes | `Article`, `Video`, `Web Story`, `Gallery`, `LiveBlog`, `CustomPage`, `BlankPage` |
-| `status`* | string | Yes | `Draft`, `Published`, `Scheduled`, `Approval Pending` |
-| `primary_category`* | integer | Yes | Category ID |
-| `contributors` | string | No | Comma-separated author IDs |
-| `content` | string | No | HTML body content |
-| `tags` | string | No | Comma-separated tag IDs |
-| `categories` | string | No | Comma-separated additional category IDs |
-| `banner_url` | integer | No | Media ID for featured image |
-| `banner_description` | string | No | Featured image caption |
-| `short_description` | string | No | SEO meta description |
-| `summary` | string | No | Post summary |
-| `seo_keyphrase` | string | No | Focus keyword |
-| `slug` | string | No | Custom slug (auto-generated if omitted) |
-| `meta_data` | object | No | Additional metadata (e.g., `{"access_type": "Paid"}`) |
-| `custom_published_at` | datetime | No | Backdated publish date |
-| `scheduled_at` | datetime | No | Future publish date (status must be `Scheduled`) |
-| `hide_banner_image` | boolean | No | Hide the featured image |
+<ParamField body="title" type="string" required>
+  Post headline
+</ParamField>
+
+<ParamField body="english_title" type="string" required>
+  English headline (for slug)
+</ParamField>
+
+<ParamField body="type" type="string" required>
+  `Article`, `Video`, `Web Story`, `Gallery`, `LiveBlog`, `CustomPage`, `BlankPage`
+</ParamField>
+
+<ParamField body="status" type="string" required>
+  `Draft`, `Published`, `Scheduled`, `Approval Pending`
+</ParamField>
+
+<ParamField body="primary_category" type="integer" required>
+  Category ID
+</ParamField>
+
+<ParamField body="contributors" type="string">
+  Comma-separated author IDs
+</ParamField>
+
+<ParamField body="content" type="string">
+  HTML body content
+</ParamField>
+
+<ParamField body="tags" type="string">
+  Comma-separated tag IDs
+</ParamField>
+
+<ParamField body="categories" type="string">
+  Comma-separated additional category IDs
+</ParamField>
+
+<ParamField body="banner_url" type="integer">
+  Media ID for featured image
+</ParamField>
+
+<ParamField body="banner_description" type="string">
+  Featured image caption
+</ParamField>
+
+<ParamField body="short_description" type="string">
+  SEO meta description
+</ParamField>
+
+<ParamField body="summary" type="string">
+  Post summary
+</ParamField>
+
+<ParamField body="seo_keyphrase" type="string">
+  Focus keyword
+</ParamField>
+
+<ParamField body="slug" type="string">
+  Custom slug (auto-generated if omitted)
+</ParamField>
+
+<ParamField body="meta_data" type="object">
+  Additional metadata (e.g., `{"access_type": "Paid"}`)
+</ParamField>
+
+<ParamField body="custom_published_at" type="string">
+  Backdated publish date
+</ParamField>
+
+<ParamField body="scheduled_at" type="string">
+  Future publish date (status must be `Scheduled`)
+</ParamField>
+
+<ParamField body="hide_banner_image" type="boolean">
+  Hide the featured image
+</ParamField>
 
 #### Example Request
 

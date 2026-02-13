@@ -1,18 +1,22 @@
 ---
 title: "Content Types"
 description: Fetch all content types configured for your publication
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/content-types/"
 ---
-
-`GET` `https://cds.thepublive.com/publisher/{publisher_id}/content-types/`
 
 Returns all content types used on your publication. Content types define the different formats of content available (e.g., Article, Video, Web Story).
 
-#### Headers
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| username | string | Yes | API Key |
-| password | string | Yes | API Secret |
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
+
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
 
 #### Response Fields
 

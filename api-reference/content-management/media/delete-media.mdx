@@ -1,9 +1,8 @@
 ---
 title: "Delete Media"
 description: Delete a media asset
+api: "DELETE https://cms.thepublive.com/publisher/{publisher_id}/media-library/{id}/"
 ---
-
-`DELETE` `https://cms.thepublive.com/publisher/{publisher_id}/media-library/{id}/`
 
 Permanently deletes a media asset from the library.
 
@@ -11,18 +10,21 @@ Permanently deletes a media asset from the library.
 **Warning:** This action cannot be undone. Posts referencing this media will lose their associated image/file.
 </Warning>
 
-#### Path Parameters
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| id | integer | Media ID |
+<ParamField path="id" type="integer" required>
+  Media ID
+</ParamField>
 
-#### Headers
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| username | string | Yes | API Key |
-| password | string | Yes | API Secret |
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
 
 <Tabs>
 <Tab title="200: OK">

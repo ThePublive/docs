@@ -1,9 +1,8 @@
 ---
 title: "Live Blog Updates"
 description: Fetch live blog update entries for a specific post
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/post/{post_id}/live-blog-updates/"
 ---
-
-`GET` `https://cds.thepublive.com/publisher/{publisher_id}/post/{post_id}/live-blog-updates/`
 
 Returns the list of live blog updates for a specific LiveBlog post. Each update contains its own title, content, author, and timestamp.
 
@@ -11,25 +10,29 @@ Returns the list of live blog updates for a specific LiveBlog post. Each update 
 This endpoint only returns data for posts with `type: "LiveBlog"`. For other post types, use the [Post Details](/api-reference/content-delivery/post-details) endpoint.
 </Info>
 
-#### Path Parameters
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| post_id | integer | The post ID of the LiveBlog |
+<ParamField path="post_id" type="integer" required>
+  The post ID of the LiveBlog
+</ParamField>
 
-#### Headers
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| username | string | Yes | API Key |
-| password | string | Yes | API Secret |
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
 
-#### Query Parameters
+<ParamField query="page" type="integer" default="1">
+  Page number
+</ParamField>
 
-| Name | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| page | integer | 1 | Page number |
-| limit | integer | 10 | Items per page (max: 50) |
+<ParamField query="limit" type="integer" default="10">
+  Items per page (max: 50)
+</ParamField>
 
 #### Response Fields
 

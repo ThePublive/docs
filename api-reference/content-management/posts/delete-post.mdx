@@ -1,9 +1,8 @@
 ---
 title: "Delete Post"
 description: Delete a post
+api: "DELETE https://cms.thepublive.com/publisher/{publisher_id}/post/{id}/"
 ---
-
-`DELETE` `https://cms.thepublive.com/publisher/{publisher_id}/post/{id}/`
 
 Permanently deletes a post.
 
@@ -11,18 +10,21 @@ Permanently deletes a post.
 **Warning:** This action cannot be undone. The post and all its associated data will be permanently removed.
 </Warning>
 
-#### Path Parameters
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| id | integer | Post ID |
+<ParamField path="id" type="integer" required>
+  Post ID
+</ParamField>
 
-#### Headers
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| username | string | Yes | API Key |
-| password | string | Yes | API Secret |
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
 
 <Tabs>
 <Tab title="200: OK">

@@ -1,24 +1,26 @@
 ---
 title: "Delete Tag"
 description: Delete a tag
+api: "DELETE https://cms.thepublive.com/publisher/{publisher_id}/tag/{id}/"
 ---
-
-`DELETE` `https://cms.thepublive.com/publisher/{publisher_id}/tag/{id}/`
 
 Permanently deletes a tag.
 
-#### Path Parameters
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| id | integer | Tag ID |
+<ParamField path="id" type="integer" required>
+  Tag ID
+</ParamField>
 
-#### Headers
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| username | string | Yes | API Key |
-| password | string | Yes | API Secret |
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
 
 <Tabs>
 <Tab title="200: OK">

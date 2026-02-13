@@ -1,43 +1,72 @@
 ---
 title: "Update Post"
 description: Update an existing post
+api: "PATCH https://cms.thepublive.com/publisher/{publisher_id}/post/{id}/"
 ---
-
-`PATCH` `https://cms.thepublive.com/publisher/{publisher_id}/post/{id}/`
 
 Updates an existing post. Only send the fields you want to change (partial update).
 
-#### Path Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| id | integer | Post ID |
-
-#### Headers
-
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| username | string | Yes | API Key |
-| password | string | Yes | API Secret |
-| Content-Type | string | Yes | `application/json` |
-
-#### Request Body
-
 Send only the fields you wish to update. Common fields:
 
-| Field | Type | Description |
-| ----- | ---- | ----------- |
-| `title` | string | Post headline |
-| `content` | string | HTML body content |
-| `status` | string | `Draft`, `Published`, `Scheduled`, `Approval Pending` |
-| `primary_category` | integer | Category ID |
-| `contributors` | string | Comma-separated author IDs |
-| `tags` | string | Comma-separated tag IDs |
-| `categories` | string | Comma-separated category IDs |
-| `banner_url` | integer | Media ID for featured image |
-| `short_description` | string | SEO meta description |
-| `hide_banner_image` | boolean | Hide the featured image |
-| `type` | string | Post type |
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField path="id" type="integer" required>
+  Post ID
+</ParamField>
+
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
+
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
+
+<ParamField body="title" type="string">
+  Post headline
+</ParamField>
+
+<ParamField body="content" type="string">
+  HTML body content
+</ParamField>
+
+<ParamField body="status" type="string">
+  `Draft`, `Published`, `Scheduled`, `Approval Pending`
+</ParamField>
+
+<ParamField body="primary_category" type="integer">
+  Category ID
+</ParamField>
+
+<ParamField body="contributors" type="string">
+  Comma-separated author IDs
+</ParamField>
+
+<ParamField body="tags" type="string">
+  Comma-separated tag IDs
+</ParamField>
+
+<ParamField body="categories" type="string">
+  Comma-separated category IDs
+</ParamField>
+
+<ParamField body="banner_url" type="integer">
+  Media ID for featured image
+</ParamField>
+
+<ParamField body="short_description" type="string">
+  SEO meta description
+</ParamField>
+
+<ParamField body="hide_banner_image" type="boolean">
+  Hide the featured image
+</ParamField>
+
+<ParamField body="type" type="string">
+  Post type
+</ParamField>
 
 #### Example Request
 

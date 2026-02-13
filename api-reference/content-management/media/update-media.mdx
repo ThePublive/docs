@@ -1,35 +1,46 @@
 ---
 title: "Update Media"
 description: Update media asset metadata
+api: "PATCH https://cms.thepublive.com/publisher/{publisher_id}/media-library/{id}/"
 ---
-
-`PATCH` `https://cms.thepublive.com/publisher/{publisher_id}/media-library/{id}/`
 
 Updates metadata of an existing media asset. Only send the fields you want to change.
 
-#### Path Parameters
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| id | integer | Media ID |
+<ParamField path="id" type="integer" required>
+  Media ID
+</ParamField>
 
-#### Headers
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| username | string | Yes | API Key |
-| password | string | Yes | API Secret |
-| Content-Type | string | Yes | `application/json` |
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
 
-#### Request Body
+<ParamField body="filename" type="string">
+  Filename
+</ParamField>
 
-| Field | Type | Description |
-| ----- | ---- | ----------- |
-| `filename` | string | Filename |
-| `alt_text` | string | Alt text |
-| `caption` | string | Caption |
-| `source` | string | Source/credit |
-| `meta_data` | object | Metadata |
+<ParamField body="alt_text" type="string">
+  Alt text
+</ParamField>
+
+<ParamField body="caption" type="string">
+  Caption
+</ParamField>
+
+<ParamField body="source" type="string">
+  Source/credit
+</ParamField>
+
+<ParamField body="meta_data" type="object">
+  Metadata
+</ParamField>
 
 #### Example Request
 

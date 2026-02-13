@@ -1,18 +1,22 @@
 ---
 title: "Newsletter Groups"
 description: Fetch newsletter group listings
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/newsletter-groups/"
 ---
-
-`GET` `https://cds.thepublive.com/publisher/{publisher_id}/newsletter-groups/`
 
 Returns all configured newsletter groups with their metadata.
 
-#### Headers
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| username | string | Yes | API Key |
-| password | string | Yes | API Secret |
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
+
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
 
 #### Response Fields
 

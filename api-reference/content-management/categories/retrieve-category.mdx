@@ -1,24 +1,26 @@
 ---
 title: "Retrieve Category"
 description: Retrieve a single category by ID
+api: "GET https://cms.thepublive.com/publisher/{publisher_id}/category/{id}/"
 ---
-
-`GET` `https://cms.thepublive.com/publisher/{publisher_id}/category/{id}/`
 
 Returns the details of a specific category.
 
-#### Path Parameters
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| id | integer | Category ID |
+<ParamField path="id" type="integer" required>
+  Category ID
+</ParamField>
 
-#### Headers
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| username | string | Yes | API Key |
-| password | string | Yes | API Secret |
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
 
 <Tabs>
 <Tab title="200: OK">
