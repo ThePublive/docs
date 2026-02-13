@@ -1,25 +1,30 @@
 ---
 title: "Author Listing"
 description: Fetch a list of all authors
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/authors/"
 ---
-
-`GET` `https://cds.thepublive.com/publisher/{publisher_id}/authors/`
 
 Returns a paginated list of all authors with their profile information and social links.
 
-#### Headers
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| username | string | Yes | API Key |
-| password | string | Yes | API Secret |
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
 
-#### Query Parameters
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
 
-| Name | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| page | integer | 1 | Page number (max: 1000) |
-| limit | integer | 10 | Items per page (max: 50) |
+<ParamField query="page" type="integer" default="1">
+  Page number (max: 1000)
+</ParamField>
+
+<ParamField query="limit" type="integer" default="10">
+  Items per page (max: 50)
+</ParamField>
 
 #### Response Fields
 

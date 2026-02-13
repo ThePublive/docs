@@ -1,24 +1,26 @@
 ---
 title: "Category Details"
 description: Fetch details of a single category by ID or slug
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/category/{identifier}/"
 ---
-
-`GET` `https://cds.thepublive.com/publisher/{publisher_id}/category/{identifier}/`
 
 Returns detailed information about a single category, including SEO metadata, Open Graph tags, and child categories.
 
-#### Path Parameters
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| identifier | string/integer | Category ID or slug |
+<ParamField path="identifier" type="string" required>
+  Category ID or slug
+</ParamField>
 
-#### Headers
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| username | string | Yes | API Key |
-| password | string | Yes | API Secret |
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
 
 #### Response Fields
 

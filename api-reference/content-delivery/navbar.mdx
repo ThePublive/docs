@@ -1,18 +1,22 @@
 ---
 title: "Navbar"
 description: Fetch the navigation menu structure for your website
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/navbar/"
 ---
-
-`GET` `https://cds.thepublive.com/publisher/{publisher_id}/navbar/`
 
 Returns the navigation menu configuration with hierarchical support for nested menu items.
 
-#### Headers
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| username | string | Yes | API Key |
-| password | string | Yes | API Secret |
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
+
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
 
 #### Response Fields
 

@@ -1,18 +1,22 @@
 ---
 title: "Active Slots"
 description: Fetch advertisement slot configuration
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/active-slots/"
 ---
-
-`GET` `https://cds.thepublive.com/publisher/{publisher_id}/active-slots/`
 
 Returns the configured advertisement slots for your publication, including slot dimensions, content, and type.
 
-#### Headers
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| username | string | Yes | API Key |
-| password | string | Yes | API Secret |
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
+
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
 
 #### Response Fields
 

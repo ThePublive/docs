@@ -1,29 +1,42 @@
 ---
 title: "Create Tag"
 description: Create a new tag
+api: "POST https://cms.thepublive.com/publisher/{publisher_id}/tag/"
 ---
-
-`POST` `https://cms.thepublive.com/publisher/{publisher_id}/tag/`
 
 Creates a new tag.
 
-#### Headers
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| username | string | Yes | API Key |
-| password | string | Yes | API Secret |
-| Content-Type | string | Yes | `application/json` |
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
 
-#### Request Body
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
 
-| Field | Type | Required | Description |
-| ----- | ---- | -------- | ----------- |
-| `name`* | string | Yes | Tag name |
-| `english_name`* | string | Yes | English name |
-| `meta_title` | string | No | SEO title |
-| `meta_description` | string | No | SEO description |
-| `content` | string | No | Tag description (HTML) |
+<ParamField body="name" type="string" required>
+  Tag name
+</ParamField>
+
+<ParamField body="english_name" type="string" required>
+  English name
+</ParamField>
+
+<ParamField body="meta_title" type="string">
+  SEO title
+</ParamField>
+
+<ParamField body="meta_description" type="string">
+  SEO description
+</ParamField>
+
+<ParamField body="content" type="string">
+  Tag description (HTML)
+</ParamField>
 
 #### Example Request
 

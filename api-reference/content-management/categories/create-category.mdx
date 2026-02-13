@@ -1,34 +1,62 @@
 ---
 title: "Create Category"
 description: Create a new category
+api: "POST https://cms.thepublive.com/publisher/{publisher_id}/category/"
 ---
-
-`POST` `https://cms.thepublive.com/publisher/{publisher_id}/category/`
 
 Creates a new category.
 
-#### Headers
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| username | string | Yes | API Key |
-| password | string | Yes | API Secret |
-| Content-Type | string | Yes | `application/json` |
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
 
-#### Request Body
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
 
-| Field | Type | Required | Description |
-| ----- | ---- | -------- | ----------- |
-| `name`* | string | Yes | Category name |
-| `english_name`* | string | Yes | English name (for permalink generation) |
-| `slug` | string | No | Custom slug (auto-generated if omitted) |
-| `meta_title` | string | No | SEO title |
-| `h1_tag` | string | No | H1 heading tag |
-| `meta_description` | string | No | SEO description |
-| `priority` | integer | No | Priority level (1-1000) |
-| `content` | string | No | Category description (HTML) |
-| `category_brand_color` | string | No | Brand color (hex) |
-| `content_type` | string | No | Content type filter (e.g., `Article`, `Web Story`) |
+<ParamField body="name" type="string" required>
+  Category name
+</ParamField>
+
+<ParamField body="english_name" type="string" required>
+  English name (for permalink generation)
+</ParamField>
+
+<ParamField body="slug" type="string">
+  Custom slug (auto-generated if omitted)
+</ParamField>
+
+<ParamField body="meta_title" type="string">
+  SEO title
+</ParamField>
+
+<ParamField body="h1_tag" type="string">
+  H1 heading tag
+</ParamField>
+
+<ParamField body="meta_description" type="string">
+  SEO description
+</ParamField>
+
+<ParamField body="priority" type="integer">
+  Priority level (1-1000)
+</ParamField>
+
+<ParamField body="content" type="string">
+  Category description (HTML)
+</ParamField>
+
+<ParamField body="category_brand_color" type="string">
+  Brand color (hex)
+</ParamField>
+
+<ParamField body="content_type" type="string">
+  Content type filter (e.g., `Article`, `Web Story`)
+</ParamField>
 
 #### Example Request
 

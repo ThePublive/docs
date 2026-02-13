@@ -1,31 +1,50 @@
 ---
 title: "Create Media"
 description: Create/upload a media asset
+api: "POST https://cms.thepublive.com/publisher/{publisher_id}/media-library/"
 ---
-
-`POST` `https://cms.thepublive.com/publisher/{publisher_id}/media-library/`
 
 Creates a new media entry in the library.
 
-#### Headers
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| username | string | Yes | API Key |
-| password | string | Yes | API Secret |
-| Content-Type | string | Yes | `application/json` |
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
 
-#### Request Body
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
 
-| Field | Type | Required | Description |
-| ----- | ---- | -------- | ----------- |
-| `filename`* | string | Yes | Filename |
-| `path`* | string | Yes | Media URL |
-| `alt_text` | string | No | Alt text for accessibility |
-| `caption` | string | No | Caption/description |
-| `source` | string | No | Source/credit |
-| `type` | string | No | `Image`, `Video`, or `File` |
-| `meta_data` | object | No | Metadata (width, height, etc.) |
+<ParamField body="filename" type="string" required>
+  Filename
+</ParamField>
+
+<ParamField body="path" type="string" required>
+  Media URL
+</ParamField>
+
+<ParamField body="alt_text" type="string">
+  Alt text for accessibility
+</ParamField>
+
+<ParamField body="caption" type="string">
+  Caption/description
+</ParamField>
+
+<ParamField body="source" type="string">
+  Source/credit
+</ParamField>
+
+<ParamField body="type" type="string">
+  `Image`, `Video`, or `File`
+</ParamField>
+
+<ParamField body="meta_data" type="object">
+  Metadata (width, height, etc.)
+</ParamField>
 
 #### Example Request
 
