@@ -1,6 +1,6 @@
 ---
-title: 'Decoupled Frontend Infrastructure'
-description: 'Build fully custom websites on top of Publive CMS using a decoupled, scalable architecture'
+title: "Decoupled Frontend Infrastructure"
+description: "Build fully custom websites on top of Publive CMS using a decoupled, scalable architecture"
 ---
 
 ## What is Decoupled Frontend Infrastructure?
@@ -10,16 +10,16 @@ Publive's Decoupled Frontend Infrastructure lets you build **your own website** 
 ### Why Use Decoupled Infrastructure
 
 <CardGroup cols={2}>
-  <Card title="Full Control" icon="sliders">
+  <Card icon="sliders" title="Full Control">
     Complete ownership over frontend code, UI/UX, and infrastructure
   </Card>
-  <Card title="No Template Lock-in" icon="unlock">
+  <Card icon="unlock" title="No Template Lock-in">
     Build custom layouts and branding without shared templates
   </Card>
-  <Card title="Independent Deployments" icon="rocket">
+  <Card icon="rocket" title="Independent Deployments">
     Deploy frontend changes without touching the CMS
   </Card>
-  <Card title="Optimized Performance" icon="gauge-high">
+  <Card icon="gauge-high" title="Optimized Performance">
     SSR, Edge rendering, and custom performance optimizations
   </Card>
 </CardGroup>
@@ -36,19 +36,19 @@ Publive's Decoupled Frontend Infrastructure lets you build **your own website** 
 Decoupled Frontend Infrastructure is ideal for:
 
 <CardGroup cols={3}>
-  <Card title="📰 News & Media" icon="newspaper">
+  <Card icon="newspaper" title="📰 News & Media">
     High-traffic news websites with real-time updates
   </Card>
-  <Card title="🏷️ Brand Websites" icon="store">
+  <Card icon="store" title="🏷️ Brand Websites">
     Marketing and corporate websites with custom designs
   </Card>
-  <Card title="📖 Editorial Platforms" icon="book-open">
+  <Card icon="book-open" title="📖 Editorial Platforms">
     Blogs and content-rich publishing platforms
   </Card>
 </CardGroup>
 
 <Info>
-If you can build it with Next.js, you can power it with Publive CMS.
+  If you can build it with Next.js, you can power it with Publive CMS.
 </Info>
 
 ## Architecture Overview
@@ -72,13 +72,18 @@ graph LR
 
 ## Publisher Lifecycle
 
+<Frame>
+  ![Lifecycle Diagram](/images/lifecycle-diagram.png)
+</Frame>
+
 <Steps>
   <Step title="Onboarding">
     Publive engineers provide:
+
     - Publisher credentials (API keys and secrets)
     - GitHub repository access with target branches
     - Live app URL for production environment
-    
+
     ```bash
     # Credentials provided during onboarding
     PUBLISHER_ID=your-publisher-id
@@ -86,23 +91,21 @@ graph LR
     API_SECRET=your-api-secret
     ```
   </Step>
-
   <Step title="Custom Development">
     Build your custom website with full ownership of:
+
     - Code and business logic
     - UI/UX design
     - Application structure
     - Feature implementation
   </Step>
-
   <Step title="Deployment">
     Push changes to GitHub → CI/CD automatically deploys to your live environment
-    
+
     <Note>
-    Full CI/CD documentation available in [Deployment Guide](/guides/deployment)
+      Full CI/CD documentation available in [Deployment Guide](/guides/deployment)
     </Note>
   </Step>
-
   <Step title="Go Live">
     Your website is accessible via the provided URL and ready to serve traffic
   </Step>
@@ -113,16 +116,16 @@ graph LR
 ### What's Included
 
 <CardGroup cols={2}>
-  <Card title="Next.js Foundation" icon="react">
+  <Card icon="react" title="Next.js Foundation">
     Pre-configured Next.js project with best practices
   </Card>
-  <Card title="CMS Integration" icon="plug">
+  <Card icon="plug" title="CMS Integration">
     Content Delivery SDK configured and ready to use
   </Card>
-  <Card title="Basic Fetching" icon="download">
+  <Card icon="download" title="Basic Fetching">
     Sample content fetching patterns and examples
   </Card>
-  <Card title="Production Ready" icon="circle-check">
+  <Card icon="circle-check" title="Production Ready">
     Configured for local development and production deployment
   </Card>
 </CardGroup>
@@ -146,32 +149,32 @@ Before you begin, ensure you have:
     npm install
     ```
   </Step>
-
   <Step title="Configure Environment">
     Copy the sample environment file:
+
     ```bash
     cp .env.sample .env
     ```
-    
+
     Update `.env` with your onboarding credentials:
+
     ```bash
     NEXT_PUBLIC_PL_PUBLISHER_ID=your-publisher-id
     NEXT_PUBLIC_PL_PUBLISHER_API_KEY=your-api-key
     NEXT_PUBLIC_PL_PUBLISHER_API_SECRET=your-api-secret
     ```
   </Step>
-
   <Step title="Start Development Server">
     ```bash
     npm run dev
     ```
-    
+
     Your decoupled website is now running at `http://localhost:3000`
   </Step>
 </Steps>
 
 <Check>
-You now have a working decoupled website running locally and connected to Publive CMS!
+  You now have a working decoupled website running locally and connected to Publive CMS!
 </Check>
 
 ## Deploying Changes
@@ -184,11 +187,9 @@ You now have a working decoupled website running locally and connected to Publiv
     git checkout -b feature/your-feature-name
     ```
   </Step>
-
   <Step title="Make Changes">
     Develop your features locally and test thoroughly
   </Step>
-
   <Step title="Commit & Push">
     ```bash
     git add .
@@ -196,18 +197,16 @@ You now have a working decoupled website running locally and connected to Publiv
     git push -u origin feature/your-feature-name
     ```
   </Step>
-
   <Step title="Create Pull Request">
     Open a PR to your target branch (e.g., `main` or `production`)
   </Step>
-
   <Step title="Auto-Deploy">
     Once merged, CI/CD automatically deploys to your live URL
   </Step>
 </Steps>
 
 <Warning>
-Always test changes locally before pushing to production branches. Merged PRs trigger immediate deployments.
+  Always test changes locally before pushing to production branches. Merged PRs trigger immediate deployments.
 </Warning>
 
 ## Next Steps
@@ -215,10 +214,10 @@ Always test changes locally before pushing to production branches. Merged PRs tr
 Choose a path based on your use case:
 
 <CardGroup cols={2}>
-  <Card title="Build a News Website" icon="newspaper" href="/guides/build-news-media">
+  <Card icon="newspaper" href="/guides/build-news-media" title="Build a News Website">
     Learn how to build a high-performance news/media website
   </Card>
-  <Card title="Build a Brand Website" icon="palette" href="/guides/build-brand-website">
+  <Card icon="palette" href="/guides/build-brand-website" title="Build a Brand Website">
     Create a custom brand website with dynamic sections
   </Card>
 </CardGroup>
@@ -226,16 +225,16 @@ Choose a path based on your use case:
 ## Support & Resources
 
 <CardGroup cols={2}>
-  <Card title="API Reference" icon="book" href="/api-reference">
+  <Card icon="book" href="/api-reference" title="API Reference">
     Complete API documentation for content fetching
   </Card>
-  <Card title="SDK Documentation" icon="code" href="/sdks/javascript">
+  <Card icon="code" href="/sdks/javascript" title="SDK Documentation">
     JavaScript SDK reference and examples
   </Card>
-  <Card title="Deployment Guide" icon="rocket" href="/guides/deployment">
+  <Card icon="rocket" href="/guides/deployment" title="Deployment Guide">
     CI/CD configuration and deployment best practices
   </Card>
-  <Card title="Get Help" icon="life-ring" href="mailto:support@publive.com">
+  <Card icon="life-ring" href="mailto:support@publive.com" title="Get Help">
     Contact our support team for assistance
   </Card>
 </CardGroup>
