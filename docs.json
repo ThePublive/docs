@@ -32,9 +32,26 @@
             ]
           },
           {
+            "group": "Concepts & Features",
+            "pages": [
+               "documentation/concepts-features/custom-entities",
+              "documentation/concepts-features/forms",
+              "documentation/concepts-features/media-library",
+              "documentation/concepts-features/ai-copilot"
+            ]
+          },
+          {
             "group": "Guides",
             "pages": [
               "documentation/guides/README",
+              {
+                "group": "Decoupled Frontend",
+                "pages": [
+                  "documentation/guides/decoupled-frontend/decoupled-frontend-infra",
+                  "documentation/guides/decoupled-frontend/build-brand-website",
+                  "documentation/guides/decoupled-frontend/build-news-media"
+                ]
+              },
               {
                 "group": "Frontend Integration",
                 "pages": [
@@ -63,15 +80,6 @@
                   "documentation/guides/industry-specific/pharma-governance"
                 ]
               }
-            ]
-          },
-          {
-            "group": "Concepts & Features",
-            "pages": [
-              "documentation/concepts-features/custom-entities",
-              "documentation/concepts-features/forms",
-              "documentation/concepts-features/media-library",
-              "documentation/concepts-features/ai-copilot"
             ]
           },
           {
