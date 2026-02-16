@@ -66,6 +66,12 @@
             ]
           },
           {
+            "group": "Concepts & Features",
+            "pages": [
+              "documentation/concepts-features/custom-entities"
+            ]
+          },
+          {
             "group": "Webhooks & Integrations",
             "pages": [
               "documentation/webhooks-integrations/README",

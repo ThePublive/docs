@@ -1,0 +1,163 @@
+---
+title: "Custom Entities"
+description: "Define your own content types and structures beyond the default post model"
+---
+
+In Publive (a headless CMS), **Custom Entities** let you define your own content types and structures beyond the default post model. Each custom entity is driven by a **schema** that describes its fields, and each **entry** is a document that holds values for those fields.
+
+- **Schema** – Defines the content type: its name, API identifiers, fields, groups, and settings (e.g. entry title, searchable/filter fields, allowed states, access control, custom URL rule).
+- **Entry** – A single record for that content type, with values for each field defined in the schema.
+- **Published entry** – The version of an entry that is exposed via APIs for consumption by apps and websites.
+
+**Custom Entities = schema-defined content types + entries whose structure is flexible and defined by you.**
+
+---
+
+## How Custom Entities Can Be Used
+
+- **Structured content types** – e.g. "Product", "Event", "Recipe", "Team Member" with a fixed set of fields and validation.
+- **Multi-channel content** – Same content type used by web, app, or other clients via APIs (e.g. JSON, HTML, XML, or plain text).
+- **Relations** – Link entries to Categories, Tags, Members, Forms, or other custom content types via **Related** fields.
+- **Rich layouts** – Use **Components** and **Dynamic Zones** to build modular blocks (hero, CTA, FAQ, etc.) inside an entry.
+- **Filtered lists** – Use **Dynamic List** fields to show lists of related content filtered by relations (e.g. "Posts in this Category" or "Products in this Collection").
+- **Single-page vs collection** – Schemas can represent a **collection** (many entries) or a **single** content type (e.g. one "About Us" page); some schemas are used as reusable building blocks (e.g. shared with posts).
+
+### Example Scenarios
+
+- **Product catalog** – A "Product" content type with name, SKU, price, category, image, and description. Entries are products; APIs return them for storefront or app.
+- **Landing page builder** – A "Landing Page" content type with a **Dynamic Zone** where each section can be a different block type (Hero, Features, Testimonials, CTA). Each entry is a page; order and mix of blocks are flexible.
+- **Event listing** – An "Event" content type with title, start/end date and time, venue (related entity), and a **Dynamic List** for "Related events" filtered by category or tag.
+
+---
+
+## Core Concepts
+
+### Schema
+
+- The **schema** is the definition of a content type: name, API slugs, response format, **fields**, **groups**, and **settings**.
+- **Fields** – Each field has a name, a **type** (e.g. short text, number, relation, component, dynamic zone, dynamic list), optional metadata (e.g. label, default), and validation rules.
+- **Groups** – Logical grouping of fields (e.g. "Content", "SEO") for organisation and UI.
+- **Settings** – Include which field is used as the entry title, which fields are searchable, which can be used as filters, allowed states, access control, custom URL patterns, and optional component preview.
+
+### Entries and Field Values
+
+- An **entry** belongs to one schema and holds one value per field.
+- Values are typed according to the field type (text, number, date, media, relation, component(s), or dynamic list configuration).
+
+### Relations and Taxonomies
+
+- **Related** fields link to other content: Categories, Tags, Members, Forms, or other custom content types (and posts).
+- **Dynamic List** – Lets you define a list by **content type** and **filters** (e.g. by category or tag). The list is resolved when the entry is delivered via the API. System taxonomies (Category, Tag, Member, Form) cannot be used as the main content type for a dynamic list; the list is based on custom content types (or posts).
+
+---
+
+## Field Types
+
+| Type | Description | Example use | Limitations / notes |
+|------|-------------|-------------|----------------------|
+| **Short text** | Short string | Title, name, slug | Maximum length applies. |
+| **Long text** | Long string | Summary, description | |
+| **Rich text** | Formatted long text (e.g. HTML) | Body content | |
+| **Integer** | Whole number | Count, year | |
+| **Decimal** | Decimal number | Price, rating | |
+| **Date** | Date only | Event date | |
+| **Date and time** | Date and time | Publish time | Optional display format. |
+| **Boolean** | Yes/no | Featured, active | |
+| **Email** | Email address | Contact email | |
+| **URL** | Web address | Link | |
+| **Phone number** | Phone number | Contact number | |
+| **Publive media** | Image or file from Publive media library | Image, attachment | References a single media item (id, url, type, filename in API). |
+| **JSON** | Arbitrary JSON | Config, metadata | |
+| **Array** | List of values | List of strings or numbers | |
+| **Related** | Link to another content item or taxonomy | Author, category, related post | Single or multiple relations depending on configuration. |
+| **Embed** | Embedded content (e.g. oEmbed / iframe) | Video, social embed | |
+| **Component** | One reusable block (single or repeatable) | Author card, feature list | See [Components](#components) section. Can be limited to one instance or allow multiple instances of the same block. |
+| **Dynamic zone** | Ordered list of blocks; each block can be a different type | Page sections (hero, CTA, FAQ) | See [Dynamic Zone](#dynamic-zone) section. |
+| **Dynamic list** | List of related content defined by type and filters | Related posts, products in collection | See [Dynamic List](#dynamic-list) section. Cannot use system taxonomies as the list's content type. |
+
+Validation (e.g. required, format) is configured per field in the schema.
+
+---
+
+## Components
+
+### What a Component Is
+
+A **Component** is a reusable content block with its own structure: a **component schema** defines the fields (text, number, media, relation, or even another component). An instance of a component is a single "block" that fills in those fields.
+
+- **Component schema** – Defines the block's structure: name, slug, and field types (and optional settings such as filter fields). It is not a standalone content type; it is only used inside entities or other components.
+- **Component instance** – One filled-in block: it follows one component schema and holds values for that schema's fields. It can be placed in a **component** field or as one item in a **dynamic zone**.
+
+### How the Component Field Works
+
+- In a content-type schema (or in another component schema), you add a field of type **Component**.
+- You choose which **component schemas** are allowed for that field.
+- You set the **limit**:
+  - **Single** – The field holds exactly one component instance (e.g. one "Author card").
+  - **Multi** – The field holds multiple instances of the same component type (e.g. several "Feature" items in one block).
+
+So: **Component field = one block type, either once (single) or repeated (multi).**
+
+### Nesting and Limits
+
+- Components can contain other components (nested blocks).
+- **Maximum nesting depth** is enforced (e.g. up to a few levels) so that structures stay manageable and performant.
+- **Circular references** are not allowed (e.g. Component A cannot contain Component B if B contains A). The system validates this when you save the schema.
+
+### Example
+
+- Component schema "Author Card": name, email, avatar image.
+- Content type "Article" has a field "Author" of type **Component**, limit **Single**, allowed type "Author Card".
+- An article entry then has one "Author" block with name, email, and avatar.
+
+---
+
+## Dynamic Zone
+
+### What a Dynamic Zone Is
+
+A **Dynamic Zone** is an **ordered list of blocks** where **each block can be a different type**. You define which block types (component schemas) are allowed; for each entry, editors choose which blocks to add and in what order.
+
+- In the schema, the field type is **Dynamic Zone**.
+- You configure the list of **allowed component schemas** (e.g. Hero, Feature Grid, Testimonials, CTA).
+- When editing an entry, the value is an ordered list of blocks; each block specifies its type and its field values.
+
+### Component vs Dynamic Zone
+
+| Aspect | Component | Dynamic Zone |
+|--------|-----------|--------------|
+| What it holds | One block type, once (single) or repeated (multi) | A list of blocks |
+| Block types per field | One schema (single or multi instances) | Each item can be a different allowed schema |
+| Typical use | Fixed or repeatable block (e.g. author, features) | Page builder: hero, then CTA, then FAQ, etc. |
+
+### Example
+
+- Content type "Landing Page" has a field "Sections" of type **Dynamic Zone**, with allowed types: Hero, Feature Grid, Testimonials, CTA.
+- One page's "Sections" might be: [Hero, Feature Grid, CTA]. Order and mix are flexible per entry.
+
+---
+
+## Dynamic List
+
+### What a Dynamic List Is
+
+A **Dynamic List** field does not store the actual list of items. It stores **configuration**: which content type to list and **how to filter it** (e.g. by category, tag, or other relation). When the entry is delivered via the API, the system uses this configuration to resolve and return the list of matching items.
+
+- You configure:
+  - **Content type (model)** – Which custom content type (or posts) to list. System taxonomies (Category, Tag, Member, Form) cannot be used as this content type.
+  - **Related fields** – Which relation fields to use for filtering (e.g. category, tag).
+  - **Filters** – For each chosen relation, the selected items (e.g. which categories or tags). Optionally a heading or similar display options.
+
+So: **Dynamic List = "list of content of type X filtered by these relation criteria."** Useful for "Related posts", "Products in this collection", etc., without storing the full list of IDs in the entry.
+
+### Configuration and Validation
+
+- **Content type (model)** is required and must be a custom content type (or post type), not a system taxonomy.
+- **Filters** – When used, you specify which relation(s) to filter by and the selected IDs (or equivalent).
+- **Related fields** – When you use filters, you specify which relation fields those filters apply to.
+
+### Example
+
+- Content type "Article" has a **Dynamic List** field "Related articles".
+- Configuration: content type = "Article"; filter by "Primary category" with one or more categories selected.
+- When the article is returned via the API, "Related articles" is resolved to the list of articles in those categories (and can optionally include "related to this post" behaviour depending on product behaviour).
