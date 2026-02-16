@@ -32,6 +32,12 @@
             ]
           },
           {
+            "group": "Concepts & Features",
+            "pages": [
+              "documentation/concepts-features/custom-entities"
+            ]
+          },
+          {
             "group": "Guides",
             "pages": [
               "documentation/guides/README",
@@ -63,12 +69,6 @@
                   "documentation/guides/industry-specific/pharma-governance"
                 ]
               }
-            ]
-          },
-          {
-            "group": "Concepts & Features",
-            "pages": [
-              "documentation/concepts-features/custom-entities"
             ]
           },
           {
