@@ -68,7 +68,10 @@
           {
             "group": "Concepts & Features",
             "pages": [
-              "documentation/concepts-features/custom-entities"
+              "documentation/concepts-features/custom-entities",
+              "documentation/concepts-features/forms",
+              "documentation/concepts-features/media-library",
+              "documentation/concepts-features/ai-copilot"
             ]
           },
           {
