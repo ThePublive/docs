@@ -1,0 +1,122 @@
+---
+title: 'Build a News/Media Website'
+description: 'Step-by-step guide to building a high-performance news and media website with Publive CMS'
+---
+
+<Note>
+This guide is currently under development. Check back soon for detailed instructions on building news and media websites with Publive's Decoupled Frontend Infrastructure.
+</Note>
+
+## Coming Soon
+
+This guide will cover:
+
+<CardGroup cols={2}>
+  <Card title="Article Rendering" icon="newspaper">
+    Display news articles with proper formatting and media
+  </Card>
+  <Card title="Category Pages" icon="folder">
+    Build dynamic category and section pages
+  </Card>
+  <Card title="Real-time Updates" icon="bolt">
+    Implement live content updates and notifications
+  </Card>
+  <Card title="Performance Optimization" icon="gauge-high">
+    Handle high-traffic scenarios with caching strategies
+  </Card>
+  <Card title="Search & Discovery" icon="magnifying-glass">
+    Implement full-text search and content discovery
+  </Card>
+  <Card title="Social Integration" icon="share-nodes">
+    Add social sharing and engagement features
+  </Card>
+</CardGroup>
+
+## In the Meantime
+
+Explore these related resources:
+
+<CardGroup cols={2}>
+  <Card title="Build a Brand Website" icon="palette" href="/guides/build-brand-website">
+    Similar setup process with reusable section patterns
+  </Card>
+  <Card title="API Reference" icon="book" href="/api-reference">
+    Learn how to fetch articles and media content
+  </Card>
+  <Card title="Content Delivery API" icon="download" href="/api-reference/content-delivery">
+    Retrieve published articles and assets
+  </Card>
+  <Card title="SDK Documentation" icon="code" href="/sdks/javascript">
+    JavaScript SDK for content fetching
+  </Card>
+</CardGroup>
+
+## Get Notified
+
+Want to be notified when this guide is published?
+
+<Card title="Contact Support" icon="envelope" href="mailto:support@publive.com">
+  Email us to express interest in the news/media guide
+</Card>
+
+## Quick Preview
+
+While we finalize this guide, here's a preview of the article rendering pattern:
+
+```tsx Article.tsx (Preview)
+import { Article } from "publive-cms-sdk";
+
+interface ArticlePageProps {
+  article: Article;
+}
+
+export default function ArticlePage({ article }: ArticlePageProps) {
+  return (
+    <article className="max-w-4xl mx-auto">
+      {/* Hero Image */}
+      {article.hero_image && (
+        <img 
+          src={article.hero_image.url} 
+          alt={article.hero_image.alt_text}
+          className="w-full h-auto"
+        />
+      )}
+
+      {/* Article Metadata */}
+      <header className="py-8">
+        <h1 className="text-4xl font-bold mb-4">
+          {article.headline}
+        </h1>
+        
+        <div className="flex items-center gap-4 text-gray-600">
+          <span>{article.author.name}</span>
+          <span>•</span>
+          <time>{new Date(article.published_at).toLocaleDateString()}</time>
+        </div>
+      </header>
+
+      {/* Article Content */}
+      <div 
+        className="prose prose-lg max-w-none"
+        dangerouslySetInnerHTML={{ __html: article.content }}
+      />
+
+      {/* Related Articles */}
+      {article.related_stories && (
+        <section className="mt-12">
+          <h2 className="text-2xl font-bold mb-6">Related Stories</h2>
+          {/* Related articles rendering */}
+        </section>
+      )}
+    </article>
+  );
+}
+```
+
+## Support
+
+For immediate assistance with news/media website development:
+
+- **Email**: support@publive.com
+- **Documentation**: [API Reference](/api-reference)
+- **Community**: [Publive Community Forum](https://community.publive.com)
