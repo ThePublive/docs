@@ -71,6 +71,7 @@
                   "documentation/guides/workflows/state-management"
                 ]
               },
+              "documentation/guides/deployment",
               {
                 "group": "Industry-Specific",
                 "pages": [
