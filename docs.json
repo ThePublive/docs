@@ -147,6 +147,12 @@
                   "api-reference/content-delivery/post-details-by-url",
                   "api-reference/content-delivery/live-blog-updates"
                 ]
+              },
+              {
+                "group": "Form",
+                "pages": [
+                  "api-reference/content-delivery/form-schema"
+                ]
               }
             ]
           },
