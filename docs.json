@@ -203,6 +203,12 @@
                   "api-reference/content-management/media/update-media",
                   "api-reference/content-management/media/delete-media"
                 ]
+              },
+              {
+                "group": "Forms",
+                "pages": [
+                  "api-reference/content-management/forms/form-schema"
+                ]
               }
             ]
           },
