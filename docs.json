@@ -149,7 +149,7 @@
                 ]
               },
               {
-                "group": "Form",
+                "group": "Forms",
                 "pages": [
                   "api-reference/content-delivery/form-schema"
                 ]
@@ -207,7 +207,7 @@
               {
                 "group": "Forms",
                 "pages": [
-                  "api-reference/content-management/forms/form-schema"
+                  "api-reference/content-management/forms/form-submission"
                 ]
               }
             ]
