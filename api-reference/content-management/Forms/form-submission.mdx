@@ -1,0 +1,101 @@
+---
+title: "Submit Form "
+description: Submit a form with captcha validation and optional file uploads
+api: "POST https://cms.thepublive.com/publisher/{publisher_id}/form/{pk}/submit/"
+---
+
+Submits a form for a given schema and forwards it to PubliveAPI.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField path="pk" type="string" required>
+  Form schema ID (same value you pass in `schema`)
+</ParamField>
+
+<ParamField header="Authorization" type="string" required>
+  Access token used for PubliveAPI requests
+</ParamField>
+
+<ParamField body="schema" type="string" required>
+  Form schema ID
+</ParamField>
+
+<ParamField body="g-recaptcha-response" type="string" required>
+  reCAPTCHA token from the client
+</ParamField>
+
+<ParamField body="<field_name>" type="string" required>
+  Dynamic fields defined in the schema (example: `name`, `email`, etc.)
+</ParamField>
+
+<ParamField body="<file_field>" type="file">
+  Optional file fields sent as multipart file objects
+</ParamField>
+
+#### Example Request
+
+```bash
+curl -X POST \
+  'https://cms.thepublive.com/publisher/123/form/64f0d2b2a9e3f59a2e4a1234/submit/' \
+  -H 'Authorization: YOUR_TOKEN' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'schema=64f0d2b2a9e3f59a2e4a1234' \
+  -F 'g-recaptcha-response=<token>' \
+  -F 'name=Jane Doe' \
+  -F 'email=jane@example.com' \
+  -F 'resume=@/path/to/file.pdf'
+```
+
+<ResponseExample>
+
+```json 201
+{
+  "status": "success",
+  "data": {
+    "id": "<submission_id>",
+    "dynamic_fields": {
+      "<field_label>": "<value>",
+      "<file_field_label>": "<value>"
+    },
+    "form_name": "<form_name>",
+    "submitted_by": {
+      "name": "<name>",
+      "email": "<email>",
+      "photo_thumbnail": "<url>"
+    },
+    "post": {},
+    "draft_by": {},
+    "draft_on": null,
+    "created_at": "2026-02-23T10:11:12Z",
+    "updated_at": "2026-02-23T10:11:12Z",
+    "schema": { }
+  }
+}
+```
+
+```json 403
+{
+  "status": "error",
+  "message": "captcha verification failed"
+}
+```
+
+```json 400
+{
+  "error": {
+    "code": "BAD_REQUEST_ERROR",
+    "description": "Invalid Field : <field_name> in request data"
+  }
+}
+```
+
+```json 500
+{
+  "status": "error",
+  "message": "Something went wrong"
+}
+```
+
+</ResponseExample>

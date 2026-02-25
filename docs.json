@@ -147,6 +147,12 @@
                   "api-reference/content-delivery/post-details-by-url",
                   "api-reference/content-delivery/live-blog-updates"
                 ]
+              },
+              {
+                "group": "Forms",
+                "pages": [
+                  "api-reference/content-delivery/form-schema"
+                ]
               }
             ]
           },
@@ -196,6 +202,12 @@
                   "api-reference/content-management/media/retrieve-media",
                   "api-reference/content-management/media/update-media",
                   "api-reference/content-management/media/delete-media"
+                ]
+              },
+              {
+                "group": "Forms",
+                "pages": [
+                  "api-reference/content-management/forms/form-submission"
                 ]
               }
             ]

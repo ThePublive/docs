@@ -1,0 +1,87 @@
+---
+title: "Form Schema (Reader)"
+description: Fetch a form schema for rendering on the reader side
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/form_schema/reader/{schema_id}/"
+---
+
+Returns a single form schema by ID, including field definitions, groups, and settings used to render the form on the reader side.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField path="schema_id" type="string" required>
+  Form schema ID (24-character hex string)
+</ParamField>
+
+<ParamField query="page_source" type="string">
+  Optional context used by the serializer (if applicable)
+</ParamField>
+
+<ResponseExample>
+
+```json 200
+{
+  "id": "65f0d7c16f2a4b2f88e1f123",
+  "name": "Contact Us",
+  "description": "Basic contact form",
+  "type": "custom",
+  "settings": {
+    "forms_config": {
+      "collect_email": {
+        "forms_config": "none"
+      }
+    }
+  },
+  "state": "active",
+  "created_at": "19 Feb 2026 14:20",
+  "updated_at": "19 Feb 2026 14:22",
+  "deleted": false,
+  "updated_by": "John Doe",
+  "field_types": [
+    {
+      "id": "65f0d7c16f2a4b2f88e1f456",
+      "name": "email",
+      "type": "email",
+      "validations": {
+        "required": true
+      },
+      "meta_data": {},
+      "group_id": "65f0d7c16f2a4b2f88e1f789",
+      "created_at": "19 Feb 2026 14:20",
+      "updated_at": "19 Feb 2026 14:20",
+      "updated_by_id": 101,
+      "deleted": false
+    }
+  ],
+  "groups": [
+    {
+      "id": "65f0d7c16f2a4b2f88e1f789",
+      "name": "content",
+      "meta_data": {},
+      "created_at": "19 Feb 2026 14:20",
+      "updated_at": "19 Feb 2026 14:20",
+      "updated_by_id": 101,
+      "deleted": false
+    }
+  ],
+  "form_page": {},
+  "captcha_config": {
+    "site_key": "xxxxxxxxxxxxxxx"
+  }
+}
+```
+
+```json 400
+{
+  "detail": "Invalid Form Schema ID format - must be a 24-character hex string"
+}
+```
+
+```json 404
+{
+  "detail": "Form Schema Doesn't exist or no longer taking submissions."
+}
+```
+
+</ResponseExample>
