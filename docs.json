@@ -101,6 +101,12 @@
               "documentation/reference/changelog",
               "documentation/reference/migration-guides"
             ]
+          },
+          {
+            "group": "SDKs",
+            "pages": [
+              "sdks/javascript"
+            ]
           }
         ]
       },
