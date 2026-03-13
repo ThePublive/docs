@@ -49,7 +49,15 @@
                 "pages": [
                   "documentation/guides/decoupled-frontend/decoupled-frontend-infra",
                   "documentation/guides/decoupled-frontend/build-brand-website",
-                  "documentation/guides/decoupled-frontend/build-news-media"
+                  "documentation/guides/decoupled-frontend/build-news-media",
+                  {
+                    "group": "Integrations",
+                    "pages": [
+                      "documentation/guides/decoupled-frontend/integrations/how-to-creat-files-route",
+                      "documentation/guides/decoupled-frontend/integrations/how-to-have-preview-page",
+                      "documentation/guides/decoupled-frontend/integrations/how-to-have-password-protected-preview"
+                    ]
+                  }
                 ]
               },
               {
