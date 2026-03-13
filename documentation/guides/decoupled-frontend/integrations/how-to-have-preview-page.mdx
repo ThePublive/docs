@@ -1,0 +1,97 @@
+---
+title: "How to Have a Preview Page"
+description: "Create a basic preview page in your Next.js app to fetch and render Publive content before public access"
+---
+
+Use this guide when you want a simple preview page in your app without adding password protection.
+
+## Problem statement
+
+In a decoupled frontend setup, Publive manages content but your app controls rendering. To preview content inside your frontend, you need a route that can fetch the requested content from Publive and render it using the same templates as the live site.
+
+## What you are doing
+
+You will create a dynamic Next.js page, fetch the requested content on the server with `identify`, and render the correct page template based on the identified content type.
+
+This pattern is based on [pages/post/[id].tsx](/Users/publive/Documents/publive/fino/pages/post/[id].tsx) in your app.
+
+## Core flow
+
+Create a route that matches the preview URL structure used by your app. Use `getServerSideProps` so the page can fetch fresh preview data for every request.
+
+The key server-side step is resolving the requested page from Publive with `identify`. For the SDK behavior, see [JavaScript SDK](/documentation/sdks/javascript).
+
+```tsx
+import PostPage from "@/template/PostPage";
+
+export const getServerSideProps = async (context) => {
+  const id = context.params?.id as string;
+
+  if (!id || Number.isNaN(Number(id))) {
+    return { notFound: true };
+  }
+
+  const requestedPath = `/post/${id}`;
+  const identifiedPost = await publive.content.identify(requestedPath);
+  const publisher = await publive.auth.fetchPublisher();
+
+  if (!identifiedPost.data?.content) {
+    return { notFound: true };
+  }
+
+  if (identifiedPost.data.type !== "draft_entity" && identifiedPost.data.type !== "draft") {
+    return { notFound: true };
+  }
+
+  return {
+    props: {
+      post: identifiedPost.data.content,
+      publisher: publisher.data,
+    },
+  };
+};
+
+export default function PreviewPage({ post, publisher }) {
+  if (isArticlePage(post)) {
+    return <ArticlePage post={post} publisher={publisher} />;
+  }
+
+  if (isWebStoryPage(post)) {
+    return <WebStoryPage post={post} publisher={publisher} />;
+  }
+
+  return null;
+}
+```
+
+This preview flow only applies when the identified content type is `draft_entity` or `draft`. If `identify` returns no content, or the type is outside those values, return `notFound`.
+
+## Load supporting page data
+
+Your reference page also fetches shared layout data such as:
+
+- publisher data
+- navbar content
+- footer content
+- slots
+
+Keep this part aligned with the data your live page already needs and load it inside the same `getServerSideProps` flow.
+
+## Render by content type
+
+After fetching the content, render the matching page template. The important point is to reuse the same components your live routes use. If your app supports additional page types such as blank canvas pages or web stories, handle those here as well.
+
+## Core pieces you need
+
+- a dynamic route that matches your preview URL shape
+- `getServerSideProps` for request-time fetching
+- a Publive `identify` call for the requested path
+- shared layout data needed by your page
+- a type check for `draft_entity` or `draft`
+- template selection based on returned content type
+
+## Notes
+
+- Keep preview fetching server-side.
+- Return `notFound` when Publive does not identify any content or the identified type is not `draft_entity` or `draft`.
+- Reuse your production rendering components so preview output stays accurate.

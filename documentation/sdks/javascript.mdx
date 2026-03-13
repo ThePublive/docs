@@ -1,0 +1,346 @@
+---
+title: "JavaScript SDK"
+description: "Use the Publive JavaScript SDK to fetch content, site configuration, and forms with typed methods"
+---
+
+Use the `publive-cms-sdk` package when you want a typed client for Publive content delivery and selected CMS utilities.
+
+<Warning>
+Keep your Publive credentials on the server. Do not initialize this SDK in client-side code.
+</Warning>
+
+## Overview
+
+This page gives you a practical view of the SDK surface, the main methods available in each namespace, and the places where the existing API reference is still the better source for endpoint-level detail.
+
+## Install the package
+
+```bash
+npm install https://cdn.thepublive.com/pl-modules/node/publive-cms-sdk-0.0.5.tgz
+```
+
+Use Node.js 18 or later so you have a supported `fetch` runtime by default.
+
+## Initialize the SDK
+
+```ts
+import { Publive } from "publive-cms-sdk";
+
+const sdk = new Publive({
+  publisherId: 12345,
+  environment: "production",
+  apiKey: process.env.PUBLIVE_API_KEY!,
+  apiSecret: process.env.PUBLIVE_API_SECRET!,
+});
+```
+
+### Configuration
+
+| Field | Required | Description |
+| ------ | -------- | ----------- |
+| `publisherId` | Yes | Your Publive publisher ID |
+| `environment` | Yes | `production`, `beta`, or `development` |
+| `apiKey` | Yes | Your Publive API key |
+| `apiSecret` | Yes | Your Publive API secret |
+| `publisherSlug` | No | Optional publisher slug for app-level usage |
+
+## Core services
+
+The `Publive` class exposes five service areas:
+
+| Service | Use it for |
+| ------- | ---------- |
+| `sdk.content` | Posts, categories, tags, members, and content identification |
+| `sdk.auth` | Publisher-level metadata |
+| `sdk.utils` | Navbar, footer, slots, and forms |
+| `sdk.delivery` | Low-level Content Delivery API requests |
+| `sdk.management` | Low-level CMS API requests |
+
+## Where the SDK fits
+
+The SDK works well as a server-side client for common Publive workflows. It provides typed helpers for content retrieval, layout data, slots, forms, and publisher metadata, while also handling authentication headers, retries, and timeouts in one place.
+
+For endpoint-by-endpoint behavior, request and response details, or flows outside the exported namespaces, the API reference remains the better companion.
+
+## SDK surface
+
+The tables below summarize the current callable surface exposed by the SDK.
+
+### `sdk.content`
+
+| Namespace | Methods |
+| --------- | ------- |
+| `post` | `fetchById`, `fetchBySlug`, `fetchByLegacyURL`, `fetchList`, `fetchFeaturedPosts`, `fetchPostByCategory`, `fetchPostByTag`, `fetchPostByAuthor`, `fetchPostByCollectionSlug` |
+| `category` | `fetchById`, `fetchBySlug`, `fetchList` |
+| `tag` | `fetchById`, `fetchBySlug`, `fetchList` |
+| `member` | `fetchById`, `fetchBySlug`, `fetchList` |
+| `content` root | `identify` |
+
+### `sdk.utils`
+
+| Namespace | Methods |
+| --------- | ------- |
+| `layout` | `fetchNavbar`, `fetchFooter` |
+| `slot` | `fetchSlots` |
+| `form` | `fetchForm`, `submitForm` |
+
+### Other namespaces
+
+| Namespace | Methods |
+| --------- | ------- |
+| `sdk.auth` | `fetchPublisher` |
+| `sdk.delivery` | `get`, `post`, `put`, `delete` |
+| `sdk.management` | `get`, `post`, `put`, `delete` |
+
+## Fetch content
+
+### Work with posts
+
+```ts
+const latestPosts = await sdk.content.post.fetchList({
+  queryParams: {
+    page: 1,
+    limit: 10,
+  },
+});
+
+const post = await sdk.content.post.fetchBySlug("welcome-to-publive");
+const featured = await sdk.content.post.fetchFeaturedPosts();
+```
+
+Available post helpers:
+
+- `fetchById(id)`
+- `fetchBySlug(slug)`
+- `fetchByLegacyURL(legacyUrl)`
+- `fetchList(options)`
+- `fetchFeaturedPosts(options)`
+- `fetchPostByCategory(categoryId, options)`
+- `fetchPostByTag(tagId, options)`
+- `fetchPostByAuthor(contributorId, options)`
+- `fetchPostByCollectionSlug(collectionSlug, options)`
+
+### Work with categories, tags, and authors
+
+```ts
+const categories = await sdk.content.category.fetchList({
+  queryParams: { limit: 20 },
+});
+
+const category = await sdk.content.category.fetchBySlug("technology");
+const tag = await sdk.content.tag.fetchBySlug("ai");
+const author = await sdk.content.member.fetchBySlug("editor-desk");
+```
+
+Each content service supports:
+
+- `fetchById(id)`
+- `fetchBySlug(slug)`
+- `fetchList(options)`
+
+### Identify a URL or slug
+
+Use `identify` when you need to resolve a slug or legacy URL to its Publive content type.
+
+```ts
+const result = await sdk.content.identify("welcome-to-publive");
+
+console.log(result.data.type);
+console.log(result.data.url);
+console.log(result.data.content?.title);
+```
+
+`identify()` returns metadata about the resolved URL, including `type`, `url`, `status_code`, and optional `content`.
+
+## Fetch layout and utility data
+
+```ts
+const navbar = await sdk.utils.layout.fetchNavbar();
+const footer = await sdk.utils.layout.fetchFooter();
+const slots = await sdk.utils.slot.fetchSlots();
+```
+
+Forms are available through the management client:
+
+```ts
+const form = await sdk.utils.form.fetchForm();
+
+await sdk.utils.form.submitForm("form-id", {
+  email: "reader@example.com",
+  name: "A Reader",
+});
+```
+
+## Fetch publisher metadata
+
+```ts
+const publisher = await sdk.auth.fetchPublisher();
+```
+
+This returns publisher-level configuration and metadata for the current credentials.
+
+## Use low-level clients
+
+The low-level `delivery` and `management` clients are useful when you need a request that does not yet have a dedicated helper.
+
+```ts
+const posts = await sdk.delivery.get("/posts/", {
+  queryParams: { limit: 5 },
+});
+
+const cmsResponse = await sdk.management.get("/form/");
+```
+
+They are most useful when:
+
+- the SDK already supports the authentication and environment handling you need
+- the helper method you want does not exist yet
+- you already know the exact endpoint from the API reference
+
+In most cases, the higher-level namespaces are easier to work with because they already encode the common paths and usage patterns.
+
+## Request options
+
+Most SDK methods accept a `RequestOptions` object.
+
+| Option | Description |
+| ------ | ----------- |
+| `headers` | Add custom request headers |
+| `queryParams` | Append query string filters and pagination |
+| `responseType` | Parse as `json`, `text`, or `blob` |
+| `timeout` | Override request timeout in milliseconds |
+| `retry` | Override retry attempts |
+| `version` | Insert an API version into the request path |
+
+Example:
+
+```ts
+const response = await sdk.content.post.fetchList({
+  queryParams: {
+    page: 1,
+    limit: 20,
+    "categories.id__eq": 12,
+  },
+  timeout: 15000,
+  retry: 1,
+});
+```
+
+## Use the media URL helper
+
+The package also exports a lightweight helper namespace for image URL transforms.
+
+```ts
+import { publive } from "publive-cms-sdk";
+
+const url = "https://img-cdn.publive.online/fit-in/100x100/filters:format(webp)/image.png";
+
+const smallImage = publive.utils.lib.convertMediaURL(url, "small");
+const customImage = publive.utils.lib.convertMediaURL(url, "custom", {
+  width: 800,
+  height: 450,
+});
+```
+
+Supported presets include `small`, `medium`, `default`, `large`, `xlarge`, `portrait`, and `custom`.
+
+## Exported enums and helpers
+
+The package also exports constants, enums, types, and error classes that are useful when building app logic.
+
+Common exports include:
+
+- `PostCollectionSlug`
+- `PostType`
+- `RSSPostType`
+- `CDSAdvancedFilter`
+- `PLException`
+- `PLAPIException`
+- `publive.utils.lib.convertMediaURL`
+
+## Handle errors
+
+The SDK throws typed API errors for failed delivery requests.
+
+```ts
+import { PLAPIException } from "publive-cms-sdk";
+
+try {
+  await sdk.content.post.fetchBySlug("missing-slug");
+} catch (error) {
+  if (error instanceof PLAPIException) {
+    console.error(error.status);
+    console.error(error.message);
+  }
+}
+```
+
+## Behavior notes
+
+These details are easy to miss and are useful to keep in mind while building:
+
+- The SDK is designed for server-side use because it requires `apiKey` and `apiSecret`.
+- `sdk.utils.form` uses the CMS management client under the hood, not the delivery client.
+- `sdk.delivery` and `sdk.management` do not handle failed responses in exactly the same way.
+- `version` in `RequestOptions` rewrites the request path to include an API version segment.
+- `environment` changes the base host used by the SDK: `production`, `beta`, and `development` do not hit the same backend.
+- `retry` and `timeout` can be overridden per request instead of only at initialization time.
+
+## Map SDK methods to existing docs
+
+This table points to the existing API docs when you want more endpoint-level detail without repeating that material here.
+
+| SDK area | See also |
+| -------- | -------- |
+| `sdk.content.post` | [Post listing](/api-reference/content-delivery/post-listing), [Post details](/api-reference/content-delivery/post-details), [Post details by URL](/api-reference/content-delivery/post-details-by-url), [Live blog updates](/api-reference/content-delivery/live-blog-updates) |
+| `sdk.content.category` | [Category listing](/api-reference/content-delivery/category-listing), [Category details](/api-reference/content-delivery/category-details) |
+| `sdk.content.tag` | [Tag listing](/api-reference/content-delivery/tag-listing), [Tag details](/api-reference/content-delivery/tag-details) |
+| `sdk.content.member` | [Author listing](/api-reference/content-delivery/author-listing), [Author details](/api-reference/content-delivery/author-details) |
+| `sdk.auth`, `sdk.utils.layout`, `sdk.utils.slot` | [Publisher data](/api-reference/content-delivery/publisher-data), [Navbar](/api-reference/content-delivery/navbar), [Footer](/api-reference/content-delivery/footer), [Active slots](/api-reference/content-delivery/active-slots) |
+| `sdk.utils.form`, `sdk.management` | [Form submission](/api-reference/content-management/forms/form-submission) |
+
+## Example: server route
+
+This pattern works well in a Next.js route handler or any server-only endpoint.
+
+```ts
+import { Publive } from "publive-cms-sdk";
+
+const sdk = new Publive({
+  publisherId: Number(process.env.PUBLIVE_PUBLISHER_ID),
+  environment: "production",
+  apiKey: process.env.PUBLIVE_API_KEY!,
+  apiSecret: process.env.PUBLIVE_API_SECRET!,
+});
+
+export async function getHomepageData() {
+  const [posts, navbar, footer] = await Promise.all([
+    sdk.content.post.fetchList({ queryParams: { limit: 6 } }),
+    sdk.utils.layout.fetchNavbar(),
+    sdk.utils.layout.fetchFooter(),
+  ]);
+
+  return {
+    posts: posts.data,
+    navbar: navbar.data,
+    footer: footer.data,
+  };
+}
+```
+
+## Related docs
+
+<CardGroup cols={2}>
+  <Card title="Content Delivery API" icon="download" href="/api-reference/content-delivery">
+    See the underlying delivery endpoints
+  </Card>
+  <Card title="Content Management API" icon="pen-to-square" href="/api-reference/content-management">
+    See CMS endpoints used by form helpers
+  </Card>
+  <Card title="Next.js integration" icon="react" href="/documentation/guides/frontend-integration/nextjs">
+    Use the SDK in a server-rendered frontend
+  </Card>
+  <Card title="Decoupled frontend" icon="rocket" href="/documentation/guides/decoupled-frontend/decoupled-frontend-infra">
+    Build a custom frontend on top of Publive
+  </Card>
+</CardGroup>

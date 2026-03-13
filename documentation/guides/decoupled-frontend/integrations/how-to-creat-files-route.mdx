@@ -1,0 +1,160 @@
+---
+title: "How to create files route"
+description: "Proxy Publive CDN document files through /files/* so they load from your own domain"
+---
+
+Use this guide when you want document file URLs, such as PDFs, to resolve from your site domain instead of `static-cdn.publive.online`.
+
+## Problem statement
+
+Your published content may contain document URLs that point to the Publive CDN domain. If you want those PDFs and similar files to be served from your own domain, you need a route on your app that forwards the request to Publive and returns the file response.
+
+## What you are doing
+
+You will create a Next.js proxy route at `/api/files/*` and expose it through `/files/*` using a rewrite rule. The route accepts document file paths, fetches the file from Publive CDN, and returns it from your domain.
+
+After setup, a URL like:
+
+`https://static-cdn.publive.online/path/to/brochure.pdf`
+
+becomes:
+
+`https://your-domain.com/files/path/to/brochure.pdf`
+
+## 1. Create an API proxy route
+
+Create `pages/api/files/[...path].ts`:
+
+```ts
+import type { NextApiRequest, NextApiResponse } from "next";
+
+const HOP_BY_HOP_HEADERS = new Set([
+  "connection",
+  "keep-alive",
+  "proxy-authenticate",
+  "proxy-authorization",
+  "te",
+  "trailer",
+  "transfer-encoding",
+  "upgrade",
+]);
+
+const CDN_BASE = "https://static-cdn.publive.online";
+const ALLOWED_FILE_EXTENSIONS = new Set(["pdf", "doc", "docx", "xls", "xlsx", "csv", "txt", "zip"]);
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const pathPart = req.query.path;
+  const cdnPath = Array.isArray(pathPart) ? pathPart.join("/") : pathPart;
+
+  if (!cdnPath) {
+    res.status(404).send("Not Found");
+    return;
+  }
+
+  const extension = cdnPath.split(".").pop()?.toLowerCase() || "";
+  if (!ALLOWED_FILE_EXTENSIONS.has(extension)) {
+    res.status(400).send("Only document/file routes are supported");
+    return;
+  }
+
+  if (req.method !== "GET" && req.method !== "HEAD") {
+    res.setHeader("Allow", "GET, HEAD");
+    res.status(405).send("Method Not Allowed");
+    return;
+  }
+
+  const upstreamUrl = new URL(`/${cdnPath}`, CDN_BASE);
+  const queryString = req.url?.split("?")[1];
+  if (queryString) upstreamUrl.search = queryString;
+
+  const proxyHeaders = new Headers();
+
+  for (const [key, rawValue] of Object.entries(req.headers)) {
+    if (!rawValue) continue;
+
+    const lowerKey = key.toLowerCase();
+    if (HOP_BY_HOP_HEADERS.has(lowerKey)) continue;
+    if (lowerKey === "host") continue;
+
+    const value = Array.isArray(rawValue) ? rawValue.join(",") : rawValue;
+    proxyHeaders.set(key, value);
+  }
+
+  proxyHeaders.set("host", upstreamUrl.host);
+
+  const upstream = await fetch(upstreamUrl.toString(), {
+    method: req.method,
+    headers: proxyHeaders,
+  });
+
+  if (!upstream.ok && upstream.status >= 400) {
+    res.status(upstream.status).send("Not Found");
+    return;
+  }
+
+  upstream.headers.forEach((value, key) => {
+    const lowerKey = key.toLowerCase();
+    if (HOP_BY_HOP_HEADERS.has(lowerKey)) return;
+    if (lowerKey === "content-length") return;
+    res.setHeader(key, value);
+  });
+
+  res.setHeader("accept-ranges", "bytes");
+  res.status(upstream.status);
+
+  if (req.method === "HEAD") {
+    res.end();
+    return;
+  }
+
+  const body = await upstream.arrayBuffer();
+  res.send(Buffer.from(body));
+}
+```
+
+## 2. Add a rewrite for `/files/*`
+
+Add this to `next.config.js`:
+
+```js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: "/files/:path*",
+        destination: "/api/files/:path*",
+      },
+    ];
+  },
+};
+
+module.exports = nextConfig;
+```
+
+## 3. Use `/files/` URLs in your frontend
+
+Use `/files/...` anywhere you render file URLs.
+
+```ts
+export function toSameDomainFileUrl(url: string) {
+  return url.replace("https://static-cdn.publive.online/", "/files/");
+}
+```
+
+Example:
+
+- Input: `https://static-cdn.publive.online/documents/abc.pdf`
+- Output: `/files/documents/abc.pdf`
+
+## 4. Verify locally
+
+1. Run your Next.js app.
+2. Open a known file URL: `http://localhost:3000/files/path/to/file.pdf`.
+3. Confirm the response is `200` and comes from your domain.
+
+## Notes
+
+- Keep this proxy server-side only.
+- If you want CDN caching behavior, do not force `cache-control: no-store` on forwarded headers.
+- If you deploy behind another CDN, configure caching there as needed.
