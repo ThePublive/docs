@@ -103,9 +103,9 @@
             ]
           },
           {
-            "group": "SDKs",
+            "group": "Software Development Kits",
             "pages": [
-              "sdks/javascript"
+              "documentation/sdks/javascript"
             ]
           }
         ]
