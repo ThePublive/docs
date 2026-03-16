@@ -147,6 +147,7 @@
               {
                 "group": "Content",
                 "pages": [
+                  "api-reference/content-delivery/identify-content",
                   "api-reference/content-delivery/category-listing",
                   "api-reference/content-delivery/category-details",
                   "api-reference/content-delivery/tag-listing",
