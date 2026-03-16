@@ -1,0 +1,186 @@
+---
+title: "How to integrate component form"
+description: "Use the schema-rendered component approach when you need UI customization beyond the default iframe flow"
+---
+
+Use this guide when the default iframe form is not enough and you need your own UI, layout, or schema-driven customization.
+
+<Info>
+  Support for user-generated content is coming soon.
+</Info>
+
+## Problem statement
+
+You may want to collect input from your clients, readers, or users through a form in your frontend. If you need that form to match your own UI and layout, the component-rendered approach gives you more control over how the form is presented.
+
+## What you are doing
+
+You will add a schema-driven form to your frontend by rendering Publive form fields through the shared component layer and handling submissions through your own frontend flow.
+
+This guide covers the extended customization path. If you want the default prebuilt flow instead, see [How to integrate form](/documentation/guides/decoupled-frontend/integrations/how-to-integrate-form).
+
+If you need hidden fields, prefilled values, or label changes, add `schemaOverrides` on top of this base setup.
+
+## What the shared form component expects
+
+The shared renderer in your frontend is based on `components/ui/microorganism/Form/index.tsx`.
+
+It expects:
+
+- `form_related_field`: the full reader-side form schema array
+- `form_schema`: an optional patch object or JSON string
+- `className`: optional layout classes
+
+Internally, the component:
+
+- reads the first schema from `form_related_field`
+- merges any `form_schema` changes into that base schema
+- renders field groups and field types from the schema
+- validates the inputs on change
+- requires reCAPTCHA before submit
+- posts `FormData` to `/api/form/{formId}/submit`
+
+## 1. Get the form data from your page payload
+
+This guide assumes your section or custom field already includes a form object. In the reference app, the simplest pattern looks like this:
+
+```tsx
+const formItem = career_form?.dynamic_fields?.[0];
+```
+
+For the component-rendered path, you usually pass the returned schema through as-is first, then add overrides only where needed.
+
+## 2. Render the shared form component
+
+Create or update the section where you want the form to appear:
+
+```tsx
+import FormRenderComponent from "@/components/ui/microorganism/Form";
+
+type Props = {
+  formItem?: {
+    form_related_field?: unknown[];
+    form_schema?: Record<string, unknown> | string;
+  };
+};
+
+export default function SimpleFormSection({ formItem }: Props) {
+  if (!formItem?.form_related_field?.length) {
+    return null;
+  }
+
+  return (
+    <FormRenderComponent
+      form_related_field={formItem.form_related_field}
+      form_schema={formItem.form_schema}
+      className="w-full max-w-[900px]"
+    />
+  );
+}
+```
+
+This is the same integration shape used in the reference app when a form is rendered inside a modal or a section with custom UI control.
+
+## 3. Add the submit API route
+
+The renderer submits to a local Next.js route:
+
+`/api/form/[id]/submit`
+
+That route should:
+
+- accept `POST` only
+- keep `bodyParser` disabled for multipart form data
+- read the incoming `FormData`
+- call `sdk.utils.form.submitForm(...)`
+- return the upstream response back to the client
+
+Reference shape:
+
+```ts
+import type { NextApiRequest, NextApiResponse } from "next";
+import { APIService } from "@/lib/api";
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ response: { ok: false, statusText: "Method not allowed" } });
+  }
+
+  const requestUrl = req.url?.startsWith("http")
+    ? req.url
+    : `https://your-domain.com${req.url}`;
+
+  const url = new URL(requestUrl);
+  const id = url.pathname.split("/")[3];
+
+  const cfRequest = new Request(`${url.origin}${url.pathname}`, {
+    method: req.method,
+    headers: req.headers as HeadersInit,
+    body: req as any,
+  });
+
+  const formBody = await cfRequest.formData();
+  const sdk = new APIService().getSDK();
+  const sdkRes = await publive.utils.form.submitForm(id, formBody, {
+    isCms: true,
+  });
+
+  return res.status(Number(sdkRes.status) || 200).json({
+    response: {
+      ok: true,
+      status: sdkRes.status,
+      response: sdkRes.response,
+    },
+  });
+}
+```
+
+The exact implementation can include your own logging and error handling, but the route shape should stay server-side.
+
+## 4. Add the reCAPTCHA site key
+
+The shared captcha component reads this client-side environment variable:
+
+```bash
+NEXT_PUBLIC_RECAPTCHA_SITE_KEY=your_site_key
+```
+
+If this key is missing, the captcha component does not render and the form cannot be submitted.
+
+## 5. Verify the flow
+
+Check the full path locally:
+
+1. Open a page that contains the form relation.
+2. Confirm the fields render with labels and validation.
+3. Complete reCAPTCHA.
+4. Submit the form.
+5. Confirm the request reaches `/api/form/{id}/submit`.
+6. Confirm you see the success state after a `200` or `201` response.
+
+## When to use this approach
+
+Use the component-rendered approach when you need more than the default iframe flow. Typical cases are:
+
+- injecting hidden fields
+- pre-filling defaults from page data
+- changing the visible form title or description
+- applying page-specific field overrides
+- matching your design system closely
+- controlling where and how the form is rendered in your layout
+
+That path uses `schemaOverrides` in addition to `form_related_field` and `form_schema`.
+
+## Related references
+
+- [Forms](/documentation/concepts-features/forms)
+- [How to integrate form](/documentation/guides/decoupled-frontend/integrations/how-to-integrate-form)
+- [Form schema (reader)](/api-reference/content-delivery/form-schema)
+- [Form submission](/api-reference/content-management/forms/form-submission)
+- [JavaScript SDK](/documentation/sdks/javascript)

@@ -3,6 +3,57 @@ title: "Forms"
 description: "Create and manage forms for collecting user data and submissions"
 ---
 
-<Info>
-  **Coming soon** — Detailed documentation for Forms is currently being prepared and will be available shortly.
-</Info>
+Publive forms let you define fields in Publive and render them in your frontend using the returned schema.
+
+## What forms support
+
+- schema-driven field rendering
+- iframe-based rendering for faster setup
+- grouped fields and validation rules
+- reader-side schema delivery
+- server-side form submission
+- optional frontend overrides for custom use cases
+
+## Common docs
+
+<CardGroup cols={2}>
+  <Card
+    title="How to integrate form"
+    href="/documentation/guides/decoupled-frontend/integrations/how-to-integrate-form"
+  >
+    Use the default prebuilt iframe flow for the fastest setup.
+  </Card>
+  <Card
+    title="How to integrate component form"
+    href="/documentation/guides/decoupled-frontend/integrations/how-to-integrate-component-form"
+  >
+    Use the component-rendered path when you need UI customization.
+  </Card>
+  <Card
+    title="Form schema"
+    href="/api-reference/content-delivery/form-schema"
+  >
+    Fetch the reader-side schema used to render a form.
+  </Card>
+  <Card
+    title="Form submission"
+    href="/api-reference/content-management/forms/form-submission"
+  >
+    Submit form data and captcha to Publive.
+  </Card>
+  <Card
+    title="JavaScript SDK"
+    href="/documentation/sdks/javascript"
+  >
+    Use SDK helpers for form fetch and submission workflows.
+  </Card>
+</CardGroup>
+
+## Integration model
+
+In a decoupled frontend, you can integrate forms in two ways:
+
+- the default iframe-based flow for fast setup
+- the component-rendered flow for deeper UI customization
+
+Start with the iframe path unless you already know you need custom rendering, hidden fields, or layout-level control.

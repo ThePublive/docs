@@ -1,0 +1,165 @@
+---
+title: "How to integrate form"
+description: "Use the prebuilt Publive iframe form flow as the default integration path when you want the fastest setup"
+---
+
+Use this guide as the default integration path when you want a working form quickly and do not need custom UI control.
+
+<Info>
+  Support for user-generated content is coming soon.
+</Info>
+
+## Problem statement
+
+You may want to collect input from your clients, readers, or users through a form in your frontend. The iframe-based integration gives you a ready-to-use form flow with less frontend setup, so you can get started quickly.
+
+## What you are doing
+
+You will add Publive's prebuilt form flow to your frontend by loading the hosted form experience in an iframe and handling submissions through reader-side API routes.
+
+This is the default form integration approach in the reference app. It is optimized for speed of setup and low implementation effort.
+
+## How this approach works
+
+The iframe flow in the reference app uses these routes:
+
+- `pages/api/reader/custom-forms-schema.ts`
+- `pages/api/reader/user-generated-content/submit.ts`
+
+The flow is:
+
+1. Your app fetches the hosted iframe schema HTML through `/api/reader/custom-forms-schema`.
+2. Your frontend renders that prebuilt experience inside an iframe.
+3. The iframe posts form data to `/api/reader/user-generated-content/submit`.
+4. The submit route verifies reCAPTCHA and forwards the payload with `sdk.utils.form.submitForm(...)`.
+
+## 1. Proxy the hosted iframe schema page
+
+Create `pages/api/reader/custom-forms-schema.ts`:
+
+```ts
+import type { NextApiRequest, NextApiResponse } from "next";
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== "GET") {
+    return res.status(405).json({
+      status: "error",
+      message: "Method not allowed",
+    });
+  }
+
+  const formSchemaUrl =
+    "https://cdn.thepublive.com/publive/website/form-schema/iframe/schema.html";
+
+  const response = await fetch(formSchemaUrl);
+
+  if (!response.ok) {
+    return res.status(400).json({
+      status: "error",
+      message: "Something went wrong!",
+    });
+  }
+
+  const body = await response.text();
+
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.setHeader("Cache-Control", "public, max-age=3600");
+
+  return res.status(200).send(body);
+}
+```
+
+This route keeps the hosted iframe schema behind your own app domain.
+
+## 2. Render the iframe in your page
+
+Once the proxy route exists, render it in an iframe:
+
+```tsx
+export default function IframeFormSection() {
+  return (
+    <iframe
+      src="/api/reader/custom-forms-schema"
+      title="Publive form"
+      className="w-full min-h-[700px] border-0"
+    />
+  );
+}
+```
+
+The exact iframe height and surrounding layout are up to your page, but the inner form UI remains prebuilt.
+
+## 3. Add the reader submit route
+
+Create `pages/api/reader/user-generated-content/submit.ts`:
+
+```ts
+import type { NextApiRequest, NextApiResponse } from "next";
+import { APIService } from "@/lib/api";
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== "POST") {
+    return res.status(405).json({
+      status: "error",
+      message: "Method not allowed",
+    });
+  }
+
+  const formData = req.body;
+  const recaptchaResponse = formData?.recaptcha_response;
+  const formId = formData?.form_id;
+
+  if (!recaptchaResponse || !formId) {
+    return res.status(400).json({
+      status: "error",
+      message: "Missing form data",
+    });
+  }
+
+  const sdk = new APIService().getSDK();
+  const sdkRes = await sdk.utils.form.submitForm(String(formId), formData, {
+    isCms: true,
+  });
+
+  return res.status(Number(sdkRes.status) || 201).json(sdkRes.response);
+}
+```
+
+In the reference app, this route also verifies reCAPTCHA before forwarding the request. Keep that validation server-side.
+
+## 4. Configure reCAPTCHA
+
+This route depends on reCAPTCHA verification before submit. In the reference app, the secret is resolved from publisher configuration and falls back to an environment variable.
+
+Make sure your server has access to the reCAPTCHA secret used for verification.
+
+## When to use iframe forms
+
+Use this approach when:
+
+- you want the fastest path to a working form
+- you do not want to build a custom renderer yet
+- a prebuilt form experience is acceptable
+- you want the default integration path with minimal setup
+
+## Tradeoffs
+
+Pros:
+
+- very fast to start
+- less frontend implementation work
+- useful for direct setup without much wiring
+
+Cons:
+
+- you cannot meaningfully change the UI
+- styling and layout control are limited
+- it will not align tightly with a custom design system
+
+If you need the form to match your frontend exactly, move to the component-rendered customization approach instead.
+
+## Related references
+
+- [How to integrate component form](/documentation/guides/decoupled-frontend/integrations/how-to-integrate-component-form)
+- [Forms](/documentation/concepts-features/forms)
+- [Form submission](/api-reference/content-management/forms/form-submission)
