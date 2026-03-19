@@ -1,0 +1,160 @@
+---
+title: "Identify content"
+description: Resolve an incoming path to a post, category, tag, author, redirect, or not found result
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/identify_url/"
+---
+
+Use this endpoint when your frontend receives a path and needs to determine what it represents before choosing the correct page template or follow-up API call.
+
+<Info>
+  Production: `https://cds.thepublive.com/publisher/{publisher_id}/identify_url/`
+  Beta: `https://cds-beta.thepublive.com/publisher/{publisher_id}/identify_url/`
+</Info>
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField header="username" type="string" required>
+  API Key
+</ParamField>
+
+<ParamField header="password" type="string" required>
+  API Secret
+</ParamField>
+
+<ParamField query="legacy_url" type="string" required>
+  Path or slug to resolve. Use the post legacy URL for posts, the category slug for categories, `/tags/{slug}` for tags, and `/author/{slug}` for authors.
+</ParamField>
+
+## Resolution rules
+
+| Content type | Value to send in `legacy_url` | Result |
+| --- | --- | --- |
+| Post | `/guides/getting-started` | Returns `type: "post"` and the full post object in `data.content` |
+| Category | `learn-banking` | Returns `type: "category"` and the resolved URL |
+| Tag | `/tags/product-updates` | Returns `type: "tag"` and the resolved URL |
+| Author | `/author/editor-desk` | Returns `type: "member"` and the resolved URL |
+| Redirect | Any legacy path that has a redirect rule | Returns `type: "redirect"` and the destination URL |
+| Missing route | Any unknown path | Returns `type: "not_found"` |
+
+## Example request
+
+```bash
+curl -X GET \
+  'https://cds.thepublive.com/publisher/1234/identify_url/?legacy_url=/guides/getting-started' \
+  -H 'username: YOUR_API_KEY' \
+  -H 'password: YOUR_API_SECRET'
+```
+
+## SDK usage
+
+If you use the Publive frontend SDK, call `identify()` instead of constructing the request manually.
+
+```ts
+const result = await sdk.content.identify("/guides/getting-started");
+
+console.log(result.data.type);
+console.log(result.data.url);
+console.log(result.data.content?.title);
+```
+
+## Response behavior
+
+- When the resolved type is `post`, the response includes the full post payload in `data.content`.
+- When the resolved type is `category`, `tag`, or `member`, the response only confirms the matched entity. Call the corresponding details endpoint to fetch the full object.
+- When the resolved type is `redirect`, use `data.url` as the destination.
+- When the resolved type is `not_found`, render your 404 page or redirect to your homepage.
+
+## Example responses
+
+<ResponseExample>
+
+Post found:
+
+```json 200
+{
+  "status": "200",
+  "data": {
+    "type": "post",
+    "url": "/guides/getting-started",
+    "status_code": "200",
+    "content": {
+      "id": 12001,
+      "title": "Getting started",
+      "slug": "getting-started",
+      "legacy_url": "/guides/getting-started",
+      "type": "Article",
+      "absolute_url": "https://example.publive.io/guides/getting-started",
+      "content_html": "<p>Start here.</p>"
+    }
+  }
+}
+```
+
+Category found:
+
+```json 200
+{
+  "status": "200",
+  "data": {
+    "type": "category",
+    "url": "learn-banking",
+    "status_code": "200"
+  }
+}
+```
+
+Tag found:
+
+```json 200
+{
+  "status": "200",
+  "data": {
+    "type": "tag",
+    "url": "product-updates",
+    "status_code": "200"
+  }
+}
+```
+
+Author found:
+
+```json 200
+{
+  "status": "200",
+  "data": {
+    "type": "member",
+    "url": "editor-desk",
+    "status_code": "200"
+  }
+}
+```
+
+Redirect:
+
+```json 301
+{
+  "status": "301",
+  "data": {
+    "type": "redirect",
+    "url": "https://example.publive.io/new-path",
+    "status_code": "301"
+  }
+}
+```
+
+Not found:
+
+```json 404
+{
+  "status": "404",
+  "data": {
+    "type": "not_found",
+    "url": "",
+    "status_code": "404"
+  }
+}
+```
+
+</ResponseExample>
