@@ -15,40 +15,80 @@ You may want to collect input from your clients, readers, or users through a for
 
 ## What you are doing
 
-You will add a schema-driven form to your frontend by rendering Publive form fields through the shared component layer and handling submissions through your own frontend flow.
+You will add a schema-driven form to your frontend by rendering Publive form fields through your own component layer and handling submissions through your own frontend flow.
 
-This guide covers the extended customization path. If you want the default prebuilt flow instead, see [How to integrate form](/documentation/guides/decoupled-frontend/integrations/how-to-integrate-form).
+This guide covers the extended customization path. If you want the default prebuilt flow instead, see [How to integrate form](https://docs.thepublive.com/documentation/guides/decoupled-frontend/integrations/how-to-integrate-form).
 
-If you need hidden fields, prefilled values, or label changes, add `schemaOverrides` on top of this base setup.
+If you need hidden fields, prefilled values, or label changes, add overrides on top of the base schema (for example via `form_schema` or your own `schemaOverrides` pattern).
 
-## What the shared form component expects
+## What the form renderer expects
 
-The shared renderer in your frontend is based on `components/ui/microorganism/Form/index.tsx`.
+The reference app uses a shared renderer at `components/ui/microorganism/Form/index.tsx`. Your app can follow the same contract:
 
-It expects:
+- **`form_related_field`**: the full reader-side form schema **array** (the first entry is the active form schema).
+- **`form_schema`**: optional patch object or JSON string merged into that schema (labels, placeholders, visibility, defaults, etc.).
+- **`className`**: optional layout classes.
 
-- `form_related_field`: the full reader-side form schema array
-- `form_schema`: an optional patch object or JSON string
-- `className`: optional layout classes
-
-Internally, the component:
+Internally, the component typically:
 
 - reads the first schema from `form_related_field`
 - merges any `form_schema` changes into that base schema
-- renders field groups and field types from the schema
-- validates the inputs on change
-- requires reCAPTCHA before submit
-- posts `FormData` to `/api/form/{formId}/submit`
+- renders field groups and field types from the merged schema
+- validates inputs (client-side) before submit
+- requires reCAPTCHA when configured
+- **`POST`s `FormData`** (multipart) to `/api/form/{formId}/submit` — not JSON
+
+## Reader-side payload shape: `{ value }` wrappers
+
+Content Delivery often serializes scalars and some nested values as **single-key objects**:
+
+```json
+{ "value": "the actual string or boolean or array" }
+```
+
+You will see this on **`meta_data`** (for example `label`, `placeholder`, `type`) and on some **`validations`** entries (for example `required`, `choices`).
+
+**Before rendering** any string in React (labels, placeholders, option text) or using values in validation logic, **unwrap** them:
+
+- If the value is a plain object with only a `value` property, use `value.value` for display and logic.
+- If you skip this, React can throw: *Objects are not valid as a React child (found: object with keys {value}).*
+
+The same pattern can appear on **section props** coming from layout `dynamic_fields` (for example `heading`, `description`) — unwrap before putting them in JSX.
+
+## Field typing: `field.type` vs `meta_data.type`
+
+The reader schema may give you two layers:
+
+- **`field.type`** — storage-oriented types such as `short_text`, `long_text`, `integer`, `email`, etc.
+- **`meta_data.type`** (often wrapped as `{ value: "input" | "textarea" | "select" | ... }`) — **widget** hint for the UI.
+
+**Select options** may live under **`validations.choices`** as `{ value: ["A", "B"] }`, not only under `meta_data.options`.
+
+Recommended resolution order for “what to render”:
+
+1. After unwrapping, if **`meta_data.type`** is set, prefer it for the widget (`input`, `textarea`, `select`, …).
+2. Map **`field.type`** to HTML primitives where needed (`integer` → `number`, `short_text` → `text`, `long_text` → `textarea`, etc.).
+3. If **`choices`** (unwrapped) is a non-empty array, treat the field as a **select** even when `field.type` is still `short_text`.
+
+## `validations.required`
+
+`required` may appear as:
+
+- `{ value: true }`, or
+- an **empty object `{}`** (still meaning required in many schemas),
+
+so a naive truthy check on the raw object is unsafe. Unwrap when possible; if your platform documents `{}` as required, treat that explicitly in your validator.
 
 ## 1. Get the form data from your page payload
 
-This guide assumes your section or custom field already includes a form object. In the reference app, the simplest pattern looks like this:
+This guide assumes your section or custom field already includes a form relation. In the reference app, the simplest pattern looks like:
 
 ```tsx
 const formItem = career_form?.dynamic_fields?.[0];
+// or, for a section: component.dynamic_fields?.[0]
 ```
 
-For the component-rendered path, you usually pass the returned schema through as-is first, then add overrides only where needed.
+Pass **`form_related_field`** and optional **`form_schema`** from that object into your renderer. For the component-rendered path, pass the API response **as-is** first, then add overrides only where needed.
 
 ## 2. Render the shared form component
 
@@ -81,21 +121,49 @@ export default function SimpleFormSection({ formItem }: Props) {
 
 This is the same integration shape used in the reference app when a form is rendered inside a modal or a section with custom UI control.
 
-## 3. Add the submit API route
+## 3. Client submit: build `FormData`
 
-The renderer submits to a local Next.js route:
+The CMS [form submission](https://docs.thepublive.com/api-reference/content-management/forms/form-submission) API expects **multipart/form-data** with at least:
+
+- **`schema`** — same value as the form schema id (24-character hex string)
+- **`g-recaptcha-response`** — when reCAPTCHA is enabled
+- **One part per dynamic field**, using the field **`name`** from the schema (not the display label)
+
+Example (browser):
+
+```ts
+const formId = schema.id; // from form_related_field[0]
+const fd = new FormData();
+fd.append("schema", formId);
+fd.append("g-recaptcha-response", captchaToken);
+for (const [key, val] of Object.entries(fieldValues)) {
+  if (val != null && val !== "") fd.append(key, String(val));
+}
+
+await fetch(`/api/form/${formId}/submit`, { method: "POST", body: fd });
+```
+
+Do **not** set `Content-Type` manually — the browser sets the multipart boundary.
+
+## 4. Add the submit API route
+
+The renderer submits to:
 
 `/api/form/[id]/submit`
 
 That route should:
 
-- accept `POST` only
-- keep `bodyParser` disabled for multipart form data
-- read the incoming `FormData`
-- call `sdk.utils.form.submitForm(...)`
-- return the upstream response back to the client
+- accept **`POST` only**
+- set **`bodyParser: false`** so Next.js does not consume the raw multipart body
+- read the incoming body as **`FormData`**
+- call **`sdk.utils.form.submitForm(formId, formBody, { isCms: true })`** (use your SDK variable, e.g. `sdk`, not an undefined `publive`)
+- return the upstream response to the client
 
-Reference shape:
+### Node.js + Next.js Pages Router (recommended)
+
+On **Node**, `new Request(..., { body: req as any })` is **not** reliable. Convert the Node request stream to a Web **`ReadableStream`** with **`Readable.toWeb(req)`** and pass **`duplex: "half"`** when constructing `Request`, then **`await request.formData()`**.
+
+Also build the request URL with **`Host`** and **`X-Forwarded-Proto`** when `req.url` is only a path (proxies, production):
 
 ```ts
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -112,57 +180,67 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ response: { ok: false, statusText: "Method not allowed" } });
   }
 
-  const requestUrl = req.url?.startsWith("http")
-    ? req.url
-    : `https://your-domain.com${req.url}`;
+  try {
+    const requestUrl =
+      req.url?.startsWith("http")
+        ? req.url
+        : `${req.headers["x-forwarded-proto"] === "https" ? "https" : "http"}://${req.headers.host ?? "localhost:3000"}${req.url}`;
 
-  const url = new URL(requestUrl);
-  const id = url.pathname.split("/")[3];
+    const url = new URL(requestUrl);
+    const idFromPath = url.pathname.split("/")[3];
 
-  const cfRequest = new Request(`${url.origin}${url.pathname}`, {
-    method: req.method,
-    headers: req.headers as HeadersInit,
-    body: req as any,
-  });
+    const inbound = new Request(requestUrl, {
+      method: req.method,
+      headers: req.headers as HeadersInit,
+      body: req as any,
+      duplex: "half",
+    } as RequestInit);
 
-  const formBody = await cfRequest.formData();
-  const sdk = new APIService().getSDK();
-  const sdkRes = await publive.utils.form.submitForm(id, formBody, {
-    isCms: true,
-  });
+    const formBody = await inbound.formData();
+    const formId = String(formBody.get("schema") ?? idFromPath ?? "");
 
-  return res.status(Number(sdkRes.status) || 200).json({
-    response: {
-      ok: true,
-      status: sdkRes.status,
-      response: sdkRes.response,
-    },
-  });
+    const sdk = new APIService().getSDK();
+    const sdkRes = await sdk.utils.form.submitForm(formId, formBody, {
+      isCms: true,
+    });
+
+    return res.status(Number(sdkRes.status) || 200).json({
+      response: {
+        ok: true,
+        status: sdkRes.status,
+        response: sdkRes.response,
+      },
+    });
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : "Form submission failed";
+    return res.status(500).json({ error: message });
+  }
 }
 ```
 
-The exact implementation can include your own logging and error handling, but the route shape should stay server-side.
+The exact implementation can include logging and richer error mapping, but **keep credentials and SDK usage on the server**.
 
-## 4. Add the reCAPTCHA site key
+### Error responses on the client
 
-The shared captcha component reads this client-side environment variable:
+Success and error payloads from the CMS differ. Your UI may need to read nested paths (for example `response.response.message` or `error.description`) depending on what your API route forwards — see [Form submission](https://docs.thepublive.com/api-reference/content-management/forms/form-submission).
 
-```bash
-NEXT_PUBLIC_RECAPTCHA_SITE_KEY=your_site_key
-```
+## 5. reCAPTCHA keys
 
-If this key is missing, the captcha component does not render and the form cannot be submitted.
+- **Site key (browser)**: the reader form schema may include **`captcha_config.site_key`**. The reference app also supports **`NEXT_PUBLIC_RECAPTCHA_SITE_KEY`** as a fallback when the schema does not carry a key.
+- **Secret (server)**: verify the token **server-side** before or alongside forwarding to Publive; do not rely on the client alone.
 
-## 5. Verify the flow
+If no site key is available, the captcha widget will not render and submit should be blocked.
+
+## 6. Verify the flow
 
 Check the full path locally:
 
 1. Open a page that contains the form relation.
-2. Confirm the fields render with labels and validation.
-3. Complete reCAPTCHA.
+2. Confirm fields render with labels and validation (after any `{ value }` unwrapping).
+3. Complete reCAPTCHA when required.
 4. Submit the form.
-5. Confirm the request reaches `/api/form/{id}/submit`.
-6. Confirm you see the success state after a `200` or `201` response.
+5. Confirm the browser sends **multipart** `POST` to `/api/form/{id}/submit` (not `application/json`).
+6. Confirm you see the success state after a **`200`** or **`201`** response from your route.
 
 ## When to use this approach
 
@@ -175,12 +253,21 @@ Use the component-rendered approach when you need more than the default iframe f
 - matching your design system closely
 - controlling where and how the form is rendered in your layout
 
-That path uses `schemaOverrides` in addition to `form_related_field` and `form_schema`.
+That path uses overrides (`form_schema` / `schemaOverrides`) in addition to `form_related_field`.
+
+## Integration checklist
+
+- [ ] `form_related_field` is a non-empty array; first element has `id` and `field_types`.
+- [ ] All user-visible strings from `meta_data` / validations are **unwrapped** from `{ value }` before JSX.
+- [ ] Widget type considers **`meta_data.type`** and **`validations.choices`** as well as **`field.type`**.
+- [ ] Client submits **`FormData`** with **`schema`**, **`g-recaptcha-response`** (if used), and field **`name`** keys.
+- [ ] API route: **`bodyParser: false`**, **`FormData`** parsing compatible with **Node** (`Readable.toWeb`), **`sdk.utils.form.submitForm`**, `{ isCms: true }`.
+- [ ] reCAPTCHA **secret** verified server-side where applicable.
 
 ## Related references
 
-- [Forms](/documentation/concepts-features/forms)
-- [How to integrate form](/documentation/guides/decoupled-frontend/integrations/how-to-integrate-form)
-- [Form schema (reader)](/api-reference/content-delivery/form-schema)
-- [Form submission](/api-reference/content-management/forms/form-submission)
-- [JavaScript SDK](/documentation/sdks/javascript)
+- [Forms](https://docs.thepublive.com/documentation/concepts-features/forms)
+- [How to integrate form](https://docs.thepublive.com/documentation/guides/decoupled-frontend/integrations/how-to-integrate-form)
+- [Form schema (reader)](https://docs.thepublive.com/api-reference/content-delivery/form-schema)
+- [Form submission](https://docs.thepublive.com/api-reference/content-management/forms/form-submission)
+- [JavaScript SDK](https://docs.thepublive.com/documentation/sdks/javascript)
