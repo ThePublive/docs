@@ -1,0 +1,86 @@
+---
+title: "Update Live Blog Update"
+description: Update an existing live blog update entry
+api: "PATCH https://cms.thepublive.com/publisher/{publisher_id}/post/{post_id}/live-blog-update/{id}/"
+---
+
+Updates an existing live blog update entry. Only send the fields you want to change.
+
+<Info>
+This endpoint only applies to posts with `type: "LiveBlog"`. For other post types, use the [Update Post](/api-reference/content-management/posts/update-post) endpoint.
+</Info>
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField path="post_id" type="integer" required>
+  The post ID of the LiveBlog
+</ParamField>
+
+<ParamField path="id" type="integer" required>
+  The ID of the live blog update entry to update
+</ParamField>
+
+<ParamField body="title" type="string">
+  Headline for this update entry
+</ParamField>
+
+<ParamField body="content" type="string">
+  HTML body content for this update entry
+</ParamField>
+
+#### Example request
+
+```bash
+curl --request PATCH \
+  --url https://cms.thepublive.com/publisher/1/post/11075/live-blog-update/4/ \
+  --header 'Authorization: Basic {auth_token}' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "title": "Update test API 3",
+    "content": "<p>Update testAPI</p>"
+}'
+```
+
+<ResponseExample>
+
+```json 200
+{
+  "status": 200,
+  "message": "Updated Successfully",
+  "data": {
+    "id": 4,
+    "published_post": 9878,
+    "author": {
+      "name": "PL",
+      "slug": "PL",
+      "description": "",
+      "facebook": "",
+      "linkedin": "",
+      "instagram": "",
+      "twitter": "",
+      "avatar": "test_1/media/member_avatars/2025/06/04/2025-06-04t062423556z-2sb0dogg9lqdjohcy4zk-20b3e10e.webp"
+    },
+    "content": {
+      "title": "Update test API 3",
+      "content": "<p>Update testAPI</p>"
+    },
+    "created_at": "2026-04-13T18:00:51.784995+05:30",
+    "updated_at": "2026-04-13T18:02:08.031108+05:30",
+    "is_pinned": false,
+    "Cache-Tags": [
+      "PublishedPostComments.4",
+      "RE-MD.135"
+    ]
+  }
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+</ResponseExample>
