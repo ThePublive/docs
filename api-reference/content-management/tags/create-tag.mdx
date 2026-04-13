@@ -22,8 +22,12 @@ Creates a new tag.
   Tag name
 </ParamField>
 
+<ParamField body="slug" type="string">
+  Custom slug (auto-generated if omitted). **Immutable after creation.**
+</ParamField>
+
 <ParamField body="english_name" type="string" required>
-  English name
+  English name for slug generation. **Immutable after creation.**
 </ParamField>
 
 <ParamField body="meta_title" type="string">

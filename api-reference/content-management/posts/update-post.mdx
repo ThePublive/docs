@@ -4,7 +4,7 @@ description: Update an existing post
 api: "PATCH https://cms.thepublive.com/publisher/{publisher_id}/post/{id}/"
 ---
 
-Updates an existing post. Only send the fields you want to change (partial update).
+Updates an existing post. Only send the fields you want to change (partial update). Note that identifiers and core types cannot be modified after creation.
 
 Send only the fields you wish to update. Common fields:
 
@@ -65,10 +65,10 @@ Send only the fields you wish to update. Common fields:
 </ParamField>
 
 <ParamField body="type" type="string">
-  Post type
+  Post type. **Immutable after creation.**
 </ParamField>
 
-#### Example Request
+#### Example request
 
 ```bash
 curl -X PATCH \

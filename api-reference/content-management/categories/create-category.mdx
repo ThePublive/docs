@@ -23,11 +23,11 @@ Creates a new category.
 </ParamField>
 
 <ParamField body="english_name" type="string" required>
-  English name (for permalink generation)
+  English name for slug generation. **Immutable after creation.**
 </ParamField>
 
 <ParamField body="slug" type="string">
-  Custom slug (auto-generated if omitted)
+  Custom slug (auto-generated if omitted). **Immutable after creation.**
 </ParamField>
 
 <ParamField body="meta_title" type="string">
@@ -40,6 +40,10 @@ Creates a new category.
 
 <ParamField body="meta_description" type="string">
   SEO description
+</ParamField>
+
+<ParamField body="parent_category" type="integer">
+  Parent category ID. **Immutable after creation.**
 </ParamField>
 
 <ParamField body="priority" type="integer">

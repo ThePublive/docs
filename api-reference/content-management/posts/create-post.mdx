@@ -23,11 +23,11 @@ Creates a new post. Posts are created with `Draft` status by default.
 </ParamField>
 
 <ParamField body="english_title" type="string" required>
-  English headline (for slug)
+  English headline for slug. **Immutable after creation.**
 </ParamField>
 
 <ParamField body="type" type="string" required>
-  `Article`, `Video`, `Web Story`, `Gallery`, `LiveBlog`, `CustomPage`, `BlankPage`
+  Post type. `Article`, `Video`, `Web Story`, `Gallery`, `LiveBlog`, `CustomPage`, `BlankPage`. **Immutable after creation.**
 </ParamField>
 
 <ParamField body="status" type="string" required>
@@ -75,15 +75,15 @@ Creates a new post. Posts are created with `Draft` status by default.
 </ParamField>
 
 <ParamField body="slug" type="string">
-  Custom slug (auto-generated if omitted)
+  Custom slug (auto-generated if omitted). **Immutable after creation.**
 </ParamField>
 
 <ParamField body="meta_data" type="object">
-  Additional metadata (e.g., `{"access_type": "Paid"}`)
+  Additional metadata (e.g., `{"access_type": "Paid"}`). **Immutable after creation.**
 </ParamField>
 
 <ParamField body="custom_published_at" type="string">
-  Backdated publish date
+  Backdated publish date. **Immutable after creation.**
 </ParamField>
 
 <ParamField body="scheduled_at" type="string">
