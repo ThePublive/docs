@@ -94,7 +94,7 @@ Creates a new post. Posts are created with `Draft` status by default.
   Hide the featured image
 </ParamField>
 
-#### Example Request
+#### Example request
 
 ```bash
 curl -X POST \
@@ -155,8 +155,7 @@ curl -X POST \
 
 ```json 401
 {
-  "status": "error",
-  "message": "Unauthorized"
+  "detail": "Invalid Auth Credentials"
 }
 ```
 
