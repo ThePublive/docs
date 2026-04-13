@@ -290,5 +290,12 @@
   },
   "background": {
     "decoration": "grid"
+  },
+  "api": {
+    "mdx": {
+      "auth": {
+        "method": "basic"
+      }
+    }
   }
 }

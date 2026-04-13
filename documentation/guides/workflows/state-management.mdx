@@ -5,7 +5,7 @@ description: "Managing content state transitions in Publive"
 
 Understanding how content moves through different states is key to building reliable integrations with Publive.
 
-## State Diagram
+## State diagram
 
 ```
                     ┌──────────────────┐
@@ -24,7 +24,7 @@ Understanding how content moves through different states is key to building reli
               └───────────┘
 ```
 
-## Valid State Transitions
+## Valid state transitions
 
 | From | To | Notes |
 | ---- | -- | ----- |
@@ -37,15 +37,14 @@ Understanding how content moves through different states is key to building reli
 | `Scheduled` | `Draft` | Cancel scheduled publish |
 | `Scheduled` | `Published` | Auto-triggered at `scheduled_at` time |
 
-## Checking Post Status
+## Checking post status
 
 Use the CMS API to check current status:
 
 ```bash
 curl -X GET \
   'https://cms.thepublive.com/publisher/123/post/{id}/' \
-  -H 'username: YOUR_API_KEY' \
-  -H 'password: YOUR_API_SECRET'
+  -H 'Authorization: Basic YOUR_BASE64_TOKEN'
 ```
 
 The response includes:
@@ -63,7 +62,7 @@ The response includes:
 }
 ```
 
-## Access Control
+## Access control
 
 The `access_type` field in `meta_data` controls content visibility:
 

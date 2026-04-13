@@ -10,13 +10,7 @@ Creates a new post. Posts are created with `Draft` status by default.
   Your Publisher ID
 </ParamField>
 
-<ParamField header="username" type="string" required>
-  API Key
-</ParamField>
 
-<ParamField header="password" type="string" required>
-  API Secret
-</ParamField>
 
 <ParamField body="title" type="string" required>
   Post headline
@@ -99,8 +93,7 @@ Creates a new post. Posts are created with `Draft` status by default.
 ```bash
 curl -X POST \
   'https://cms.thepublive.com/publisher/123/post/' \
-  -H 'username: YOUR_API_KEY' \
-  -H 'password: YOUR_API_SECRET' \
+  -H 'Authorization: Basic YOUR_BASE64_TOKEN' \
   -H 'Content-Type: application/json' \
   -d '{
     "title": "Getting Started with Publive API",
