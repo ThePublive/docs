@@ -8,7 +8,7 @@ The Content Management Service (CMS) provides full CRUD access to your content. 
 **Base URL:** `https://cms.thepublive.com/publisher/{publisher_id}/`
 
 <Info>
-All CMS endpoints require `username` and `password` authentication headers, plus `Content-Type: application/json` for POST and PATCH requests.
+All CMS endpoints require HTTP Basic Auth via the `Authorization` header, plus `Content-Type: application/json` for POST and PATCH requests.
 </Info>
 
 ## Resources
@@ -20,13 +20,12 @@ All CMS endpoints require `username` and `password` authentication headers, plus
 | [Posts](/api-reference/content-management/posts) | List, Create, Retrieve, Update, Delete | Manage articles, videos, galleries, and more |
 | [Media Library](/api-reference/content-management/media) | List, Create, Retrieve, Update, Delete | Manage images, videos, and files |
 
-## Common Patterns
+## Common patterns
 
 ### Authentication
 
 ```bash
--H 'username: YOUR_API_KEY'
--H 'password: YOUR_API_SECRET'
+-H 'Authorization: Basic YOUR_BASE64_TOKEN'
 -H 'Content-Type: application/json'
 ```
 
@@ -48,11 +47,11 @@ All list endpoints return paginated results:
 | `page` | 1 | 1000 |
 | `limit` | 10 | 50 |
 
-### Update Method
+### Update method
 
 All update endpoints use **PATCH** (partial update). You only need to send the fields you want to change.
 
-### Success Responses
+### Success responses
 
 | Operation | Status | Message |
 | --------- | ------ | ------- |

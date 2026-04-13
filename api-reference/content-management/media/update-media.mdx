@@ -22,13 +22,7 @@ The following fields are **immutable after creation** and cannot be changed via 
   Media ID
 </ParamField>
 
-<ParamField header="username" type="string" required>
-  API Key
-</ParamField>
 
-<ParamField header="password" type="string" required>
-  API Secret
-</ParamField>
 
 <ParamField body="filename" type="string">
   Filename
@@ -55,8 +49,7 @@ The following fields are **immutable after creation** and cannot be changed via 
 ```bash
 curl -X PATCH \
   'https://cms.thepublive.com/publisher/123/media-library/999/' \
-  -H 'username: YOUR_API_KEY' \
-  -H 'password: YOUR_API_SECRET' \
+  -H 'Authorization: Basic YOUR_BASE64_TOKEN' \
   -H 'Content-Type: application/json' \
   -d '{"source": "Reuters", "alt_text": "Updated alt text"}'
 ```

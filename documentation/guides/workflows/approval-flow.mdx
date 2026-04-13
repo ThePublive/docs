@@ -5,7 +5,7 @@ description: "Multi-step content approval workflows"
 
 Publive supports configurable approval workflows for content publishing. This guide covers how to implement approval flows using the CMS API.
 
-## Content Statuses
+## Content statuses
 
 | Status | Description |
 | ------ | ----------- |
@@ -14,7 +14,7 @@ Publive supports configurable approval workflows for content publishing. This gu
 | `Published` | Live and publicly accessible |
 | `Scheduled` | Will be published at a future date/time |
 
-## Basic Approval Flow
+## Basic approval flow
 
 ### 1. Author Creates Draft
 
@@ -27,8 +27,7 @@ Update the post status to `Approval Pending`:
 ```bash
 curl -X PATCH \
   'https://cms.thepublive.com/publisher/123/post/{id}/' \
-  -H 'username: YOUR_API_KEY' \
-  -H 'password: YOUR_API_SECRET' \
+  -H 'Authorization: Basic YOUR_BASE64_TOKEN' \
   -H 'Content-Type: application/json' \
   -d '{"status": "Approval Pending"}'
 ```
@@ -59,7 +58,7 @@ curl -X PATCH \
   }'
 ```
 
-## Backdated Publishing
+## Backdated publishing
 
 For content that needs a custom publication date (e.g., migrated content):
 

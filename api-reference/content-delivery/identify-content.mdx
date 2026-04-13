@@ -15,13 +15,7 @@ Use this endpoint when your frontend receives a path and needs to determine what
   Your Publisher ID
 </ParamField>
 
-<ParamField header="username" type="string" required>
-  API Key
-</ParamField>
 
-<ParamField header="password" type="string" required>
-  API Secret
-</ParamField>
 
 <ParamField query="legacy_url" type="string" required>
   Path or slug to resolve. Use the post legacy URL for posts, the category slug for categories, `/tags/{slug}` for tags, and `/author/{slug}` for authors.
@@ -43,8 +37,7 @@ Use this endpoint when your frontend receives a path and needs to determine what
 ```bash
 curl -X GET \
   'https://cds.thepublive.com/publisher/1234/identify_url/?legacy_url=/guides/getting-started' \
-  -H 'username: YOUR_API_KEY' \
-  -H 'password: YOUR_API_SECRET'
+  -H 'Authorization: Basic YOUR_BASE64_TOKEN'
 ```
 
 ## SDK usage

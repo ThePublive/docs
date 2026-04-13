@@ -3,24 +3,36 @@ title: "Authentication"
 description: "How to authenticate your API requests to Publive"
 ---
 
-All Publive API requests require authentication via HTTP headers. Both the Content Delivery Service (CDS) and Content Management Service (CMS) use the same authentication method.
+All Publive API requests require authentication via HTTP Basic Auth. Both the Content Delivery Service (CDS) and Content Management Service (CMS) use the same method.
 
-## Authentication Headers
+## How it works
 
-Include these headers with every API request:
+You authenticate by sending an `Authorization` header with every request. The value is the word `Basic` followed by a Base64-encoded string of your API Key and API Secret joined by a colon.
 
-| Header | Type | Required | Description |
-| ------ | ---- | -------- | ----------- |
-| `username` | string | Yes | Your unique API key provided by Publive |
-| `password` | string | Yes | Your API secret provided by Publive |
+```
+Authorization: Basic <base64(API_KEY:API_SECRET)>
+```
 
-## Example Request
+## Generate your token
+
+Encode your credentials using the command line:
+
+```bash
+echo -n 'YOUR_API_KEY:YOUR_API_SECRET' | base64
+```
+
+This outputs a token like `eW91cl9hcGlfa2V5OnlvdXJfYXBpX3NlY3JldA==`. Use this value in your requests.
+
+<Tip>
+You can also try API calls directly from these docs — the interactive playground on every API page lets you enter your API Key and API Secret, and it constructs the `Authorization` header for you automatically.
+</Tip>
+
+## Example request
 
 ```bash
 curl -X GET \
   'https://cds.thepublive.com/publisher/{publisher_id}/posts/' \
-  -H 'username: YOUR_API_KEY' \
-  -H 'password: YOUR_API_SECRET'
+  -H 'Authorization: Basic eW91cl9hcGlfa2V5OnlvdXJfYXBpX3NlY3JldA=='
 ```
 
 For CMS API requests that send data, also include the `Content-Type` header:
@@ -28,21 +40,22 @@ For CMS API requests that send data, also include the `Content-Type` header:
 ```bash
 curl -X POST \
   'https://cms.thepublive.com/publisher/{publisher_id}/category/' \
-  -H 'username: YOUR_API_KEY' \
-  -H 'password: YOUR_API_SECRET' \
+  -H 'Authorization: Basic eW91cl9hcGlfa2V5OnlvdXJfYXBpX3NlY3JldA==' \
   -H 'Content-Type: application/json' \
   -d '{"name": "Technology", "english_name": "Technology"}'
 ```
 
-## Getting Your Credentials
+## Getting your credentials
 
-1. Log in to your [Publive Dashboard](https://app.thepublive.com)
-2. Go to **Settings** > **API Keys**
-3. Your **API Key** is the `username` value
-4. Your **API Secret** is the `password` value
-5. Your **Publisher ID** is visible in your dashboard URL
+1. Log in to your [Publive Dashboard](https://dashboard.thepublive.com/v2/configurations/api-developer-hub).
+2. Click the **View API credentials** button.
+3. Your **API Key** is the username for Basic Auth.
+4. Your **API Secret** is the password for Basic Auth.
+5. Your **Publisher ID** is visible in your dashboard URL.
 
-## Authentication Errors
+If you don't have login credentials for the dashboard, please contact us at [thepublive.com/contact-us](https://thepublive.com/contact-us).
+
+## Authentication errors
 
 If authentication fails, the API returns a `401 Unauthorized` response:
 
@@ -53,12 +66,12 @@ If authentication fails, the API returns a `401 Unauthorized` response:
 ```
 
 Common causes:
-* Missing `username` or `password` header
+* Missing `Authorization` header
+* Incorrectly encoded Base64 token
 * Invalid or expired API credentials
-* Using CMS credentials for a CDS endpoint (or vice versa)
 
 <Warning>
-**Security Best Practices:**
+**Security best practices:**
 * Never expose API credentials in client-side JavaScript
 * Use environment variables to store credentials
 * Rotate API keys periodically

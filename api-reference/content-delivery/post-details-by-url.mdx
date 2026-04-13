@@ -10,13 +10,7 @@ Returns a single post by matching its legacy or relative URL path. Useful for UR
   Your Publisher ID
 </ParamField>
 
-<ParamField header="username" type="string" required>
-  API Key
-</ParamField>
 
-<ParamField header="password" type="string" required>
-  API Secret
-</ParamField>
 
 <ParamField query="legacy_url" type="string" required>
   Relative URL path (e.g., `/news/my-article-12345`)
@@ -27,8 +21,7 @@ Returns a single post by matching its legacy or relative URL path. Useful for UR
 ```bash
 curl -X GET \
   'https://cds.thepublive.com/publisher/123/post/?legacy_url=/business/union-budget-2026-highlights-12345' \
-  -H 'username: YOUR_API_KEY' \
-  -H 'password: YOUR_API_SECRET'
+  -H 'Authorization: Basic YOUR_BASE64_TOKEN'
 ```
 
 Returns the same post object as the [Post Details](/api-reference/content-delivery/post-details) endpoint.
