@@ -207,7 +207,9 @@
                   "api-reference/content-management/posts/create-post",
                   "api-reference/content-management/posts/retrieve-post",
                   "api-reference/content-management/posts/update-post",
-                  "api-reference/content-management/posts/delete-post"
+                  "api-reference/content-management/posts/delete-post",
+                  "api-reference/content-management/posts/create-live-blog-update",
+                  "api-reference/content-management/posts/update-live-blog-update"
                 ]
               },
               {
