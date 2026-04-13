@@ -18,8 +18,8 @@ The maker-checker pattern ensures that content created by one user (maker) must 
 ```bash
 curl -X POST \
   'https://cms.thepublive.com/publisher/123/post/' \
-  -H 'username: MAKER_API_KEY' \
-  -H 'password: MAKER_API_SECRET' \
+  -H 'username: API_KEY' \
+  -H 'password: API_SECRET' \
   -H 'Content-Type: application/json' \
   -d '{
     "title": "Quarterly Financial Report Q4 2025",
@@ -36,8 +36,8 @@ curl -X POST \
 ```bash
 curl -X PATCH \
   'https://cms.thepublive.com/publisher/123/post/50200/' \
-  -H 'username: MAKER_API_KEY' \
-  -H 'password: MAKER_API_SECRET' \
+  -H 'username: API_KEY' \
+  -H 'password: API_SECRET' \
   -H 'Content-Type: application/json' \
   -d '{"status": "Approval Pending"}'
 ```
