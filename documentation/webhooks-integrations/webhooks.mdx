@@ -3,22 +3,17 @@ title: "Webhooks"
 description: "Set up webhooks to receive real-time notifications from Publive"
 ---
 
-Webhooks allow you to receive real-time HTTP callbacks when events occur in your Publive CMS, such as content being published, updated, or deleted.
+Webhooks allow you to receive real-time HTTP callbacks when events occur in your Publive CMS, such as content being published or a reader joining your newsletter.
 
-## Supported Events
+## Supported events
 
 | Event | Trigger |
 | ----- | ------- |
-| `post.created` | A new post is created |
-| `post.updated` | A post is updated |
-| `post.published` | A post status changes to Published |
-| `post.deleted` | A post is deleted |
-| `category.created` | A new category is created |
-| `category.updated` | A category is updated |
-| `category.deleted` | A category is deleted |
-| `tag.created` | A new tag is created |
-| `tag.updated` | A tag is updated |
-| `media.uploaded` | New media is added to the library |
+| `post.published` | A post status changes to **Published** |
+| `reader.added` | A new reader is added to your workspace |
+| `reader.removed` | A reader is removed from your workspace |
+| `newsletter.subscribe` | A user subscribes to your newsletter |
+| `form.submitted` | A form is submitted by a user |
 
 ## Setup
 
@@ -30,7 +25,7 @@ Configure webhooks through the Publive Dashboard:
 4. Select the events you want to subscribe to
 5. Save
 
-## Payload Format
+## Payload format
 
 ```json
 {
@@ -60,7 +55,7 @@ X-Publive-Signature: sha256=...
 
 Verify the signature by computing HMAC-SHA256 of the request body using your webhook secret.
 
-## Best Practices
+## Best practices
 
 - **Respond with 200** quickly, process the payload asynchronously
 - **Implement idempotency** as webhooks may be delivered more than once
