@@ -6,6 +6,15 @@ api: "PATCH https://cms.thepublive.com/publisher/{publisher_id}/category/{id}/"
 
 Updates an existing category. Only send the fields you want to change (partial update).
 
+<Warning>
+The following fields are **immutable after creation** and cannot be changed via update:
+- `english_name` — English name used for permalink generation
+- `slug` — URL slug (derived from `english_name` at creation)
+- `content_type` — Content type filter
+</Warning>
+
+#### Updatable fields
+
 <ParamField path="publisher_id" type="string" required>
   Your Publisher ID
 </ParamField>
@@ -46,7 +55,7 @@ Updates an existing category. Only send the fields you want to change (partial u
   Priority level
 </ParamField>
 
-#### Example Request
+#### Example request
 
 ```bash
 curl -X PATCH \

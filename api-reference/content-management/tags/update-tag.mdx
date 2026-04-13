@@ -6,6 +6,14 @@ api: "PATCH https://cms.thepublive.com/publisher/{publisher_id}/tag/{id}/"
 
 Updates an existing tag. Only send the fields you want to change (partial update).
 
+<Warning>
+The following fields are **immutable after creation** and cannot be changed via update:
+- `english_name` — English name used for slug generation
+- `slug` — URL slug (derived from `english_name` at creation)
+</Warning>
+
+#### Updatable fields
+
 <ParamField path="publisher_id" type="string" required>
   Your Publisher ID
 </ParamField>
@@ -38,7 +46,7 @@ Updates an existing tag. Only send the fields you want to change (partial update
   Tag description (HTML)
 </ParamField>
 
-#### Example Request
+#### Example request
 
 ```bash
 curl -X PATCH \
