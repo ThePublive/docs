@@ -23,11 +23,11 @@ Creates a new post. Posts are created with `Draft` status by default.
 </ParamField>
 
 <ParamField body="english_title" type="string" required>
-  English headline for slug. **Immutable after creation.**
+  English headline (used for slug generation). **Cannot be changed after creation.**
 </ParamField>
 
 <ParamField body="type" type="string" required>
-  Post type. `Article`, `Video`, `Web Story`, `Gallery`, `LiveBlog`, `CustomPage`, `BlankPage`. **Immutable after creation.**
+  Post type. `Article`, `Video`, `Web Story`, `Gallery`, `LiveBlog`, `CustomPage`, `BlankPage`. **Cannot be changed after creation.**
 </ParamField>
 
 <ParamField body="status" type="string" required>
@@ -75,7 +75,7 @@ Creates a new post. Posts are created with `Draft` status by default.
 </ParamField>
 
 <ParamField body="slug" type="string">
-  Custom slug (auto-generated if omitted). **Immutable after creation.**
+  Custom slug (auto-generated from `english_title` if omitted). **Cannot be changed after creation.**
 </ParamField>
 
 <ParamField body="meta_data" type="object">

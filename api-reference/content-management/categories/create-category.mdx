@@ -23,11 +23,11 @@ Creates a new category.
 </ParamField>
 
 <ParamField body="english_name" type="string" required>
-  English name for slug generation. **Immutable after creation.**
+  English name (used for permalink generation). **Cannot be changed after creation.**
 </ParamField>
 
 <ParamField body="slug" type="string">
-  Custom slug (auto-generated if omitted). **Immutable after creation.**
+  Custom slug (auto-generated from `english_name` if omitted). **Cannot be changed after creation.**
 </ParamField>
 
 <ParamField body="meta_title" type="string">
@@ -59,7 +59,7 @@ Creates a new category.
 </ParamField>
 
 <ParamField body="content_type" type="string">
-  Content type filter (e.g., `Article`, `Web Story`)
+  Content type filter (e.g., `Article`, `Web Story`). **Cannot be changed after creation.**
 </ParamField>
 
 #### Example Request

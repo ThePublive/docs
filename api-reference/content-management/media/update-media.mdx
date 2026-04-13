@@ -6,6 +6,14 @@ api: "PATCH https://cms.thepublive.com/publisher/{publisher_id}/media-library/{i
 
 Updates metadata of an existing media asset. Only send the fields you want to change.
 
+<Warning>
+The following fields are **immutable after creation** and cannot be changed via update:
+- `path` — Media URL / CDN path
+- `type` — Media type (`Image`, `Video`, `File`)
+</Warning>
+
+#### Updatable fields
+
 <ParamField path="publisher_id" type="string" required>
   Your Publisher ID
 </ParamField>
