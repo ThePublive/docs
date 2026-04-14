@@ -5,7 +5,7 @@ description: "Implementing Publive for Banking, Financial Services, and Insuranc
 
 Publive provides enterprise governance features essential for the Banking, Financial Services, and Insurance (BFSI) sector.
 
-## Key Requirements
+## Key requirements
 
 | Requirement | Publive Feature |
 | ----------- | --------------- |
@@ -15,7 +15,7 @@ Publive provides enterprise governance features essential for the Banking, Finan
 | Content versioning | Draft/Published state separation |
 | Compliance reviews | `Approval Pending` → review → `Published` flow |
 
-## Implementing Maker-Checker
+## Implementing maker-checker
 
 For BFSI compliance, every piece of content should go through the approval flow:
 
@@ -25,14 +25,14 @@ Draft → Approval Pending → (Compliance Review) → Published
 
 See the [Maker-Checker Guide](/documentation/guides/workflows/maker-checker) for detailed implementation steps.
 
-## Content Access Controls
+## Content access controls
 
 Use the `access_type` metadata to control content visibility:
 
 ```bash
 # Create compliance-restricted content
 curl -X POST \
-  'https://cms.thepublive.com/publisher/123/post/' \
+  'https://cms.thepublive.com/publisher/<PUBLISHER_ID>/post/' \
   -H 'Content-Type: application/json' \
   -d '{
     "title": "Internal Compliance Update",
@@ -43,7 +43,7 @@ curl -X POST \
   }'
 ```
 
-## Audit Trail
+## Audit trail
 
 Every post includes timestamps and attribution:
 
@@ -57,7 +57,7 @@ Every post includes timestamps and attribution:
 | `approver` | Who approved publication |
 | `source` | Content origin system |
 
-## Best Practices
+## Best practices
 
 1. **Separate API keys** for content creators (makers) and approvers (checkers)
 2. **Always use `Approval Pending`** status before publishing

@@ -63,7 +63,7 @@ Send only the fields you wish to update. Common fields:
 ```bash
 curl -X PATCH \
   'https://cms.thepublive.com/publisher/123/post/50123/' \
-  -H 'Authorization: Basic YOUR_BASE64_TOKEN' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
   -H 'Content-Type: application/json' \
   -d '{"status": "Published", "title": "Updated Title"}'
 ```

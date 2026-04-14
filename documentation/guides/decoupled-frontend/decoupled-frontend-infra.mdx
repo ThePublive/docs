@@ -72,9 +72,17 @@ graph LR
 
 ## Publisher Lifecycle
 
-<Frame>
-  ![Lifecycle Diagram](/images/lifecycle-diagram.png)
-</Frame>
+```mermaid
+graph LR
+    A["Onboarding\n(Publive Engineer)"] -->|"Publisher ID\nAPI Key & Secret"| B["Custom App Development\n(You Own This)"]
+    B -->|"Fully Built App"| C["Deployment\n(Publive Engineer)"]
+    C -->|"Deployed App\nDNS Configuration"| D["Live App"]
+
+    style A fill:#3B82F6,color:#fff
+    style B fill:#10B981,color:#fff
+    style C fill:#6366F1,color:#fff
+    style D fill:#F59E0B,color:#fff
+```
 
 <Steps>
   <Step title="Onboarding">

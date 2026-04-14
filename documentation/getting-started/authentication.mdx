@@ -10,7 +10,7 @@ All Publive API requests require authentication via HTTP Basic Auth. Both the Co
 You authenticate by sending an `Authorization` header with every request. The value is the word `Basic` followed by a Base64-encoded string of your API Key and API Secret joined by a colon.
 
 ```
-Authorization: Basic <base64(API_KEY:API_SECRET)>
+Authorization: Basic <BASE64_AUTH_TOKEN>
 ```
 
 ## Generate your token
@@ -21,7 +21,7 @@ Encode your credentials using the command line:
 echo -n 'YOUR_API_KEY:YOUR_API_SECRET' | base64
 ```
 
-This outputs a token like `eW91cl9hcGlfa2V5OnlvdXJfYXBpX3NlY3JldA==`. Use this value in your requests.
+This outputs a token like `<BASE64_AUTH_TOKEN>`. Use this value in your requests.
 
 <Tip>
 You can also try API calls directly from these docs — the interactive playground on every API page lets you enter your API Key and API Secret, and it constructs the `Authorization` header for you automatically.
@@ -31,16 +31,16 @@ You can also try API calls directly from these docs — the interactive playgrou
 
 ```bash
 curl -X GET \
-  'https://cds.thepublive.com/publisher/{publisher_id}/posts/' \
-  -H 'Authorization: Basic eW91cl9hcGlfa2V5OnlvdXJfYXBpX3NlY3JldA=='
+  'https://cds.thepublive.com/publisher/<PUBLISHER_ID>/posts/' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>'
 ```
 
 For CMS API requests that send data, also include the `Content-Type` header:
 
 ```bash
 curl -X POST \
-  'https://cms.thepublive.com/publisher/{publisher_id}/category/' \
-  -H 'Authorization: Basic eW91cl9hcGlfa2V5OnlvdXJfYXBpX3NlY3JldA==' \
+  'https://cms.thepublive.com/publisher/<PUBLISHER_ID>/category/' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
   -H 'Content-Type: application/json' \
   -d '{"name": "Technology", "english_name": "Technology"}'
 ```
@@ -80,11 +80,11 @@ Common causes:
 
 ## Publisher ID
 
-Every API endpoint requires your `publisher_id` in the URL path:
+Every API endpoint requires your `<PUBLISHER_ID>` in the URL path:
 
 ```
-https://cds.thepublive.com/publisher/{publisher_id}/posts/
-https://cms.thepublive.com/publisher/{publisher_id}/post/
+https://cds.thepublive.com/publisher/<PUBLISHER_ID>/posts/
+https://cms.thepublive.com/publisher/<PUBLISHER_ID>/post/
 ```
 
 Your Publisher ID is a unique numeric identifier assigned to your organization. You can find it in your Publive Dashboard URL.

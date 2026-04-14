@@ -5,7 +5,7 @@ description: "Implementing Publive for pharmaceutical content governance"
 
 Publive supports the strict content governance requirements of the pharmaceutical and healthcare industry.
 
-## Regulatory Requirements
+## Regulatory requirements
 
 | Requirement | Publive Feature |
 | ----------- | --------------- |
@@ -15,13 +15,13 @@ Publive supports the strict content governance requirements of the pharmaceutica
 | Access restrictions | API key isolation, `access_type` metadata |
 | Scheduled publishing | `Scheduled` status with `scheduled_at` datetime |
 
-## Implementation Pattern
+## Implementation pattern
 
 ### 1. Content Creation (Medical Writer)
 
 ```bash
 curl -X POST \
-  'https://cms.thepublive.com/publisher/123/post/' \
+  'https://cms.thepublive.com/publisher/<PUBLISHER_ID>/post/' \
   -H 'Content-Type: application/json' \
   -d '{
     "title": "Drug Safety Update - Product XYZ",
@@ -38,7 +38,7 @@ curl -X POST \
 
 ```bash
 curl -X PATCH \
-  'https://cms.thepublive.com/publisher/123/post/{id}/' \
+  'https://cms.thepublive.com/publisher/<PUBLISHER_ID>/post/<POST_ID>/' \
   -H 'Content-Type: application/json' \
   -d '{"status": "Approval Pending"}'
 ```
@@ -47,12 +47,12 @@ curl -X PATCH \
 
 ```bash
 curl -X PATCH \
-  'https://cms.thepublive.com/publisher/123/post/{id}/' \
+  'https://cms.thepublive.com/publisher/<PUBLISHER_ID>/post/<POST_ID>/' \
   -H 'Content-Type: application/json' \
   -d '{"status": "Published"}'
 ```
 
-## Content Organization
+## Content organization
 
 Recommended category structure for pharma:
 
@@ -64,7 +64,7 @@ Recommended category structure for pharma:
 | Patient Information | Public-facing health content |
 | Internal Communications | Staff-only content |
 
-## Best Practices
+## Best practices
 
 1. **Enforce `Approval Pending`** for all content before publication
 2. **Use `meta_data`** to tag compliance classifications

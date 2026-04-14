@@ -31,7 +31,7 @@ This endpoint only applies to posts with `type: "LiveBlog"`. For other post type
 ```bash
 curl --request POST \
   --url https://cms.thepublive.com/publisher/1/post/11075/live-blog-update/ \
-  --header 'Authorization: Basic {auth_token}' \
+  --header 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
   --header 'Content-Type: application/json' \
   --data '{
     "title": "Update test API 2",

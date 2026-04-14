@@ -5,7 +5,7 @@ description: "Understand the key entities and concepts in Publive"
 
 This page explains the fundamental building blocks of Publive's content architecture.
 
-## Content Entities
+## Content entities
 
 ### Posts
 
@@ -56,10 +56,10 @@ The Media Library stores all media assets (images, videos, files) used across yo
 
 Key fields: `filename`, `path` (URL), `alt_text`, `caption`, `source`, `type` (Image/Video/File), `meta_data` (dimensions).
 
-## Two APIs, Two Purposes
+## Two APIs, two purposes
 
 ### Content Delivery Service (CDS)
-**Base URL:** `https://cds.thepublive.com/publisher/{publisher_id}/`
+**Base URL:** `https://cds.thepublive.com/publisher/<PUBLISHER_ID>/`
 
 Read-only API for your frontend. Use this to:
 * Fetch published posts, categories, tags, and authors
@@ -67,7 +67,7 @@ Read-only API for your frontend. Use this to:
 * Query content with advanced filters (`__eq`, `__contains`, `__in`, `__gte`, etc.)
 
 ### Content Management Service (CMS)
-**Base URL:** `https://cms.thepublive.com/publisher/{publisher_id}/`
+**Base URL:** `https://cms.thepublive.com/publisher/<PUBLISHER_ID>/`
 
 Full CRUD API for managing content. Use this to:
 * Create, update, and delete posts, categories, tags, and media
@@ -94,7 +94,7 @@ Paginated responses include:
 }
 ```
 
-## Response Format
+## Response format
 
 ### CDS API Responses
 
@@ -120,14 +120,14 @@ Paginated responses include:
 }
 ```
 
-## Cache Tags (CDS)
+## Cache tags (CDS)
 
 CDS responses include `Cache-Tags` for CDN cache invalidation:
 
 | Tag Format | Entity |
 | ---------- | ------ |
-| `PA.{id}` | Publisher |
-| `CAT.{id}` | Category |
-| `TAG.{id}` | Tag |
-| `MEM.{id}` | Author/Member |
-| `PP.{id}` | Post |
+| `PA.<ID>` | Publisher |
+| `CAT.<ID>` | Category |
+| `TAG.<ID>` | Tag |
+| `MEM.<ID>` | Author/Member |
+| `PP.<ID>` | Post |

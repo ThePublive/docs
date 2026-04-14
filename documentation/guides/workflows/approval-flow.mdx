@@ -16,23 +16,23 @@ Publive supports configurable approval workflows for content publishing. This gu
 
 ## Basic approval flow
 
-### 1. Author Creates Draft
+### 1. Author creates draft
 
 The content creator writes the article and saves as draft.
 
-### 2. Author Submits for Review
+### 2. Author submits for review
 
 Update the post status to `Approval Pending`:
 
 ```bash
 curl -X PATCH \
-  'https://cms.thepublive.com/publisher/123/post/{id}/' \
-  -H 'Authorization: Basic YOUR_BASE64_TOKEN' \
+  'https://cms.thepublive.com/publisher/123/post/<POST_ID>/' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
   -H 'Content-Type: application/json' \
   -d '{"status": "Approval Pending"}'
 ```
 
-### 3. Editor Reviews and Approves
+### 3. Editor reviews and approves
 
 The editor can either publish or reject:
 
@@ -44,13 +44,13 @@ curl -X PATCH ... -d '{"status": "Published"}'
 curl -X PATCH ... -d '{"status": "Draft"}'
 ```
 
-### 4. Schedule for Later (Optional)
+### 4. Schedule for later (optional)
 
 Instead of immediate publishing, schedule for a future time:
 
 ```bash
 curl -X PATCH \
-  'https://cms.thepublive.com/publisher/123/post/{id}/' \
+  'https://cms.thepublive.com/publisher/123/post/<POST_ID>/' \
   -H 'Content-Type: application/json' \
   -d '{
     "status": "Scheduled",
