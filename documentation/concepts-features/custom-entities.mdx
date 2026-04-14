@@ -5,7 +5,7 @@ description: "Define your own content types and structures beyond the default po
 
 In Publive (a headless CMS), **Custom Entities** let you define your own content types and structures beyond the default post model. Each custom entity is driven by a **schema** that describes its fields, and each **entry** is a document that holds values for those fields.
 
-- **Schema** – Defines the content type: its name, API identifiers, fields, groups, and settings (e.g. entry title, searchable/filter fields, allowed states, access control, custom URL rule).
+- **Schema** – Defines the content type: its name, API identifiers, fields, groups, and settings (e.g. entry title, searchable/filter fields, allowed states, access control, custom URL rule (Coming soon)).
 - **Entry** – A single record for that content type, with values for each field defined in the schema.
 - **Published entry** – The version of an entry that is exposed via APIs for consumption by apps and websites.
 
@@ -37,7 +37,7 @@ In Publive (a headless CMS), **Custom Entities** let you define your own content
 - The **schema** is the definition of a content type: name, API slugs, response format, **fields**, **groups**, and **settings**.
 - **Fields** – Each field has a name, a **type** (e.g. short text, number, relation, component, dynamic zone, dynamic list), optional metadata (e.g. label, default), and validation rules.
 - **Groups** – Logical grouping of fields (e.g. "Content", "SEO") for organisation and UI.
-- **Settings** – Include which field is used as the entry title, which fields are searchable, which can be used as filters, allowed states, access control, custom URL patterns, and optional component preview.
+- **Settings** – Include which field is used as the entry title, which fields are searchable, which can be used as filters, allowed states, access control, custom URL patterns (Coming soon), and optional component preview.
 
 ### Entries and Field Values
 
@@ -68,7 +68,6 @@ In Publive (a headless CMS), **Custom Entities** let you define your own content
 | **Phone number** | Phone number | Contact number | |
 | **Publive media** | Image or file from Publive media library | Image, attachment | References a single media item (id, url, type, filename in API). |
 | **JSON** | Arbitrary JSON | Config, metadata | |
-| **Array** | List of values | List of strings or numbers | |
 | **Related** | Link to another content item or taxonomy | Author, category, related post | Single or multiple relations depending on configuration. |
 | **Embed** | Embedded content (e.g. oEmbed / iframe) | Video, social embed | |
 | **Component** | One reusable block (single or repeatable) | Author card, feature list | See [Components](#components) section. Can be limited to one instance or allow multiple instances of the same block. |
