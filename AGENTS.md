@@ -30,5 +30,5 @@
 
 ## Content boundaries
 
-<!-- Define what should and shouldn't be documented -->
-<!-- Example: Don't document internal admin features -->
+{/* Define what should and shouldn't be documented */}
+{/* Example: Don't document internal admin features */}
