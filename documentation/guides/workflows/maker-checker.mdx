@@ -58,18 +58,6 @@ stateDiagram-v2
     Draft --> ApprovalPending : Maker submits
     ApprovalPending --> Published : Checker approves
     ApprovalPending --> Draft : Checker rejects
-
-    state Draft {
-        direction LR
-    }
-
-    state ApprovalPending {
-        direction LR
-    }
-
-    state Published {
-        direction LR
-    }
 ```
 
 <Info>
