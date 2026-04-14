@@ -118,23 +118,30 @@ Each layout section has:
 
 ### Rendering Flow
 
-<Frame>
-  ![Section Rendering Flow](/images/section-rendering-flow.png)
-</Frame>
-
 ```mermaid
 graph TD
-    A[CMS Page] -->|Contains| B[Layout Array]
-    B -->|Each Item| C[Section Object]
-    C -->|Has| D[schema_slug]
-    C -->|Has| E[Content Fields]
-    D -->|Maps to| F[React Component]
-    E -->|Passed as| G[Component Props]
-    F -->|Renders| H[Website Section]
-    
-    style A fill:#3B82F6
-    style F fill:#10B981
-    style H fill:#F59E0B
+    subgraph CMS ["Data Layer"]
+        A["Publive CMS Content"] --> B["SDK Fetch"]
+    end
+
+    subgraph Logic ["Orchestration Layer"]
+        B --> C["Layout Array"]
+        C --> D["Section Object (per item)"]
+        D --> E["schema_slug"]
+        D --> F["Content Fields"]
+    end
+
+    subgraph Frontend ["Presentation Layer"]
+        E --> G["Component Registry"]
+        G --> H["React Component"]
+        F --> I["Component Props"]
+        H & I --> J["Rendered Website Section"]
+    end
+
+    style A fill:#3B82F6,color:#fff
+    style C fill:#6366F1,color:#fff
+    style H fill:#10B981,color:#fff
+    style J fill:#F59E0B,color:#fff
 ```
 
 The website automatically:

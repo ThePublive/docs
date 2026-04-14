@@ -49,7 +49,7 @@ The following fields are **immutable after creation** and cannot be changed via 
 ```bash
 curl -X PATCH \
   'https://cms.thepublive.com/publisher/123/media-library/999/' \
-  -H 'Authorization: Basic YOUR_BASE64_TOKEN' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
   -H 'Content-Type: application/json' \
   -d '{"source": "Reuters", "alt_text": "Updated alt text"}'
 ```

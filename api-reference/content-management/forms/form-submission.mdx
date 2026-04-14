@@ -1,7 +1,7 @@
 ---
 title: "Submit Form "
 description: Submit a form with captcha validation and optional file uploads
-api: "POST https://cms.thepublive.com/publisher/{publisher_id}/form/{pk}/submit/"
+api: "POST https://cms.thepublive.com/publisher/<PUBLISHER_ID>/form/<PK>/submit/"
 ---
 
 Submits a form for a given schema and forwards it to PubliveAPI.
@@ -39,10 +39,10 @@ Submits a form for a given schema and forwards it to PubliveAPI.
 ```bash
 curl -X POST \
   'https://cms.thepublive.com/publisher/123/form/64f0d2b2a9e3f59a2e4a1234/submit/' \
-  -H 'Authorization: YOUR_TOKEN' \
+  -H 'Authorization: <AUTH_TOKEN>' \
   -H 'Content-Type: multipart/form-data' \
   -F 'schema=64f0d2b2a9e3f59a2e4a1234' \
-  -F 'g-recaptcha-response=<token>' \
+  -F 'g-recaptcha-response=<RECAPTCHA_TOKEN>' \
   -F 'name=Jane Doe' \
   -F 'email=jane@example.com' \
   -F 'resume=@/path/to/file.pdf'
@@ -54,10 +54,10 @@ curl -X POST \
 {
   "status": "success",
   "data": {
-    "id": "<submission_id>",
+    "id": "<SUBMISSION_ID>",
     "dynamic_fields": {
-      "<field_label>": "<value>",
-      "<file_field_label>": "<value>"
+      "<FIELD_LABEL>": "<VALUE>",
+      "<FILE_FIELD_LABEL>": "<VALUE>"
     },
     "form_name": "<form_name>",
     "submitted_by": {

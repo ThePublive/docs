@@ -36,7 +36,7 @@ Fetch your published posts using the Content Delivery API:
 ```bash
 curl -X GET \
   'https://cds.thepublive.com/publisher/YOUR_PUBLISHER_ID/posts/?limit=5' \
-  -H 'Authorization: Basic YOUR_BASE64_TOKEN'
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>'
 ```
 
 ## Step 3: Understand the response
@@ -83,7 +83,7 @@ To create a new post programmatically, use the Content Management API:
 ```bash
 curl -X POST \
   'https://cms.thepublive.com/publisher/YOUR_PUBLISHER_ID/post/' \
-  -H 'Authorization: Basic YOUR_BASE64_TOKEN' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
   -H 'Content-Type: application/json' \
   -d '{
     "title": "My API-Created Post",

@@ -7,8 +7,8 @@ api: "GET https://cds.thepublive.com/publisher/{publisher_id}/identify_url/"
 Use this endpoint when your frontend receives a path and needs to determine what it represents before choosing the correct page template or follow-up API call.
 
 <Info>
-  Production: `https://cds.thepublive.com/publisher/{publisher_id}/identify_url/`
-  Beta: `https://cds-beta.thepublive.com/publisher/{publisher_id}/identify_url/`
+  Production: `https://cds.thepublive.com/publisher/<PUBLISHER_ID>/identify_url/`
+  Beta: `https://cds-beta.thepublive.com/publisher/<PUBLISHER_ID>/identify_url/`
 </Info>
 
 <ParamField path="publisher_id" type="string" required>
@@ -18,7 +18,7 @@ Use this endpoint when your frontend receives a path and needs to determine what
 
 
 <ParamField query="legacy_url" type="string" required>
-  Path or slug to resolve. Use the post legacy URL for posts, the category slug for categories, `/tags/{slug}` for tags, and `/author/{slug}` for authors.
+  Path or slug to resolve. Use the post legacy URL for posts, the category slug for categories, `/tags/<SLUG>` for tags, and `/author/<SLUG>` for authors.
 </ParamField>
 
 ## Resolution rules
@@ -37,7 +37,7 @@ Use this endpoint when your frontend receives a path and needs to determine what
 ```bash
 curl -X GET \
   'https://cds.thepublive.com/publisher/1234/identify_url/?legacy_url=/guides/getting-started' \
-  -H 'Authorization: Basic YOUR_BASE64_TOKEN'
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>'
 ```
 
 ## SDK usage

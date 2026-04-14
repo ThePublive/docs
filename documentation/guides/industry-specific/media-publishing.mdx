@@ -17,31 +17,31 @@ Publive supports all major content formats used in digital publishing:
 | `Gallery` | Photo galleries and image collections |
 | `LiveBlog` | Real-time event coverage with updates |
 
-## Live Blog Coverage
+## Live blog coverage
 
 For breaking news and live events, use the LiveBlog post type:
 
 1. Create a LiveBlog post via CMS API
 2. Add updates using the Publive Dashboard
-3. Fetch updates via CDS API: `/post/{id}/live-blog-updates/`
+3. Fetch updates via CDS API: `/post/<POST_ID>/live-blog-updates/`
 
 Live blog updates support pinned entries, author attribution, and rich HTML content.
 
-## Category-Based Navigation
+## Category-based navigation
 
 Structure your site navigation using the CDS Navbar and Category APIs:
 
 ```javascript
 // Fetch navigation structure
-const navbar = await fetch('/publisher/123/navbar/');
+const navbar = await fetch('/publisher/<PUBLISHER_ID>/navbar/');
 
 // Fetch category-specific content
-const techPosts = await fetch('/publisher/123/posts/?primary_category.id__eq=100');
+const techPosts = await fetch('/publisher/<PUBLISHER_ID>/posts/?primary_category.id__eq=100');
 ```
 
-## Content Delivery Optimization
+## Content delivery optimization
 
-### Pagination Strategy
+### Pagination strategy
 
 For news sites with thousands of articles, use pagination efficiently:
 

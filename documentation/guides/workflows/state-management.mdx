@@ -7,21 +7,17 @@ Understanding how content moves through different states is key to building reli
 
 ## State diagram
 
-```
-                    ┌──────────────────┐
-                    │                  │
-                    ▼                  │
-┌───────┐    ┌──────────────┐    ┌───────────┐
-│ Draft │───▶│   Approval   │───▶│ Published │
-│       │    │   Pending    │    │           │
-└───┬───┘    └──────┬───────┘    └─────┬─────┘
-    │               │                  │
-    │               │ (reject)         │ (unpublish)
-    │               └──────────────────┘
-    │
-    │         ┌───────────┐
-    └────────▶│ Scheduled │──────▶ Published (at scheduled_at)
-              └───────────┘
+```mermaid
+stateDiagram-v2
+    [*] --> Draft
+    Draft --> ApprovalPending : Submit for review
+    Draft --> Published : Direct publish
+    Draft --> Scheduled : Set scheduled_at
+    ApprovalPending --> Published : Approve
+    ApprovalPending --> Draft : Reject
+    Published --> Draft : Unpublish
+    Scheduled --> Published : Auto-publish
+    Scheduled --> Draft : Cancel
 ```
 
 ## Valid state transitions
@@ -43,8 +39,8 @@ Use the CMS API to check current status:
 
 ```bash
 curl -X GET \
-  'https://cms.thepublive.com/publisher/123/post/{id}/' \
-  -H 'Authorization: Basic YOUR_BASE64_TOKEN'
+  'https://cms.thepublive.com/publisher/<PUBLISHER_ID>/post/<POST_ID>/' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>'
 ```
 
 The response includes:
@@ -74,7 +70,8 @@ The `access_type` field in `meta_data` controls content visibility:
 ```bash
 # Set content as paid/premium
 curl -X PATCH \
-  'https://cms.thepublive.com/publisher/123/post/{id}/' \
+  'https://cms.thepublive.com/publisher/<PUBLISHER_ID>/post/<POST_ID>/' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
   -H 'Content-Type: application/json' \
   -d '{"meta_data": {"access_type": "Paid"}}'
 ```
