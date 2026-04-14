@@ -8,16 +8,22 @@ Understanding how content moves through different states is key to building reli
 ## State diagram
 
 ```mermaid
-stateDiagram-v2
-    [*] --> Draft
-    Draft --> ApprovalPending : Submit for review
-    Draft --> Published : Direct publish
-    Draft --> Scheduled : Set scheduled_at
-    ApprovalPending --> Published : Approve
-    ApprovalPending --> Draft : Reject
-    Published --> Draft : Unpublish
-    Scheduled --> Published : Auto-publish
-    Scheduled --> Draft : Cancel
+graph TD
+    Start(( )) --> Draft
+    Draft -->|"Submit for review"| AP["Approval Pending"]
+    Draft -->|"Direct publish"| Published
+    Draft -->|"Set scheduled_at"| Scheduled
+    AP -->|"Approve"| Published
+    Scheduled -->|"Auto-publish"| Published
+    AP -.->|"Reject"| Draft
+    Published -.->|"Unpublish"| Draft
+    Scheduled -.->|"Cancel"| Draft
+
+    style Start fill:#000,stroke:#000
+    style Draft fill:#3B82F6,color:#fff
+    style AP fill:#F59E0B,color:#fff
+    style Published fill:#10B981,color:#fff
+    style Scheduled fill:#6366F1,color:#fff
 ```
 
 ## Valid state transitions
