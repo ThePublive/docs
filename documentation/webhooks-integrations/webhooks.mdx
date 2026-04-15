@@ -12,8 +12,8 @@ Webhooks allow you to receive real-time HTTP callbacks when events occur in your
 | `post.published` | A post status changes to **Published** |
 | `reader.added` | A new reader is added to your workspace |
 | `reader.removed` | A reader is removed from your workspace |
-| `newsletter.subscribe` | A user subscribes to your newsletter |
-| `form.submitted` | A form is submitted by a user |
+| `newsletter.subscribe` | A member subscribes to your newsletter |
+| `form.submitted` | A form is submitted |
 
 ## Setup
 
@@ -26,6 +26,8 @@ Configure webhooks through the Publive Dashboard:
 5. Save
 
 ## Payload format
+
+<Expandable title="Full payload example">
 
 ```json
 {
@@ -45,15 +47,21 @@ Configure webhooks through the Publive Dashboard:
 }
 ```
 
+</Expandable>
+
 ## Verification
 
 Webhook requests include a signature header for verification:
+
+<Expandable title="Signature verification details">
 
 ```
 X-Publive-Signature: sha256=...
 ```
 
 Verify the signature by computing HMAC-SHA256 of the request body using your webhook secret.
+
+</Expandable>
 
 ## Best practices
 

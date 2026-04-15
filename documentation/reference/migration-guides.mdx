@@ -9,6 +9,8 @@ Several single-purpose CDS endpoints have been deprecated in favor of the unifie
 
 ### Posts by Category
 
+<Expandable title="Before / After">
+
 ```bash
 # Before (deprecated)
 GET /posts_by_category/100/
@@ -17,7 +19,11 @@ GET /posts_by_category/100/
 GET /posts/?categories.id__eq=100
 ```
 
+</Expandable>
+
 ### Posts by Tag
+
+<Expandable title="Before / After">
 
 ```bash
 # Before (deprecated)
@@ -27,7 +33,11 @@ GET /posts_by_tag/500/
 GET /posts/?tags.id__eq=500
 ```
 
+</Expandable>
+
 ### Posts by Author
+
+<Expandable title="Before / After">
 
 ```bash
 # Before (deprecated)
@@ -37,7 +47,11 @@ GET /posts_by_author/1/
 GET /posts/?contributors.id__eq=1
 ```
 
+</Expandable>
+
 ### Latest Posts by Type
+
+<Expandable title="Before / After">
 
 ```bash
 # Before (deprecated)
@@ -47,7 +61,11 @@ GET /latest-posts/Article/
 GET /posts/?type__eq=Article&sort_by=created_at&sort_order=desc
 ```
 
+</Expandable>
+
 ### Homepage
+
+<Expandable title="Before / After">
 
 ```bash
 # Before (deprecated)
@@ -57,7 +75,11 @@ GET /homepage/
 GET /posts/?limit=20&sort_by=created_at&sort_order=desc
 ```
 
+</Expandable>
+
 ### Search
+
+<Expandable title="Before / After">
 
 ```bash
 # Before (deprecated)
@@ -67,7 +89,11 @@ GET /search/?q=budget
 GET /posts/?title__contains=budget
 ```
 
+</Expandable>
+
 ### Post by Slug
+
+<Expandable title="Before / After">
 
 ```bash
 # Before (deprecated)
@@ -77,7 +103,11 @@ GET /posts_by_slug/my-article-slug/
 GET /post/my-article-slug/
 ```
 
+</Expandable>
+
 ### Related Posts
+
+<Expandable title="Before / After">
 
 ```bash
 # Before (deprecated)
@@ -86,6 +116,8 @@ GET /related-posts/12345/
 # After (filter by same primary category)
 GET /posts/?primary_category.id__eq=100&limit=5
 ```
+
+</Expandable>
 
 ## Benefits of Migration
 
@@ -99,8 +131,8 @@ The new `/posts/` endpoint provides:
 
 ## Migration Checklist
 
-- [ ] Identify all deprecated endpoint calls in your codebase
-- [ ] Replace each with the equivalent `/posts/` query
-- [ ] Test that response data matches expected format
-- [ ] Update any response parsing (field names are consistent)
-- [ ] Monitor for deprecation warnings in API responses
+-  Identify all deprecated endpoint calls in your codebase
+-  Replace each with the equivalent `/posts/` query
+-  Test that response data matches expected format
+-  Update any response parsing (field names are consistent)
+-  Monitor for deprecation warnings in API responses

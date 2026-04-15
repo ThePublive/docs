@@ -96,7 +96,9 @@ Paginated responses include:
 
 ## Response format
 
-### CDS API Responses
+### CDS API responses
+
+<Expandable title="CDS response shape">
 
 ```json
 {
@@ -109,7 +111,11 @@ Paginated responses include:
 }
 ```
 
-### CMS API Responses
+</Expandable>
+
+### CMS API responses
+
+<Expandable title="CMS response shape">
 
 ```json
 {
@@ -120,9 +126,13 @@ Paginated responses include:
 }
 ```
 
+</Expandable>
+
 ## Cache tags (CDS)
 
 CDS responses include `Cache-Tags` for CDN cache invalidation:
+
+<Expandable title="Cache-Tag formats">
 
 | Tag Format | Entity |
 | ---------- | ------ |
@@ -131,3 +141,5 @@ CDS responses include `Cache-Tags` for CDN cache invalidation:
 | `TAG.<ID>` | Tag |
 | `MEM.<ID>` | Author/Member |
 | `PP.<ID>` | Post |
+
+</Expandable>
