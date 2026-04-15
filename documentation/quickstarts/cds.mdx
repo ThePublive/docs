@@ -1,0 +1,164 @@
+---
+title: "Fetch Content"
+description: "Use the Content Delivery API to fetch published posts, categories, and site configuration in under 5 minutes."
+---
+
+The **Content Delivery Service (CDS)** is a read-only API for your frontend. It serves published content — posts, categories, tags, authors, and site configuration — and is safe to call from your server-rendered pages.
+
+<Info>
+  The CDS is designed for **reading** content only. To create or modify content, see the [Manage Content (CMS)](/documentation/quickstarts/cms) quickstart.
+</Info>
+
+## Prerequisites
+
+You need three values from the [Publive Dashboard](https://dashboard.thepublive.com/v2/configurations/api-developer-hub):
+
+| Value | Where to find it |
+| ----- | ---------------- |
+| **API Key** | Dashboard → Configurations → API Developer Hub → View API Credentials |
+| **API Secret** | Same location as above |
+| **Publisher ID** | Visible in your Dashboard URL |
+
+## Step 1: Build your auth token
+
+The CDS uses HTTP Basic Auth. Encode your key and secret together:
+
+```bash
+echo -n 'YOUR_API_KEY:YOUR_API_SECRET' | base64
+```
+
+This outputs a token like `dXNlcjpwYXNz`. Store it as an environment variable:
+
+```bash
+export PUBLIVE_AUTH="dXNlcjpwYXNz"
+export PUBLIVE_PUBLISHER_ID="12345"
+```
+
+<Warning>
+  Never include this token in client-side JavaScript. All CDS calls should be made server-side or through a backend proxy.
+</Warning>
+
+## Step 2: Fetch your first posts
+
+```bash
+curl -X GET \
+  "https://cds.thepublive.com/publisher/${PUBLIVE_PUBLISHER_ID}/posts/?limit=5" \
+  -H "Authorization: Basic ${PUBLIVE_AUTH}"
+```
+
+**Response:**
+
+```json
+{
+  "status": "ok",
+  "data": [
+    {
+      "id": 12345,
+      "title": "My First Article",
+      "slug": "my-first-article",
+      "type": "Article",
+      "primary_category": {
+        "id": 1,
+        "name": "News",
+        "slug": "news"
+      },
+      "contributors": [
+        {
+          "id": 1,
+          "name": "Jane Doe",
+          "slug": "jane-doe"
+        }
+      ],
+      "content_html": "<p>Article content here...</p>",
+      "absolute_url": "/news/my-first-article-12345"
+    }
+  ],
+  "message": "",
+  "page_no": 1,
+  "per_page": 5
+}
+```
+
+The `data` array contains your published posts. Use `page_no` and `per_page` to paginate — add `?page=2&limit=10` to the URL to walk through results.
+
+## Step 3: Fetch a single post
+
+Use the `id` from any post in the listing response:
+
+```bash
+curl -X GET \
+  "https://cds.thepublive.com/publisher/${PUBLIVE_PUBLISHER_ID}/post/12345/" \
+  -H "Authorization: Basic ${PUBLIVE_AUTH}"
+```
+
+You can also fetch by URL path, which is useful when routing on your frontend:
+
+```bash
+curl -X GET \
+  "https://cds.thepublive.com/publisher/${PUBLIVE_PUBLISHER_ID}/post/?url=/news/my-first-article-12345" \
+  -H "Authorization: Basic ${PUBLIVE_AUTH}"
+```
+
+## Step 4: Fetch site configuration
+
+The CDS serves your site's navigation structure so your frontend stays in sync with editorial changes:
+
+<CodeGroup>
+
+```bash Navbar
+curl -X GET \
+  "https://cds.thepublive.com/publisher/${PUBLIVE_PUBLISHER_ID}/navbar/" \
+  -H "Authorization: Basic ${PUBLIVE_AUTH}"
+```
+
+```bash Footer
+curl -X GET \
+  "https://cds.thepublive.com/publisher/${PUBLIVE_PUBLISHER_ID}/footer/" \
+  -H "Authorization: Basic ${PUBLIVE_AUTH}"
+```
+
+```bash Publisher metadata
+curl -X GET \
+  "https://cds.thepublive.com/publisher/${PUBLIVE_PUBLISHER_ID}/publisher-data/" \
+  -H "Authorization: Basic ${PUBLIVE_AUTH}"
+```
+
+</CodeGroup>
+
+## Step 5: Filter content
+
+The CDS supports advanced filtering with field lookups. Append filter parameters to any listing endpoint:
+
+```bash
+# Posts in a specific category
+curl "https://cds.thepublive.com/publisher/${PUBLIVE_PUBLISHER_ID}/posts/?primary_category__slug__eq=news"
+
+# Posts by a specific author
+curl "https://cds.thepublive.com/publisher/${PUBLIVE_PUBLISHER_ID}/posts/?contributors__slug__eq=jane-doe"
+
+# Posts with a specific tag
+curl "https://cds.thepublive.com/publisher/${PUBLIVE_PUBLISHER_ID}/posts/?tags__slug__eq=breaking"
+```
+
+Each request should include your `Authorization` header.
+
+<Tip>
+  CDS responses include `Cache-Tags` headers (e.g. `PP.12345`, `CAT.1`) that you can pass to your CDN for precise cache invalidation when content changes.
+</Tip>
+
+## What's next?
+
+<CardGroup cols={2}>
+  <Card title="Manage Content (CMS)" icon="pen-to-square" href="/documentation/quickstarts/cms">
+    Create, update, and publish content via the CMS API
+  </Card>
+  <Card title="Framework Guides" icon="code" href="/documentation/guides/frontend-integration/README">
+    Integrate with Next.js, React, Vue, or Angular
+  </Card>
+  <Card title="CDS API Reference" icon="book" href="/api-reference/content-delivery/README">
+    Full endpoint reference for all CDS routes
+  </Card>
+  <Card title="JavaScript SDK" icon="js" href="/documentation/sdks/javascript">
+    Use the official SDK instead of raw HTTP calls
+  </Card>
+</CardGroup>

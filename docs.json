@@ -26,96 +26,87 @@
             "group": "Getting Started",
             "pages": [
               "documentation/getting-started/introduction",
-              "documentation/getting-started/quick-start",
-              "documentation/getting-started/authentication",
-              "documentation/getting-started/core-concepts"
+              "documentation/getting-started/authentication"
             ]
           },
           {
-            "group": "Concepts & Features",
+            "group": "Quickstarts",
             "pages": [
-               "documentation/concepts-features/custom-entities",
-              "documentation/concepts-features/forms",
-              "documentation/concepts-features/media-library",
-              "documentation/concepts-features/ai-copilot"
+              "documentation/quickstarts/cds",
+              "documentation/quickstarts/cms"
             ]
           },
           {
-            "group": "Guides",
+            "group": "Core Concepts",
             "pages": [
-              "documentation/guides/README",
-              {
-                "group": "Decoupled Frontend",
-                "pages": [
-                  "documentation/guides/decoupled-frontend/decoupled-frontend-infra",
-                  "documentation/guides/decoupled-frontend/build-brand-website",
-                  "documentation/guides/decoupled-frontend/build-news-media",
-                  {
-                    "group": "Integrations",
-                    "pages": [
-                      "documentation/guides/decoupled-frontend/integrations/how-to-creat-files-route",
-                      "documentation/guides/decoupled-frontend/integrations/how-to-integrate-form",
-                      "documentation/guides/decoupled-frontend/integrations/how-to-integrate-component-form",
-                      "documentation/guides/decoupled-frontend/integrations/how-to-have-preview-page",
-                      "documentation/guides/decoupled-frontend/integrations/how-to-have-password-protected-preview"
-                    ]
-                  }
-                ]
-              },
-              {
-                "group": "Frontend Integration",
-                "pages": [
-                  "documentation/guides/frontend-integration/README",
-                  "documentation/guides/frontend-integration/nextjs",
-                  "documentation/guides/frontend-integration/react",
-                  "documentation/guides/frontend-integration/vue",
-                  "documentation/guides/frontend-integration/angular"
-                ]
-              },
-              {
-                "group": "Workflows",
-                "pages": [
-                  "documentation/guides/workflows/README",
-                  "documentation/guides/workflows/maker-checker",
-                  "documentation/guides/workflows/approval-flow",
-                  "documentation/guides/workflows/state-management"
-                ]
-              },
-              "documentation/guides/deployment",
-              {
-                "group": "Industry-Specific",
-                "pages": [
-                  "documentation/guides/industry-specific/README",
-                  "documentation/guides/industry-specific/media-publishing",
-                  "documentation/guides/industry-specific/bfsi-compliance",
-                  "documentation/guides/industry-specific/pharma-governance"
-                ]
-              }
+              "documentation/getting-started/core-concepts",
+              "documentation/concepts-features/custom-entities",
+              "documentation/concepts-features/forms"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Framework Integration",
+            "pages": [
+              "documentation/guides/frontend-integration/README",
+              "documentation/guides/frontend-integration/nextjs",
+              "documentation/guides/frontend-integration/react",
+              "documentation/guides/frontend-integration/vue",
+              "documentation/guides/frontend-integration/angular"
             ]
           },
           {
-            "group": "Webhooks & Integrations",
+            "group": "Headless Architecture",
             "pages": [
-              "documentation/webhooks-integrations/README",
+              "documentation/guides/decoupled-frontend/decoupled-frontend-infra",
+              "documentation/guides/decoupled-frontend/build-brand-website",
+              "documentation/guides/decoupled-frontend/build-news-media"
+            ]
+          },
+          {
+            "group": "Forms & Integrations",
+            "pages": [
+              "documentation/guides/decoupled-frontend/integrations/how-to-integrate-form",
+              "documentation/guides/decoupled-frontend/integrations/how-to-integrate-component-form",
+              "documentation/guides/decoupled-frontend/integrations/how-to-creat-files-route",
+              "documentation/guides/decoupled-frontend/integrations/how-to-have-preview-page",
+              "documentation/guides/decoupled-frontend/integrations/how-to-have-password-protected-preview"
+            ]
+          },
+          {
+            "group": "Editorial Workflows",
+            "pages": [
+              "documentation/guides/workflows/README",
+              "documentation/guides/workflows/maker-checker",
+              "documentation/guides/workflows/approval-flow",
+              "documentation/guides/workflows/state-management"
+            ]
+          },
+          {
+            "group": "Events & Automation",
+            "pages": [
               "documentation/webhooks-integrations/webhooks",
               "documentation/webhooks-integrations/ai-features",
               "documentation/webhooks-integrations/third-party"
             ]
           },
           {
-            "group": "Reference",
+            "group": "Industry Solutions",
             "pages": [
-              "documentation/reference/README",
-              "documentation/reference/error-codes",
-              "documentation/reference/rate-limits",
-              "documentation/reference/changelog",
-              "documentation/reference/migration-guides"
+              "documentation/guides/industry-specific/README",
+              "documentation/guides/industry-specific/media-publishing",
+              "documentation/guides/industry-specific/bfsi-compliance",
+              "documentation/guides/industry-specific/pharma-governance"
             ]
           },
           {
-            "group": "Software Development Kits",
+            "group": "Deployment",
             "pages": [
-              "documentation/sdks/javascript"
+              "documentation/guides/deployment"
             ]
           }
         ]
@@ -229,6 +220,21 @@
                   "api-reference/content-management/forms/form-submission"
                 ]
               }
+            ]
+          },
+          {
+            "group": "SDKs",
+            "pages": [
+              "documentation/sdks/javascript"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "documentation/reference/error-codes",
+              "documentation/reference/rate-limits",
+              "documentation/reference/changelog",
+              "documentation/reference/migration-guides"
             ]
           },
           {
