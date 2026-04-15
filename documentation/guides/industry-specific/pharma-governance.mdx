@@ -39,6 +39,7 @@ curl -X POST \
 ```bash
 curl -X PATCH \
   'https://cms.thepublive.com/publisher/<PUBLISHER_ID>/post/<POST_ID>/' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
   -H 'Content-Type: application/json' \
   -d '{"status": "Approval Pending"}'
 ```
@@ -48,6 +49,7 @@ curl -X PATCH \
 ```bash
 curl -X PATCH \
   'https://cms.thepublive.com/publisher/<PUBLISHER_ID>/post/<POST_ID>/' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
   -H 'Content-Type: application/json' \
   -d '{"status": "Published"}'
 ```

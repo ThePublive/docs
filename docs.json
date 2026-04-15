@@ -302,7 +302,9 @@
   "api": {
     "mdx": {
       "auth": {
-        "method": "basic"
+        "method": "key",
+        "name": "Authorization",
+        "inputPrefix": "Basic <BASE64_AUTH_TOKEN>"
       }
     }
   }

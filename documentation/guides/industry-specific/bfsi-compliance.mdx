@@ -17,7 +17,7 @@ Publive provides enterprise governance features essential for the Banking, Finan
 
 ## Implementing maker-checker
 
-For BFSI compliance, every piece of content should go through the approval flow:
+For BFSI compliance, every piece of content should go through the [approval flow](/documentation/guides/workflows/approval-flow):
 
 ```
 Draft → Approval Pending → (Compliance Review) → Published
@@ -33,6 +33,7 @@ Use the `access_type` metadata to control content visibility:
 # Create compliance-restricted content
 curl -X POST \
   'https://cms.thepublive.com/publisher/<PUBLISHER_ID>/post/' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
   -H 'Content-Type: application/json' \
   -d '{
     "title": "Internal Compliance Update",
