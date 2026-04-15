@@ -72,7 +72,7 @@
             "pages": [
               "documentation/guides/decoupled-frontend/integrations/how-to-integrate-form",
               "documentation/guides/decoupled-frontend/integrations/how-to-integrate-component-form",
-              "documentation/guides/decoupled-frontend/integrations/how-to-creat-files-route",
+              "documentation/guides/decoupled-frontend/integrations/how-to-create-files-route",
               "documentation/guides/decoupled-frontend/integrations/how-to-have-preview-page",
               "documentation/guides/decoupled-frontend/integrations/how-to-have-password-protected-preview"
             ]
