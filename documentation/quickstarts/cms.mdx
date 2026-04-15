@@ -1,0 +1,185 @@
+---
+title: "Manage Content"
+description: "Use the Content Management API to create categories, draft posts, and publish content in under 5 minutes."
+---
+
+The **Content Management Service (CMS)** is a full CRUD API for creating and managing content. It is strictly a server-side API — never call it from a browser or expose its credentials publicly.
+
+<Info>
+  This quickstart covers creating and publishing content. To fetch content for your frontend, see the [Fetch Content (CDS)](/documentation/quickstarts/cds) quickstart.
+</Info>
+
+## Prerequisites
+
+You need three values from the [Publive Dashboard](https://dashboard.thepublive.com/v2/configurations/api-developer-hub):
+
+| Value | Where to find it |
+| ----- | ---------------- |
+| **API Key** | Dashboard → Configurations → API Developer Hub → View API Credentials |
+| **API Secret** | Same location as above |
+| **Publisher ID** | Visible in your Dashboard URL |
+
+## Step 1: Build your auth token
+
+The CMS uses HTTP Basic Auth. Encode your key and secret:
+
+```bash
+echo -n 'YOUR_API_KEY:YOUR_API_SECRET' | base64
+```
+
+Store the result as environment variables:
+
+```bash
+export PUBLIVE_AUTH="dXNlcjpwYXNz"
+export PUBLIVE_PUBLISHER_ID="12345"
+```
+
+<Warning>
+  The CMS API key has write access. Store it only in server-side environment variables — never in client-side code, public repositories, or build artifacts.
+</Warning>
+
+## Step 2: Create a category
+
+Every published post requires a `primary_category`. Create one first:
+
+```bash
+curl -X POST \
+  "https://cms.thepublive.com/publisher/${PUBLIVE_PUBLISHER_ID}/category/" \
+  -H "Authorization: Basic ${PUBLIVE_AUTH}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Technology",
+    "english_name": "Technology"
+  }'
+```
+
+**Response:**
+
+```json
+{
+  "id": 42,
+  "name": "Technology",
+  "english_name": "Technology",
+  "slug": "technology",
+  "parent_category": null
+}
+```
+
+<Tip>
+  Note the `id` from the response — you'll need it when creating posts.
+</Tip>
+
+## Step 3: Create a draft post
+
+Create a post in `Draft` status. Drafts are not publicly visible via the CDS:
+
+```bash
+curl -X POST \
+  "https://cms.thepublive.com/publisher/${PUBLIVE_PUBLISHER_ID}/post/" \
+  -H "Authorization: Basic ${PUBLIVE_AUTH}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "My First API Post",
+    "english_title": "My First API Post",
+    "type": "Article",
+    "status": "Draft",
+    "primary_category": 42,
+    "content": "<p>This post was created via the Publive CMS API.</p>"
+  }'
+```
+
+**Response:**
+
+```json
+{
+  "id": 9001,
+  "title": "My First API Post",
+  "slug": "my-first-api-post",
+  "type": "Article",
+  "status": "Draft",
+  "primary_category": {
+    "id": 42,
+    "name": "Technology",
+    "slug": "technology"
+  },
+  "created_at": "2026-04-15T10:00:00Z",
+  "updated_at": "2026-04-15T10:00:00Z"
+}
+```
+
+## Step 4: Publish the post
+
+Update the post status from `Draft` to `Published` using a `PATCH` request:
+
+```bash
+curl -X PATCH \
+  "https://cms.thepublive.com/publisher/${PUBLIVE_PUBLISHER_ID}/post/9001/" \
+  -H "Authorization: Basic ${PUBLIVE_AUTH}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "status": "Published"
+  }'
+```
+
+<Note>
+  If your organisation uses an approval workflow, submit for review first by setting `status` to `Approval Pending`. An approver then publishes the post. See [Approval Flows](/documentation/guides/workflows/approval-flow) for details.
+</Note>
+
+## Step 5: Verify via CDS
+
+Confirm the post is publicly available by fetching it from the CDS:
+
+```bash
+curl -X GET \
+  "https://cds.thepublive.com/publisher/${PUBLIVE_PUBLISHER_ID}/post/9001/" \
+  -H "Authorization: Basic ${PUBLIVE_AUTH}"
+```
+
+A successful response means the post is live and being served to your frontend.
+
+## Step 6: Schedule or backdate (optional)
+
+Publish at a future time by setting `scheduled_at` instead of `status: Published`:
+
+```bash
+curl -X PATCH \
+  "https://cms.thepublive.com/publisher/${PUBLIVE_PUBLISHER_ID}/post/9001/" \
+  -H "Authorization: Basic ${PUBLIVE_AUTH}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "status": "Scheduled",
+    "scheduled_at": "2026-05-01T09:00:00Z"
+  }'
+```
+
+To backdate a migrated post, set `published_at` to a past timestamp along with `status: Published`.
+
+## Content state machine
+
+Posts move through these states. Only valid transitions are accepted by the API:
+
+```
+Draft → Approval Pending → Published
+Draft →                    Published
+Draft →                    Scheduled → Published
+Published → Draft
+```
+
+See [State Management](/documentation/guides/workflows/state-management) for the complete transition table and access control rules.
+
+## What's next?
+
+<CardGroup cols={2}>
+  <Card title="Fetch Content (CDS)" icon="download" href="/documentation/quickstarts/cds">
+    Serve your published content to a frontend
+  </Card>
+  <Card title="Editorial Workflows" icon="arrow-right-arrow-left" href="/documentation/guides/workflows/README">
+    Set up maker-checker and approval flows
+  </Card>
+  <Card title="CMS API Reference" icon="book" href="/api-reference/content-management/README">
+    Full endpoint reference for all CMS routes
+  </Card>
+  <Card title="JavaScript SDK" icon="js" href="/documentation/sdks/javascript">
+    Use the official SDK for typed CMS operations
+  </Card>
+</CardGroup>
