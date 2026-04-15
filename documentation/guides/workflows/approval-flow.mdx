@@ -26,7 +26,7 @@ Update the post status to `Approval Pending`:
 
 ```bash
 curl -X PATCH \
-  'https://cms.thepublive.com/publisher/123/post/<POST_ID>/' \
+  'https://cms.thepublive.com/publisher/<PUBLISHER_ID>/post/<POST_ID>/' \
   -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
   -H 'Content-Type: application/json' \
   -d '{"status": "Approval Pending"}'
@@ -50,7 +50,8 @@ Instead of immediate publishing, schedule for a future time:
 
 ```bash
 curl -X PATCH \
-  'https://cms.thepublive.com/publisher/123/post/<POST_ID>/' \
+  'https://cms.thepublive.com/publisher/<PUBLISHER_ID>/post/<POST_ID>/' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
   -H 'Content-Type: application/json' \
   -d '{
     "status": "Scheduled",
@@ -64,7 +65,8 @@ For content that needs a custom publication date (e.g., migrated content):
 
 ```bash
 curl -X PATCH \
-  'https://cms.thepublive.com/publisher/123/post/{id}/' \
+  'https://cms.thepublive.com/publisher/<PUBLISHER_ID>/post/<POST_ID>/' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
   -H 'Content-Type: application/json' \
   -d '{
     "status": "Published",

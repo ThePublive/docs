@@ -20,10 +20,9 @@ Create a simple Express endpoint (or use any server framework):
 const express = require('express');
 const router = express.Router();
 
-const BASE_URL = 'https://cds.thepublive.com/publisher/YOUR_PUBLISHER_ID';
+const BASE_URL = 'https://cds.thepublive.com/publisher/<PUBLISHER_ID>';
 const headers = {
-  'username': process.env.PUBLIVE_API_KEY,
-  'password': process.env.PUBLIVE_API_SECRET,
+  'Authorization': `Basic ${Buffer.from(process.env.PUBLIVE_API_KEY + ':' + process.env.PUBLIVE_API_SECRET).toString('base64')}`,
 };
 
 router.get('/posts', async (req, res) => {

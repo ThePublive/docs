@@ -21,8 +21,7 @@ export const usePublive = () => {
   const baseUrl = `https://cds.thepublive.com/publisher/${config.publivePublisherId}`;
 
   const headers = {
-    'username': config.publiveApiKey,
-    'password': config.publiveApiSecret,
+    'Authorization': `Basic ${btoa(config.publiveApiKey + ':' + config.publiveApiSecret)}`,
   };
 
   const fetchPosts = async (params = {}) => {
