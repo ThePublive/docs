@@ -10,7 +10,7 @@ description: "HTTP status codes and error response formats"
 | `200` | OK | Request successful |
 | `201` | Created | Resource created successfully (CMS POST) |
 | `400` | Bad Request | Invalid request parameters or body |
-| `401` | Unauthorized | Missing or invalid `username`/`password` headers |
+| `401` | Unauthorized | Missing or invalid authentication credentials |
 | `403` | Forbidden | Insufficient permissions for this operation |
 | `404` | Not Found | Resource does not exist |
 | `429` | Too Many Requests | Rate limit exceeded |
@@ -41,20 +41,25 @@ description: "HTTP status codes and error response formats"
 
 ### 401 Unauthorized
 
-**Cause:** Missing or invalid authentication headers.
+<Expandable title="Details">
 
-**Solution:** Ensure both `username` and `password` headers are present and correct.
+**Cause:** Missing or invalid authentication credentials.
+
+**Solution:** Ensure your `Authorization` header is present and uses valid Base64-encoded credentials.
 
 ```bash
 # Correct
--H 'username: your_api_key' \
--H 'password: your_api_secret'
+-H 'Authorization: Basic <BASE64_AUTH_TOKEN>'
 
-# Wrong - headers missing or incorrect key names
+# Wrong - header missing or wrong scheme
 -H 'Authorization: Bearer token'  # Not supported
 ```
 
+</Expandable>
+
 ### 400 Bad Request
+
+<Expandable title="Details">
 
 **Cause:** Invalid request body or missing required fields.
 
@@ -63,7 +68,11 @@ description: "HTTP status codes and error response formats"
 - Invalid field types (string where integer expected)
 - Invalid enum values (wrong `type` or `status` value for posts)
 
+</Expandable>
+
 ### 404 Not Found
+
+<Expandable title="Details">
 
 **Cause:** The requested resource does not exist.
 
@@ -72,8 +81,14 @@ description: "HTTP status codes and error response formats"
 - Resource was deleted
 - Wrong `publisher_id`
 
+</Expandable>
+
 ### 429 Too Many Requests
+
+<Expandable title="Details">
 
 **Cause:** Rate limit exceeded.
 
 **Solution:** Implement exponential backoff and caching. See [Rate Limits](/documentation/reference/rate-limits).
+
+</Expandable>
