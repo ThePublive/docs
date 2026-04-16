@@ -18,6 +18,7 @@ Create `composables/usePublive.js`:
 ```javascript
 export const usePublive = () => {
   const config = useRuntimeConfig();
+  // Publisher ID format: <PUBLISHER_ID> (provided in your Publive dashboard)
   const baseUrl = `https://cds.thepublive.com/publisher/${config.publivePublisherId}`;
 
   const headers = {
@@ -26,20 +27,36 @@ export const usePublive = () => {
 
   const fetchPosts = async (params = {}) => {
     const query = new URLSearchParams({ limit: '10', ...params });
-    const { data } = await useFetch(`${baseUrl}/posts/?${query}`, { headers });
+    const { data, error } = await useFetch(`${baseUrl}/posts/?${query}`, { headers });
+    if (error.value) throw new Error('Failed to fetch posts');
     return data.value;
   };
 
   const fetchPost = async (slug) => {
-    const { data } = await useFetch(`${baseUrl}/post/${slug}/`, { headers });
+    const { data, error } = await useFetch(`${baseUrl}/post/${slug}/`, { headers });
+    if (error.value) throw new Error('Failed to fetch post');
     return data.value;
   };
 
-  return { fetchPosts, fetchPost };
+  const fetchCategories = async () => {
+    const { data, error } = await useFetch(`${baseUrl}/categories/`, { headers });
+    if (error.value) throw new Error('Failed to fetch categories');
+    return data.value;
+  };
+
+  const fetchNavbar = async () => {
+    const { data, error } = await useFetch(`${baseUrl}/navbar/`, { headers });
+    if (error.value) throw new Error('Failed to fetch navbar');
+    return data.value;
+  };
+
+  return { fetchPosts, fetchPost, fetchCategories, fetchNavbar };
 };
 ```
 
 ### 2. Create a Post Listing Page
+
+See the [Post Listing](/api-reference/content-delivery/post-listing) API for the full response shape.
 
 ```vue
 <!-- pages/index.vue -->
@@ -52,6 +69,7 @@ export const usePublive = () => {
         <NuxtLink :to="post.absolute_url">{{ post.title }}</NuxtLink>
       </h2>
       <p>{{ post.short_description }}</p>
+      <span>{{ post.primary_category?.name }}</span>
     </article>
   </main>
 </template>
@@ -65,6 +83,8 @@ const posts = response?.data || [];
 
 ### 3. Create a Post Detail Page
 
+See the [Post Details](/api-reference/content-delivery/post-details) API for the full response shape.
+
 ```vue
 <!-- pages/[...slug].vue -->
 <template>
@@ -72,6 +92,7 @@ const posts = response?.data || [];
     <h1>{{ post.title }}</h1>
     <div class="meta">
       <span>{{ post.primary_category?.name }}</span>
+      <time>{{ post.formatted_first_published_at_datetime }}</time>
     </div>
     <div v-html="post.content_html"></div>
   </article>
@@ -82,5 +103,241 @@ const route = useRoute();
 const { fetchPost } = usePublive();
 const response = await fetchPost(route.params.slug.join('/'));
 const post = response?.data;
+</script>
+```
+
+---
+
+## Setup with Vanilla Vue.js
+
+For a standard Vue.js SPA (without Nuxt), use a backend proxy to keep credentials off the client.
+
+### 1. Create a Backend Proxy
+
+```javascript
+// server/api/publive.js
+const express = require('express');
+const router = express.Router();
+
+const BASE_URL = 'https://cds.thepublive.com/publisher/<PUBLISHER_ID>';
+const headers = {
+  'Authorization': `Basic ${Buffer.from(process.env.PUBLIVE_API_KEY + ':' + process.env.PUBLIVE_API_SECRET).toString('base64')}`,
+};
+
+router.get('/posts', async (req, res) => {
+  const query = new URLSearchParams(req.query);
+  const response = await fetch(`${BASE_URL}/posts/?${query}`, { headers });
+  if (!response.ok) return res.status(response.status).json({ error: 'Failed to fetch posts' });
+  res.json(await response.json());
+});
+
+router.get('/post/:slug', async (req, res) => {
+  const response = await fetch(`${BASE_URL}/post/${req.params.slug}/`, { headers });
+  if (!response.ok) return res.status(response.status).json({ error: 'Failed to fetch post' });
+  res.json(await response.json());
+});
+
+router.get('/categories', async (req, res) => {
+  const response = await fetch(`${BASE_URL}/categories/`, { headers });
+  if (!response.ok) return res.status(response.status).json({ error: 'Failed to fetch categories' });
+  res.json(await response.json());
+});
+
+router.get('/navbar', async (req, res) => {
+  const response = await fetch(`${BASE_URL}/navbar/`, { headers });
+  if (!response.ok) return res.status(response.status).json({ error: 'Failed to fetch navbar' });
+  res.json(await response.json());
+});
+
+module.exports = router;
+```
+
+### 2. Create a Composable
+
+```javascript
+// composables/usePublive.js
+import { ref } from 'vue';
+
+export function usePosts(params = {}) {
+  const posts = ref([]);
+  const loading = ref(true);
+  const error = ref(null);
+
+  const query = new URLSearchParams(params);
+  fetch(`/api/publive/posts?${query}`)
+    .then(res => {
+      if (!res.ok) throw new Error('Failed to fetch posts');
+      return res.json();
+    })
+    .then(data => {
+      posts.value = data.data || [];
+      loading.value = false;
+    })
+    .catch(err => {
+      error.value = err.message;
+      loading.value = false;
+    });
+
+  return { posts, loading, error };
+}
+
+export function usePost(slug) {
+  const post = ref(null);
+  const loading = ref(true);
+  const error = ref(null);
+
+  fetch(`/api/publive/post/${slug}`)
+    .then(res => {
+      if (!res.ok) throw new Error('Failed to fetch post');
+      return res.json();
+    })
+    .then(data => {
+      post.value = data.data;
+      loading.value = false;
+    })
+    .catch(err => {
+      error.value = err.message;
+      loading.value = false;
+    });
+
+  return { post, loading, error };
+}
+```
+
+### 3. Create a Post Listing Page
+
+See the [Post Listing](/api-reference/content-delivery/post-listing) API for the full response shape.
+
+```vue
+<!-- src/views/HomeView.vue -->
+<template>
+  <main>
+    <div v-if="loading">Loading...</div>
+    <div v-else-if="error">Error: {{ error }}</div>
+    <template v-else>
+      <h1>Latest Articles</h1>
+      <article v-for="post in posts" :key="post.id">
+        <img v-if="post.banner_url" :src="post.banner_url" :alt="post.title" />
+        <h2>
+          <RouterLink :to="post.absolute_url">{{ post.title }}</RouterLink>
+        </h2>
+        <p>{{ post.short_description }}</p>
+        <span>{{ post.primary_category?.name }}</span>
+      </article>
+    </template>
+  </main>
+</template>
+
+<script setup>
+import { usePosts } from '../composables/usePublive';
+
+const { posts, loading, error } = usePosts({ limit: '20' });
+</script>
+```
+
+### 4. Create a Post Detail Page
+
+See the [Post Details](/api-reference/content-delivery/post-details) API for the full response shape.
+
+```vue
+<!-- src/views/PostView.vue -->
+<template>
+  <div v-if="loading">Loading...</div>
+  <div v-else-if="error">Error: {{ error }}</div>
+  <article v-else-if="post">
+    <h1>{{ post.title }}</h1>
+    <div class="meta">
+      <span>{{ post.primary_category?.name }}</span>
+      <time>{{ post.formatted_first_published_at_datetime }}</time>
+    </div>
+    <div v-html="post.content_html"></div>
+  </article>
+</template>
+
+<script setup>
+import { useRoute } from 'vue-router';
+import { usePost } from '../composables/usePublive';
+
+const route = useRoute();
+const slug = Array.isArray(route.params.slug)
+  ? route.params.slug.join('/')
+  : route.params.slug;
+
+const { post, loading, error } = usePost(slug);
+</script>
+```
+
+## Advanced
+
+### Filtering by Category
+
+See the [Category Listing](/api-reference/content-delivery/category-listing) API.
+
+**Nuxt.js:**
+```javascript
+// Fetch articles in the "News" category (ID: 100)
+const { fetchPosts } = usePublive();
+const response = await fetchPosts({ 'categories.id__eq': '100', 'type__eq': 'Article' });
+const posts = response?.data || [];
+```
+
+**Vanilla Vue.js:**
+```javascript
+const { posts } = usePosts({ 'categories.id__eq': '100', 'type__eq': 'Article' });
+```
+
+### Building Navigation
+
+See the [Navbar](/api-reference/content-delivery/navbar) API.
+
+**Nuxt.js:**
+```vue
+<!-- components/AppNavbar.vue -->
+<template>
+  <nav>
+    <div v-for="item in items" :key="item.link">
+      <NuxtLink :to="item.link">{{ item.name }}</NuxtLink>
+      <div v-if="item.children" class="submenu">
+        <NuxtLink v-for="child in item.children" :key="child.link" :to="child.link">
+          {{ child.name }}
+        </NuxtLink>
+      </div>
+    </div>
+  </nav>
+</template>
+
+<script setup>
+const { fetchNavbar } = usePublive();
+const response = await fetchNavbar();
+const items = response?.data || [];
+</script>
+```
+
+**Vanilla Vue.js:**
+```vue
+<!-- src/components/AppNavbar.vue -->
+<template>
+  <nav>
+    <div v-for="item in items" :key="item.link">
+      <a :href="item.link">{{ item.name }}</a>
+      <div v-if="item.children" class="submenu">
+        <a v-for="child in item.children" :key="child.link" :href="child.link">
+          {{ child.name }}
+        </a>
+      </div>
+    </div>
+  </nav>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+
+const items = ref([]);
+fetch('/api/publive/navbar')
+  .then(res => {
+    if (!res.ok) throw new Error('Failed to fetch navbar');
+    return res.json();
+  })
+  .then(data => { items.value = data.data || []; });
 </script>
 ```

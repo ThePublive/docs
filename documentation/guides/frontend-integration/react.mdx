@@ -50,47 +50,66 @@ import { useState, useEffect } from 'react';
 export function usePosts(params = {}) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const query = new URLSearchParams(params);
     fetch(`/api/publive/posts?${query}`)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch posts');
+        return res.json();
+      })
       .then(data => {
         setPosts(data.data || []);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(err.message);
         setLoading(false);
       });
   }, [JSON.stringify(params)]);
 
-  return { posts, loading };
+  return { posts, loading, error };
 }
 
 export function usePost(slug) {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch(`/api/publive/post/${slug}`)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch post');
+        return res.json();
+      })
       .then(data => {
         setPost(data.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(err.message);
         setLoading(false);
       });
   }, [slug]);
 
-  return { post, loading };
+  return { post, loading, error };
 }
 ```
 
 ### 3. Use in Components
+
+See the [Post Listing](/api-reference/content-delivery/post-listing) and [Post Details](/api-reference/content-delivery/post-details) API references for the full response shape.
 
 ```jsx
 // components/PostList.jsx
 import { usePosts } from '../hooks/usePublive';
 
 export default function PostList() {
-  const { posts, loading } = usePosts({ limit: 10 });
+  const { posts, loading, error } = usePosts({ limit: 10 });
 
   if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <div>
@@ -102,6 +121,92 @@ export default function PostList() {
         </article>
       ))}
     </div>
+  );
+}
+```
+
+## Advanced
+
+### Filtering by Category
+
+See the [Category Listing](/api-reference/content-delivery/category-listing) API.
+
+```javascript
+// Fetch articles in the "News" category (ID: 100)
+const { posts } = usePosts({
+  'categories.id__eq': '100',
+  'type__eq': 'Article',
+});
+```
+
+### Building Navigation
+
+See the [Navbar](/api-reference/content-delivery/navbar) API.
+
+Add a `/navbar` route to your Express proxy:
+
+```javascript
+// server/api/publive.js
+router.get('/navbar', async (req, res) => {
+  const response = await fetch(`${BASE_URL}/navbar/`, { headers });
+  if (!response.ok) return res.status(response.status).json({ error: 'Failed to fetch navbar' });
+  const data = await response.json();
+  res.json(data);
+});
+```
+
+Then fetch it in a hook:
+
+```jsx
+export function useNavbar() {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetch('/api/publive/navbar')
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch navbar');
+        return res.json();
+      })
+      .then(data => {
+        setItems(data.data || []);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
+  return { items, loading, error };
+}
+```
+
+```jsx
+// components/Navbar.jsx
+import { useNavbar } from '../hooks/usePublive';
+
+export default function Navbar() {
+  const { items, loading } = useNavbar();
+
+  if (loading) return null;
+
+  return (
+    <nav>
+      {items.map(item => (
+        <div key={item.link}>
+          <a href={item.link}>{item.name}</a>
+          {item.children && (
+            <div className="submenu">
+              {item.children.map(child => (
+                <a key={child.link} href={child.link}>{child.name}</a>
+              ))}
+            </div>
+          )}
+        </div>
+      ))}
+    </nav>
   );
 }
 ```
