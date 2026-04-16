@@ -12,10 +12,11 @@ Build a server-rendered website powered by Publive using Next.js App Router.
 Create `lib/publive.js`:
 
 ```javascript
-const BASE_URL = 'https://cds.thepublive.com/publisher/<PUBLISHER_ID>';
+const BASE_URL = 'https://cds.thepublive.com/publisher/YOUR_PUBLISHER_ID';
 
 const headers = {
-  'Authorization': `Basic ${btoa(process.env.PUBLIVE_API_KEY + ':' + process.env.PUBLIVE_API_SECRET)}`
+  'username': process.env.PUBLIVE_API_KEY,
+  'password': process.env.PUBLIVE_API_SECRET,
 };
 
 export async function fetchPosts(params = {}) {
@@ -125,8 +126,6 @@ export default async function PostPage({ params }) {
 
 ### Filtering by Category
 
-See the [Category Listing](/api-reference/content-delivery/category-listing) API.
-
 ```javascript
 // Fetch articles in the "News" category (ID: 100)
 const { data } = await fetchPosts({
@@ -136,8 +135,6 @@ const { data } = await fetchPosts({
 ```
 
 ### Building Navigation
-
-See the [Navbar](/api-reference/content-delivery/navbar) API.
 
 ```jsx
 import { fetchNavbar } from '@/lib/publive';

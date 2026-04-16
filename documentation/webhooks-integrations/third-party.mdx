@@ -71,10 +71,10 @@ app.post('/webhook/publive', async (req, res) => {
 
 ## Email / Newsletter
 
-Use the CDS [Newsletter Groups](/api-reference/content-delivery/newsletter-groups) API to manage newsletter subscriptions:
+Use the CDS Newsletter Groups API to manage newsletter subscriptions:
 
 ```bash
-GET /publisher/<PUBLISHER_ID>/newsletter-groups/
+GET /publisher/{id}/newsletter-groups/
 ```
 
 Integrate with email services (Mailchimp, SendGrid) by syncing newsletter group data and using post content for email campaigns.

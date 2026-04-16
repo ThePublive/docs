@@ -25,7 +25,7 @@ If you need hidden fields, prefilled values, or label changes, add overrides on 
 
 The reference app uses a shared renderer at `components/ui/microorganism/Form/index.tsx`. Your app can follow the same contract:
 
-- **`form_related_field`**: the full reader-side form schema **array** (the first entry is the active [form schema](/api-reference/content-delivery/form-schema)).
+- **`form_related_field`**: the full reader-side form schema **array** (the first entry is the active form schema).
 - **`form_schema`**: optional patch object or JSON string merged into that schema (labels, placeholders, visibility, defaults, etc.).
 - **`className`**: optional layout classes.
 
