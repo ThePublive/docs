@@ -11,46 +11,139 @@ Build an Angular application powered by the Publive CDS API.
 
 ## Setup
 
-### 1. Create a Publive Service
+### 1. Create a Backend Proxy
+
+Create a simple Express endpoint (or use any server framework):
+
+```javascript
+// server/api/publive.js
+const express = require('express');
+const router = express.Router();
+
+const BASE_URL = 'https://cds.thepublive.com/publisher/<PUBLISHER_ID>';
+const headers = {
+  'Authorization': `Basic ${Buffer.from(process.env.PUBLIVE_API_KEY + ':' + process.env.PUBLIVE_API_SECRET).toString('base64')}`,
+};
+
+router.get('/posts', async (req, res) => {
+  const query = new URLSearchParams(req.query);
+  const response = await fetch(`${BASE_URL}/posts/?${query}`, { headers });
+  if (!response.ok) return res.status(response.status).json({ error: 'Failed to fetch posts' });
+  const data = await response.json();
+  res.json(data);
+});
+
+router.get('/post/:slug', async (req, res) => {
+  const response = await fetch(`${BASE_URL}/post/${req.params.slug}/`, { headers });
+  if (!response.ok) return res.status(response.status).json({ error: 'Failed to fetch post' });
+  const data = await response.json();
+  res.json(data);
+});
+
+router.get('/categories', async (req, res) => {
+  const response = await fetch(`${BASE_URL}/categories/`, { headers });
+  if (!response.ok) return res.status(response.status).json({ error: 'Failed to fetch categories' });
+  const data = await response.json();
+  res.json(data);
+});
+
+router.get('/navbar', async (req, res) => {
+  const response = await fetch(`${BASE_URL}/navbar/`, { headers });
+  if (!response.ok) return res.status(response.status).json({ error: 'Failed to fetch navbar' });
+  const data = await response.json();
+  res.json(data);
+});
+
+module.exports = router;
+```
+
+### 2. Create a Publive Service
+
+See the [Post Listing](/api-reference/content-delivery/post-listing) and [Post Details](/api-reference/content-delivery/post-details) API references for the full response shape.
 
 ```typescript
 // src/app/services/publive.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+
+export interface Category {
+  id: number;
+  name: string;
+  slug: string;
+}
+
+export interface Tag {
+  id: number;
+  name: string;
+  slug: string;
+}
+
+export interface Post {
+  id: number;
+  title: string;
+  short_description: string;
+  content_html: string;
+  banner_url: string | null;
+  absolute_url: string;
+  primary_category: Category | null;
+  tags: Tag[];
+  formatted_first_published_at_datetime: string;
+}
+
+export interface ApiResponse<T> {
+  data: T;
+}
 
 @Injectable({ providedIn: 'root' })
 export class PubliveService {
-  // Proxy URL - your backend handles auth
   private apiUrl = '/api/publive';
 
   constructor(private http: HttpClient) {}
 
-  getPosts(params: Record<string, string> = {}): Observable<any> {
-    return this.http.get(`${this.apiUrl}/posts`, { params });
+  getPosts(params: Record<string, string> = {}): Observable<Post[]> {
+    return this.http.get<ApiResponse<Post[]>>(`${this.apiUrl}/posts`, { params }).pipe(
+      map(res => res.data),
+      catchError(err => throwError(() => new Error(err.message || 'Failed to fetch posts')))
+    );
   }
 
-  getPost(slug: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/post/${slug}`);
+  getPost(slug: string): Observable<Post> {
+    return this.http.get<ApiResponse<Post>>(`${this.apiUrl}/post/${slug}`).pipe(
+      map(res => res.data),
+      catchError(err => throwError(() => new Error(err.message || 'Failed to fetch post')))
+    );
   }
 
-  getCategories(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/categories`);
+  getCategories(): Observable<Category[]> {
+    return this.http.get<ApiResponse<Category[]>>(`${this.apiUrl}/categories`).pipe(
+      map(res => res.data),
+      catchError(err => throwError(() => new Error(err.message || 'Failed to fetch categories')))
+    );
+  }
+
+  getNavbar(): Observable<any[]> {
+    return this.http.get<ApiResponse<any[]>>(`${this.apiUrl}/navbar`).pipe(
+      map(res => res.data),
+      catchError(err => throwError(() => new Error(err.message || 'Failed to fetch navbar')))
+    );
   }
 }
 ```
 
-### 2. Create a Post List Component
+### 3. Create a Post List Component
 
 ```typescript
 // src/app/components/post-list/post-list.component.ts
 import { Component, OnInit } from '@angular/core';
-import { PubliveService } from '../../services/publive.service';
+import { PubliveService, Post } from '../../services/publive.service';
 
 @Component({
   selector: 'app-post-list',
   template: `
     <div *ngIf="loading">Loading...</div>
+    <div *ngIf="error">Error: {{ error }}</div>
     <article *ngFor="let post of posts">
       <img *ngIf="post.banner_url" [src]="post.banner_url" [alt]="post.title" />
       <h2>
@@ -62,42 +155,54 @@ import { PubliveService } from '../../services/publive.service';
   `
 })
 export class PostListComponent implements OnInit {
-  posts: any[] = [];
+  posts: Post[] = [];
   loading = true;
+  error: string | null = null;
 
   constructor(private publive: PubliveService) {}
 
   ngOnInit() {
-    this.publive.getPosts({ limit: '20' }).subscribe(response => {
-      this.posts = response.data || [];
-      this.loading = false;
+    this.publive.getPosts({ limit: '20' }).subscribe({
+      next: posts => {
+        this.posts = posts;
+        this.loading = false;
+      },
+      error: err => {
+        this.error = err.message;
+        this.loading = false;
+      }
     });
   }
 }
 ```
 
-### 3. Create a Post Detail Component
+### 4. Create a Post Detail Component
 
 ```typescript
 // src/app/components/post-detail/post-detail.component.ts
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PubliveService } from '../../services/publive.service';
+import { PubliveService, Post } from '../../services/publive.service';
 
 @Component({
   selector: 'app-post-detail',
   template: `
+    <div *ngIf="loading">Loading...</div>
+    <div *ngIf="error">Error: {{ error }}</div>
     <article *ngIf="post">
       <h1>{{ post.title }}</h1>
       <div class="meta">
         <span>{{ post.primary_category?.name }}</span>
+        <time>{{ post.formatted_first_published_at_datetime }}</time>
       </div>
       <div [innerHTML]="post.content_html"></div>
     </article>
   `
 })
 export class PostDetailComponent implements OnInit {
-  post: any;
+  post: Post | null = null;
+  loading = true;
+  error: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -106,9 +211,61 @@ export class PostDetailComponent implements OnInit {
 
   ngOnInit() {
     const slug = this.route.snapshot.paramMap.get('slug');
-    this.publive.getPost(slug!).subscribe(response => {
-      this.post = response.data;
+    this.publive.getPost(slug!).subscribe({
+      next: post => {
+        this.post = post;
+        this.loading = false;
+      },
+      error: err => {
+        this.error = err.message;
+        this.loading = false;
+      }
     });
+  }
+}
+```
+
+## Advanced
+
+### Filtering by Category
+
+See the [Category Listing](/api-reference/content-delivery/category-listing) API.
+
+```typescript
+// Fetch articles in the "News" category (ID: 100)
+this.publive.getPosts({ 'categories.id__eq': '100', 'type__eq': 'Article' })
+  .subscribe(posts => this.posts = posts);
+```
+
+### Building Navigation
+
+See the [Navbar](/api-reference/content-delivery/navbar) API.
+
+```typescript
+// src/app/components/navbar/navbar.component.ts
+import { Component, OnInit } from '@angular/core';
+import { PubliveService } from '../../services/publive.service';
+
+@Component({
+  selector: 'app-navbar',
+  template: `
+    <nav>
+      <div *ngFor="let item of items">
+        <a [href]="item.link">{{ item.name }}</a>
+        <div *ngIf="item.children" class="submenu">
+          <a *ngFor="let child of item.children" [href]="child.link">{{ child.name }}</a>
+        </div>
+      </div>
+    </nav>
+  `
+})
+export class NavbarComponent implements OnInit {
+  items: any[] = [];
+
+  constructor(private publive: PubliveService) {}
+
+  ngOnInit() {
+    this.publive.getNavbar().subscribe(items => this.items = items);
   }
 }
 ```
