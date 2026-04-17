@@ -1,7 +1,22 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "maple",
-  "name": "Publive API Docs",
+  "name": "Publive Docs",
+  "description": "API documentation and developer guides for Publive — India's headless CMS for digital publishers. Covers Content Delivery API, Content Management API, frontend integrations, and editorial workflows.",
+  "seo": {
+    "indexing": "all",
+    "metatags": {
+      "og:site_name": "Publive Docs",
+      "twitter:card": "summary_large_image",
+      "twitter:site": "@the_Publive"
+    }
+  },
+  "search": {
+    "prompt": "Search Publive docs..."
+  },
+  "metadata": {
+    "timestamp": true
+  },
   "colors": {
     "primary": "#21263c",
     "light": "#21263c",
@@ -287,9 +302,9 @@
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "x": "https://x.com/the_Publive",
+      "github": "https://github.com/ThePublive",
+      "linkedin": "https://in.linkedin.com/company/the-publive"
     }
   },
   "appearance": {
