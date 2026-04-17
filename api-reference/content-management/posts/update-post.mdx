@@ -30,6 +30,10 @@ Send only the fields you wish to update. Common fields:
   `Draft`, `Published`, `Scheduled`, `Approval Pending`
 </ParamField>
 
+<ParamField body="custom_published_at" type="string">
+  ISO 8601 timestamp for backdated publishing (e.g., `2025-12-15T10:00:00Z`). See the [Migration Guides](/documentation/reference/migration-guides#backdated-publishing) for details.
+</ParamField>
+
 <ParamField body="primary_category" type="integer">
   Category ID
 </ParamField>
