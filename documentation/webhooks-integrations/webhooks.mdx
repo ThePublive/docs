@@ -19,11 +19,14 @@ Webhooks allow you to receive real-time HTTP callbacks when events occur in your
 
 Configure webhooks through the Publive Dashboard:
 
-1. Go to **Settings** > **Webhooks**
-2. Click **Add Webhook**
-3. Enter your endpoint URL
-4. Select the events you want to subscribe to
-5. Save
+1. Go to **Configuration** > **Webhooks**
+2. Click **Create New Webhook**
+3. Configure the following fields:
+   - **Target URL** (Required): The endpoint URL where webhook payloads will be sent.
+   - **Api Secret**: A secret key used to verify the webhook payload signature.
+   - **Alert Email**: An email address to receive notifications if the webhook fails.
+   - **Select Events**(Required): Choose the specific events you want to subscribe to.
+4. Click **Create New Webhook**
 
 ## Payload format
 
