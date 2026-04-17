@@ -59,20 +59,6 @@ curl -X PATCH \
   }'
 ```
 
-## Backdated publishing
-
-For content that needs a custom publication date (e.g., migrated content):
-
-```bash
-curl -X PATCH \
-  'https://cms.thepublive.com/publisher/<PUBLISHER_ID>/post/<POST_ID>/' \
-  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "status": "Published",
-    "custom_published_at": "2025-12-15T10:00:00Z"
-  }'
-```
 
 <Info>
 The `published_post` field in the post response references the live version, while edits can be made to the draft version independently.

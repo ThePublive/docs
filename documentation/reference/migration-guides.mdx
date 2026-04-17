@@ -136,3 +136,22 @@ The new `/posts/` endpoint provides:
 -  Test that response data matches expected format
 -  Update any response parsing (field names are consistent)
 -  Monitor for deprecation warnings in API responses
+
+## Content Migration Strategies
+
+### Backdated Publishing
+
+When migrating historical content from legacy systems, you must preserve the original publication dates instead of using the time of import.
+
+You can accomplish this by directly updating the post with the `custom_published_at` property:
+
+```bash
+curl -X PATCH \
+  'https://cms.thepublive.com/publisher/<PUBLISHER_ID>/post/<POST_ID>/' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "status": "Published",
+    "custom_published_at": "2025-12-15T10:00:00Z"
+  }'
+```
