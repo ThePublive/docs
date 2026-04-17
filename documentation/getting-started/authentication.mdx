@@ -1,11 +1,11 @@
 ---
 title: "Authentication"
-description: "How to authenticate your API requests to Publive"
+description: "Set up API key authentication for the Publive CDS and CMS APIs. Covers credential format, required headers, and handling auth errors in your frontend."
 ---
 
 All Publive API requests require authentication via HTTP Basic Auth. Both the Content Delivery Service (CDS) and Content Management Service (CMS) use the same method.
 
-## How it works
+## How Does Publive Authentication Work?
 
 You authenticate by sending an `Authorization` header with every request. The value is the word `Basic` followed by a Base64-encoded string of your API Key and API Secret joined by a colon.
 
@@ -45,7 +45,7 @@ curl -X POST \
   -d '{"name": "Technology", "english_name": "Technology"}'
 ```
 
-## Getting your credentials
+## How to Get Your API Credentials
 
 1. Log in to your [Publive Dashboard](https://dashboard.thepublive.com/v2/configurations/api-developer-hub).
 2. Click the **View API credentials** button.
