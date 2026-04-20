@@ -17,11 +17,11 @@ Creates a new category.
 </ParamField>
 
 <ParamField body="english_name" type="string" required>
-  English name (used for permalink generation). **Cannot be changed after creation.**
+  <Badge color="orange" size="sm">Immutable</Badge> English name (used for permalink generation).
 </ParamField>
 
 <ParamField body="slug" type="string">
-  Custom slug (auto-generated from `english_name` if omitted). **Cannot be changed after creation.**
+  <Badge color="orange" size="sm">Immutable</Badge> Custom slug (auto-generated from `english_name` if omitted).
 </ParamField>
 
 <ParamField body="meta_title" type="string">
@@ -37,7 +37,7 @@ Creates a new category.
 </ParamField>
 
 <ParamField body="parent_category" type="integer">
-  Parent category ID. **Immutable after creation.**
+  <Badge color="orange" size="sm">Immutable</Badge> Parent category ID.
 </ParamField>
 
 <ParamField body="priority" type="integer">
@@ -53,7 +53,7 @@ Creates a new category.
 </ParamField>
 
 <ParamField body="content_type" type="string">
-  Content type filter (e.g., `Article`, `Web Story`). **Cannot be changed after creation.**
+  <Badge color="orange" size="sm">Immutable</Badge> Content type filter (e.g., `Article`, `Web Story`).
 </ParamField>
 
 #### Example Request
