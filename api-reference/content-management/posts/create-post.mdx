@@ -17,11 +17,11 @@ Creates a new post. Posts are created with `Draft` status by default.
 </ParamField>
 
 <ParamField body="english_title" type="string" required>
-  English headline (used for slug generation). **Cannot be changed after creation.**
+  <Badge color="orange" size="sm">Immutable</Badge> English headline (used for slug generation).
 </ParamField>
 
 <ParamField body="type" type="string" required>
-  Post type. `Article`, `Video`, `Web Story`, `Gallery`, `LiveBlog`, `CustomPage`, `BlankPage`. **Cannot be changed after creation.**
+  <Badge color="orange" size="sm">Immutable</Badge> Post type. `Article`, `Video`, `Web Story`, `Gallery`, `LiveBlog`, `CustomPage`, `BlankPage`.
 </ParamField>
 
 <ParamField body="status" type="string" required>
@@ -69,15 +69,15 @@ Creates a new post. Posts are created with `Draft` status by default.
 </ParamField>
 
 <ParamField body="slug" type="string">
-  Custom slug (auto-generated from `english_title` if omitted). **Cannot be changed after creation.**
+  <Badge color="orange" size="sm">Immutable</Badge> Custom slug (auto-generated from `english_title` if omitted).
 </ParamField>
 
 <ParamField body="meta_data" type="object">
-  Additional metadata (e.g., `{"access_type": "Paid"}`). **Immutable after creation.**
+  <Badge color="orange" size="sm">Immutable</Badge> Additional metadata (e.g., `{"access_type": "Paid"}`).
 </ParamField>
 
 <ParamField body="custom_published_at" type="string">
-  Backdated publish date. **Immutable after creation.**
+  <Badge color="orange" size="sm">Immutable</Badge> Backdated publish date.
 </ParamField>
 
 <ParamField body="scheduled_at" type="string">

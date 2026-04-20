@@ -5,6 +5,18 @@ description: "Set up API key authentication for the Publive CDS and CMS APIs. Co
 
 All Publive API requests require authentication via HTTP Basic Auth. Both the Content Delivery Service (CDS) and Content Management Service (CMS) use the same method.
 
+## How to Get Your API Credentials
+
+1. Navigate to [Publive Dashboard](https://dashboard.thepublive.com/v2/).
+2. Go to [Configurations](https://dashboard.thepublive.com/v2/configurations)
+3. Click on [API Developer Hub](https://dashboard.thepublive.com/v2/configurations/api-developer-hub)
+4. Click the **View API credentials** button.
+5. Your **API Key** is the username for Basic Auth.
+6. Your **API Secret** is the password for Basic Auth.
+7. Your **Publisher ID** is visible here.
+
+If you don't have login credentials for the dashboard, please contact us at [thepublive.com/contact-us](https://thepublive.com/contact-us).
+
 ## How Does Publive Authentication Work?
 
 You authenticate by sending an `Authorization` header with every request. The value is the word `Basic` followed by a Base64-encoded string of your API Key and API Secret joined by a colon.
@@ -45,15 +57,6 @@ curl -X POST \
   -d '{"name": "Technology", "english_name": "Technology"}'
 ```
 
-## How to Get Your API Credentials
-
-1. Log in to your [Publive Dashboard](https://dashboard.thepublive.com/v2/configurations/api-developer-hub).
-2. Click the **View API credentials** button.
-3. Your **API Key** is the username for Basic Auth.
-4. Your **API Secret** is the password for Basic Auth.
-5. Your **Publisher ID** is visible in your dashboard URL.
-
-If you don't have login credentials for the dashboard, please contact us at [thepublive.com/contact-us](https://thepublive.com/contact-us).
 
 ## Authentication errors
 
