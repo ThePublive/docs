@@ -5,63 +5,110 @@ description: "India-first headless CMS for modern digital publishers and enterpr
 
 ## Welcome to Publive
 
-Publive is an India-first headless CMS built for modern digital publishers and enterprises. Manage content through powerful APIs and build any frontend experience with your preferred framework.
+Publive is an India-first headless CMS built for modern digital publishers and enterprises. Get up and running in three steps:
+
+<Steps>
+  <Step title="Authenticate" href="/documentation/getting-started/authentication">
+    Generate your API key and set up credentials for the CDS or CMS API.
+  </Step>
+  <Step title="Fetch Content" href="/documentation/getting-started/quick-start">
+    Make your first API call to retrieve posts, categories, or site config.
+  </Step>
+  <Step title="Build Your Frontend" href="/documentation/guides/frontend-integration">
+    Integrate with React, Next.js, Angular, Vue, or any framework of your choice.
+  </Step>
+</Steps>
+
+## Two APIs, One Platform
 
 <CardGroup cols={2}>
   <Card
-    title="Introduction"
-    icon="book-open"
-    href="/documentation/getting-started/introduction"
+    title="Content Delivery API (CDS)"
+    icon="bolt"
+    href="/api-reference/content-delivery"
   >
-    What is Publive and how it works
+    Read-only. Fetch published posts, categories, live blogs, and site config for your frontend. Fast and cache-friendly.
   </Card>
   <Card
-    title="Quick Start"
-    icon="rocket"
-    href="/documentation/getting-started/quick-start"
+    title="Content Management API (CMS)"
+    icon="pen-to-square"
+    href="/api-reference/content-management"
   >
-    Your first API call in 5 minutes
+    Full CRUD. Create, update, publish, and delete content programmatically — from migrations to automated pipelines.
+  </Card>
+</CardGroup>
+
+## Common Use Cases
+
+<CardGroup cols={3}>
+  <Card
+    title="Build a News Feed"
+    icon="newspaper"
+    href="/api-reference/content-delivery/post-listing"
+  >
+    Fetch paginated posts filtered by category, tag, or author for any frontend or app.
   </Card>
   <Card
-    title="Core Concepts"
-    icon="cube"
+    title="Power a Live Blog"
+    icon="rss"
+    href="/api-reference/content-delivery/live-blog-updates"
+  >
+    Stream real-time updates for breaking news, elections, or live events.
+  </Card>
+  <Card
+    title="Automate Content Creation"
+    icon="robot"
+    href="/api-reference/content-management/posts/create-post"
+  >
+    Push articles from external tools, CMS migrations, or scheduled pipelines via the CMS API.
+  </Card>
+  <Card
+    title="Search & Filter Content"
+    icon="magnifying-glass"
     href="/documentation/getting-started/core-concepts"
   >
-    Posts, categories, tags, authors, and media
+    Query by date range, author, tags, and more using Publive's flexible filter operators.
   </Card>
   <Card
-    title="Authentication"
-    icon="key"
-    href="/documentation/getting-started/authentication"
+    title="Trigger on Publish"
+    icon="bell"
+    href="/documentation/webhooks-integrations"
   >
-    API keys and credential setup
+    Fire webhooks to rebuild your site, notify Slack, or sync to third-party services on any content event.
+  </Card>
+  <Card
+    title="Multilingual Publishing"
+    icon="language"
+    href="/documentation/guides/industry-specific/media-publishing"
+  >
+    Manage and deliver content in Hindi, Tamil, Bengali, and more from a single platform.
   </Card>
 </CardGroup>
 
 ## Why Publive?
 
 <CardGroup cols={3}>
-  <Card title="Headless Architecture" icon="layer-group">
+  <Card title="Headless Architecture" icon="layer-group" href="/documentation/guides/frontend-integration">
     Decouple content from presentation. Use any frontend — React, Next.js, Angular, Vue, or native apps.
   </Card>
-  <Card title="Multi-Format Content" icon="photo-film">
+  <Card title="Multi-Format Content" icon="photo-film" href="/documentation/getting-started/core-concepts">
     Articles, Videos, Web Stories, Galleries, Live Blogs, Custom Pages — all from one platform.
   </Card>
-  <Card title="Enterprise Governance" icon="shield-check">
+  <Card title="Enterprise Governance" icon="shield-check" href="/documentation/guides/workflows">
     Maker-checker workflows, multi-step approvals, and full audit trails for regulated industries.
   </Card>
-  <Card title="AI-Powered Features" icon="wand-magic-sparkles">
+  <Card title="AI-Powered Features" icon="wand-magic-sparkles" href="/documentation/webhooks-integrations">
     Auto-tagging, plagiarism detection, SEO scoring, and content recommendations built in.
   </Card>
-  <Card title="India-First" icon="globe">
+  <Card title="India-First" icon="globe" href="/documentation/guides/industry-specific/media-publishing">
     Built for Indian publishers with native support for Hindi, Tamil, Bengali, and more.
   </Card>
-  <Card title="Developer Friendly" icon="code">
+  <Card title="Developer Friendly" icon="code" href="/documentation/getting-started/quick-start">
     Clean REST APIs, intuitive query operators, and comprehensive documentation to ship fast.
   </Card>
 </CardGroup>
 
-## Explore Guides
+## Go Deeper
 
 <CardGroup cols={3}>
   <Card
@@ -85,11 +132,6 @@ Publive is an India-first headless CMS built for modern digital publishers and e
   >
     Guides for Media, BFSI, and Pharma
   </Card>
-</CardGroup>
-
-## Integrations & Reference
-
-<CardGroup cols={2}>
   <Card
     title="Webhooks & Integrations"
     icon="plug"
@@ -100,8 +142,8 @@ Publive is an India-first headless CMS built for modern digital publishers and e
   <Card
     title="API Reference"
     icon="terminal"
-    href="/documentation/reference"
+    href="/api-reference"
   >
-    Rate limits, error codes, changelog, and migration guides
+    Interactive reference for all CDS and CMS endpoints
   </Card>
 </CardGroup>
