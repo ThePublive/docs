@@ -18,9 +18,12 @@
     "timestamp": true
   },
   "colors": {
-    "primary": "#21263c",
-    "light": "#21263c",
-    "dark": "#21263c"
+    "primary": "#146EF5",
+    "light": "#146EF5",
+    "dark": "#146EF5"
+  },
+  "styling": {
+    "eyebrows": "breadcrumbs"
   },
   "favicon": "https://dashboard.thepublive.com/v2/public/favicon.ico",
   "navigation": {
@@ -116,6 +119,12 @@
               "documentation/guides/industry-specific/media-publishing",
               "documentation/guides/industry-specific/bfsi-compliance",
               "documentation/guides/industry-specific/pharma-governance"
+            ]
+          },
+          {
+            "group": "Content Authoring",
+            "pages": [
+              "documentation/guides/content-authoring/faq-block"
             ]
           },
           {
@@ -279,7 +288,7 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:help@thepublive.com"
+        "href": "https://help.thepublive.com/support/solutions"
       }
     ],
     "primary": {
@@ -310,9 +319,6 @@
   "appearance": {
     "strict": true,
     "default": "light"
-  },
-  "background": {
-    "decoration": "grid"
   },
   "api": {
     "mdx": {
