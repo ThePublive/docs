@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "maple",
+  "theme": "aspen",
   "name": "Publive Docs",
   "description": "API documentation and developer guides for Publive — India's headless CMS for digital publishers. Covers Content Delivery API, Content Management API, frontend integrations, and editorial workflows.",
   "seo": {
@@ -8,7 +8,7 @@
     "metatags": {
       "og:site_name": "Publive Docs",
       "twitter:card": "summary_large_image",
-      "twitter:site": "@the_Publive"
+      "twitter:site": "@the_publive"
     }
   },
   "search": {

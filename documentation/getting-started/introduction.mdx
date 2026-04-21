@@ -39,6 +39,169 @@ Automatic tag suggestions, plagiarism detection, SEO scoring, and content recomm
 ### Advanced Filtering
 The CDS API supports powerful query operators (`__eq`, `__contains`, `__in`, `__gte`, `__lte`, and more) for flexible content retrieval.
 
+## Use AI with These Docs
+
+Every page has a contextual menu with one-click options to open it in ChatGPT, Claude, or Perplexity. For deeper AI-assisted development, connect your coding tool directly to these docs via MCP — it can then search and read the full documentation in real time.
+
+### Setup
+
+<Tabs>
+  <Tab title="Claude Code">
+    Run this command in your terminal:
+
+    ```bash
+    claude mcp add --transport http publive-docs https://docs.thepublive.com/mcp
+    ```
+
+    **Or paste this prompt into Claude Code:**
+
+    ```
+    Run this command to add the Publive docs MCP server:
+    claude mcp add --transport http publive-docs https://docs.thepublive.com/mcp
+
+    Once added, use the publive-docs MCP to give me a summary of the available Publive APIs.
+    ```
+  </Tab>
+  <Tab title="Cursor">
+    Add to your `mcp.json` (Command Palette → "Open MCP settings"):
+
+    ```json
+    {
+      "mcpServers": {
+        "publive-docs": {
+          "url": "https://docs.thepublive.com/mcp"
+        }
+      }
+    }
+    ```
+
+    **Or paste this prompt into Cursor:**
+
+    ```
+    Add the following to my mcp.json file to connect the Publive docs MCP server:
+
+    {
+      "mcpServers": {
+        "publive-docs": {
+          "url": "https://docs.thepublive.com/mcp"
+        }
+      }
+    }
+
+    Once saved, use the publive-docs MCP to give me a summary of the available Publive APIs.
+    ```
+  </Tab>
+  <Tab title="VS Code">
+    Create or edit `.vscode/mcp.json`:
+
+    ```json
+    {
+      "servers": {
+        "publive-docs": {
+          "type": "http",
+          "url": "https://docs.thepublive.com/mcp"
+        }
+      }
+    }
+    ```
+
+    **Or paste this prompt into VS Code Copilot:**
+
+    ```
+    Create or update .vscode/mcp.json to add the Publive docs MCP server:
+
+    {
+      "servers": {
+        "publive-docs": {
+          "type": "http",
+          "url": "https://docs.thepublive.com/mcp"
+        }
+      }
+    }
+
+    Once saved, use the publive-docs MCP to give me a summary of the available Publive APIs.
+    ```
+  </Tab>
+  <Tab title="Claude (Web)">
+    Go to **Settings → Connectors → Add custom connector** and enter:
+
+    - **Name:** Publive Docs
+    - **URL:** `https://docs.thepublive.com/mcp`
+
+    **Or paste this prompt into Claude:**
+
+    ```
+    I want to connect the Publive API docs to Claude via MCP.
+
+    Go to Settings → Connectors → Add custom connector and add:
+    - Name: Publive Docs
+    - URL: https://docs.thepublive.com/mcp
+
+    Once connected, use it to give me a summary of the available Publive APIs.
+    ```
+  </Tab>
+  <Tab title="Windsurf">
+    Open **Windsurf Settings → MCP** and add a new server, or edit `~/.codeium/windsurf/mcp_config.json`:
+
+    ```json
+    {
+      "mcpServers": {
+        "publive-docs": {
+          "serverUrl": "https://docs.thepublive.com/mcp"
+        }
+      }
+    }
+    ```
+
+    **Or paste this prompt into Windsurf:**
+
+    ```
+    Add the Publive docs MCP server to my Windsurf MCP config (~/.codeium/windsurf/mcp_config.json):
+
+    {
+      "mcpServers": {
+        "publive-docs": {
+          "serverUrl": "https://docs.thepublive.com/mcp"
+        }
+      }
+    }
+
+    Once saved, use the publive-docs MCP to give me a summary of the available Publive APIs.
+    ```
+  </Tab>
+  <Tab title="Zed">
+    Open **Zed Settings** (`cmd+,`) and add under `context_servers`:
+
+    ```json
+    {
+      "context_servers": {
+        "publive-docs": {
+          "url": "https://docs.thepublive.com/mcp"
+        }
+      }
+    }
+    ```
+
+    **Or paste this prompt into Zed:**
+
+    ```
+    Add the Publive docs MCP server to my Zed settings.json under context_servers:
+
+    {
+      "context_servers": {
+        "publive-docs": {
+          "url": "https://docs.thepublive.com/mcp"
+        }
+      }
+    }
+
+    Once saved, use the publive-docs context server to give me a summary of the available Publive APIs.
+    ```
+  </Tab>
+</Tabs>
+
+Once connected, your AI tool can search endpoints, read full pages, and navigate the API reference without you having to paste anything manually.
+
 ## Next Steps
 
 <Card title="Quick Start" href="/documentation/getting-started/quick-start" />
