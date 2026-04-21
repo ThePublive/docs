@@ -1,0 +1,75 @@
+---
+title: "Retrieve Live Blog Update"
+description: Retrieve a single live blog update entry by ID
+api: "GET https://cms.thepublive.com/publisher/{publisher_id}/post/{post_id}/live-blog-update/{id}/"
+---
+
+Returns the full details of a specific live blog update entry.
+
+<Info>
+This endpoint only applies to posts with `type: "LiveBlog"`.
+</Info>
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField path="post_id" type="integer" required>
+  The post ID of the LiveBlog
+</ParamField>
+
+<ParamField path="id" type="integer" required>
+  The ID of the live blog update entry
+</ParamField>
+
+#### Example request
+
+```bash
+curl --request GET \
+  --url 'https://cms.thepublive.com/publisher/3466/post/4477638/live-blog-update/90586/' \
+  --header 'Authorization: Basic <BASE64_AUTH_TOKEN>'
+```
+
+<ResponseExample>
+
+```json 200
+{
+  "status": 200,
+  "data": {
+    "id": 90586,
+    "published_post": 4477638,
+    "author": {
+      "name": "PL",
+      "slug": "PL",
+      "description": "",
+      "facebook": "",
+      "linkedin": "",
+      "instagram": "",
+      "twitter": "",
+      "avatar": "test_1/media/member_avatars/2025/06/04/avatar.webp"
+    },
+    "content": {
+      "title": "Breaking: RBI holds rates",
+      "content": "<p>The Reserve Bank of India kept the repo rate unchanged at 6.5%.</p>"
+    },
+    "created_at": "2026-04-21T08:30:00+05:30",
+    "updated_at": "2026-04-21T08:30:00+05:30",
+    "is_pinned": true
+  }
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+```json 404
+{
+  "status": "error",
+  "message": "Not found"
+}
+```
+
+</ResponseExample>
