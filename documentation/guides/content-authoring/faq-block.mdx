@@ -1,0 +1,89 @@
+---
+title: "FAQ Block"
+description: Add structured FAQ sections to post content using the Create Post and Update Post APIs
+---
+
+The `content` field in [Create Post](/api-reference/content-management/posts/create-post) and [Update Post](/api-reference/content-management/posts/update-post) accepts HTML. To add a FAQ section, embed the following block anywhere within the HTML body.
+
+<Note>
+  `contributors` and `primary_category` are required fields when creating or updating a post that contains a FAQ block.
+</Note>
+
+## FAQ HTML Structure
+
+```html
+<div class="faq-block-html noneditable" itemscope="" itemtype="https://schema.org/FAQPage">
+  <h3>FAQ</h3>
+  <div class="faq-section">
+    <div class="faq-pair-html" itemscope="" itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <div class="question-html"><label> Q. </label>
+        <div itemprop="name">Question Placeholder</div>
+      </div>
+      <div class="answer-html" itemscope="" itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><label> A. </label>
+        <div class="noneditable" itemprop="text">Answer Placeholder</div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+Replace `Question Placeholder` and `Answer Placeholder` with your content. Add more `faq-pair-html` divs inside `faq-section` for additional Q&A pairs.
+
+## Multiple Questions
+
+```html
+<div class="faq-block-html noneditable" itemscope="" itemtype="https://schema.org/FAQPage">
+  <h3>FAQ</h3>
+  <div class="faq-section">
+
+    <div class="faq-pair-html" itemscope="" itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <div class="question-html"><label> Q. </label>
+        <div itemprop="name">What is Publive?</div>
+      </div>
+      <div class="answer-html" itemscope="" itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><label> A. </label>
+        <div class="noneditable" itemprop="text">Publive is a headless CMS built for digital publishers.</div>
+      </div>
+    </div>
+
+    <div class="faq-pair-html" itemscope="" itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <div class="question-html"><label> Q. </label>
+        <div itemprop="name">How do I authenticate API requests?</div>
+      </div>
+      <div class="answer-html" itemscope="" itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><label> A. </label>
+        <div class="noneditable" itemprop="text">Pass a Base64-encoded credential in the Authorization header using HTTP Basic Auth.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+```
+
+## Example API Request
+
+```bash
+curl -X POST \
+  'https://cms.thepublive.com/publisher/123/post/' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "title": "Common Questions About Our Service",
+    "english_title": "Common Questions About Our Service",
+    "type": "Article",
+    "status": "Draft",
+    "primary_category": 100,
+    "contributors": "1",
+    "content": "<div class=\"faq-block-html noneditable\" itemscope=\"\" itemtype=\"https://schema.org/FAQPage\"><h3>FAQ</h3><div class=\"faq-section\"><div class=\"faq-pair-html\" itemscope=\"\" itemprop=\"mainEntity\" itemtype=\"https://schema.org/Question\"><div class=\"question-html\"><label> Q. </label><div itemprop=\"name\">What is Publive?</div></div><div class=\"answer-html\" itemscope=\"\" itemprop=\"acceptedAnswer\" itemtype=\"https://schema.org/Answer\"><label> A. </label><div class=\"noneditable\" itemprop=\"text\">Publive is a headless CMS built for digital publishers.</div></div></div></div></div>"
+  }'
+```
+
+## Schema.org Markup
+
+The FAQ block uses [Schema.org FAQPage](https://schema.org/FAQPage) structured data, which enables rich results in Google Search.
+
+| Class | Property | Purpose |
+| ----- | -------- | ------- |
+| `FAQPage` | — | Marks the block as a FAQ page |
+| `Question` | `mainEntity` | Each Q&A pair |
+| `Question` | `name` | The question text |
+| `Answer` | `acceptedAnswer` | The answer container |
+| `Answer` | `text` | The answer text |
