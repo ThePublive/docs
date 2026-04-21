@@ -1,0 +1,59 @@
+---
+title: "Delete Live Blog Update"
+description: Permanently delete a live blog update entry
+api: "DELETE https://cms.thepublive.com/publisher/{publisher_id}/post/{post_id}/live-blog-update/{id}/"
+---
+
+Permanently deletes a live blog update entry from a LiveBlog post.
+
+<Warning>
+**Warning:** This action cannot be undone. The update entry will be permanently removed.
+</Warning>
+
+<Info>
+This endpoint only applies to posts with `type: "LiveBlog"`.
+</Info>
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField path="post_id" type="integer" required>
+  The post ID of the LiveBlog
+</ParamField>
+
+<ParamField path="id" type="integer" required>
+  The ID of the live blog update entry to delete
+</ParamField>
+
+#### Example request
+
+```bash
+curl --request DELETE \
+  --url 'https://cms.thepublive.com/publisher/3466/post/4477638/live-blog-update/90589/' \
+  --header 'Authorization: Basic <BASE64_AUTH_TOKEN>'
+```
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "success",
+  "message": "Deleted successfully!"
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+```json 404
+{
+  "status": "error",
+  "message": "Not found"
+}
+```
+
+</ResponseExample>

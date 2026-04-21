@@ -222,9 +222,17 @@
                   "api-reference/content-management/posts/create-post",
                   "api-reference/content-management/posts/retrieve-post",
                   "api-reference/content-management/posts/update-post",
-                  "api-reference/content-management/posts/delete-post",
-                  "api-reference/content-management/posts/create-live-blog-update",
-                  "api-reference/content-management/posts/update-live-blog-update"
+                  "api-reference/content-management/posts/delete-post"
+                ]
+              },
+              {
+                "group": "Live Blogs",
+                "pages": [
+                  "api-reference/content-management/live-blogs/list-live-blog-updates",
+                  "api-reference/content-management/live-blogs/retrieve-live-blog-update",
+                  "api-reference/content-management/live-blogs/create-live-blog-update",
+                  "api-reference/content-management/live-blogs/update-live-blog-update",
+                  "api-reference/content-management/live-blogs/delete-live-blog-update"
                 ]
               },
               {
