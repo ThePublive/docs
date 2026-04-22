@@ -5,7 +5,7 @@ description: "India-first headless CMS for modern digital publishers and enterpr
 
 ## What is Publive?
 
-Publive is an India-first headless CMS (Content Management System) built for modern digital publishers and enterprises. It provides a robust backend for managing content while giving you complete freedom to build any frontend experience using your preferred framework.
+Publive is an AI-Native headless CMS (Content Management System) built for modern digital publishers and enterprises. It provides a robust backend for managing content while giving you complete freedom to build any frontend experience using your preferred framework.
 
 <CardGroup cols={2}>
   <Card
@@ -26,17 +26,22 @@ Publive is an India-first headless CMS (Content Management System) built for mod
 
 ## Get Started
 
-<Steps>
-  <Step title="Authenticate" href="/documentation/getting-started/authentication">
-    Generate your API key and set up credentials for the CDS or CMS API.
-  </Step>
-  <Step title="Fetch Content" href="/documentation/quickstarts/cds">
-    Make your first API call to retrieve posts, categories, or site config.
-  </Step>
-  <Step title="Build Your Frontend" href="/documentation/guides/frontend-integration/README">
-    Integrate with React, Next.js, Angular, Vue, or any framework of your choice.
-  </Step>
-</Steps>
+<CardGroup cols={2}>
+  <Card
+    title="Fetch Content (CDS)"
+    icon="bolt"
+    href="/documentation/quickstarts/cds"
+  >
+    Use the Content Delivery API to fetch published posts, categories, and site configuration in under 5 minutes.
+  </Card>
+  <Card
+    title="Manage Content (CMS)"
+    icon="pen-to-square"
+    href="/documentation/quickstarts/cms"
+  >
+    Use the Content Management API to create categories, draft posts, and publish content in under 5 minutes.
+  </Card>
+</CardGroup>
 
 ## Key Capabilities
 
@@ -70,6 +75,8 @@ Publive is an India-first headless CMS (Content Management System) built for mod
     href="/api-reference/content-delivery/post-listing"
   >
     Fetch paginated posts filtered by category, tag, or author for any frontend or app.
+
+    <Badge>CDS</Badge> <Badge color="blue">Content Delivery API</Badge>
   </Card>
   <Card
     title="Power a Live Blog"
@@ -77,6 +84,8 @@ Publive is an India-first headless CMS (Content Management System) built for mod
     href="/api-reference/content-delivery/live-blog-updates"
   >
     Stream real-time updates for breaking news, elections, or live events.
+
+    <Badge>CDS</Badge> <Badge color="blue">Content Delivery API</Badge>
   </Card>
   <Card
     title="Automate Content Creation"
@@ -84,6 +93,8 @@ Publive is an India-first headless CMS (Content Management System) built for mod
     href="/api-reference/content-management/posts/create-post"
   >
     Push articles from external tools, CMS migrations, or scheduled pipelines via the CMS API.
+
+    <Badge>CMS</Badge> <Badge color="blue">Content Management API</Badge>
   </Card>
   <Card
     title="Search & Filter Content"
@@ -91,6 +102,8 @@ Publive is an India-first headless CMS (Content Management System) built for mod
     href="/documentation/getting-started/core-concepts"
   >
     Query by date range, author, tags, and more using Publive's flexible filter operators.
+
+    <Badge>CDS</Badge> <Badge color="blue">Content Delivery API</Badge>
   </Card>
   <Card
     title="Trigger on Publish"
@@ -98,6 +111,8 @@ Publive is an India-first headless CMS (Content Management System) built for mod
     href="/documentation/webhooks-integrations/webhooks"
   >
     Fire webhooks to rebuild your site, notify Slack, or sync to third-party services on any content event.
+
+    <Badge>Webhooks</Badge> <Badge color="blue">Integrations</Badge>
   </Card>
   <Card
     title="Multilingual Publishing"
@@ -105,6 +120,8 @@ Publive is an India-first headless CMS (Content Management System) built for mod
     href="/documentation/guides/industry-specific/media-publishing"
   >
     Manage and deliver content in Hindi, Tamil, Bengali, and more from a single platform.
+
+    <Badge>India-First</Badge> <Badge color="blue">Content Delivery API</Badge>
   </Card>
 </CardGroup>
 
