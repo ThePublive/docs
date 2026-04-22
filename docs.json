@@ -43,6 +43,7 @@
           {
             "group": "Getting Started",
             "pages": [
+              "index",
               "documentation/getting-started/authentication"
             ]
           },
