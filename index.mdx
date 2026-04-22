@@ -3,6 +3,37 @@ title: "Introduction"
 description: "India-first headless CMS for modern digital publishers and enterprises"
 ---
 
+export const SearchTrigger = () => (
+  <div
+    onClick={() => document.querySelector('#search-bar-entry')?.click()}
+    className="mx-auto max-w-xl flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 cursor-pointer hover:border-gray-300 dark:hover:border-zinc-600 transition-colors shadow-sm mb-8"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="text-gray-400 dark:text-zinc-500 shrink-0"
+    >
+      <circle cx="11" cy="11" r="8" />
+      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+    </svg>
+    <span className="text-gray-400 dark:text-zinc-500 text-sm flex-1">
+      Search Publive docs...
+    </span>
+    <kbd className="hidden sm:inline-flex items-center px-2 py-0.5 text-xs text-gray-400 dark:text-zinc-500 bg-gray-100 dark:bg-zinc-800 rounded border border-gray-200 dark:border-zinc-700 font-sans">
+      ⌘K
+    </kbd>
+  </div>
+);
+
+<SearchTrigger />
+
 ## What is Publive?
 
 Publive is an AI-Native headless CMS (Content Management System) built for modern digital publishers and enterprises. It provides a robust backend for managing content while giving you complete freedom to build any frontend experience using your preferred framework.
