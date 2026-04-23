@@ -1,0 +1,133 @@
+---
+title: "Update Custom Content Type"
+description: Update an existing custom content type schema
+api: "PATCH https://cms.thepublive.com/publisher/{publisher_id}/entities/content-type/{custom_entity_schema_id}"
+---
+
+Updates an existing custom content type schema. Only send the fields you want to change (partial update).
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField path="custom_entity_schema_id" type="string" required>
+  Custom content type schema ID
+</ParamField>
+
+<ParamField body="name" type="string">
+  Display name for the content type
+</ParamField>
+
+<ParamField body="api_slug" type="string">
+  Singular API slug for single-entry endpoints
+</ParamField>
+
+<ParamField body="api_collections_slug" type="string">
+  Plural API slug for collection endpoints
+</ParamField>
+
+<ParamField body="response_type" type="string">
+  Response format. Currently supports `json`.
+</ParamField>
+
+<ParamField body="field_types" type="array">
+  Replaces the field definitions for the schema. Each object supports:
+
+  | Key | Type | Required | Description |
+  | --- | ---- | -------- | ----------- |
+  | `name` | string | Yes | Field identifier |
+  | `type` | string | Yes | Field type: `short_text`, `long_text`, `url`, `integer`, `boolean`, `media`, etc. |
+  | `meta_data` | object | No | UI metadata — `label`, `tooltip`, `type`, `placeholder`, `default` (each wrapped as `{"value": ...}`) |
+  | `validations` | object | No | Validation rules — `required`, `group_editable` |
+  | `group_id` | string | No | Field group assignment |
+</ParamField>
+
+#### Example Request
+
+```bash
+curl -X PATCH \
+  'https://cms.thepublive.com/publisher/123/entities/content-type/sch_abc123' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name": "Movies",
+    "api_slug": "movie",
+    "api_collections_slug": "movies",
+    "response_type": "json",
+    "field_types": [
+      {
+        "name": "fame",
+        "type": "short_text",
+        "validations": { "required": {}, "group_editable": true },
+        "meta_data": {
+          "type": { "value": "input" },
+          "label": { "value": "fame" },
+          "placeholder": { "value": "Actor is" },
+          "default": { "value": null },
+          "tooltip": { "value": "" }
+        }
+      }
+    ]
+  }'
+```
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "success",
+  "message": "Updated Successfully",
+  "data": {
+    "id": "sch_abc123",
+    "type": "Collection",
+    "name": "Movies",
+    "api_slug": "movie",
+    "api_collections_slug": "movies",
+    "response_type": "json",
+    "field_types": [
+      {
+        "name": "fame",
+        "type": "short_text",
+        "validations": { "required": {}, "group_editable": true },
+        "meta_data": {
+          "type": { "value": "input" },
+          "label": { "value": "fame" },
+          "placeholder": { "value": "Actor is" },
+          "default": { "value": null },
+          "tooltip": { "value": "" }
+        }
+      }
+    ],
+    "groups": [],
+    "components": [],
+    "settings": {
+      "entry_title": "name",
+      "searchable_fields": [],
+      "filter_fields": [],
+      "allowed_states": ["Published", "Draft", "Scheduled", "Approval Pending"],
+      "access_control": {},
+      "enable_component_preview": false,
+      "enable_content_rule": false,
+      "enable_custom_date": false,
+      "enable_seo_properties": false,
+      "enable_code_ingestion": false
+    },
+    "global_system_default": false
+  }
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+```json 404
+{
+  "status": "error",
+  "message": "Not found"
+}
+```
+
+</ResponseExample>

@@ -1,0 +1,38 @@
+---
+title: "Custom Components"
+description: Manage custom component schemas via the CMS API
+---
+
+Custom Components let you define reusable content schemas with configurable field types. Each schema specifies a set of typed fields that editors fill in when creating content entries based on that component.
+
+## Custom Component Object
+
+| Field | Type | Editable | Required | Description |
+| ----- | ---- | -------- | -------- | ----------- |
+| `id` | string | No | — | Unique schema identifier |
+| `name` | string | Yes | Yes | Display name for the component |
+| `meta_data` | object | Yes | No | Additional metadata (e.g. `description`) |
+| `field_types` | array | Yes | No | Array of field definitions (see below) |
+| `settings` | object | Yes | No | Component-level settings |
+
+### Field Type Object
+
+Each item in `field_types` has the following shape:
+
+| Field | Type | Required | Description |
+| ----- | ---- | -------- | ----------- |
+| `name` | string | Yes | Field identifier (slug-style) |
+| `type` | string | Yes | Field type: `short_text`, `long_text`, `integer`, `boolean`, `media`, etc. |
+| `meta_data` | object | No | UI metadata — `label`, `tooltip`, `type`, `placeholder`, `default` |
+| `validations` | object | No | Validation rules — `required`, `max_length`, `group_editable` |
+| `group_id` | string | No | Assign the field to a field group |
+
+## Endpoints
+
+| Method | Endpoint | Description |
+| ------ | -------- | ----------- |
+| [GET](/api-reference/content-management/custom-components/list-custom-components) | `/entities/content-type/custom-component/` | List all custom component schemas |
+| [POST](/api-reference/content-management/custom-components/create-custom-component) | `/entities/content-type/custom-component/` | Create a new custom component schema |
+| [GET](/api-reference/content-management/custom-components/retrieve-custom-component) | `/entities/content-type/custom-component/{custom_entity_schema_id}` | Retrieve a custom component schema |
+| [PATCH](/api-reference/content-management/custom-components/update-custom-component) | `/entities/content-type/custom-component/{custom_entity_schema_id}/` | Update a custom component schema |
+| [DELETE](/api-reference/content-management/custom-components/delete-custom-component) | `/entities/content-type/custom-component/{custom_entity_schema_id}` | Delete a custom component schema |

@@ -1,0 +1,59 @@
+---
+title: "Custom Content Types"
+description: Manage custom content type schemas via the CMS API
+---
+
+Custom Content Types let you define your own structured content schemas beyond built-in types like Posts. Each schema specifies the content type's fields, allowed states, API slugs, and optional settings such as SEO properties and content rules.
+
+## Custom Content Type Object
+
+| Field | Type | Editable | Required | Description |
+| ----- | ---- | -------- | -------- | ----------- |
+| `id` | string | No | — | Unique schema identifier |
+| `type` | string | No | Yes | Schema type — `Collection` or `Single` |
+| `name` | string | Yes | Yes | Display name (e.g. `"Movies"`) |
+| `api_slug` | string | Yes | Yes | Singular API slug for single-entry endpoints (e.g. `"movie"`) |
+| `api_collections_slug` | string | Yes | Yes | Plural API slug for collection endpoints (e.g. `"movies"`) |
+| `response_type` | string | Yes | No | Response format — `json` (default) |
+| `field_types` | array | Yes | No | Array of field definitions (see below) |
+| `groups` | array | Yes | No | Field group definitions |
+| `components` | array | Yes | No | Associated custom component schemas |
+| `settings` | object | Yes | No | Type-level settings (see below) |
+| `global_system_default` | boolean | No | No | Whether this is a system-level default type |
+
+### Settings Object
+
+| Key | Type | Description |
+| --- | ---- | ----------- |
+| `entry_title` | string | Field name used as the entry's display title |
+| `searchable_fields` | array | Fields that are full-text searchable |
+| `filter_fields` | array | Fields that can be filtered in listings |
+| `allowed_states` | array | Permitted publishing states: `Published`, `Draft`, `Scheduled`, `Approval Pending` |
+| `access_control` | object | Role-based access configuration |
+| `enable_component_preview` | boolean | Enable live component preview |
+| `enable_content_rule` | boolean | Enable content rules engine |
+| `enable_custom_date` | boolean | Allow custom publish date |
+| `enable_seo_properties` | boolean | Show SEO fields on entries |
+| `enable_code_ingestion` | boolean | Allow code-based content ingestion |
+
+### Field Type Object
+
+Each item in `field_types` has the following shape:
+
+| Field | Type | Required | Description |
+| ----- | ---- | -------- | ----------- |
+| `name` | string | Yes | Field identifier (slug-style) |
+| `type` | string | Yes | Field type: `short_text`, `long_text`, `url`, `integer`, `boolean`, `media`, etc. |
+| `meta_data` | object | No | UI metadata — `label`, `tooltip`, `type`, `placeholder`, `default` (each wrapped as `{"value": ...}`) |
+| `validations` | object | No | Validation rules — `required`, `group_editable` |
+| `group_id` | string | No | Assign the field to a field group |
+
+## Endpoints
+
+| Method | Endpoint | Description |
+| ------ | -------- | ----------- |
+| [GET](/api-reference/content-management/custom-content-types/list-custom-content-types) | `/entities/content-type/` | List all custom content type schemas |
+| [POST](/api-reference/content-management/custom-content-types/create-custom-content-type) | `/entities/content-type/` | Create a new custom content type schema |
+| [GET](/api-reference/content-management/custom-content-types/retrieve-custom-content-type) | `/entities/content-type/{custom_entity_schema_id}` | Retrieve a custom content type schema |
+| [PATCH](/api-reference/content-management/custom-content-types/update-custom-content-type) | `/entities/content-type/{custom_entity_schema_id}` | Update a custom content type schema |
+| [DELETE](/api-reference/content-management/custom-content-types/delete-custom-content-type) | `/entities/content-type/{custom_entity_schema_id}` | Delete a custom content type schema |

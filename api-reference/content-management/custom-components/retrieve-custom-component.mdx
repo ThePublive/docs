@@ -1,0 +1,59 @@
+---
+title: "Retrieve Custom Component"
+description: Retrieve a single custom component schema by ID
+api: "GET https://cms.thepublive.com/publisher/{publisher_id}/entities/content-type/custom-component/{custom_entity_schema_id}"
+---
+
+Returns the details of a specific custom component schema.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField path="custom_entity_schema_id" type="string" required>
+  Custom component schema ID
+</ParamField>
+
+<ResponseExample>
+
+```json 200
+{
+  "id": "abc123",
+  "name": "Main Section",
+  "meta_data": {
+    "description": "A reusable hero section component with title"
+  },
+  "field_types": [
+    {
+      "name": "title",
+      "type": "short_text",
+      "meta_data": {
+        "label": { "value": "Title" },
+        "tooltip": { "value": "The main heading for the hero section" },
+        "type": { "value": "input" }
+      },
+      "validations": {
+        "required": { "value": true },
+        "max_length": { "value": 100 }
+      },
+      "group_id": ""
+    }
+  ],
+  "settings": {}
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+```json 404
+{
+  "status": "error",
+  "message": "Not found"
+}
+```
+
+</ResponseExample>

@@ -1,0 +1,121 @@
+---
+title: "Update Custom Component"
+description: Update an existing custom component schema
+api: "PATCH https://cms.thepublive.com/publisher/{publisher_id}/entities/content-type/custom-component/{custom_entity_schema_id}/"
+---
+
+Updates an existing custom component schema. Only send the fields you want to change (partial update).
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField path="custom_entity_schema_id" type="string" required>
+  Custom component schema ID 
+</ParamField>
+
+<ParamField body="name" type="string">
+  Display name for the component
+</ParamField>
+
+<ParamField body="meta_data" type="object">
+  Additional metadata for the component.
+
+  | Key | Type | Description |
+  | --- | ---- | ----------- |
+  | `description` | string | Human-readable description of the component |
+</ParamField>
+
+<ParamField body="field_types" type="array">
+  Replaces the field definitions for the schema. Each object supports:
+
+  | Key | Type | Required | Description |
+  | --- | ---- | -------- | ----------- |
+  | `name` | string | Yes | Field identifier |
+  | `type` | string | Yes | Field type: `short_text`, `long_text`, `integer`, `boolean`, `media`, etc. |
+  | `meta_data` | object | No | UI metadata — `label`, `tooltip`, `type`, `placeholder`, `default` (each wrapped as `{"value": ...}`) |
+  | `validations` | object | No | Validation rules — `required`, `max_length`, `group_editable` |
+  | `group_id` | string | No | Field group assignment |
+</ParamField>
+
+<ParamField body="settings" type="object">
+  Component-level settings.
+</ParamField>
+
+#### Example Request
+
+```bash
+curl -X PATCH \
+  'https://cms.thepublive.com/publisher/123/entities/content-type/custom-component/abc123/' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name": "section 1",
+    "field_types": [
+      {
+        "name": "age",
+        "type": "integer",
+        "meta_data": {
+          "type": { "value": "input" },
+          "label": { "value": "Age" },
+          "placeholder": { "value": "" },
+          "default": { "value": null },
+          "tooltip": { "value": "" }
+        },
+        "validations": {
+          "required": true,
+          "group_editable": true
+        }
+      }
+    ]
+  }'
+```
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "success",
+  "message": "Updated Successfully",
+  "data": {
+    "id": "abc123",
+    "name": "section 1",
+    "meta_data": {
+      "description": "A reusable hero section component with title"
+    },
+    "field_types": [
+      {
+        "name": "age",
+        "type": "integer",
+        "meta_data": {
+          "type": { "value": "input" },
+          "label": { "value": "Age" },
+          "placeholder": { "value": "" },
+          "default": { "value": null },
+          "tooltip": { "value": "" }
+        },
+        "validations": {
+          "required": true,
+          "group_editable": true
+        }
+      }
+    ],
+    "settings": {}
+  }
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+```json 404
+{
+  "status": "error",
+  "message": "Not found"
+}
+```
+
+</ResponseExample>
