@@ -247,6 +247,28 @@
                 ]
               },
               {
+                "group": "Custom Content Types",
+                "pages": [
+                  "api-reference/content-management/custom-content-types/README",
+                  "api-reference/content-management/custom-content-types/list-custom-content-types",
+                  "api-reference/content-management/custom-content-types/create-custom-content-type",
+                  "api-reference/content-management/custom-content-types/retrieve-custom-content-type",
+                  "api-reference/content-management/custom-content-types/update-custom-content-type",
+                  "api-reference/content-management/custom-content-types/delete-custom-content-type"
+                ]
+              },
+              {
+                "group": "Custom Components",
+                "pages": [
+                  "api-reference/content-management/custom-components/README",
+                  "api-reference/content-management/custom-components/list-custom-components",
+                  "api-reference/content-management/custom-components/create-custom-component",
+                  "api-reference/content-management/custom-components/retrieve-custom-component",
+                  "api-reference/content-management/custom-components/update-custom-component",
+                  "api-reference/content-management/custom-components/delete-custom-component"
+                ]
+              },
+              {
                 "group": "Forms",
                 "pages": [
                   "api-reference/content-management/forms/form-submission"
