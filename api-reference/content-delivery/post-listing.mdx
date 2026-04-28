@@ -20,13 +20,6 @@ Returns a paginated list of published posts with support for advanced filtering,
   Items per page (max: 50)
 </ParamField>
 
-<ParamField query="sort_by" type="string" default="created_at">
-  Field to sort by
-</ParamField>
-
-<ParamField query="sort_order" type="string" default="desc">
-  Sort direction: `asc` or `desc`
-</ParamField>
 
 #### Advanced Filtering
 
@@ -70,8 +63,8 @@ Append operator suffixes to filterable fields to build queries:
 # Search posts by title
 /posts/?title__contains=budget
 
-# Combine filters: articles in category, sorted by title
-/posts/?type__eq=Article&primary_category.id__eq=100&sort_by=title&sort_order=asc
+# Combine filters: articles in a specific category
+/posts/?type__eq=Article&primary_category.id__eq=100
 ```
 
 <Info>
