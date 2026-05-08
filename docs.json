@@ -33,6 +33,11 @@
           "anchor": "Blog",
           "icon": "newspaper",
           "href": "https://blog.thepublive.com/"
+        },
+        {
+          "anchor": "Changelog",
+          "icon": "list",
+          "href": "/changelog"
         }
       ]
     },
@@ -132,15 +137,6 @@
             "pages": [
               "documentation/guides/deployment"
             ]
-          }
-        ]
-      },
-      {
-        "tab": "Changelog",
-        "groups": [
-          {
-            "group": "Changelog",
-            "pages": ["changelog/index"]
           }
         ]
       },
@@ -349,6 +345,7 @@
   },
   "footer": {
     "socials": {
+      "website": "https://thepublive.com",
       "x": "https://x.com/the_Publive",
       "github": "https://github.com/ThePublive",
       "linkedin": "https://in.linkedin.com/company/the-publive"
