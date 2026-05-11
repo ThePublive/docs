@@ -97,7 +97,8 @@
               "documentation/guides/decoupled-frontend/integrations/how-to-integrate-component-form",
               "documentation/guides/decoupled-frontend/integrations/how-to-create-files-route",
               "documentation/guides/decoupled-frontend/integrations/how-to-have-preview-page",
-              "documentation/guides/decoupled-frontend/integrations/how-to-have-password-protected-preview"
+              "documentation/guides/decoupled-frontend/integrations/how-to-have-password-protected-preview",
+              "documentation/guides/integrations/how-to-integrate-cookie-consent"
             ]
           },
           {
