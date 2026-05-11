@@ -1,0 +1,129 @@
+---
+title: "How to Integrate Cookie Consent"
+description: "Choose and deploy a Consent Management Platform (CMP) on your Publive site to meet DPDP, GDPR, and programmatic ad requirements"
+---
+
+Use this guide when you need to add a cookie consent layer to your Publive-deployed site — whether to meet DPDP requirements for Indian audiences, GDPR obligations for EU readers, or programmatic ad compliance.
+
+<Info>
+This guide is informational and intended to help you make an informed choice. It is not legal advice. For final positioning on your compliance posture, consult your legal counsel.
+</Info>
+
+## Publive's scope
+
+Publive is a headless CMS and content delivery platform. It does not bundle a Consent Management Platform or a cookie consent banner of its own.
+
+This is a deliberate choice. CMP requirements vary significantly across publishers depending on audience geography, regulatory exposure, ad operations, and category/vendor lists. A bundled, one-size-fits-all CMP would not serve most publishers well.
+
+Publive treats the CMP as a publisher-owned layer that integrates cleanly into your Publive-deployed site. The integration itself is straightforward and is supported by the Publive team — what you bring is the CMP of your choice.
+
+## Choose the right CMP
+
+Find the case below that best matches your situation. Your legal counsel should validate the final positioning for your business.
+
+### India-only audience (DPDP scope)
+
+Your readership is entirely or near-entirely Indian, with no EU-targeted operations and negligible EU traffic.
+
+A standard cookie consent banner is sufficient. You do not need IAB TCF certification, Google Consent Mode v2, or geo-targeted display.
+
+Recommended CMPs: **GetTerms.io**, **CookieYes**.
+
+### India-based publisher with incidental EU readership
+
+You are India-headquartered, primarily serve an Indian audience, but have some EU readers (e.g., diaspora). You are not actively targeting the EU as a market.
+
+Geo-targeted consent is generally the most pragmatic approach: a GDPR-compliant banner to EU-IP users, a lighter DPDP-style banner to others. This covers EU obligations without bloating the UX for your primary audience.
+
+If you serve programmatic ads to EU users — even a small share — see the programmatic ads section below. Geo-targeted consent alone does not cover ad inventory.
+
+Recommended CMPs: **CookieYes** (higher tiers), **Cookiebot**, **Didomi**.
+
+### Publisher actively targeting EU readers, no programmatic ads
+
+The EU is a deliberate audience for your business. You use analytics and tag-based tracking but do not run programmatic ad operations to EU users.
+
+You need a CMP with GDPR-grade consent capture: category-level granularity, consent logging, and withdrawal. Configure Google Consent Mode v2 if you use Google services (GA4, GTM, Google Ads) — required since January 2024 for ad targeting and measurement in the EEA/UK.
+
+Recommended CMPs: **CookieYes**, **Cookiebot**, **Didomi**.
+
+### Programmatic ads served to EEA/UK users
+
+<Warning>
+You serve programmatic ad inventory to readers in the EEA or UK. Without IAB TCF v2.2 compliance, ad inventory is devalued or filtered downstream.
+</Warning>
+
+You need a CMP registered with the **IAB Transparency and Consent Framework (TCF) v2.2** — which emits a valid TC string into ad requests — and supporting **Google Consent Mode v2**.
+
+Recommended CMPs: **CookieYes** (TCF tier), **Cookiebot**, **Sourcepoint**, **Didomi**, **OneTrust**.
+
+## Recommended CMPs
+
+The table below summarizes vetted options. Pricing is page-view-based for most of these tools, so factor your monthly traffic into the comparison.
+
+| CMP | Pricing model | IAB TCF v2.2 | Consent Mode v2 | Best fit |
+|---|---|:---:|:---:|---|
+| **GetTerms.io** | Tiered, page-view-based | No | No | DPDP-only / basic consent without programmatic ads |
+| **CookieYes** | Tiered, page-view-based | Yes (higher tiers) | Yes | Most profiles; strong cost-to-capability ratio |
+| **Cookiebot** | Page-view-based | Yes | Yes | Mid-to-large publishers with EU traffic |
+| **Didomi** | Custom / enterprise | Yes | Yes | Enterprise publishers with complex setups |
+| **Sourcepoint** | Custom / enterprise | Yes | Yes | Programmatic-heavy publishers |
+| **OneTrust** | Custom / enterprise | Yes | Yes | Enterprise with broader privacy program needs |
+
+If your current CMP is not in this list, see [Bringing your own CMP](#bringing-your-own-cmp) below.
+
+## Bringing your own CMP
+
+You are not restricted to the options listed above. If you have an existing CMP relationship or a specific preference, the Publive support team will evaluate the integration on request.
+
+During the evaluation, the team checks:
+
+- Script delivery method (head-based script is the standard supported path)
+- Performance impact on page load
+- Compatibility with your ad and analytics stack
+- Any custom configuration needed for category mapping or geo-targeting
+
+To request an evaluation, see [Getting started](#getting-started).
+
+## Integration approach
+
+CMP integration on Publive follows a standard pattern: the CMP vendor provides a script snippet, and Publive deploys that snippet into the document head of your site.
+
+**What you provide:**
+
+- The chosen CMP and an active account
+- The script snippet from your CMP dashboard
+- Any custom configuration (categories enabled, geo-targeting rules, vendor list specifics)
+
+**What Publive deploys:**
+
+- Script placement in the head of your site
+- Validation that the consent layer loads as expected
+- Verification that consent state is available before downstream scripts (analytics, ad tags) execute
+
+Most integrations complete within a single deployment cycle. More complex setups — for example, conditional script loading based on consent state, or custom category-to-tag mapping — are scoped on request.
+
+## Responsibilities at a glance
+
+| Area | Publisher | Publive |
+|---|:---:|:---:|
+| CMP selection and subscription | ✓ | |
+| CMP account and configuration (categories, vendor list, geo rules) | ✓ | |
+| Legal review of consent text and policy | ✓ | |
+| Ongoing maintenance of CMP configuration | ✓ | |
+| Integration deployment on Publive site | | ✓ |
+| Performance validation of the CMP layer | | ✓ |
+| Ongoing support for the integration layer | | ✓ |
+| Updates to script when CMP version changes | | ✓ (on request) |
+
+## Getting started
+
+To raise a CMP integration request, contact the Publive support team with:
+
+1. The CMP you have selected (or are evaluating)
+2. Confirmation that an active CMP account is set up
+3. The script snippet from your CMP dashboard
+4. Any custom configuration you want applied (geo rules, category mapping, conditional loading, etc.)
+5. The target Publive publisher space(s) for the integration
+
+The support team will confirm scope, deployment timing, and any additional inputs needed.
