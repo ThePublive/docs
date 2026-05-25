@@ -10,8 +10,8 @@ rss: true
 
 <Update
   label="May 19, 2026"
-  tags={["New releases", "Improvements"]}
-  rss={{ title: "AI Suite v2, Audit Logging Phase 2, Form notification improvements, Trending content API, autosave speed" }}
+  tags={["New releases", "Improvements", "Bug fixes"]}
+  rss={{ title: "AI Suite v2, Audit Logging Phase 2, Form notification improvements, CMS & CDS API updates, autosave speed, bug fixes" }}
 >
 
 ### AI Suite Iteration (v2)
@@ -52,6 +52,16 @@ Autosave is faster across all content types — both opening the edit page and s
 ### Roles & Permissions Page — Faster Load and Save
 
 The roles and permissions page now opens and saves faster.
+
+### API Updates
+
+- **Component & Dynamic Zone support in CMS APIs** — CMS APIs now support component and dynamic zone fields. Integrations that read or write content types using these structures will work end-to-end without workarounds.
+- **Static file support in CDS APIs** — CDS APIs now cover static files including sitemaps, robots.txt, ads.txt, and helper iframes. Publisher websites serving these files via CDS no longer need separate handling or manual workarounds.
+
+### Bug fixes
+
+- Photo gallery preview URL — scrolling down in a photo gallery preview no longer redirects to the homepage URL.
+- Relational field search — pressing Enter while searching for a custom entity now commits the top result from the dropdown instead of deselecting existing entries.
 
 </Update>
 
