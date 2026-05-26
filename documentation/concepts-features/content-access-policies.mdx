@@ -1,0 +1,47 @@
+---
+title: "Content Access Policies"
+description: "Define granular Allow/Deny access rules per content type, action, and field inside a role"
+---
+
+Content Access Policies let you control which content types and actions each role can access, down to the field level for custom content types.
+
+<Info>
+More detailed documentation for Content Access Policies is coming soon.
+</Info>
+
+<Note>
+Content Access Policies are configured from the dashboard and are desktop-only.
+</Note>
+
+## Where to find it
+
+Open any role via **Roles → Create / Edit Role**. The **Content Permissions** tab is where you define access policies for that role.
+
+## How the policy model works
+
+Access follows an **Allow / Deny** model with two rules:
+
+- **Deny always overrides Allow.** If a user has a Deny policy from any role, access is blocked regardless of Allow policies elsewhere.
+- **Default is zero access.** Unless a policy explicitly grants access, a role has no access to a content type or action.
+
+This means all access must be explicitly granted — there are no implicit permissions.
+
+## Defining policy rows
+
+Each row in the Content Permissions tab defines access along three dimensions:
+
+| Dimension | Description |
+|-----------|-------------|
+| **Content type** | Which content type the rule applies to |
+| **Action** | The operation being controlled (e.g. view, create, edit, delete, publish) |
+| **Field** | A specific field within the content type (custom types only) |
+
+Field-level control is available only for custom content types. For system content types, policies apply at the content-type and action level.
+
+## Supported content types
+
+Policies can be applied to:
+
+- **Custom content types** — full support including field-level rules
+- **System default content types** — policy support at the content-type and action level
+- **Partial entity content types** — policy support at the content-type and action level

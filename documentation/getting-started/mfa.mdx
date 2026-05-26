@@ -1,0 +1,29 @@
+---
+title: "Multi-Factor Authentication (MFA)"
+description: "Enable and enforce MFA for dashboard users to require OTP verification on login"
+---
+
+MFA adds a second verification step to the Publive dashboard login. When enabled, users must enter a 6-digit OTP,received on their registered email address, after their password before they can access the dashboard.
+
+## Enabling MFA
+
+MFA can be configured in two ways:
+
+**Per user** — Open the user's profile via **Team Members → Edit**. Toggle MFA on for that individual. The user will be required to verify via OTP on their next login.
+
+**Globally for all users** — In publisher settings, enable the **Enforce MFA** option. This applies MFA to every user under that publisher immediately.
+
+<Warning>
+Enabling MFA — whether for an individual or globally — immediately signs out all affected users.
+</Warning>
+
+## OTP mechanics
+
+| Detail | Value |
+|--------|-------|
+| Code length | 6 digits |
+| Code validity | 5 minutes |
+| Max wrong attempts | 5 |
+| Lockout duration | 15 minutes |
+
+After 5 incorrect OTP attempts the account is locked for 15 minutes before another attempt can be made.
