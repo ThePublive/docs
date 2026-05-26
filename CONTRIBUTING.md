@@ -14,7 +14,7 @@ Thank you for your interest in contributing to our documentation! This guide wil
 
 ### Option 2: Local development
 
-1. Fork and clone this repository
+1. Clone this repository
 2. Install the Mintlify CLI: `npm i -g mint`
 3. Create a branch for your changes
 4. Make changes
@@ -22,7 +22,27 @@ Thank you for your interest in contributing to our documentation! This guide wil
 6. Preview your changes at `http://localhost:3000`
 7. Commit your changes and submit a pull request
 
+Or run this single command to clone, install, and start the preview in one go:
+
+> **Prerequisites before running this command:**
+> - [Git](https://git-scm.com/downloads) installed
+> - [Node.js v19+](https://nodejs.org) installed
+> - SSH key [generated](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and [added to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
+
+```bash
+git clone git@github.com:ThePublive/docs.git && cd docs && npm i -g mint && mint dev
+```
+
 For more details on local development, see our [development guide](development.mdx).
+
+## Useful Mintlify commands
+
+| Command | Description |
+|---|---|
+| `mint dev` | Start the local preview at `http://localhost:3000` |
+| `mint dev --port 3333` | Start on a custom port |
+| `mint broken-links` | Check for broken internal links |
+| `npm mint update` | Update the CLI to the latest version |
 
 ## Using AI tools
 
@@ -36,7 +56,7 @@ Example:
 ## Writing guidelines
 
 - **Use active voice**: "Run the command" not "The command should be run"
-- **Address the reader directly**: Use "you" instead of "the member"
+- **Address the reader directly**: Use "you" instead of "the user"
 - **Keep sentences concise**: Aim for one idea per sentence
 - **Lead with the goal**: Start instructions with what you want to accomplish
 - **Use consistent terminology**: Don't alternate between synonyms for the same concept
