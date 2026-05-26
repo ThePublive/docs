@@ -49,7 +49,8 @@
             "group": "Getting Started",
             "pages": [
               "index",
-              "documentation/getting-started/authentication"
+              "documentation/getting-started/authentication",
+              "documentation/getting-started/mfa"
             ]
           },
           {
@@ -64,7 +65,20 @@
             "pages": [
               "documentation/getting-started/core-concepts",
               "documentation/concepts-features/custom-entities",
-              "documentation/concepts-features/forms"
+              "documentation/concepts-features/forms",
+              "documentation/concepts-features/media-library"
+            ]
+          },
+          {
+            "group": "Roles & Permissions",
+            "pages": [
+              "documentation/concepts-features/content-access-policies"
+            ]
+          },
+          {
+            "group": "Enterprise & Governance",
+            "pages": [
+              "documentation/concepts-features/audit-logs"
             ]
           }
         ]
