@@ -54,6 +54,38 @@
 
 - **Internal Links**: Always use absolute paths from the root without the file extension (e.g., `[Billing](/settings/billing)` instead of `[Billing](./billing.mdx)`).
 
+## API Reference conventions
+
+### Frontmatter
+
+- Active endpoints must use the `api:` frontmatter field with the full URL and HTTP method (e.g., `api: "GET https://cds.thepublive.com/publisher/{publisher_id}/posts/"`). Deprecated endpoints must omit the `api:` field.
+- Path parameter placeholders in the `api:` field use `{lower_snake_case}` (e.g., `{publisher_id}`). In prose and code examples, use `<UPPER_SNAKE_CASE>` (e.g., `<PUBLISHER_ID>`).
+
+### Parameters
+
+- Always list path parameters before query parameters using `<ParamField path>` and `<ParamField query>` respectively.
+- Required parameters use the `required` attribute. Optional parameters use `default` instead of `required`.
+- Always describe the `publisher_id` path parameter as: "Your Publisher ID" — no variation.
+- Paginated listing endpoints must always include `page` (integer, default `1`, max `1000`) and `limit` (integer, default `10`, max `50`), with the max stated in the description.
+
+### Response examples
+
+- All response examples must use `<ResponseExample>` with labeled fenced code blocks (e.g., `` ```json 200 ``, `` ```json 401 ``) — never unlabeled blocks.
+- Every endpoint must include at minimum a `200` and a `401` response example. Include `404` when the endpoint fetches a single resource by ID or slug.
+- The `401` error response body must always be exactly: `{"detail": "Invalid Auth Credentials"}`.
+- Success response envelopes must include `"status": "ok"`, `"data"`, and `"message": ""`. Listing responses must additionally include `"page_no"` and `"per_page"`.
+
+### Deprecated endpoints
+
+- Deprecated page titles must use the `[DEPRECATED]` prefix in the `description` frontmatter field.
+- Deprecated pages must open with a `<Warning>` callout naming the replacement endpoint and linking to its page.
+- Deprecated pages must include a **Migration** section with a `bash` code block showing the old path and the new recommended path side by side.
+
+### Callouts and tables
+
+- Use an `<Info>` callout before parameters to state endpoint-specific constraints (e.g., type restrictions, beta/prod URL differences).
+- Use markdown tables — not prose — for documenting sets of filter operators or enumerated field values.
+
 ## Content boundaries
 
 - Do not document internal admin portal features.

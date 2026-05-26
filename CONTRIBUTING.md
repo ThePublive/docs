@@ -24,6 +24,15 @@ Thank you for your interest in contributing to our documentation! This guide wil
 
 For more details on local development, see our [development guide](development.mdx).
 
+## Using AI tools
+
+When using AI coding assistants (Claude Code, Cursor, Windsurf, etc.) to add or edit documentation, always include `.mintlify/AGENTS.md` as context in your prompt. It defines the terminology, style, component usage, and API reference conventions the AI must follow.
+
+Example:
+```
+@.mintlify/AGENTS.md Add an API reference page for the Category Details endpoint.
+```
+
 ## Writing guidelines
 
 - **Use active voice**: "Run the command" not "The command should be run"
