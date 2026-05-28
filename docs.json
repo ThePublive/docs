@@ -197,7 +197,8 @@
                   "api-reference/content-delivery/post-listing",
                   "api-reference/content-delivery/post-details",
                   "api-reference/content-delivery/post-details-by-url",
-                  "api-reference/content-delivery/live-blog-updates"
+                  "api-reference/content-delivery/live-blog-updates",
+                  "api-reference/content-delivery/trending-posts"
                 ]
               },
               {

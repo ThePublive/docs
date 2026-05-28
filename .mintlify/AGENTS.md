@@ -56,6 +56,12 @@
 
 ## API Reference conventions
 
+### Page structure
+
+- Do not include an `## Authentication` section in individual endpoint pages. Authentication is documented globally and must not be repeated per-endpoint.
+- Do not add a `## Parameters` heading. `<ParamField>` components go directly after the intro paragraph, with no section heading.
+- Do not include an `## Example request` section or standalone curl code blocks. Request examples are rendered automatically by the Mintlify API playground from the `api:` frontmatter field.
+
 ### Frontmatter
 
 - Active endpoints must use the `api:` frontmatter field with the full URL and HTTP method (e.g., `api: "GET https://cds.thepublive.com/publisher/{publisher_id}/posts/"`). Deprecated endpoints must omit the `api:` field.
