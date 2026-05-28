@@ -88,6 +88,78 @@ Creates a new post. Posts are created with `Draft` status by default.
   Hide the featured image
 </ParamField>
 
+<ParamField body="custom_entity" type="object">
+  Custom field values for Headless CMS posts backed by a custom schema. The object keys are field slugs defined on the schema; values vary by field type.
+
+  <Expandable title="Custom field types">
+
+  #### Component field
+
+  Pass an object with the component schema slug and its field values.
+
+  | Property | Type | Required | Description |
+  |---|---|---|---|
+  | `schema_slug` | string | Yes | Slug of the `ComponentSchema` to use |
+  | `dynamic_fields` | array | No | List of `{ field_name: value, ... }` objects — one object per repeatable entry. Defaults to `[]` |
+
+  For a **repeatable component**, add multiple entries within the same `dynamic_fields` array, each at a different index:
+
+  ```json
+  {
+    "custom_entity": {
+      "author_bio": {
+        "schema_slug": "author-bio-component",
+        "dynamic_fields": [
+          { "full_name": "Jane Doe", "bio": "Senior technology correspondent." },
+          { "full_name": "Jane Doe 2", "bio": "Senior technology correspondent 2." }
+        ]
+      }
+    }
+  }
+  ```
+
+  #### Dynamic Zone field
+
+  Pass a **list** of component objects. Each item has the same shape as a Component field (`schema_slug` + `dynamic_fields`). The field definition may enforce `min` and `max` item counts.
+
+  To use the **same component type more than once**, repeat it as separate objects in the list — each occurrence is its own entry at a different index:
+
+  ```json
+  {
+    "custom_entity": {
+      "page_sections": [
+        {
+          "schema_slug": "hero-banner",
+          "dynamic_fields": [
+            { "heading": "Breaking News", "cta_url": "https://example.com" }
+          ]
+        },
+        {
+          "schema_slug": "text-block",
+          "dynamic_fields": [
+            { "body": "<p>Full article text here.</p>" }
+          ]
+        },
+        {
+          "schema_slug": "hero-banner",
+          "dynamic_fields": [
+            { "heading": "Second Banner", "cta_url": "https://example.com/2" }
+          ]
+        }
+      ]
+    }
+  }
+  ```
+
+  #### Dynamic List field
+
+  <Warning>
+    Dynamic List fields are **not supported** via Headless CMS. Attempting to submit a value for a Dynamic List field returns an error: `"Dynamic list field is not supported via Headless CMS. Please use Publive Dashboard"`
+  </Warning>
+
+  </Expandable>
+</ParamField>
+
 #### Example request
 
 ```bash
