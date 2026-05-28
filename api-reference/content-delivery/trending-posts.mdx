@@ -14,16 +14,6 @@ This endpoint requires the Publive analytics engine to be active on your publish
 Trending rankings are refreshed every **5 minutes**. The CDN layer adds an additional **5-minute** cache on top — expect up to 10 minutes of lag before a rank change is visible.
 </Info>
 
-## Authentication
-
-All requests require HTTP Basic Auth. Pass your API key and secret as Base64-encoded credentials in the `Authorization` header.
-
-```bash
-Authorization: Basic <BASE64_AUTH_TOKEN>
-```
-
-## Parameters
-
 <ParamField path="publisher_id" type="string" required>
   Your Publisher ID
 </ParamField>
@@ -60,18 +50,6 @@ Authorization: Basic <BASE64_AUTH_TOKEN>
   | `CustomEntity` | Custom entity post   |
   | `Newsletter`   | Newsletter post      |
 </ParamField>
-
-<ParamField query="include_content" type="boolean" default="false">
-  When `true`, each post in the response includes `content` (raw JSON string), `content_json` (parsed content blocks), and `content_html` (rendered HTML). Omit for list views where full body content is not needed.
-</ParamField>
-
-## Example request
-
-```bash
-curl -X GET \
-  'https://cds.thepublive.com/publisher/<PUBLISHER_ID>/posts/trending/?duration=24h&limit=10' \
-  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>'
-```
 
 <ResponseExample>
 
