@@ -1,0 +1,205 @@
+---
+title: "Trending posts"
+description: Fetch a ranked list of the publisher's top-performing posts based on Publive analytics
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/posts/trending/"
+---
+
+Returns a ranked list of published posts ordered by page views over a configurable time window, powered by the Publive analytics engine. The post with the highest view count in the selected period appears first.
+
+<Warning>
+This endpoint requires the Publive analytics engine to be active on your publisher website. If your website template does not have Publive analytics tracking implemented, this endpoint will return an empty list.
+</Warning>
+
+<Info>
+Trending rankings are refreshed every **5 minutes**. The CDN layer adds an additional **5-minute** cache on top — expect up to 10 minutes of lag before a rank change is visible.
+</Info>
+
+## Authentication
+
+All requests require HTTP Basic Auth. Pass your API key and secret as Base64-encoded credentials in the `Authorization` header.
+
+```bash
+Authorization: Basic <BASE64_AUTH_TOKEN>
+```
+
+## Parameters
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField query="duration" type="string" default="24h">
+  Analytics window used to compute trending rank.
+
+  | Value | Description   |
+  | ----- | ------------- |
+  | `24h` | Last 24 hours |
+  | `7d`  | Last 7 days   |
+  | `30d` | Last 30 days  |
+</ParamField>
+
+<ParamField query="limit" type="integer" default="20">
+  Number of posts to return (min: 1, max: 50)
+</ParamField>
+
+<ParamField query="page" type="integer" default="1">
+  Page number (max: 1000)
+</ParamField>
+
+<ParamField query="type" type="string">
+  Filter trending results to a specific post type. When omitted, all post types are included.
+
+  | Value          | Description          |
+  | -------------- | -------------------- |
+  | `Article`      | Standard article     |
+  | `Video`        | Video post           |
+  | `Web Story`    | Web story format     |
+  | `Gallery`      | Photo gallery        |
+  | `LiveBlog`     | Live blog            |
+  | `CustomPage`   | Custom page          |
+  | `CustomEntity` | Custom entity post   |
+  | `Newsletter`   | Newsletter post      |
+</ParamField>
+
+<ParamField query="include_content" type="boolean" default="false">
+  When `true`, each post in the response includes `content` (raw JSON string), `content_json` (parsed content blocks), and `content_html` (rendered HTML). Omit for list views where full body content is not needed.
+</ParamField>
+
+## Example request
+
+```bash
+curl -X GET \
+  'https://cds.thepublive.com/publisher/<PUBLISHER_ID>/posts/trending/?duration=24h&limit=10' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>'
+```
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "ok",
+  "data": [
+    {
+      "id": 98201,
+      "title": "IPL 2026 Final: Highlights and Scorecard",
+      "slug": "ipl-2026-final-highlights-scorecard",
+      "type": "Article",
+      "banner_url": "https://cdn.publive.com/images/ipl-2026-final.jpg",
+      "short_description": "Everything that happened in tonight's IPL final",
+      "summary": "Mumbai Indians beat Chennai Super Kings in a last-ball thriller.",
+      "legacy_url": "/sports/ipl-2026-final-highlights-scorecard",
+      "primary_category": {
+        "id": 42,
+        "name": "Sports",
+        "slug": "sports"
+      },
+      "categories": [
+        { "id": 42, "name": "Sports", "slug": "sports" },
+        { "id": 43, "name": "Cricket", "slug": "cricket" }
+      ],
+      "tags": [
+        { "id": 200, "name": "IPL 2026", "slug": "ipl-2026" },
+        { "id": 201, "name": "Mumbai Indians", "slug": "mumbai-indians" }
+      ],
+      "contributors": [
+        { "id": 7, "name": "Arjun Mehta", "slug": "arjun-mehta" }
+      ],
+      "member": {
+        "id": 7,
+        "name": "Arjun Mehta",
+        "slug": "arjun-mehta",
+        "avatar": "https://cdn.publive.com/avatars/arjun-mehta.jpg",
+        "absolute_url": "/authors/arjun-mehta"
+      },
+      "updated_by": null,
+      "media_file_banner": {
+        "id": 3301,
+        "filename": "ipl-2026-final.jpg",
+        "path": "https://cdn.publive.com/images/ipl-2026-final.jpg",
+        "alt_text": "IPL 2026 Final",
+        "meta_data": { "width": 1200, "height": 675 },
+        "source": null,
+        "caption": "Match action from tonight's final"
+      },
+      "custom_entity": null,
+      "custom_entity_collection": null,
+      "hide_banner_image": false,
+      "banner_description": "IPL 2026 Final at Wankhede Stadium",
+      "word_count": 980,
+      "access_type": "Free",
+      "language_code": "en",
+      "absolute_url": "/sports/ipl-2026-final-highlights-scorecard-98201",
+      "blog_update": null,
+      "meta_data": {
+        "seo_title": "IPL 2026 Final Highlights",
+        "seo_description": "Read the full scorecard and match highlights",
+        "og_image": "https://cdn.publive.com/images/ipl-2026-final-og.jpg"
+      },
+      "formatted_first_published_at_datetime": "2026-05-25T21:00:00Z",
+      "formatted_last_published_at_datetime": "2026-05-25T23:30:00Z"
+    },
+    {
+      "id": 98150,
+      "title": "Budget 2026: What changes for the middle class",
+      "slug": "budget-2026-middle-class-changes",
+      "type": "Article",
+      "banner_url": "https://cdn.publive.com/images/budget-2026-mc.jpg",
+      "short_description": "A breakdown of how Budget 2026 affects salaried taxpayers",
+      "summary": "Tax slabs revised, home loan benefit extended.",
+      "legacy_url": "/economy/budget-2026-middle-class-changes",
+      "primary_category": {
+        "id": 10,
+        "name": "Economy",
+        "slug": "economy"
+      },
+      "categories": [
+        { "id": 10, "name": "Economy", "slug": "economy" }
+      ],
+      "tags": [
+        { "id": 300, "name": "Budget 2026", "slug": "budget-2026" }
+      ],
+      "contributors": [
+        { "id": 3, "name": "Jane Doe", "slug": "jane-doe" }
+      ],
+      "member": {
+        "id": 3,
+        "name": "Jane Doe",
+        "slug": "jane-doe",
+        "avatar": "https://cdn.publive.com/avatars/jane-doe.jpg",
+        "absolute_url": "/authors/jane-doe"
+      },
+      "updated_by": null,
+      "media_file_banner": null,
+      "custom_entity": null,
+      "custom_entity_collection": null,
+      "hide_banner_image": false,
+      "banner_description": null,
+      "word_count": 1400,
+      "access_type": "Free",
+      "language_code": "en",
+      "absolute_url": "/economy/budget-2026-middle-class-changes-98150",
+      "blog_update": null,
+      "meta_data": {},
+      "formatted_first_published_at_datetime": "2026-02-01T10:00:00Z",
+      "formatted_last_published_at_datetime": "2026-02-01T10:00:00Z"
+    }
+  ],
+  "message": "",
+  "page_no": 1,
+  "per_page": 20
+}
+```
+
+```json 400
+{
+  "duration": ["\"invalid\" is not a valid choice."]
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+</ResponseExample>
