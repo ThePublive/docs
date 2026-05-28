@@ -1,0 +1,36 @@
+---
+title: "All-content Sitemap"
+description: Fetch the publisher's master sitemap index
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/sitemap/allcontent-sitemap.xml/"
+---
+
+Returns the master sitemap XML for all published content. This is typically the top-level sitemap index that links to individual category, tag, and content sitemaps.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "ok",
+  "data": {
+    "content": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n  <sitemap>\n    <loc>https://www.example.com/sitemap/webcontent-sitemap.xml</loc>\n    <lastmod>2026-05-29</lastmod>\n  </sitemap>\n  <sitemap>\n    <loc>https://www.example.com/sitemap/news-sitemap.xml</loc>\n    <lastmod>2026-05-29</lastmod>\n  </sitemap>\n</sitemapindex>"
+  }
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+```json 404
+{
+  "detail": "File not found"
+}
+```
+
+</ResponseExample>
