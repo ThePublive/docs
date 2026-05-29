@@ -1,0 +1,36 @@
+---
+title: "robots.txt"
+description: Fetch the publisher's robots.txt file
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/static/robots.txt/"
+---
+
+Returns the raw text content of the publisher's `robots.txt` file, served from S3.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "ok",
+  "data": {
+    "content": "User-agent: *\nDisallow: /admin/\nAllow: /\nSitemap: https://www.example.com/sitemap/allcontent-sitemap.xml"
+  }
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+```json 404
+{
+  "detail": "File not found"
+}
+```
+
+</ResponseExample>

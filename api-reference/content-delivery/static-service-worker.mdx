@@ -1,0 +1,40 @@
+---
+title: "service-worker.js"
+description: Fetch the publisher's push-notification service worker script
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/static/service-worker.js/"
+---
+
+Returns the service worker JavaScript file used to power web push notifications for the publisher's website, served from S3.
+
+<Warning>
+  This endpoint returns `404` if push notifications are not enabled for the publisher. Check `publisher_config → widget_config_json → push_notification_config` to determine availability before serving this file.
+</Warning>
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "ok",
+  "data": {
+    "content": "self.addEventListener('push', function(event) { ... });"
+  }
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+```json 404
+{
+  "detail": "Push notifications are not enabled for this publisher"
+}
+```
+
+</ResponseExample>

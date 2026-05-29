@@ -1,0 +1,66 @@
+---
+title: "Paginated Sitemaps"
+description: Fetch date-stamped paginated sitemaps for articles and web stories
+---
+
+Two date-stamped URL patterns serve paginated content sitemaps. Both are generated automatically by Publive and linked from their respective index sitemaps.
+
+## Article Sitemap Page
+
+`GET https://cds.thepublive.com/publisher/{publisher_id}/sitemap/sitemap_{date}.xml/`
+
+Returns a paginated batch of article URLs for the given date partition.
+
+**S3 path:** `<slug>/sitemaps/allsitemaps/webcontent-sitemaps/sitemap_<date>.xml`
+
+## Web Story Sitemap Page
+
+`GET https://cds.thepublive.com/publisher/{publisher_id}/sitemap/webstory_sitemap_{date}.xml/`
+
+Returns a paginated batch of web story URLs for the given date partition.
+
+**S3 path:** `<slug>/sitemaps/allsitemaps/webstory-sitemaps/webstory_sitemap_<date>.xml`
+
+---
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField path="date" type="string" required>
+  Date partition identifier embedded in the filename (e.g. `2026-05-01`). Discover valid values from the index sitemaps: [Web Content Sitemap](/api-reference/content-delivery/sitemap-webcontent) and [Web Story Sitemap](/api-reference/content-delivery/sitemap-webstory).
+</ParamField>
+
+<ResponseExample>
+
+```json 200 Article sitemap page
+{
+  "status": "ok",
+  "data": {
+    "content": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n  <url>\n    <loc>https://www.example.com/sports/ipl-2026-final-98201</loc>\n    <lastmod>2026-05-25</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>\n</urlset>"
+  }
+}
+```
+
+```json 200 Web story sitemap page
+{
+  "status": "ok",
+  "data": {
+    "content": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n  <url>\n    <loc>https://www.example.com/web-stories/ipl-highlights-story</loc>\n    <lastmod>2026-05-25</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>\n</urlset>"
+  }
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+```json 404
+{
+  "detail": "File not found"
+}
+```
+
+</ResponseExample>
