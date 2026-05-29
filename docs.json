@@ -206,6 +206,26 @@
                 "pages": [
                   "api-reference/content-delivery/form-schema"
                 ]
+              },
+              {
+                "group": "Static Files",
+                "pages": [
+                  "api-reference/content-delivery/static-ads-txt",
+                  "api-reference/content-delivery/static-robots-txt",
+                  "api-reference/content-delivery/static-service-worker",
+                  "api-reference/content-delivery/static-push-notification-html"
+                ]
+              },
+              {
+                "group": "Sitemaps",
+                "pages": [
+                  "api-reference/content-delivery/sitemap-allcontent",
+                  "api-reference/content-delivery/sitemap-webcontent",
+                  "api-reference/content-delivery/sitemap-news",
+                  "api-reference/content-delivery/sitemap-category",
+                  "api-reference/content-delivery/sitemap-webstory",
+                  "api-reference/content-delivery/sitemap-paginated"
+                ]
               }
             ]
           },
