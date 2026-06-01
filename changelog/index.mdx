@@ -47,11 +47,11 @@ Second round of improvements to AI writing assistance in the editor.
 The activity audit trail now covers post-level actions.
 
 - Publish, unpublish, schedule, and delete events are tracked per post
-- Publishers using audit logs will see a more complete record of content activity
+- Publishers using [audit logs](/documentation/concepts-features/audit-logs) will see a more complete record of content activity
 
 ### Form Submission Email Improvements
 
-Three updates to form email notifications.
+Three updates to [form](/documentation/concepts-features/forms) email notifications.
 
 - New option to **include response data** in the notification email (off by default)
 - **View Submission** link in the email now goes directly to that submission, not the general submissions page
@@ -59,7 +59,7 @@ Three updates to form email notifications.
 
 ### Content Access Policies — Extended Support
 
-Access control policies now cover additional content types.
+[Access control policies](/documentation/concepts-features/content-access-policies) now cover additional content types.
 
 - System default and partial entity content types are now supported
 
@@ -76,8 +76,8 @@ The roles and permissions page now opens and saves faster.
 
 ### API Updates
 
-- **Component & Dynamic Zone support in CMS APIs** — CMS APIs now support component and dynamic zone fields. Integrations that read or write content types using these structures will work end-to-end without workarounds.
-- **Static file support in CDS APIs** — CDS APIs now cover static files including sitemaps, robots.txt, ads.txt, and helper iframes. Publisher websites serving these files via CDS no longer need separate handling or manual workarounds.
+- **Component & Dynamic Zone support in CMS APIs** — [CMS APIs](/api-reference/content-management/README) now support component and dynamic zone fields. Integrations that read or write content types using these structures will work end-to-end without workarounds.
+- **Static file support in CDS APIs** — [CDS APIs](/api-reference/content-delivery/README) now cover static files including [sitemaps](/api-reference/content-delivery/sitemap-allcontent), [robots.txt](/api-reference/content-delivery/static-robots-txt), [ads.txt](/api-reference/content-delivery/static-ads-txt), and helper iframes. Publisher websites serving these files via CDS no longer need separate handling or manual workarounds.
 
 ### Bug fixes
 
@@ -100,9 +100,11 @@ Roles now include a dedicated **Content Permissions** tab, replacing the old per
 - Deny always overrides Allow; default is zero access — all access must be explicitly granted
 - Available on desktop only; accessible from the Create/Edit Role screen
 
+See the [Content Access Policies](/documentation/concepts-features/content-access-policies) documentation for full setup details.
+
 ### Change Image Globally
 
-Replace a media asset once from the Media Library and it updates everywhere it is used across all content — no need to edit individual posts.
+Replace a media asset once from the [Media Library](/documentation/concepts-features/media-library) and it updates everywhere it is used across all content — no need to edit individual posts.
 
 - Gated by the **Manage Media Library** permission
 - Includes a read-only Version History tab on each media item
@@ -110,14 +112,14 @@ Replace a media asset once from the Media Library and it updates everywhere it i
 
 ### Import/Export Custom Entities
 
-Admins can now export a Custom Entity schema as a JSON file and import it into another publisher — no need to rebuild schemas from scratch.
+Admins can now export a [Custom Entity](/documentation/concepts-features/custom-entities) schema as a JSON file and import it into another publisher — no need to rebuild schemas from scratch.
 
 - Import shows a preview of which schemas will be reused vs. created fresh before applying any changes
 - Scoped to users with the Import/Export permission
 
 ### Send Copy of Form Responses to Submitter
 
-Publishers can configure forms to automatically send submitters an email copy of their response.
+Publishers can configure [forms](/documentation/concepts-features/forms) to automatically send submitters an email copy of their response.
 
 - Toggle available in Form Settings: **Send responder a copy of their response**
 
@@ -149,7 +151,7 @@ Several SEO schema improvements ship in this release.
 
 ### Multi-Factor Authentication (MFA)
 
-Email OTP-based login verification is now available on the Publive dashboard.
+Email OTP-based login verification is now available on the Publive dashboard. See [Multi-Factor Authentication](/documentation/getting-started/mfa) for setup instructions.
 
 - Enable per-user from **Edit Team Member**, or enforce MFA globally for all users under a publisher
 - OTP is 6-digit, valid for 5 minutes; account locks for 15 minutes after 5 incorrect attempts
@@ -161,7 +163,7 @@ Email OTP-based login verification is now available on the Publive dashboard.
 All key dashboard actions are now logged with the acting user and a timestamp — track who did what and when across your entire workspace.
 
 - Covers content operations, team management, and configuration changes
-- The Audit Logs UI is controlled by a feature flag — contact support to enable the view for your publisher
+- The [Audit Logs](/documentation/concepts-features/audit-logs) UI is controlled by a feature flag — contact support to enable the view for your publisher
 - Backend tracking is active for all publishers from this release regardless of UI access
 
 </Update>
@@ -180,7 +182,7 @@ Schemas and components can now be duplicated directly from the Content Type Buil
 
 ### CMS APIs for Content Schema Management
 
-REST APIs are now available to programmatically create, update, and manage content schemas with full backend validation.
+[REST APIs](/api-reference/content-management/README) are now available to programmatically create, update, and manage [content schemas](/api-reference/content-management/custom-content-types/README) with full backend validation.
 
 - Available to existing API users; no new permissions required
 
@@ -198,9 +200,9 @@ Pages rebuilding in the background now serve cached content to simultaneous requ
 
 - Media Embed field in Custom Entity now correctly shows the current saved value
 - Users no longer receive newsletter emails after unsubscribing
-- Index Sitemaps `lastmod` date no longer incorrectly updates during migration
-- CMS form submission API now returns a clear error message when content type is incorrect, instead of a generic 5xx failure
-- Custom Entity listing "no result found" issue resolved — data now displays correctly
+- [Index Sitemaps](/api-reference/content-delivery/sitemap-allcontent) `lastmod` date no longer incorrectly updates during migration
+- [CMS form submission API](/api-reference/content-management/forms/form-submission) now returns a clear error message when content type is incorrect, instead of a generic 5xx failure
+- [Custom Entity](/documentation/concepts-features/custom-entities) listing "no result found" issue resolved — data now displays correctly
 
 </Update>
 
@@ -233,7 +235,7 @@ The article list now shows a single row per article with a status chip (**Unpubl
 
 ### Advanced SEO for Custom Entities
 
-Admins can now enable the Advanced Properties panel on any Custom Entity type from Content Type settings.
+Admins can now enable the Advanced Properties panel on any [Custom Entity](/documentation/concepts-features/custom-entities) type from Content Type settings.
 
 - When enabled, editors see grouped SEO fields: Meta Title, OG Title, OG Description, Meta Description, Canonical URL, Select Schema
 - A new **Manage SEO** permission column controls access per role
@@ -251,7 +253,7 @@ Select multiple members on the Team Members page and update all their roles in o
 
 ### Audit Logging
 
-All create, update, publish, and delete actions in the dashboard are now logged with the acting user and timestamp.
+All create, update, publish, and delete actions in the dashboard are now logged with the acting user and timestamp. See [Enterprise Audit Logs](/documentation/concepts-features/audit-logs) for details.
 
 ### Ad Slot Management Improvements
 
@@ -265,7 +267,7 @@ Several improvements to how ad positions and slots are managed.
 ### Bug fixes
 
 - Author page bios now truncate with a **Read More** button instead of displaying the full text; links inside bios are now clickable
-- Custom Entity form pages returning a 404 on the website — fixed
+- [Custom Entity](/documentation/concepts-features/custom-entities) form pages returning a 404 on the website — fixed
 - Users assigned a role with specific entity access were seeing no entities at all — fixed
 - Most recent story appearing twice on an author's page on mobile — fixed
 - No logout option after login on T5 template — fixed
@@ -297,12 +299,12 @@ Author bios now support richer content and significantly longer text.
 
 ### Custom Pagination for Post Listing Pages
 
-Websites can now configure how many posts are displayed per page on listing pages such as category pages.
+Websites can now configure how many posts are displayed per page on [listing pages](/api-reference/content-delivery/post-listing) such as [category pages](/api-reference/content-delivery/category-listing).
 
 - Does not apply to the homepage
 
 ### Increased File Upload Limits
 
-The system now supports larger file uploads submitted through website forms.
+The system now supports larger file uploads submitted through [website forms](/documentation/concepts-features/forms).
 
 </Update>
