@@ -20,7 +20,10 @@
   "colors": {
     "primary": "#146EF5",
     "light": "#146EF5",
-    "dark": "#146EF5"
+    "dark": "#15171a"
+  },
+  "fonts": {
+    "family": "Poppins"
   },
   "styling": {
     "eyebrows": "breadcrumbs"
@@ -32,7 +35,7 @@
         {
           "anchor": "Blog",
           "icon": "newspaper",
-          "href": "https://blog.thepublive.com/"
+          "href": "https://www.thepublive.com/blog"
         },
         {
           "anchor": "Changelog",
@@ -388,7 +391,7 @@
     }
   },
   "appearance": {
-    "strict": true,
+    "strict": false,
     "default": "light"
   },
   "api": {
