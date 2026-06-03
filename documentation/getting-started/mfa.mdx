@@ -27,3 +27,20 @@ Enabling MFA — whether for an individual or globally — immediately signs out
 | Lockout duration | 15 minutes |
 
 After 5 incorrect OTP attempts the account is locked for 15 minutes before another attempt can be made.
+
+## Admin password override
+
+Publishers Admins, Super Admins, and any custom role with the **Manage Members** permission can set a new password for any team member directly from the dashboard — without needing the member's current password.
+
+**Where to find it:** Go to **Team Members → Edit** for the relevant member. Scroll to the **Security** section and click **Manage Password** to expand the form.
+
+**How it works:**
+
+1. Enter the new password and confirm it.
+2. A confirmation dialog shows the member's name and what will happen — click **Confirm** to proceed.
+3. On success, the member receives an email notifying them their password was changed by an admin.
+4. The member's existing sessions remain active, but they must use the new password on their next login.
+
+<Note>
+The Security section is only visible to members who have the Manage Members permission. It is not rendered for other roles.
+</Note>
