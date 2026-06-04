@@ -1,0 +1,47 @@
+---
+title: "Verify email"
+description: "Verify a reader's email address using a token from the verification email"
+api: "POST https://cms.thepublive.com/publisher/{publisher_id}/reader/verify-email/"
+---
+
+Verifies a reader's email address. Call this endpoint with the `email` and `token` extracted from the verification link sent after [Register](/api-reference/content-management/reader/register).
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField body="email" type="string" required>
+  Reader's email address. Normalized to lowercase before forwarding.
+</ParamField>
+
+<ParamField body="token" type="string" required>
+  Verification token from the email link.
+</ParamField>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "ok",
+  "message": "User verification successful",
+  "user_verification_successful": true
+}
+```
+
+```json 400 - Token mismatch
+{
+  "status": "error",
+  "message": "Token doesn't match",
+  "user_verification_successful": false
+}
+```
+
+```json 400 - No account
+{
+  "status": "error",
+  "message": "User doesn't exist",
+  "user_verification_successful": false
+}
+```
+
+</ResponseExample>

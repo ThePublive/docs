@@ -1,0 +1,51 @@
+---
+title: "Verify email"
+description: "Verify a newsletter subscriber's email address"
+api: "GET https://cms.thepublive.com/publisher/{publisher_id}/newsletter/verify-email/"
+---
+
+Confirms a subscriber's email address using the token from the verification email sent after [Subscribe](/api-reference/content-management/newsletter/subscribe). Both `token` and `email` are required — the endpoint returns `400` if either is missing.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField query="email" type="string" required>
+  Subscriber's email address.
+</ParamField>
+
+<ParamField query="token" type="string" required>
+  Verification token from the email link.
+</ParamField>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "ok",
+  "message": "email verified"
+}
+```
+
+```json 404
+{
+  "status": "error",
+  "message": "Subscriber not found."
+}
+```
+
+```json 400 - Token expired
+{
+  "status": "error",
+  "message": "token expired"
+}
+```
+
+```json 400 - Missing params
+{
+  "status": "error",
+  "message": "token is required."
+}
+```
+
+</ResponseExample>

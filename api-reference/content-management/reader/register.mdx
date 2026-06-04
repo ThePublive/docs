@@ -1,0 +1,56 @@
+---
+title: "Register"
+description: "Create a new reader account"
+api: "POST https://cms.thepublive.com/publisher/{publisher_id}/reader/register/"
+---
+
+Creates a new reader account and sends a verification email. The reader must verify their email before they can log in.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField body="email" type="string" required>
+  Reader's email address. Normalized to lowercase before forwarding.
+</ParamField>
+
+<ParamField body="password" type="string" required>
+  Reader's password.
+</ParamField>
+
+<ParamField body="name" type="string" default='""'>
+  Reader's display name.
+</ParamField>
+
+<ParamField body="picture" type="string" default='""'>
+  URL of the reader's profile picture.
+</ParamField>
+
+<Note>
+  After a successful registration, guide the reader to check their email. Pass the `email` and `token` from the verification link to [Verify email](/api-reference/content-management/reader/verify-email) to activate the account.
+</Note>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "ok",
+  "message": "verification mail sent"
+}
+```
+
+```json 400 - Account exists
+{
+  "status": "error",
+  "message": "User already exists"
+}
+```
+
+```json 400 - Validation error
+{
+  "status": "error",
+  "message": "This field is required."
+}
+```
+
+</ResponseExample>

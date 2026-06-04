@@ -1,0 +1,57 @@
+---
+title: "Overview"
+description: "APIs for reader authentication — login, registration, password reset, and email verification"
+---
+
+The Reader CMS API lets you build reader-facing authentication flows for your Publive-powered publication. Use these endpoints to handle reader sign-up, login, password recovery, and email verification.
+
+**Base URL:** `https://cms.thepublive.com/publisher/<PUBLISHER_ID>/`
+
+<Info>
+  All Reader endpoints are scoped to your publisher via the `publisher_id` path parameter. The publisher is identified by the URL — no additional `Authorization` header is required for public flows such as register and forgot-password.
+</Info>
+
+## Endpoints
+
+| Method | Path | Description |
+| ------ | ---- | ----------- |
+| `POST` | `reader/login/` | Authenticate a reader and return a session token |
+| `POST` | `reader/logout/` | Invalidate the current reader session (client-side) |
+| `POST` | `reader/register/` | Create a new reader account |
+| `POST` | `reader/forgot-password/` | Send a password reset email |
+| `PATCH` | `reader/reset-password/` | Set a new password using a reset token |
+| `POST` | `reader/verify-email/` | Verify a reader's email address |
+
+## Authentication flow
+
+```mermaid
+sequenceDiagram
+    participant Reader
+    participant YourFrontend
+    participant PubliveCMS
+
+    Reader->>YourFrontend: Submits login form
+    YourFrontend->>PubliveCMS: POST /publisher/{publisher_id}/reader/login/
+    PubliveCMS-->>YourFrontend: {"status": "ok", "token": "..."}
+    YourFrontend-->>Reader: Stores token, grants access
+    Reader->>YourFrontend: Logs out
+    YourFrontend->>PubliveCMS: POST /publisher/{publisher_id}/reader/logout/
+    YourFrontend-->>Reader: Clears stored token
+```
+
+## Registration and email verification flow
+
+```mermaid
+sequenceDiagram
+    participant Reader
+    participant YourFrontend
+    participant PubliveCMS
+
+    Reader->>YourFrontend: Submits registration form
+    YourFrontend->>PubliveCMS: POST /publisher/{publisher_id}/reader/register/
+    PubliveCMS-->>YourFrontend: {"status": "ok", "message": "verification mail sent"}
+    PubliveCMS-->>Reader: Sends verification email with token
+    Reader->>YourFrontend: Clicks verification link (email + token)
+    YourFrontend->>PubliveCMS: POST /publisher/{publisher_id}/reader/verify-email/
+    PubliveCMS-->>YourFrontend: {"status": "ok", "user_verification_successful": true}
+```

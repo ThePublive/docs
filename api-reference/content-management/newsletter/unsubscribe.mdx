@@ -1,0 +1,50 @@
+---
+title: "Unsubscribe"
+description: "Unsubscribe an email address using an unsubscribe token"
+api: "POST https://cms.thepublive.com/publisher/{publisher_id}/newsletter/unsubscribe/"
+---
+
+Unsubscribes a reader from your newsletter. Typically called from the unsubscribe link in a campaign email — the link encodes `email`, `unsubscribe_token`, and `campaign` as query parameters that you forward to this endpoint.
+
+All three fields are always included in the backend payload; optional fields default to an empty string.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField body="email" type="string" required>
+  Subscriber's email address.
+</ParamField>
+
+<ParamField body="unsubscribe_token" type="string" default='""'>
+  Token from the unsubscribe link in the campaign email.
+</ParamField>
+
+<ParamField body="campaign" type="string" default='""'>
+  Campaign identifier from the unsubscribe link.
+</ParamField>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "ok",
+  "message": "Unsubscribed successfully"
+}
+```
+
+```json 404
+{
+  "status": "error",
+  "message": "Not found"
+}
+```
+
+```json 400 - Validation error
+{
+  "status": "error",
+  "message": "email is required."
+}
+```
+
+</ResponseExample>
