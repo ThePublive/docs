@@ -4,7 +4,7 @@ description: "Authenticate a reader and return a session token"
 api: "POST https://cms.thepublive.com/publisher/{publisher_id}/reader/login/"
 ---
 
-Authenticates a reader and returns an opaque session token. Supports two flows — email/password and OAuth (Google, Facebook) — on the same endpoint. The flow is determined by the presence of the `client` field.
+Authenticates a reader and returns an opaque session token. Supports two flows — email/password and OAuth (Google, Facebook) — on the same endpoint. The active flow is determined by the presence of the `client` field.
 
 <ParamField path="publisher_id" type="string" required>
   Your Publisher ID
@@ -14,7 +14,7 @@ Authenticates a reader and returns an opaque session token. Supports two flows �
   Use `Content-Type: application/json` for OAuth logins. For email/password, both `application/json` and form encoding are accepted.
 </Info>
 
-**Email / password flow**
+**Email / password flow** — omit `client`
 
 <ParamField body="email" type="string" required>
   Reader's email address. Normalized to lowercase before forwarding.
@@ -25,21 +25,21 @@ Authenticates a reader and returns an opaque session token. Supports two flows �
 </ParamField>
 
 <ParamField body="g-recaptcha-response" type="string">
-  reCAPTCHA token from the client widget. Required when your publisher has a `login_captcha.secret_key` configured. There is no way to detect this requirement client-side — always include the token if you use a captcha widget.
+  reCAPTCHA token from the client widget. Only applicable to this flow. Required when your publisher has a `login_captcha.secret_key` configured.
 </ParamField>
 
-**OAuth flow** — include `client` to switch to this path
+**OAuth flow** — include `client` to switch to this path. `password` is not accepted in this flow.
 
 <ParamField body="client" type="string">
   OAuth provider. Accepted values: `google`, `facebook`. Presence of this field activates the OAuth flow.
 </ParamField>
 
-<ParamField body="email" type="string" required>
-  Email from the OAuth provider. Normalized to lowercase.
+<ParamField body="email" type="string">
+  Email from the OAuth provider. Required when using OAuth. Normalized to lowercase.
 </ParamField>
 
 <AccordionGroup>
-  <Accordion title="Google OAuth extra fields">
+  <Accordion title="Google OAuth — extra fields">
     | Field | Type | Description |
     | ----- | ---- | ----------- |
     | `sub` | string | Google subject identifier |
@@ -52,7 +52,7 @@ Authenticates a reader and returns an opaque session token. Supports two flows �
 
     The full raw body is forwarded to the backend as JSON.
   </Accordion>
-  <Accordion title="Facebook OAuth extra fields">
+  <Accordion title="Facebook OAuth — extra fields">
     | Field | Type | Description |
     | ----- | ---- | ----------- |
     | `id` | string | Facebook user ID |
