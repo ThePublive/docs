@@ -9,6 +9,66 @@ rss: true
 </Tip>
 
 <Update
+  label="June 2, 2026"
+  tags={["New releases", "Improvements", "Bug fixes"]}
+  rss={{ title: "Reader Login & Newsletter Flows APIs, admin password reset, AI Suite v2, newsletter dashboard improvements, bug fixes" }}
+>
+
+### Reader Login API
+
+CMS APIs for reader authentication are now available for headless integrations.
+
+- [Login](/api-reference/content-management/reader/login), [signup](/api-reference/content-management/reader/register), [password management](/api-reference/content-management/reader/forgot-password), and profile detail endpoints are all included
+- Authenticate readers against your Publive subscriber base from any frontend
+
+See the [Reader Login API reference](/api-reference/content-management/reader/README) for full parameter details and response examples.
+
+### Newsletter Flows API
+
+CMS APIs for newsletter subscription flows are now available for headless integrations.
+
+- [Subscribe](/api-reference/content-management/newsletter/subscribe) and [unsubscribe](/api-reference/content-management/newsletter/unsubscribe) readers from newsletters via API
+- Manage newsletter preferences programmatically from your own frontend
+
+See the [Newsletter Flows API reference](/api-reference/content-management/newsletter/README) for full details.
+
+### Admin password reset
+
+Team admins can now reset passwords for any member directly from the **Team Members** panel — no action required from the member.
+
+### AI Suite v2
+
+Several updates to improve AI feature discoverability in the editor.
+
+- The AI sparkle icon now only appears on focused or filled fields, reducing visual clutter
+- A nudge tooltip appears after pasting long text into **Title**, **Summary**, or **Meta** fields
+- A dismissible card introduces new AI features on first visit to the editor
+
+### Newsletter dashboard improvements
+
+Two monitoring improvements for newsletter configuration and deliverability.
+
+- When sending a newsletter to email addresses not on the subscriber list, a warning is now shown before sending. Failed sends are surfaced in the UI instead of failing silently.
+- The newsletter analytics dashboard now displays warnings when DMARC and SPF records are not properly configured, helping publishers improve email deliverability.
+
+### API users excluded from member listing
+
+API users no longer appear in the member listing on the dashboard and cannot be selected as contributors or in any contributor fields.
+
+### Pricing and paywall discovery pages — no login required
+
+Pricing and paywall discovery pages are now publicly accessible. Readers no longer need to be signed in to reach them.
+
+### Bug fixes
+
+- **Autosave after scheduling** — scheduling a publish date no longer causes subsequent autosave requests to fail with 404 errors.
+- **Category URL trailing slash** — category URLs with a trailing `/` now resolve correctly instead of returning 404 errors.
+- **Content Distribution pagination** — navigating between pages in the Content Distribution section now loads the correct data for each page.
+- **Video thumbnail and object not restored from version history** — restoring a version now correctly restores the video thumbnail and video object fields. Caption was unaffected.
+
+</Update>
+
+<Update
   label="May 25, 2026"
   tags={["New releases"]}
   rss={{ title: "Trending Posts API" }}
