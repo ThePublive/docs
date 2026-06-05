@@ -318,6 +318,27 @@
                 "pages": [
                   "api-reference/content-management/forms/form-submission"
                 ]
+              },
+              {
+                "group": "Reader",
+                "pages": [
+                  "api-reference/content-management/reader/README",
+                  "api-reference/content-management/reader/login",
+                  "api-reference/content-management/reader/logout",
+                  "api-reference/content-management/reader/register",
+                  "api-reference/content-management/reader/forgot-password",
+                  "api-reference/content-management/reader/reset-password",
+                  "api-reference/content-management/reader/verify-email"
+                ]
+              },
+              {
+                "group": "Newsletter",
+                "pages": [
+                  "api-reference/content-management/newsletter/README",
+                  "api-reference/content-management/newsletter/subscribe",
+                  "api-reference/content-management/newsletter/unsubscribe",
+                  "api-reference/content-management/newsletter/verify-email"
+                ]
               }
             ]
           },

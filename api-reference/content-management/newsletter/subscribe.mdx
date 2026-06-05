@@ -1,0 +1,75 @@
+---
+title: "Subscribe"
+description: "Subscribe an email address to one or more newsletter groups"
+api: "POST https://cms.thepublive.com/publisher/{publisher_id}/newsletter/subscribe/"
+---
+
+Subscribes an email address to your newsletter. Optionally assigns the subscriber to one or more groups and supports reCAPTCHA verification.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField body="email" type="string" required>
+  Subscriber's email address. Validated against Django's email format rules.
+</ParamField>
+
+<ParamField body="name" type="string" default='""'>
+  Subscriber's name.
+</ParamField>
+
+<ParamField body="group_ids" type="string | array">
+  Newsletter group IDs to assign the subscriber to. Omitted from the backend payload when empty or absent. Three formats are accepted:
+
+  | Format | Example |
+  | ------ | ------- |
+  | Repeated form fields | `group_ids=10&group_ids=20` |
+  | Comma-separated string | `group_ids=1,2,3` |
+  | JSON array | `["1,2,3"]` |
+
+  All formats normalize to a list of strings (e.g. `["1", "2", "3"]`).
+</ParamField>
+
+<ParamField body="check_for_captcha" type="any">
+  When present (any truthy value), activates reCAPTCHA validation using your publisher's `newsletter_captcha.secret_key`. On successful verification, the backend sets `verification_required = 0` — the subscriber skips email verification.
+</ParamField>
+
+<ParamField body="g-recaptcha-response" type="string">
+  reCAPTCHA token from the client widget. Required when `check_for_captcha` is included.
+</ParamField>
+
+<Warning>
+  Sending `check_for_captcha` when your publisher has no `newsletter_captcha.secret_key` configured will cause Google to reject the blank secret and return `400`.
+</Warning>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "ok",
+  "message": "Subscribed successfully!"
+}
+```
+
+```json 409 - Already subscribed
+{
+  "status": "error",
+  "message": "Email already exists"
+}
+```
+
+```json 400 - Captcha failed
+{
+  "status": "error",
+  "message": "Captcha verification failed"
+}
+```
+
+```json 400 - Validation error
+{
+  "status": "error",
+  "message": "email is required."
+}
+```
+
+</ResponseExample>
