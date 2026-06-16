@@ -1,17 +1,12 @@
 ---
 title: "Register Media"
-description: Register an existing media URL to the CMS library
+description: Register a media file or an existing media URL to the CMS library
 api: "POST https://cms.thepublive.com/publisher/{publisher_id}/media-library/"
 ---
 
-Registers an existing media URL to the CMS library. 
+Registers media (file or existing url) to the CMS library. 
 
-<Warning>
-**This endpoint does not support direct file uploads.**
-It expects a standard JSON payload containing a direct URL (`path`) to an image or file hosted on an external server (e.g., S3, Cloudinary). Sending `multipart/form-data` or binary files will result in a server error.
-</Warning>
-
-Creates a new media entry in the library using an external URL.
+Creates a new media entry in the library, either by uploading a file directly (`multipart/form-data`) or by referencing an external URL (`application/json`).
 
 <ParamField path="publisher_id" type="string" required>
   Your Publisher ID
@@ -23,8 +18,16 @@ Creates a new media entry in the library using an external URL.
   Filename
 </ParamField>
 
-<ParamField body="path" type="string" required>
-  <Badge color="orange" size="sm">Immutable</Badge> Media URL.
+<Note>
+  Provide **either** `path` **or** `media` — exactly one is required, not both.
+</Note>
+
+<ParamField body="path" type="string">
+  <Badge color="orange" size="sm">Immutable</Badge> Media URL. Required if `media` is not provided.
+</ParamField>
+
+<ParamField body="media" type="file">
+  <Badge color="orange" size="sm">Immutable</Badge> Media file. Required if `path` is not provided.
 </ParamField>
 
 <ParamField body="alt_text" type="string">
@@ -49,7 +52,19 @@ Creates a new media entry in the library using an external URL.
 
 #### Example Request
 
-```bash
+<CodeGroup>
+
+```bash File Upload (multipart/form-data)
+curl -X POST \
+  'https://cms.thepublive.com/publisher/123/media-library/' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
+  -F 'filename=hero-image.jpg' \
+  -F 'media=@/path/to/hero-image.jpg' \
+  -F 'alt_text=Hero banner image' \
+  -F 'source=Staff Photographer'
+```
+
+```bash External URL (application/json)
 curl -X POST \
   'https://cms.thepublive.com/publisher/123/media-library/' \
   -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
@@ -61,6 +76,8 @@ curl -X POST \
     "source": "Staff Photographer"
   }'
 ```
+
+</CodeGroup>
 
 <ResponseExample>
 
