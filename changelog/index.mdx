@@ -9,6 +9,49 @@ rss: true
 </Tip>
 
 <Update
+  label="June 16, 2026"
+  tags={["New releases", "Improvements", "Security"]}
+  rss={{ title: "Content Rules Engine, Forms 200 MB upload limit, CMS default relational values, relative URL support, invalid header dropping, Threads embed support" }}
+>
+
+### Content Rules Engine
+
+Admins and owners can now create custom, condition-based content quality rules for any content type.
+
+- Rules support multiple fields with **AND/OR** logic and a configurable scoring priority — reorder rules by drag and drop
+- Each rule optionally blocks publishing when the rule is not met
+- Each rule supports a custom message shown to editors on failure
+- Rules can be enabled or disabled individually and imported/exported as JSON for reuse across content types or sister sites
+- Editors see rules applied live in priority order as they write; the content quality score updates in real time
+
+### Forms: Increased media upload size limit
+
+The upload size limit for collective media in [Forms](/documentation/concepts-features/forms) has been increased from **5 MB to 200 MB**.
+
+<Note>
+  This change applies to CMS APIs only and cannot be configured from the dashboard.
+</Note>
+
+### Content Type Builder: Default values in relational fields
+
+Content type fields of relational type now support configurable default values.
+
+- The default must be a published post of the selected content type
+- The option is disabled when no content type is selected
+
+### Content Type Builder: Relative URL support in URL field
+
+Publisher admins can now configure each **Links** field in the **Content Type Builder** to accept **Absolute URLs**, **Relative URLs**, or **Both**.
+
+- Existing fields default to **Both** with no breaking change
+
+### Drop invalid header fields
+
+Invalid header fields are now dropped to mitigate request smuggling attacks.
+
+</Update>
+
+<Update
   label="June 2, 2026"
   tags={["New releases", "Improvements", "Bug fixes"]}
   rss={{ title: "Reader Login & Newsletter Flows APIs, admin password reset, AI Suite v2, newsletter dashboard improvements, bug fixes" }}
@@ -78,7 +121,7 @@ Pricing and paywall discovery pages are now publicly accessible. Readers no long
 
 The Content Delivery API now includes an endpoint for fetching a publisher's top-performing posts ranked by page views, powered by Publive analytics.
 
-- **Endpoint:** `GET https://cds.thepublive.com/publisher/<PUBLISHER_ID>/posts/trending/`
+- **Endpoint:** `GET https://cds.thepublive.com/publisher/<PUBLISHER_ID>/posts/analytics/trending/`
 - `duration` controls the analytics window: `24h` (default), `7d`, or `30d`
 - `type` filters results to a specific post type — Article, Video, Web Story, Gallery, LiveBlog, CustomPage, CustomEntity, or Newsletter
 - Pagination via `limit` (1–50, default 20) and `page`
