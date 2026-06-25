@@ -1,0 +1,94 @@
+---
+title: "Content Scoring & Rules Engine"
+description: "Set quality rules for your content, assign priorities, and let the platform guide editors toward your standards as they write."
+---
+
+**Content Scoring** lets you define what good content looks like for your publication — then automatically checks every article against those standards as it's being written. Editors see a live quality score and actionable suggestions without ever leaving the editor.
+
+## Who can use this
+
+<Note>
+  Only **Admins**, **Owners**, and **Super Admins** can create, edit, and manage content rules. Editors and other roles see the **Content Scoring** panel and suggestions while writing but cannot modify rules.
+</Note>
+
+## Getting to your rules
+
+Go to the **Content Type** you want to configure and select **Configure Rules**. Each content type has its own set of rules.
+
+## Built-in rules
+
+Publive includes a set of default quality checks covering common SEO and content standards — things like title length, missing featured images, word count thresholds, focus keyphrase usage, internal link count, and more.
+
+You can **turn these on or off** and **change their priority order**, but you cannot edit or delete them.
+
+## Creating a custom rule
+
+Select **Add New Rule** to build your own quality check.
+
+**Define your condition**
+
+Pick the content field you want to check, what about that field matters (e.g. character length, keyword presence), how to compare it, and the target value. For example: *Title → contains → your publication name*.
+
+**Combine multiple conditions**
+
+You can add more than one condition to a single rule using **AND** or **OR**:
+
+- **AND** — all conditions must be true for the rule to trigger
+- **OR** — any one condition being true triggers the rule
+
+You can switch between AND and OR at any time, but the structure cannot be reordered once set.
+
+**Add a message and action**
+
+- **Message** *(required)* — the text editors see when this rule is triggered. Make it specific and actionable, e.g. *"Add your publication name to the title."*
+- **Action** *(optional)* — you can choose to **Disable Publishing** when a rule is not met. This also blocks scheduling and send-for-approval. Leave it blank to show the rule as a suggestion only.
+
+**Save before moving on**
+
+A rule must be fully completed and saved before you can add the next one.
+
+## Setting scoring priority
+
+Once your rules are in place, set their priority from the rules table. Rules higher up the list carry more weight in the total score. You can:
+
+- **Drag and drop** rows to reorder
+- **Type a new priority number** directly into the row — the rest of the table adjusts automatically
+
+## Editing rules
+
+Click **Edit** on any row to change its conditions, message, or action. The table also shows each rule's name, the field it checks, and a toggle to enable or disable it at any time.
+
+## Importing and exporting rules
+
+You can copy rules between content types or across sites:
+
+- **Export** — downloads your custom rules as a JSON file
+- **Import** — upload a JSON file to bring rules in. Any rules that reference fields not available in the current content type are skipped, and you'll see a summary of what was imported. Imported rules are flagged in the table so you can review them before enabling.
+
+## What editors see
+
+While writing, editors see the **Content Scoring** panel that updates as they type. Suggestions appear in priority order and only show up once a relevant field has content — blank fields don't trigger warnings.
+
+### Score states
+
+| Score | Heading | Message |
+|---|---|---|
+| No content yet | Start Writing! | As you add content, suggestions will appear here to help you meet your quality standards. |
+| Up to 40% | Keep refining! | Address the suggestions to boost quality. |
+| 40–70% | On track! | See the suggestions for more tips. |
+| Above 70% | Excellent! | Your content is good to go! |
+
+### Suggestion types
+
+- Rules with **Disable Publishing** attached appear in **red**
+- All other suggestions appear in **yellow**
+
+### Getting help
+
+Editors can select **Need Help?** from the **Content Scoring** panel to open a support ticket. The form pre-fills their name, email, and the subject line so they can describe the issue without starting from scratch.
+
+## Imported content
+
+<Note>
+  Articles imported via API or migration tools receive an **NA score** by default. The score is calculated the next time the article is opened and saved in the editor.
+</Note>
