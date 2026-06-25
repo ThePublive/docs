@@ -70,7 +70,8 @@
               "documentation/concepts-features/custom-entities",
               "documentation/concepts-features/forms",
               "documentation/concepts-features/media-library",
-              "documentation/concepts-features/ai-copilot"
+              "documentation/concepts-features/ai-copilot",
+              "documentation/concepts-features/content-scoring"
             ]
           },
           {

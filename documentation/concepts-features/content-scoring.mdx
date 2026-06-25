@@ -1,0 +1,102 @@
+---
+title: "Content Scoring & Rules Engine"
+description: "Set quality rules for your content, assign priorities, and let the platform guide editors toward your standards as they write."
+---
+
+**Content Scoring** lets you define what good content looks like for your publication — then automatically checks every article against those standards as it's being written. Editors see a live quality score and actionable suggestions without ever leaving the editor.
+
+## Who can use this
+
+<Note>
+  Only **Admins**, **Owners**, and **Super Admins** can create, edit, and manage content rules. Editors and other roles see the **Content Scoring** panel and suggestions while writing but cannot modify rules.
+</Note>
+
+## Getting to your rules
+
+Go to the **Content Type** you want to configure and select **Configure Rules**. Each content type has its own set of rules.
+
+## Built-in rules
+
+Publive includes a set of default quality checks covering common SEO and content standards — things like title length, missing featured images, word count thresholds, focus keyphrase usage, internal link count, and more.
+
+You can **turn these on or off** and **change their priority order**, but you cannot edit or delete them.
+
+<Note>
+  Content Scoring currently supports the standard built-in content fields only. Fields from **Custom Entities** are not supported at this time.
+</Note>
+
+## Creating a rule
+
+Select **Add New Rule** to open the **Create Rule** panel. Each rule follows an **If / Then** structure: define when the rule triggers, then define what happens.
+
+**Rule Name**
+
+Give the rule a clear, descriptive name. This is what appears in the rules table and helps your team understand the rule's purpose at a glance.
+
+**If — define your condition**
+
+Each condition has four parts:
+
+| Setting | What it does |
+|---|---|
+| **Field** | The content field to evaluate (e.g. Title, Summary, Featured Image) |
+| **Dimension** | The aspect of that field to check (e.g. character length, keyword presence, word count) |
+| **Match Type** | How to compare the field against your value (e.g. is less than, contains, is missing) |
+| **Value** | The threshold or reference value to compare against |
+
+Select **+ Add Another Condition** to add a second condition to the same rule. When multiple conditions are present, you can toggle between **AND** (all conditions must be true) and **OR** (any condition being true triggers the rule). You can switch between AND and OR at any time, but the order of conditions cannot be rearranged once set.
+
+**Then — set the message and action**
+
+- **Message** *(required)* — the text shown to editors when the rule triggers. Make it specific and actionable, e.g. *"Title too long — keep it under 140 characters."*
+- **Select Action** *(optional, default None)* — controls whether the rule is a warning or a blocking error:
+  - **None** — the rule appears as a **warning** (shown in yellow). Editors can still publish.
+  - **Disable Publishing** — the rule becomes a **blocking error** (shown in red). Editors cannot publish, schedule, or send for approval until the rule is resolved.
+
+Select **Save** to save the rule. A rule must be fully completed before you can create the next one.
+
+## Setting scoring priority
+
+Once your rules are in place, set their priority from the rules table. Rules higher up the list carry more weight in the total score. You can:
+
+- **Drag and drop** rows to reorder
+- **Type a new priority number** directly into the row — the rest of the table adjusts automatically
+
+## Editing rules
+
+Click **Edit** on any row to change its conditions, message, or action. The table also shows each rule's name, the field it checks, and a toggle to enable or disable it at any time.
+
+## Importing and exporting rules
+
+You can copy rules between content types or across sites:
+
+- **Export** — downloads your custom rules as a JSON file
+- **Import** — upload a JSON file to bring rules in. Any rules that reference fields not available in the current content type are skipped, and you'll see a summary of what was imported. Imported rules are flagged in the table so you can review them before enabling.
+
+## What editors see
+
+While writing, editors see the **Content Scoring** panel that updates as they type. Suggestions appear in priority order and only show up once a relevant field has content — blank fields don't trigger warnings.
+
+### Score states
+
+| Score | Heading | Message |
+|---|---|---|
+| No content yet | Start Writing! | As you add content, suggestions will appear here to help you meet your quality standards. |
+| Up to 40% | Keep refining! | Address the suggestions to boost quality. |
+| 40–70% | On track! | See the suggestions for more tips. |
+| Above 70% | Excellent! | Your content is good to go! |
+
+### Suggestion types
+
+- Rules with **Disable Publishing** attached appear in **red**
+- All other suggestions appear in **yellow**
+
+### Getting help
+
+Editors can select **Need Help?** from the **Content Scoring** panel to open a support ticket. The form pre-fills their name, email, and the subject line so they can describe the issue without starting from scratch.
+
+## Imported content
+
+<Note>
+  Articles imported via API or migration tools receive an **NA score** by default. The score is calculated the next time the article is opened and saved in the editor.
+</Note>
