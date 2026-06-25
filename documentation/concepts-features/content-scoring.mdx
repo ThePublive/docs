@@ -21,31 +21,39 @@ Publive includes a set of default quality checks covering common SEO and content
 
 You can **turn these on or off** and **change their priority order**, but you cannot edit or delete them.
 
-## Creating a custom rule
+<Note>
+  Content Scoring currently supports the standard built-in content fields only. Fields from **Custom Entities** are not supported at this time.
+</Note>
 
-Select **Add New Rule** to build your own quality check.
+## Creating a rule
 
-**Define your condition**
+Select **Add New Rule** to open the **Create Rule** panel. Each rule follows an **If / Then** structure: define when the rule triggers, then define what happens.
 
-Pick the content field you want to check, what about that field matters (e.g. character length, keyword presence), how to compare it, and the target value. For example: *Title → contains → your publication name*.
+**Rule Name**
 
-**Combine multiple conditions**
+Give the rule a clear, descriptive name. This is what appears in the rules table and helps your team understand the rule's purpose at a glance.
 
-You can add more than one condition to a single rule using **AND** or **OR**:
+**If — define your condition**
 
-- **AND** — all conditions must be true for the rule to trigger
-- **OR** — any one condition being true triggers the rule
+Each condition has four parts:
 
-You can switch between AND and OR at any time, but the structure cannot be reordered once set.
+| Setting | What it does |
+|---|---|
+| **Field** | The content field to evaluate (e.g. Title, Summary, Featured Image) |
+| **Dimension** | The aspect of that field to check (e.g. character length, keyword presence, word count) |
+| **Match Type** | How to compare the field against your value (e.g. is less than, contains, is missing) |
+| **Value** | The threshold or reference value to compare against |
 
-**Add a message and action**
+Select **+ Add Another Condition** to add a second condition to the same rule. When multiple conditions are present, you can toggle between **AND** (all conditions must be true) and **OR** (any condition being true triggers the rule). You can switch between AND and OR at any time, but the order of conditions cannot be rearranged once set.
 
-- **Message** *(required)* — the text editors see when this rule is triggered. Make it specific and actionable, e.g. *"Add your publication name to the title."*
-- **Action** *(optional)* — you can choose to **Disable Publishing** when a rule is not met. This also blocks scheduling and send-for-approval. Leave it blank to show the rule as a suggestion only.
+**Then — set the message and action**
 
-**Save before moving on**
+- **Message** *(required)* — the text shown to editors when the rule triggers. Make it specific and actionable, e.g. *"Title too long — keep it under 140 characters."*
+- **Select Action** *(optional, default None)* — controls whether the rule is a warning or a blocking error:
+  - **None** — the rule appears as a **warning** (shown in yellow). Editors can still publish.
+  - **Disable Publishing** — the rule becomes a **blocking error** (shown in red). Editors cannot publish, schedule, or send for approval until the rule is resolved.
 
-A rule must be fully completed and saved before you can add the next one.
+Select **Save** to save the rule. A rule must be fully completed before you can create the next one.
 
 ## Setting scoring priority
 
