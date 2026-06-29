@@ -1,0 +1,72 @@
+---
+title: "List Form Schemas"
+description: Fetch all form schemas
+api: "GET https://cms.thepublive.com/publisher/{publisher_id}/form/schema/"
+---
+
+Returns a list of all form schemas for the publisher.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField header="Authorization" type="string" required>
+  `Basic <BASE64_AUTH_TOKEN>`
+</ParamField>
+
+#### Example Request
+
+```bash
+curl -X GET \
+  'https://cms.thepublive.com/publisher/123/form/schema/' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>'
+```
+
+<ResponseExample>
+
+```json 200
+{
+  "count": 5,
+  "next": "https://cms.thepublive.com/cms/v1/form/schema/?limit=10&page=2",
+  "previous": null,
+  "results": [
+    {
+      "id": "6a421f15a7444f1849ea3fa6",
+      "name": "Contact Form",
+      "description": "Test contact form",
+      "type": "custom",
+      "settings": {
+        "entry_title": "slug",
+        "searchable_fields": [],
+        "filter_fields": [],
+        "allowed_states": [],
+        "enable_component_preview": false,
+        "enable_content_rule": false,
+        "enable_custom_date": false,
+        "enable_seo_properties": false,
+        "enable_code_ingestion": false
+      },
+      "state": "active",
+      "created_at": "29 Jun 2026 13:00",
+      "form_page": {},
+      "deleted": false,
+      "updated_at": "29 Jun 2026 13:00",
+      "updated_by": "",
+      "field_types": [],
+      "groups": [],
+      "captcha_config": {
+        "site_key": "<RECAPTCHA_SITE_KEY>"
+      }
+    }
+  ],
+  "status": 200
+}
+```
+
+```json 401
+{
+  "detail": "Auth Credentials were not provided"
+}
+```
+
+</ResponseExample>

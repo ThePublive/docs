@@ -315,6 +315,17 @@
                 ]
               },
               {
+                "group": "Form Schemas",
+                "pages": [
+                  "api-reference/content-management/form-schemas/README",
+                  "api-reference/content-management/form-schemas/list-form-schemas",
+                  "api-reference/content-management/form-schemas/create-form-schema",
+                  "api-reference/content-management/form-schemas/retrieve-form-schema",
+                  "api-reference/content-management/form-schemas/update-form-schema",
+                  "api-reference/content-management/form-schemas/delete-form-schema"
+                ]
+              },
+              {
                 "group": "Forms",
                 "pages": [
                   "api-reference/content-management/forms/form-submission"

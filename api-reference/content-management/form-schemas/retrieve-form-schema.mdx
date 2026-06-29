@@ -1,0 +1,78 @@
+---
+title: "Retrieve Form Schema"
+description: Retrieve a single form schema by ID
+api: "GET https://cms.thepublive.com/publisher/{publisher_id}/form/schema/{schema_id}/"
+---
+
+Returns the details of a specific form schema.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField path="schema_id" type="string" required>
+  Form schema ID (24-character hex string)
+</ParamField>
+
+<ParamField header="Authorization" type="string" required>
+  `Basic <BASE64_AUTH_TOKEN>`
+</ParamField>
+
+#### Example Request
+
+```bash
+curl -X GET \
+  'https://cms.thepublive.com/publisher/123/form/schema/6a3e5832f9ec326ec5277006/' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>'
+```
+
+<ResponseExample>
+
+```json 200
+{
+  "status": 200,
+  "data": {
+    "id": "6a3e5832f9ec326ec5277006",
+    "name": "My Form",
+    "description": "Form description",
+    "type": "custom",
+    "settings": {
+      "entry_title": "slug",
+      "searchable_fields": [],
+      "filter_fields": [],
+      "allowed_states": [],
+      "enable_component_preview": false,
+      "enable_content_rule": false,
+      "enable_custom_date": false,
+      "enable_seo_properties": false,
+      "enable_code_ingestion": false
+    },
+    "state": "active",
+    "created_at": "26 Jun 2026 16:15",
+    "form_page": {},
+    "deleted": false,
+    "updated_at": "29 Jun 2026 10:35",
+    "updated_by": "",
+    "field_types": [],
+    "groups": [],
+    "captcha_config": {
+      "site_key": "<RECAPTCHA_SITE_KEY>"
+    }
+  }
+}
+```
+
+```json 401
+{
+  "detail": "Auth Credentials were not provided"
+}
+```
+
+```json 404
+{
+  "status": "error",
+  "message": "Not found"
+}
+```
+
+</ResponseExample>
