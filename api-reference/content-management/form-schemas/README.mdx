@@ -1,0 +1,70 @@
+---
+title: "Form Schemas"
+description: Manage form schemas via the CMS API
+---
+
+A **form schema** defines the structure of a form — its typed fields, field groups, and settings. Editors and readers submit entries against a schema; see [Submit Form](/api-reference/content-management/forms/form-submission) to collect responses and [Form Schema (Reader)](/api-reference/content-delivery/form-schema) to fetch a schema for rendering on the reader side.
+
+## Form Schema Object
+
+| Field | Type | Editable | Required | Description |
+| ----- | ---- | -------- | -------- | ----------- |
+| `id` | string | No | — | Unique schema identifier (24-character hex string) |
+| `name` | string | Yes | Yes | Display name for the form (e.g. `"Contact Form"`) |
+| `description` | string | Yes | No | Human-readable description of the form |
+| `type` | string | Yes | No | Form type, e.g. `custom` |
+| `state` | string | Yes | No | Schema state, e.g. `active`, `inactive` |
+| `field_types` | array | Yes | No | Array of field definitions (see below) |
+| `groups` | array | Yes | No | Array of field groups used to organize fields |
+| `settings` | object | Yes | No | Schema-level settings (see below) |
+| `form_page` | object | No | — | Associated form page configuration |
+| `captcha_config` | object | No | — | Captcha configuration, e.g. `{ "site_key": "..." }` |
+| `created_at` | string | No | — | Creation timestamp (e.g. `29 Jun 2026 13:00`) |
+| `updated_at` | string | No | — | Last-update timestamp |
+| `updated_by` | string | No | — | Name of the user who last updated the schema |
+| `deleted` | boolean | No | — | Whether the schema has been soft-deleted |
+
+### Field Type Object
+
+Each item in `field_types` has the following shape:
+
+| Field | Type | Required | Description |
+| ----- | ---- | -------- | ----------- |
+| `name` | string | Yes | Field identifier (slug-style) |
+| `type` | string | Yes | Field type: `short_text`, `long_text`, `email`, `integer`, `boolean`, `media`, etc. |
+| `validations` | object | No | Validation rules — e.g. `required` |
+| `meta_data` | object | No | UI metadata — `label`, `tooltip`, `placeholder`, etc. |
+| `group_id` | string | No | Assign the field to a group from `groups` |
+
+### Group Object
+
+Each item in `groups` has the following shape:
+
+| Field | Type | Required | Description |
+| ----- | ---- | -------- | ----------- |
+| `name` | string | Yes | Group identifier (e.g. `content`) |
+| `meta_data` | object | No | UI metadata for the group |
+
+### Settings Object
+
+| Key | Type | Description |
+| --- | ---- | ----------- |
+| `entry_title` | string | Field used as the title of each entry (e.g. `slug`) |
+| `searchable_fields` | array | Field names enabled for search |
+| `filter_fields` | array | Field names exposed as filters |
+| `allowed_states` | array | Entry states allowed for submissions against this schema |
+| `enable_component_preview` | boolean | Enable component preview for entries |
+| `enable_content_rule` | boolean | Enable the content rules engine for the schema |
+| `enable_custom_date` | boolean | Enable a custom date field on entries |
+| `enable_seo_properties` | boolean | Enable SEO properties on entries |
+| `enable_code_ingestion` | boolean | Enable code ingestion for the schema |
+
+## Endpoints
+
+| Method | Endpoint | Description |
+| ------ | -------- | ----------- |
+| [GET](/api-reference/content-management/form-schemas/list-form-schemas) | `/form/schema/` | List all form schemas |
+| [POST](/api-reference/content-management/form-schemas/create-form-schema) | `/form/schema/` | Create a new form schema |
+| [GET](/api-reference/content-management/form-schemas/retrieve-form-schema) | `/form/schema/{schema_id}/` | Retrieve a form schema |
+| [PUT](/api-reference/content-management/form-schemas/update-form-schema) | `/form/schema/{schema_id}/` | Update a form schema |
+| [DELETE](/api-reference/content-management/form-schemas/delete-form-schema) | `/form/schema/{schema_id}` | Delete a form schema |
