@@ -70,7 +70,14 @@
               "documentation/concepts-features/custom-entities",
               "documentation/concepts-features/forms",
               "documentation/concepts-features/media-library",
-              "documentation/concepts-features/ai-copilot",
+              {
+                "group": "AI Features",
+                "pages": [
+                  "documentation/concepts-features/ai-features",
+                  "documentation/concepts-features/ai-copilot",
+                  "documentation/concepts-features/ai-tag-suggestion"
+                ]
+              },
               "documentation/concepts-features/content-scoring"
             ]
           },
@@ -133,7 +140,6 @@
             "group": "Events & Automation",
             "pages": [
               "documentation/webhooks-integrations/webhooks",
-              "documentation/webhooks-integrations/ai-features",
               "documentation/webhooks-integrations/third-party"
             ]
           },

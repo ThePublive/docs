@@ -1,0 +1,76 @@
+---
+title: "AI Tag Suggestion"
+description: "Surface relevant tags from your publisher's tag library directly in the Tags field — no manual searching required."
+---
+
+The AI Tag Suggestion feature scans your post content and surfaces matching tags from your publisher's existing tag library — directly inside the Tags field, without leaving the editor.
+
+## Entry point
+
+The AI sparkle icon (✦) is always visible on the right side of the Tags input field whenever the field is rendered. Hovering over it shows a tooltip: **"AI suggests tags from your existing tags list."**
+
+The tooltip is hover-only and disappears when you move away. The icon does not appear on any other field.
+
+## Requesting suggestions
+
+Click the sparkle icon to start a scan. The field immediately:
+
+- Disables — typing, removing existing tags, and interacting with the dropdown are all blocked while the scan runs
+- Replaces the sparkle with a spinning circle loader in the same slot
+
+Once the scan completes:
+
+- A success toast appears at the top of the page: **"Existing tags suggested based on the post"**
+- The Tags dropdown opens automatically
+- The spinner converts to a **Refresh** icon in the same slot
+
+## Suggestion dropdown
+
+The dropdown opens with two sections:
+
+| Section | Contents |
+|---------|----------|
+| **AI Suggests** | Tags from your library that match the post content — visually distinct, shown at the top |
+| **Other Tags** | The rest of your tag library, fully browsable below a divider |
+
+Click any tag in either section to apply it. Applied tags appear as pills in the Tags field with a remove (×) button. The dropdown stays open so you can keep adding tags.
+
+Tags you have already applied are not suggested again in the same session.
+
+## Refreshing suggestions
+
+After a successful scan, the sparkle icon becomes a locked **Refresh** icon. It stays locked until an autosave fires from any field other than Tags — at that point the icon becomes active and clickable.
+
+Clicking an active Refresh icon re-runs the scan: the field disables, the spinner reappears, and a new set of suggestions is returned when complete.
+
+**Session reset:** When you publish, save as draft, or reopen the post in a new session, the Refresh icon reverts to the sparkle icon so the entry point is always consistent.
+
+## Error states
+
+If the scan cannot return suggestions, an error toast appears at the top of the page and the **AI Suggests** section shows an inline message. The **Other Tags** section remains fully populated and browsable in both cases.
+
+| Error | Cause | Inline message |
+|-------|-------|----------------|
+| Not Enough Content | Post body is empty or very short (≤ 100 characters) | "Add more content in the post to see AI suggestions." |
+| No Matching Tags | Content was scanned but no close matches found in your tag library | "No closely matching tags found in your tag library. Search or create a new one." |
+
+## UI states
+
+| State | Trigger | Behaviour |
+|-------|---------|-----------|
+| Default | Tags field rendered | Sparkle icon visible in right slot |
+| Hover | Writer hovers sparkle icon | Tooltip: "AI suggests tags from your existing tags list" |
+| Loading | Writer clicks sparkle icon | Icon → spinning loader; Tags field fully disabled |
+| Suggestions Ready | Scan completes successfully | Toast at top; dropdown opens with AI Suggests + Other Tags; icon → locked Refresh |
+| Tag Applied | Writer clicks any tag | Tag added as pill; dropdown stays open |
+| Refresh Unlocked | Autosave fires from a non-Tags field | Refresh icon becomes active and clickable |
+| Refresh Triggered | Writer clicks active Refresh | Icon → spinner; field disabled; scan re-runs |
+| Session Reset | Publish / Save Draft / Re-open post | Refresh icon reverts to sparkle icon |
+| Error: Not Enough Content | Post body empty or ≤ 100 characters | Error toast; AI Suggests shows inline message; Other Tags fully populated |
+| Error: No Matching Tags | Scan completed, no library matches found | Error toast; AI Suggests shows inline message; Other Tags fully populated |
+
+## Scope
+
+AI Tag Suggestion is available on all post types where the Tags field is supported — Articles, Web Stories, and others.
+
+It is not available on any other field. Title, Categories, Focus Keyphrase, and similar fields are out of scope for this release.
