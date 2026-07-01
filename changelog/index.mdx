@@ -9,6 +9,60 @@ rss: true
 </Tip>
 
 <Update
+  label="July 1, 2026"
+  tags={["New releases", "Security"]}
+  rss={{ title: "AI Tag Suggestion, Newsletter Usage Limit Notifications, Forms Management APIs, Separate API Auth Keys, bug fixes" }}
+>
+
+### AI Tag Suggestion
+
+The CMS now surfaces relevant tags from your tag library as you write — no manual searching required.
+
+* When a writer focuses the **Tags** field, the editor analyses the article content and displays matching tags in a **Suggested for you** section below the input
+* Suggestions appear automatically — no button click required
+* Clicking a suggestion instantly adds it to the post
+* A **Re-scan content** link lets writers refresh suggestions at any time
+* Suggestions are hidden once a post reaches 10 tags; tags already added to the post are never suggested again
+
+### Newsletter: Usage Limit Notifications
+
+Publishers can now track monthly newsletter send usage in real time and receive automated alerts before hitting their contracted limit.
+
+* A usage bar on the **Newsletter Analytics** page shows sends used vs. the monthly limit, colour-coded by threshold (green → amber → orange → red)
+* Automated email alerts are sent to **Owner** and **Publisher Admin** roles when usage crosses **50%, 75%, 90%**, and **100%** of the monthly limit
+* The send screen displays the usage bar for editors once the 50% threshold is crossed
+
+### Forms Management APIs
+
+Five new CMS API endpoints are now available for programmatic forms management.
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/forms` | List all forms |
+| `GET` | `/forms/{id}` | Retrieve a specific form |
+| `POST` | `/forms` | Create a new form |
+| `PUT` | `/forms/{id}` | Update an existing form |
+| `DELETE` | `/forms/{id}` | Delete a form |
+
+Previously, only form schema fetch and form submission were supported via API. These endpoints enable MCP integrations and custom tooling to discover and manage forms without using the dashboard.
+
+See the [Forms API reference](/api-reference/content-management/forms/README) for full parameter details and response schemas.
+
+### Separate API Auth Keys: CDS and CMS
+
+CDS and CMS API keys are now issued separately per publisher, reducing the risk of exposing write access in client-side environments.
+
+* Publishers can generate dedicated **CDS keys** and **CMS keys** from the API Keys settings page
+* **CDS keys** are safe for use in frontend or browser contexts — they can only fetch content, not modify it
+* **CMS keys** are restricted to server-side use and carry the same permissions as before
+* Existing keys are automatically converted to CDS keys
+* Each key displays its type and scope clearly in the dashboard
+
+See the [Authentication reference](/authentication) for full details.
+
+</Update>
+
+<Update
   label="June 16, 2026"
   tags={["New releases", "Improvements", "Security"]}
   rss={{ title: "Content Rules Engine, Forms 200 MB upload limit, CMS default relational values, relative URL support, invalid header dropping, Threads embed support" }}
