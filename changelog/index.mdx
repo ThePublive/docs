@@ -48,18 +48,6 @@ Previously, only form schema fetch and form submission were supported via API. T
 
 See the [Forms API reference](/api-reference/content-management/forms/README) for full parameter details and response schemas.
 
-### Separate API Auth Keys: CDS and CMS
-
-CDS and CMS API keys are now issued separately per publisher, reducing the risk of exposing write access in client-side environments.
-
-* Publishers can generate dedicated **CDS keys** and **CMS keys** from the API Keys settings page
-* **CDS keys** are safe for use in frontend or browser contexts — they can only fetch content, not modify it
-* **CMS keys** are restricted to server-side use and carry the same permissions as before
-* Existing keys are automatically converted to CDS keys
-* Each key displays its type and scope clearly in the dashboard
-
-See the [Authentication reference](/authentication) for full details.
-
 </Update>
 
 <Update
