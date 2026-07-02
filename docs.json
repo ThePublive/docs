@@ -215,7 +215,7 @@
               {
                 "group": "Forms",
                 "pages": [
-                  "api-reference/content-delivery/form-schema"
+                  "api-reference/content-delivery/forms"
                 ]
               },
               {
@@ -321,19 +321,14 @@
                 ]
               },
               {
-                "group": "Form Schemas",
-                "pages": [
-                  "api-reference/content-management/form-schemas/README",
-                  "api-reference/content-management/form-schemas/list-form-schemas",
-                  "api-reference/content-management/form-schemas/create-form-schema",
-                  "api-reference/content-management/form-schemas/retrieve-form-schema",
-                  "api-reference/content-management/form-schemas/update-form-schema",
-                  "api-reference/content-management/form-schemas/delete-form-schema"
-                ]
-              },
-              {
                 "group": "Forms",
                 "pages": [
+                  "api-reference/content-management/forms/README",
+                  "api-reference/content-management/forms/list-form-schemas",
+                  "api-reference/content-management/forms/create-form-schema",
+                  "api-reference/content-management/forms/retrieve-form-schema",
+                  "api-reference/content-management/forms/update-form-schema",
+                  "api-reference/content-management/forms/delete-form-schema",
                   "api-reference/content-management/forms/form-submission"
                 ]
               },
