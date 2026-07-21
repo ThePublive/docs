@@ -36,352 +36,412 @@
           "anchor": "Blog",
           "icon": "newspaper",
           "href": "https://www.thepublive.com/blog"
-        },
-        {
-          "anchor": "Changelog",
-          "icon": "list",
-          "href": "/changelog"
         }
       ]
     },
-    "tabs": [
+    "products": [
       {
-        "tab": "Documentation",
-        "groups": [
+        "product": "Publive DXP",
+        "icon": "https://img-cdn.publive.online/thepublive/media/media_files/2026/07/20/dxp-only-logo-2026-07-20-18-23-08.png",
+        "tabs": [
           {
-            "group": "Getting Started",
-            "pages": [
-              "index",
-              "documentation/getting-started/authentication",
-              "documentation/getting-started/mfa"
-            ]
-          },
-          {
-            "group": "Quickstarts",
-            "pages": [
-              "documentation/quickstarts/cds",
-              "documentation/quickstarts/cms"
-            ]
-          },
-          {
-            "group": "Core Concepts",
-            "pages": [
-              "documentation/getting-started/core-concepts",
-              "documentation/concepts-features/custom-entities",
-              "documentation/concepts-features/forms",
-              "documentation/concepts-features/media-library",
+            "tab": "Documentation",
+            "groups": [
               {
-                "group": "AI Features",
+                "group": "Getting Started",
                 "pages": [
-                  "documentation/concepts-features/ai-features",
-                  "documentation/concepts-features/ai-copilot",
-                  "documentation/concepts-features/ai-tag-suggestion"
-                ]
-              },
-              "documentation/concepts-features/content-scoring"
-            ]
-          },
-          {
-            "group": "Roles & Permissions",
-            "pages": [
-              "documentation/concepts-features/content-access-policies"
-            ]
-          },
-          {
-            "group": "Enterprise & Governance",
-            "pages": [
-              "documentation/concepts-features/audit-logs"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Guides",
-        "groups": [
-          {
-            "group": "Framework Integration",
-            "pages": [
-              "documentation/guides/frontend-integration/README",
-              "documentation/guides/frontend-integration/nextjs",
-              "documentation/guides/frontend-integration/react",
-              "documentation/guides/frontend-integration/vue",
-              "documentation/guides/frontend-integration/angular"
-            ]
-          },
-          {
-            "group": "Headless Architecture",
-            "pages": [
-              "documentation/guides/decoupled-frontend/decoupled-frontend-infra",
-              "documentation/guides/decoupled-frontend/build-brand-website",
-              "documentation/guides/decoupled-frontend/build-news-media"
-            ]
-          },
-          {
-            "group": "Integrations",
-            "pages": [
-              "documentation/guides/decoupled-frontend/integrations/how-to-integrate-form",
-              "documentation/guides/decoupled-frontend/integrations/how-to-integrate-component-form",
-              "documentation/guides/decoupled-frontend/integrations/how-to-create-files-route",
-              "documentation/guides/decoupled-frontend/integrations/how-to-have-preview-page",
-              "documentation/guides/decoupled-frontend/integrations/how-to-have-password-protected-preview",
-              "documentation/guides/integrations/how-to-integrate-cookie-consent"
-            ]
-          },
-          {
-            "group": "Editorial Workflows",
-            "pages": [
-              "documentation/guides/workflows/README",
-              "documentation/guides/workflows/maker-checker",
-              "documentation/guides/workflows/approval-flow",
-              "documentation/guides/workflows/state-management"
-            ]
-          },
-          {
-            "group": "Events & Automation",
-            "pages": [
-              "documentation/webhooks-integrations/webhooks",
-              "documentation/webhooks-integrations/third-party"
-            ]
-          },
-          {
-            "group": "Industry Solutions",
-            "pages": [
-              "documentation/guides/industry-specific/README",
-              "documentation/guides/industry-specific/media-publishing",
-              "documentation/guides/industry-specific/bfsi-compliance",
-              "documentation/guides/industry-specific/pharma-governance"
-            ]
-          },
-          {
-            "group": "Content Authoring",
-            "pages": [
-              "documentation/guides/content-authoring/faq-block"
-            ]
-          },
-          {
-            "group": "Deployment",
-            "pages": [
-              "documentation/guides/deployment"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API Reference",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": [
-              "api-reference/README"
-            ]
-          },
-          {
-            "group": "Content Delivery API",
-            "pages": [
-              "api-reference/content-delivery/README",
-              {
-                "group": "Site Configuration",
-                "pages": [
-                  "api-reference/content-delivery/publisher-data",
-                  "api-reference/content-delivery/navbar",
-                  "api-reference/content-delivery/footer",
-                  "api-reference/content-delivery/active-slots",
-                  "api-reference/content-delivery/newsletter-groups",
-                  "api-reference/content-delivery/content-types"
+                  "dxp/index",
+                  "dxp/documentation/getting-started/authentication",
+                  "dxp/documentation/getting-started/mfa"
                 ]
               },
               {
-                "group": "Content",
+                "group": "Quickstarts",
                 "pages": [
-                  "api-reference/content-delivery/identify-content",
-                  "api-reference/content-delivery/category-listing",
-                  "api-reference/content-delivery/category-details",
-                  "api-reference/content-delivery/tag-listing",
-                  "api-reference/content-delivery/tag-details",
-                  "api-reference/content-delivery/author-listing",
-                  "api-reference/content-delivery/author-details"
+                  "dxp/documentation/quickstarts/cds",
+                  "dxp/documentation/quickstarts/cms"
                 ]
               },
               {
-                "group": "Posts",
+                "group": "Core Concepts",
                 "pages": [
-                  "api-reference/content-delivery/post-listing",
-                  "api-reference/content-delivery/post-details",
-                  "api-reference/content-delivery/post-details-by-url",
-                  "api-reference/content-delivery/live-blog-updates",
-                  "api-reference/content-delivery/trending-post"
+                  "dxp/documentation/getting-started/core-concepts",
+                  "dxp/documentation/concepts-features/custom-entities",
+                  "dxp/documentation/concepts-features/forms",
+                  "dxp/documentation/concepts-features/media-library",
+                  {
+                    "group": "AI Features",
+                    "pages": [
+                      "dxp/documentation/concepts-features/ai-features",
+                      "dxp/documentation/concepts-features/ai-copilot",
+                      "dxp/documentation/concepts-features/ai-tag-suggestion"
+                    ]
+                  },
+                  "dxp/documentation/concepts-features/content-scoring"
                 ]
               },
               {
-                "group": "Forms",
+                "group": "Roles & Permissions",
                 "pages": [
-                  "api-reference/content-delivery/form-schema"
+                  "dxp/documentation/concepts-features/content-access-policies"
                 ]
               },
               {
-                "group": "Static Files",
+                "group": "Enterprise & Governance",
                 "pages": [
-                  "api-reference/content-delivery/static-ads-txt",
-                  "api-reference/content-delivery/static-robots-txt",
-                  "api-reference/content-delivery/static-service-worker",
-                  "api-reference/content-delivery/static-push-notification-html"
-                ]
-              },
-              {
-                "group": "Sitemaps",
-                "pages": [
-                  "api-reference/content-delivery/sitemap-allcontent",
-                  "api-reference/content-delivery/sitemap-webcontent",
-                  "api-reference/content-delivery/sitemap-news",
-                  "api-reference/content-delivery/sitemap-category",
-                  "api-reference/content-delivery/sitemap-webstory",
-                  "api-reference/content-delivery/sitemap-paginated"
+                  "dxp/documentation/concepts-features/audit-logs"
                 ]
               }
             ]
           },
           {
-            "group": "Content Management API",
-            "pages": [
-              "api-reference/content-management/README",
+            "tab": "Guides",
+            "groups": [
               {
-                "group": "Categories",
+                "group": "Framework Integration",
                 "pages": [
-                  "api-reference/content-management/categories/README",
-                  "api-reference/content-management/categories/list-categories",
-                  "api-reference/content-management/categories/create-category",
-                  "api-reference/content-management/categories/retrieve-category",
-                  "api-reference/content-management/categories/update-category",
-                  "api-reference/content-management/categories/delete-category"
+                  "dxp/documentation/guides/frontend-integration/README",
+                  "dxp/documentation/guides/frontend-integration/nextjs",
+                  "dxp/documentation/guides/frontend-integration/react",
+                  "dxp/documentation/guides/frontend-integration/vue",
+                  "dxp/documentation/guides/frontend-integration/angular"
                 ]
               },
               {
-                "group": "Tags",
+                "group": "Headless Architecture",
                 "pages": [
-                  "api-reference/content-management/tags/README",
-                  "api-reference/content-management/tags/list-tags",
-                  "api-reference/content-management/tags/create-tag",
-                  "api-reference/content-management/tags/retrieve-tag",
-                  "api-reference/content-management/tags/update-tag",
-                  "api-reference/content-management/tags/delete-tag"
+                  "dxp/documentation/guides/decoupled-frontend/decoupled-frontend-infra",
+                  "dxp/documentation/guides/decoupled-frontend/build-brand-website",
+                  "dxp/documentation/guides/decoupled-frontend/build-news-media"
                 ]
               },
               {
-                "group": "Posts",
+                "group": "Integrations",
                 "pages": [
-                  "api-reference/content-management/posts/README",
-                  "api-reference/content-management/posts/list-posts",
-                  "api-reference/content-management/posts/create-post",
-                  "api-reference/content-management/posts/retrieve-post",
-                  "api-reference/content-management/posts/update-post",
-                  "api-reference/content-management/posts/delete-post"
+                  "dxp/documentation/guides/decoupled-frontend/integrations/how-to-integrate-form",
+                  "dxp/documentation/guides/decoupled-frontend/integrations/how-to-integrate-component-form",
+                  "dxp/documentation/guides/decoupled-frontend/integrations/how-to-create-files-route",
+                  "dxp/documentation/guides/decoupled-frontend/integrations/how-to-have-preview-page",
+                  "dxp/documentation/guides/decoupled-frontend/integrations/how-to-have-password-protected-preview",
+                  "dxp/documentation/guides/integrations/how-to-integrate-cookie-consent"
                 ]
               },
               {
-                "group": "Live Blogs",
+                "group": "Editorial Workflows",
                 "pages": [
-                  "api-reference/content-management/live-blogs/list-live-blog-updates",
-                  "api-reference/content-management/live-blogs/retrieve-live-blog-update",
-                  "api-reference/content-management/live-blogs/create-live-blog-update",
-                  "api-reference/content-management/live-blogs/update-live-blog-update",
-                  "api-reference/content-management/live-blogs/delete-live-blog-update"
+                  "dxp/documentation/guides/workflows/README",
+                  "dxp/documentation/guides/workflows/maker-checker",
+                  "dxp/documentation/guides/workflows/approval-flow",
+                  "dxp/documentation/guides/workflows/state-management"
                 ]
               },
               {
-                "group": "Media Library",
+                "group": "Events & Automation",
                 "pages": [
-                  "api-reference/content-management/media/README",
-                  "api-reference/content-management/media/list-media",
-                  "api-reference/content-management/media/create-media",
-                  "api-reference/content-management/media/retrieve-media",
-                  "api-reference/content-management/media/update-media",
-                  "api-reference/content-management/media/delete-media"
+                  "dxp/documentation/webhooks-integrations/webhooks",
+                  "dxp/documentation/webhooks-integrations/third-party"
                 ]
               },
               {
-                "group": "Custom Content Types",
+                "group": "Industry Solutions",
                 "pages": [
-                  "api-reference/content-management/custom-content-types/README",
-                  "api-reference/content-management/custom-content-types/list-custom-content-types",
-                  "api-reference/content-management/custom-content-types/create-custom-content-type",
-                  "api-reference/content-management/custom-content-types/retrieve-custom-content-type",
-                  "api-reference/content-management/custom-content-types/update-custom-content-type",
-                  "api-reference/content-management/custom-content-types/delete-custom-content-type"
+                  "dxp/documentation/guides/industry-specific/README",
+                  "dxp/documentation/guides/industry-specific/media-publishing",
+                  "dxp/documentation/guides/industry-specific/bfsi-compliance",
+                  "dxp/documentation/guides/industry-specific/pharma-governance"
                 ]
               },
               {
-                "group": "Custom Components",
+                "group": "Content Authoring",
                 "pages": [
-                  "api-reference/content-management/custom-components/README",
-                  "api-reference/content-management/custom-components/list-custom-components",
-                  "api-reference/content-management/custom-components/create-custom-component",
-                  "api-reference/content-management/custom-components/retrieve-custom-component",
-                  "api-reference/content-management/custom-components/update-custom-component",
-                  "api-reference/content-management/custom-components/delete-custom-component"
+                  "dxp/documentation/guides/content-authoring/faq-block"
                 ]
               },
               {
-                "group": "Forms",
+                "group": "Deployment",
                 "pages": [
-                  "api-reference/content-management/forms/README",
-                  "api-reference/content-management/forms/list-form-schemas",
-                  "api-reference/content-management/forms/create-form-schema",
-                  "api-reference/content-management/forms/retrieve-form-schema",
-                  "api-reference/content-management/forms/update-form-schema",
-                  "api-reference/content-management/forms/delete-form-schema",
-                  "api-reference/content-management/forms/form-submission"
-                ]
-              },
-              {
-                "group": "Reader",
-                "pages": [
-                  "api-reference/content-management/reader/README",
-                  "api-reference/content-management/reader/login",
-                  "api-reference/content-management/reader/logout",
-                  "api-reference/content-management/reader/register",
-                  "api-reference/content-management/reader/forgot-password",
-                  "api-reference/content-management/reader/reset-password",
-                  "api-reference/content-management/reader/verify-email"
-                ]
-              },
-              {
-                "group": "Newsletter",
-                "pages": [
-                  "api-reference/content-management/newsletter/README",
-                  "api-reference/content-management/newsletter/subscribe",
-                  "api-reference/content-management/newsletter/unsubscribe",
-                  "api-reference/content-management/newsletter/verify-email"
+                  "dxp/documentation/guides/deployment"
                 ]
               }
             ]
           },
           {
-            "group": "SDKs",
-            "pages": [
-              "documentation/sdks/javascript"
+            "tab": "API Reference",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "dxp/api-reference/README"
+                ]
+              },
+              {
+                "group": "Content Delivery API",
+                "pages": [
+                  "dxp/api-reference/content-delivery/README",
+                  {
+                    "group": "Site Configuration",
+                    "pages": [
+                      "dxp/api-reference/content-delivery/publisher-data",
+                      "dxp/api-reference/content-delivery/navbar",
+                      "dxp/api-reference/content-delivery/footer",
+                      "dxp/api-reference/content-delivery/active-slots",
+                      "dxp/api-reference/content-delivery/newsletter-groups",
+                      "dxp/api-reference/content-delivery/content-types"
+                    ]
+                  },
+                  {
+                    "group": "Content",
+                    "pages": [
+                      "dxp/api-reference/content-delivery/identify-content",
+                      "dxp/api-reference/content-delivery/category-listing",
+                      "dxp/api-reference/content-delivery/category-details",
+                      "dxp/api-reference/content-delivery/tag-listing",
+                      "dxp/api-reference/content-delivery/tag-details",
+                      "dxp/api-reference/content-delivery/author-listing",
+                      "dxp/api-reference/content-delivery/author-details"
+                    ]
+                  },
+                  {
+                    "group": "Posts",
+                    "pages": [
+                      "dxp/api-reference/content-delivery/post-listing",
+                      "dxp/api-reference/content-delivery/post-details",
+                      "dxp/api-reference/content-delivery/post-details-by-url",
+                      "dxp/api-reference/content-delivery/live-blog-updates",
+                      "dxp/api-reference/content-delivery/trending-post"
+                    ]
+                  },
+                  {
+                    "group": "Forms",
+                    "pages": [
+                      "dxp/api-reference/content-delivery/form-schema"
+                    ]
+                  },
+                  {
+                    "group": "Static Files",
+                    "pages": [
+                      "dxp/api-reference/content-delivery/static-ads-txt",
+                      "dxp/api-reference/content-delivery/static-robots-txt",
+                      "dxp/api-reference/content-delivery/static-service-worker",
+                      "dxp/api-reference/content-delivery/static-push-notification-html"
+                    ]
+                  },
+                  {
+                    "group": "Sitemaps",
+                    "pages": [
+                      "dxp/api-reference/content-delivery/sitemap-allcontent",
+                      "dxp/api-reference/content-delivery/sitemap-webcontent",
+                      "dxp/api-reference/content-delivery/sitemap-news",
+                      "dxp/api-reference/content-delivery/sitemap-category",
+                      "dxp/api-reference/content-delivery/sitemap-webstory",
+                      "dxp/api-reference/content-delivery/sitemap-paginated"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Content Management API",
+                "pages": [
+                  "dxp/api-reference/content-management/README",
+                  {
+                    "group": "Categories",
+                    "pages": [
+                      "dxp/api-reference/content-management/categories/README",
+                      "dxp/api-reference/content-management/categories/list-categories",
+                      "dxp/api-reference/content-management/categories/create-category",
+                      "dxp/api-reference/content-management/categories/retrieve-category",
+                      "dxp/api-reference/content-management/categories/update-category",
+                      "dxp/api-reference/content-management/categories/delete-category"
+                    ]
+                  },
+                  {
+                    "group": "Tags",
+                    "pages": [
+                      "dxp/api-reference/content-management/tags/README",
+                      "dxp/api-reference/content-management/tags/list-tags",
+                      "dxp/api-reference/content-management/tags/create-tag",
+                      "dxp/api-reference/content-management/tags/retrieve-tag",
+                      "dxp/api-reference/content-management/tags/update-tag",
+                      "dxp/api-reference/content-management/tags/delete-tag"
+                    ]
+                  },
+                  {
+                    "group": "Posts",
+                    "pages": [
+                      "dxp/api-reference/content-management/posts/README",
+                      "dxp/api-reference/content-management/posts/list-posts",
+                      "dxp/api-reference/content-management/posts/create-post",
+                      "dxp/api-reference/content-management/posts/retrieve-post",
+                      "dxp/api-reference/content-management/posts/update-post",
+                      "dxp/api-reference/content-management/posts/delete-post"
+                    ]
+                  },
+                  {
+                    "group": "Live Blogs",
+                    "pages": [
+                      "dxp/api-reference/content-management/live-blogs/list-live-blog-updates",
+                      "dxp/api-reference/content-management/live-blogs/retrieve-live-blog-update",
+                      "dxp/api-reference/content-management/live-blogs/create-live-blog-update",
+                      "dxp/api-reference/content-management/live-blogs/update-live-blog-update",
+                      "dxp/api-reference/content-management/live-blogs/delete-live-blog-update"
+                    ]
+                  },
+                  {
+                    "group": "Media Library",
+                    "pages": [
+                      "dxp/api-reference/content-management/media/README",
+                      "dxp/api-reference/content-management/media/list-media",
+                      "dxp/api-reference/content-management/media/create-media",
+                      "dxp/api-reference/content-management/media/retrieve-media",
+                      "dxp/api-reference/content-management/media/update-media",
+                      "dxp/api-reference/content-management/media/delete-media"
+                    ]
+                  },
+                  {
+                    "group": "Custom Content Types",
+                    "pages": [
+                      "dxp/api-reference/content-management/custom-content-types/README",
+                      "dxp/api-reference/content-management/custom-content-types/list-custom-content-types",
+                      "dxp/api-reference/content-management/custom-content-types/create-custom-content-type",
+                      "dxp/api-reference/content-management/custom-content-types/retrieve-custom-content-type",
+                      "dxp/api-reference/content-management/custom-content-types/update-custom-content-type",
+                      "dxp/api-reference/content-management/custom-content-types/delete-custom-content-type"
+                    ]
+                  },
+                  {
+                    "group": "Custom Components",
+                    "pages": [
+                      "dxp/api-reference/content-management/custom-components/README",
+                      "dxp/api-reference/content-management/custom-components/list-custom-components",
+                      "dxp/api-reference/content-management/custom-components/create-custom-component",
+                      "dxp/api-reference/content-management/custom-components/retrieve-custom-component",
+                      "dxp/api-reference/content-management/custom-components/update-custom-component",
+                      "dxp/api-reference/content-management/custom-components/delete-custom-component"
+                    ]
+                  },
+                  {
+                    "group": "Forms",
+                    "pages": [
+                      "dxp/api-reference/content-management/forms/README",
+                      "dxp/api-reference/content-management/forms/list-form-schemas",
+                      "dxp/api-reference/content-management/forms/create-form-schema",
+                      "dxp/api-reference/content-management/forms/retrieve-form-schema",
+                      "dxp/api-reference/content-management/forms/update-form-schema",
+                      "dxp/api-reference/content-management/forms/delete-form-schema",
+                      "dxp/api-reference/content-management/forms/form-submission"
+                    ]
+                  },
+                  {
+                    "group": "Reader",
+                    "pages": [
+                      "dxp/api-reference/content-management/reader/README",
+                      "dxp/api-reference/content-management/reader/login",
+                      "dxp/api-reference/content-management/reader/logout",
+                      "dxp/api-reference/content-management/reader/register",
+                      "dxp/api-reference/content-management/reader/forgot-password",
+                      "dxp/api-reference/content-management/reader/reset-password",
+                      "dxp/api-reference/content-management/reader/verify-email"
+                    ]
+                  },
+                  {
+                    "group": "Newsletter",
+                    "pages": [
+                      "dxp/api-reference/content-management/newsletter/README",
+                      "dxp/api-reference/content-management/newsletter/subscribe",
+                      "dxp/api-reference/content-management/newsletter/unsubscribe",
+                      "dxp/api-reference/content-management/newsletter/verify-email"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "SDKs",
+                "pages": [
+                  "dxp/documentation/sdks/javascript"
+                ]
+              },
+              {
+                "group": "Reference",
+                "pages": [
+                  "dxp/documentation/reference/error-codes",
+                  "dxp/documentation/reference/rate-limits",
+                  "dxp/documentation/reference/migration-guides"
+                ]
+              },
+              {
+                "group": "Deprecated",
+                "pages": [
+                  "dxp/api-reference/deprecated/README",
+                  "dxp/api-reference/deprecated/posts-by-category",
+                  "dxp/api-reference/deprecated/posts-by-tag",
+                  "dxp/api-reference/deprecated/posts-by-author",
+                  "dxp/api-reference/deprecated/latest-posts",
+                  "dxp/api-reference/deprecated/homepage",
+                  "dxp/api-reference/deprecated/related-posts",
+                  "dxp/api-reference/deprecated/featured-posts",
+                  "dxp/api-reference/deprecated/post-by-slug",
+                  "dxp/api-reference/deprecated/search-posts"
+                ]
+              }
             ]
           },
           {
-            "group": "Reference",
-            "pages": [
-              "documentation/reference/error-codes",
-              "documentation/reference/rate-limits",
-              "documentation/reference/migration-guides"
+            "tab": "Changelog",
+            "groups": [
+              {
+                "group": "Changelog",
+                "pages": [
+                  "dxp/changelog"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "product": "Publive AXP",
+        "icon": "https://img-cdn.publive.online/thepublive/media/media_files/2026/07/20/axp-only-logo-2026-07-20-18-23-01.png",
+        "tabs": [
+          {
+            "tab": "Overview",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "axp/overview/index"
+                ]
+              },
+              {
+                "group": "Audit Hub",
+                "pages": [
+                  "axp/audit-hub/overview"
+                ]
+              }
             ]
           },
           {
-            "group": "Deprecated",
-            "pages": [
-              "api-reference/deprecated/README",
-              "api-reference/deprecated/posts-by-category",
-              "api-reference/deprecated/posts-by-tag",
-              "api-reference/deprecated/posts-by-author",
-              "api-reference/deprecated/latest-posts",
-              "api-reference/deprecated/homepage",
-              "api-reference/deprecated/related-posts",
-              "api-reference/deprecated/featured-posts",
-              "api-reference/deprecated/post-by-slug",
-              "api-reference/deprecated/search-posts"
+            "tab": "AXP Edge",
+            "groups": [
+              {
+                "group": "AXP Edge",
+                "pages": [
+                  "axp/axp-edge/overview",
+                  "axp/axp-edge/setup",
+                  "axp/axp-edge/dashboard",
+                  "axp/axp-edge/faq"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "Changelog",
+            "groups": [
+              {
+                "group": "Changelog",
+                "pages": [
+                  "axp/changelog"
+                ]
+              }
             ]
           }
         ]
@@ -402,9 +462,43 @@
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://dashboard.thepublive.com/"
+      "href": "https://dashboard.thepublive.com/v2"
     }
   },
+  "redirects": [
+    {
+      "source": "/changelog",
+      "destination": "/dxp/changelog"
+    },
+    {
+      "source": "/changelog/dxp",
+      "destination": "/dxp/changelog"
+    },
+    {
+      "source": "/changelog/axp",
+      "destination": "/axp/changelog"
+    },
+    {
+      "source": "/documentation",
+      "destination": "/dxp/documentation"
+    },
+    {
+      "source": "/documentation/:slug*",
+      "destination": "/dxp/documentation/:slug*"
+    },
+    {
+      "source": "/api-reference",
+      "destination": "/dxp/api-reference"
+    },
+    {
+      "source": "/api-reference/:slug*",
+      "destination": "/dxp/api-reference/:slug*"
+    },
+    {
+      "source": "/",
+      "destination": "/dxp"
+    }
+  ],
   "contextual": {
     "options": [
       "copy",

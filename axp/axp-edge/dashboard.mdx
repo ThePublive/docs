@@ -1,0 +1,71 @@
+---
+title: "AXP Edge dashboard"
+description: "The dashboard sections available for monitoring and configuring AXP Edge."
+---
+
+The AXP dashboard gives you visibility into what AXP Edge is doing on your domain and lets you control which pages it optimizes.
+
+## Brand Profile
+
+Your domain's baseline configuration — the brand context AXP Edge and AI Streams use to represent your site consistently to AI agents.
+
+<Frame>
+  <img src="/images/axp/axp-brand-profile.png" alt="Brand Profile page showing brand identity, description, and competitor fields" style={{ borderRadius: '0.5rem' }} />
+</Frame>
+
+## Content & Global Rules
+
+Shows which URLs on your domain are currently being optimized by AXP Edge, and lets you configure [bypass rules](/axp/axp-edge/setup#bypass-rules) for specific pages or sections you want AI agents to receive unoptimized.
+
+The **Content** tab shows site-wide coverage, tokens saved, and a per-URL breakdown of optimization status:
+
+<Frame>
+  <img src="/images/axp/axp-content-page.png" alt="AXP Edge Content tab showing site coverage, tokens saved, bot visits, and a per-URL optimization status table" style={{ borderRadius: '0.5rem' }} />
+</Frame>
+
+The **Global Rules** tab sets the default serving behavior for all AI bots, plus per-URL and per-bot overrides:
+
+<Frame>
+  <img src="/images/axp/axp-edge-global-rules.png" alt="AXP Edge Global Rules tab showing default serving behaviour and URL/bot override tables" style={{ borderRadius: '0.5rem' }} />
+</Frame>
+
+## Edge Analytics
+
+Agentic traffic hitting your AXP Edge–optimized URLs, broken out by AI platform (for example GPTBot, PerplexityBot, and other agent user-agents). Use this to see AI agent traffic rise from your pre-AXP baseline over time.
+
+<Frame>
+  <img src="/images/axp/axp-agent-analytics.png" alt="Agent Analytics dashboard showing agentic interactions, success rate, and top/bottom moving URLs" style={{ borderRadius: '0.5rem' }} />
+</Frame>
+
+## Integrations
+
+Connect AXP Edge to your CDN, plus optional data sources that feed AXP's analytics:
+
+<Frame>
+  <img src="/images/axp/axp-integrations.png" alt="AXP Integrations page showing AXP Edge connected, with Google Search Console and Google Analytics 4 coming soon" style={{ borderRadius: '0.5rem' }} />
+</Frame>
+
+- **AXP Edge** — your CDN connection (Cloudflare, Akamai, or AWS CloudFront). See [Set up AXP Edge](/axp/axp-edge/setup).
+- **Google Search Console** and **Google Analytics 4** — pull organic search queries and AI-referred traffic into AXP's analytics. **Coming soon.**
+
+<Info>
+  **Brand Knowledge Hub** and **Agents Hub** are visible in the dashboard nav but still show "coming soon" placeholders — the underlying features aren't live yet. The **Optimizations** tab under AXP Edge is the same: visible, but "Smart content optimization" itself hasn't shipped.
+</Info>
+
+**Agents Hub** — coming soon:
+
+<Frame>
+  <img src="/images/axp/axp-agents-hub.png" alt="Agents Hub showing the Brand Reputation Agent and Outdated & Contradictory Content Agent, both marked coming soon" style={{ borderRadius: '0.5rem' }} />
+</Frame>
+
+**Brand Knowledge Hub** — coming soon:
+
+<Frame>
+  <img src="/images/axp/axp-brand-knowledge-hub.png" alt="Brand Knowledge Hub showing Sources, Knowledge Docs, and Chat sections, all marked coming soon" style={{ borderRadius: '0.5rem' }} />
+</Frame>
+
+## Next steps
+
+<Card title="AXP Edge FAQ" icon="circle-question" href="/axp/axp-edge/faq">
+  Common questions about setup, SEO impact, and failure behavior.
+</Card>

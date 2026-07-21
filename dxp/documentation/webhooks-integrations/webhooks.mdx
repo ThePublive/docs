@@ -1,0 +1,64 @@
+---
+title: "Webhooks"
+description: "Set up webhooks to receive real-time notifications from Publive"
+---
+
+Webhooks allow you to receive real-time HTTP callbacks when events occur in your Publive CMS, such as content being published or a reader joining your newsletter.
+
+## Supported events
+
+| Event | Trigger |
+| ----- | ------- |
+| `post.published` | A post status changes to **Published** |
+| `reader.added` | A new reader is added to your workspace |
+| `reader.removed` | A reader is removed from your workspace |
+| `newsletter.subscribe` | A member subscribes to your newsletter |
+| `form.submitted` | A form is submitted |
+
+## Setup
+
+Configure webhooks through the Publive Dashboard:
+
+1. Go to **Configuration** > **Webhooks**
+2. Click **Create New Webhook**
+3. Configure the following fields:
+   - **Target URL** (Required): The endpoint URL where webhook payloads will be sent.
+   - **Api Secret** (Optional): A signing secret used to verify webhook payloads. Generate your own HMAC-SHA256 secret and enter it here.
+   - **Alert Email**: An email address to receive notifications if the webhook fails.
+   - **Select Events**(Required): Choose the specific events you want to subscribe to.
+4. Click **Create New Webhook**
+
+## Payload format
+
+<Expandable title="Full payload example">
+
+```json
+{
+  "event": "post.published",
+  "timestamp": "2026-02-12T10:00:00Z",
+  "data": {
+    "id": 50123,
+    "title": "My Published Article",
+    "slug": "my-published-article",
+    "type": "Article",
+    "status": "Published",
+    "primary_category": {
+      "id": 100,
+      "name": "News"
+    }
+  }
+}
+```
+
+</Expandable>
+
+## Verification
+
+Signature verification is optional. To enable it, generate your own HMAC-SHA256 secret and add it as the **Api Secret** when configuring the webhook. Use the same secret in your endpoint to compute an HMAC-SHA256 signature of the request body and compare it against the value Publive sends, to confirm the request originated from Publive.
+
+## Best practices
+
+- **Respond with 200** quickly, process the payload asynchronously
+- **Implement idempotency** as webhooks may be delivered more than once
+- **Use HTTPS** endpoints for security
+- **Validate signatures** to ensure requests are from Publive

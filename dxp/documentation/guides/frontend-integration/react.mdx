@@ -1,0 +1,212 @@
+---
+title: "React Integration"
+description: "Integrate Publive with a React single-page application"
+---
+
+Build a React SPA that fetches content from the Publive CDS API via a backend proxy.
+
+<Warning>
+**Important:** Do not call the Publive API directly from the browser. Use a backend proxy (Express, serverless function, etc.) to keep your credentials secure.
+</Warning>
+
+## Setup
+
+### 1. Create a Backend Proxy
+
+Create a simple Express endpoint (or use any server framework):
+
+```javascript
+// server/api/publive.js
+const express = require('express');
+const router = express.Router();
+
+const BASE_URL = 'https://cds.thepublive.com/publisher/<PUBLISHER_ID>';
+const headers = {
+  'Authorization': `Basic ${Buffer.from(process.env.PUBLIVE_API_KEY + ':' + process.env.PUBLIVE_API_SECRET).toString('base64')}`,
+};
+
+router.get('/posts', async (req, res) => {
+  const query = new URLSearchParams(req.query);
+  const response = await fetch(`${BASE_URL}/posts/?${query}`, { headers });
+  const data = await response.json();
+  res.json(data);
+});
+
+router.get('/post/:slug', async (req, res) => {
+  const response = await fetch(`${BASE_URL}/post/${req.params.slug}/`, { headers });
+  const data = await response.json();
+  res.json(data);
+});
+
+module.exports = router;
+```
+
+### 2. Create a React Hook
+
+```jsx
+// hooks/usePublive.js
+import { useState, useEffect } from 'react';
+
+export function usePosts(params = {}) {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const query = new URLSearchParams(params);
+    fetch(`/api/publive/posts?${query}`)
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch posts');
+        return res.json();
+      })
+      .then(data => {
+        setPosts(data.data || []);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, [JSON.stringify(params)]);
+
+  return { posts, loading, error };
+}
+
+export function usePost(slug) {
+  const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetch(`/api/publive/post/${slug}`)
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch post');
+        return res.json();
+      })
+      .then(data => {
+        setPost(data.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, [slug]);
+
+  return { post, loading, error };
+}
+```
+
+### 3. Use in Components
+
+See the [Post Listing](/dxp/api-reference/content-delivery/post-listing) and [Post Details](/dxp/api-reference/content-delivery/post-details) API references for the full response shape.
+
+```jsx
+// components/PostList.jsx
+import { usePosts } from '../hooks/usePublive';
+
+export default function PostList() {
+  const { posts, loading, error } = usePosts({ limit: 10 });
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
+  return (
+    <div>
+      {posts.map(post => (
+        <article key={post.id}>
+          <h2>{post.title}</h2>
+          <p>{post.short_description}</p>
+          <span>{post.primary_category?.name}</span>
+        </article>
+      ))}
+    </div>
+  );
+}
+```
+
+## Advanced
+
+### Filtering by Category
+
+See the [Category Listing](/dxp/api-reference/content-delivery/category-listing) API.
+
+```javascript
+// Fetch articles in the "News" category (ID: 100)
+const { posts } = usePosts({
+  'categories.id__eq': '100',
+  'type__eq': 'Article',
+});
+```
+
+### Building Navigation
+
+See the [Navbar](/dxp/api-reference/content-delivery/navbar) API.
+
+Add a `/navbar` route to your Express proxy:
+
+```javascript
+// server/api/publive.js
+router.get('/navbar', async (req, res) => {
+  const response = await fetch(`${BASE_URL}/navbar/`, { headers });
+  if (!response.ok) return res.status(response.status).json({ error: 'Failed to fetch navbar' });
+  const data = await response.json();
+  res.json(data);
+});
+```
+
+Then fetch it in a hook:
+
+```jsx
+export function useNavbar() {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetch('/api/publive/navbar')
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch navbar');
+        return res.json();
+      })
+      .then(data => {
+        setItems(data.data || []);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
+  return { items, loading, error };
+}
+```
+
+```jsx
+// components/Navbar.jsx
+import { useNavbar } from '../hooks/usePublive';
+
+export default function Navbar() {
+  const { items, loading } = useNavbar();
+
+  if (loading) return null;
+
+  return (
+    <nav>
+      {items.map(item => (
+        <div key={item.link}>
+          <a href={item.link}>{item.name}</a>
+          {item.children && (
+            <div className="submenu">
+              {item.children.map(child => (
+                <a key={child.link} href={child.link}>{child.name}</a>
+              ))}
+            </div>
+          )}
+        </div>
+      ))}
+    </nav>
+  );
+}
+```

@@ -1,0 +1,73 @@
+---
+title: "Overview"
+description: "Read-only APIs for fetching published content from your Publive CMS"
+---
+
+The Content Delivery Service (CDS) provides read-only access to your published content. Use these APIs to power your website, mobile app, or any frontend application.
+
+**Base URL:** `https://cds.thepublive.com/publisher/{publisher_id}/`
+
+<Info>
+  All CDS endpoints are **GET** requests. Authentication requires HTTP Basic Auth.
+</Info>
+
+## Site Configuration
+
+| Endpoint                                                               | Description                                    |
+| ---------------------------------------------------------------------- | ---------------------------------------------- |
+| [Publisher Data](/dxp/api-reference/content-delivery/publisher-data)       | Publisher profile, branding, and configuration |
+| [Navbar](/dxp/api-reference/content-delivery/navbar)                       | Navigation menu structure                      |
+| [Footer](/dxp/api-reference/content-delivery/footer)                       | Footer configuration and links                 |
+| [Active Slots](/dxp/api-reference/content-delivery/active-slots)           | Advertisement slot configuration               |
+| [Newsletter Groups](/dxp/api-reference/content-delivery/newsletter-groups) | Newsletter group listings                      |
+| [Content Types](/dxp/api-reference/content-delivery/content-types)         | Available content types                        |
+
+## Content
+
+| Endpoint                                                             | Description                         |
+| -------------------------------------------------------------------- | ----------------------------------- |
+| [Identify content](/dxp/api-reference/content-delivery/identify-content) | Resolve a path to the matching entity type |
+| [Category Listing](/dxp/api-reference/content-delivery/category-listing) | List all categories                 |
+| [Category Details](/dxp/api-reference/content-delivery/category-details) | Get a single category by ID or slug |
+| [Tag Listing](/dxp/api-reference/content-delivery/tag-listing)           | List all tags                       |
+| [Tag Details](/dxp/api-reference/content-delivery/tag-details)           | Get a single tag by ID or slug      |
+| [Author Listing](/dxp/api-reference/content-delivery/author-listing)     | List all authors                    |
+| [Author Details](/dxp/api-reference/content-delivery/author-details)     | Get a single author by ID or slug   |
+
+## Posts
+
+| Endpoint                                                                   | Description                                 |
+| -------------------------------------------------------------------------- | ------------------------------------------- |
+| [Post Listing](/dxp/api-reference/content-delivery/post-listing)               | List and filter posts with advanced queries |
+| [Post Details](/dxp/api-reference/content-delivery/post-details)               | Get a single post by ID or slug             |
+| [Post Details by URL](/dxp/api-reference/content-delivery/post-details-by-url) | Get a post by its legacy/relative URL       |
+| [Live Blog Updates](/dxp/api-reference/content-delivery/live-blog-updates)     | Get live blog update entries for a post     |
+
+## Static Files
+
+| Endpoint                                                                                              | Description                                        |
+| ----------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| [ads.txt](/dxp/api-reference/content-delivery/static-ads-txt)                                             | Publisher's ads.txt file                           |
+| [robots.txt](/dxp/api-reference/content-delivery/static-robots-txt)                                       | Publisher's robots.txt file                        |
+| [service-worker.js](/dxp/api-reference/content-delivery/static-service-worker)                            | Push notification service worker script            |
+| [Push Notification HTML](/dxp/api-reference/content-delivery/static-push-notification-html)               | iZooto permission UI HTML files                    |
+
+## Sitemaps
+
+| Endpoint                                                                                              | Description                                        |
+| ----------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| [All-content Sitemap](/dxp/api-reference/content-delivery/sitemap-allcontent)                             | Master sitemap index for all content               |
+| [Web Content Sitemap](/dxp/api-reference/content-delivery/sitemap-webcontent)                             | Index linking to paginated article sitemaps        |
+| [News Sitemap](/dxp/api-reference/content-delivery/sitemap-news)                                          | Google News sitemap                                |
+| [Category Sitemap](/dxp/api-reference/content-delivery/sitemap-category)                                  | Sitemap of all category pages                      |
+| [Web Story Sitemap](/dxp/api-reference/content-delivery/sitemap-webstory)                                 | Index linking to paginated web story sitemaps      |
+| [Paginated Sitemaps](/dxp/api-reference/content-delivery/sitemap-paginated)                               | Date-stamped article and web story sitemap pages   |
+
+## Pagination
+
+All list endpoints support pagination:
+
+| Parameter | Type    | Default | Max  |
+| --------- | ------- | ------- | ---- |
+| `page`    | integer | 1       | 1000 |
+| `limit`   | integer | 10      | 50   |

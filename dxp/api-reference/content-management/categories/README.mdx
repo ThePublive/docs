@@ -1,0 +1,32 @@
+---
+title: "Categories"
+description: Manage content categories via the CMS API
+---
+
+Categories provide hierarchical organization for your content. Every post must have a `primary_category` assigned before it can be published.
+
+## Category Object
+
+| Field | Type | Editable | Required | Description |
+| ----- | ---- | -------- | -------- | ----------- |
+| `id` | integer | No | — | Unique category identifier |
+| `name` | string | Yes | Yes | Category name |
+| `english_name` | string | No | Yes | English name (used for permalink generation) |
+| `slug` | string | Dashboard only | — | URL-friendly slug |
+| `content` | string (HTML) | Yes | No | Category description |
+| `category_brand_color` | string (hex) | Yes | No | Brand color for the category |
+| `child_categories` | array | No | — | List of subcategories |
+| `parent_category` | object | Yes | No | Parent category details |
+| `meta_title` | string | Yes | No | SEO meta title |
+| `meta_description` | string | Yes | No | SEO meta description |
+| `absolute_url` | string | Auto | — | Public-facing URL |
+
+## Endpoints
+
+| Method | Endpoint | Description |
+| ------ | -------- | ----------- |
+| [GET](/dxp/api-reference/content-management/categories/list-categories) | `/category/` | List all categories |
+| [POST](/dxp/api-reference/content-management/categories/create-category) | `/category/` | Create a new category |
+| [GET](/dxp/api-reference/content-management/categories/retrieve-category) | `/category/{id}/` | Retrieve a category |
+| [PATCH](/dxp/api-reference/content-management/categories/update-category) | `/category/{id}/` | Update a category |
+| [DELETE](/dxp/api-reference/content-management/categories/delete-category) | `/category/{id}/` | Delete a category |

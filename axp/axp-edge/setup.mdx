@@ -1,0 +1,58 @@
+---
+title: "Set up AXP Edge"
+description: "Connect AXP Edge to your CDN and go live."
+---
+
+## Prerequisites
+
+- Admin access to your domain's DNS / nameserver records.
+- Access to your CDN or edge network configuration (Cloudflare, Amazon CloudFront, Akamai, or similar).
+- A Publive AXP account with AXP Edge enabled for your domain.
+
+## Supported CDNs and platforms
+
+AXP Edge integrates at the CDN layer, so it works with any site already served through one:
+
+- Cloudflare
+- Amazon CloudFront
+- Akamai
+
+If your site sits behind a different CDN or edge network, AXP Edge can almost certainly still integrate — contact your Publive CSM to confirm.
+
+## Go live
+
+<Steps>
+  <Step title="Point your CDN or nameservers to AXP Edge">
+    Update the NS records (or equivalent CDN configuration) for the domain you want optimized. Your Publive CSM confirms the exact records for your setup.
+  </Step>
+  <Step title="Human review of the pre-go-live configuration">
+    Before traffic is routed live, Publive reviews the bot-detection rules and agent-view rendering for your domain to confirm nothing is misconfigured.
+  </Step>
+  <Step title="Go live">
+    Once records propagate, AI agent traffic is routed through AXP Edge automatically. Human and search-engine traffic is unaffected throughout.
+  </Step>
+</Steps>
+
+Most domains are live within two hours of DNS propagation, with no site rebuild and no code changes to your application.
+
+<Note>
+  Rollback is one click — disabling AXP Edge immediately returns all traffic (including AI agent traffic) to your normal origin.
+</Note>
+
+## How AXP Edge decides who gets the agent view
+
+AXP Edge detects AI crawlers and agents using user-agent and network signals. Humans, and any traditional search bots you want preserved, are passed through to your normal site untouched.
+
+## Bypass rules
+
+You can exclude specific pages or sections of your site from AXP Edge optimization, so AI bots hit your unoptimized origin pages for those paths instead. This is useful for comparing optimized vs. unoptimized performance on your own domain, or for excluding pages that shouldn't be exposed to AI agents at all. Configure bypass rules from the **Content & Global Rules** section of your AXP dashboard — see [AXP Edge dashboard](/axp/axp-edge/dashboard).
+
+<Frame>
+  <img src="/images/axp/axp-edge-global-rules.png" alt="AXP Edge Global Rules tab showing default serving behaviour and URL/bot override tables" style={{ borderRadius: '0.5rem' }} />
+</Frame>
+
+## Next steps
+
+<Card title="AXP Edge dashboard" icon="gauge" href="/axp/axp-edge/dashboard">
+  Monitor agent traffic and manage optimization rules.
+</Card>
