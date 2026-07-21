@@ -1,0 +1,52 @@
+---
+title: "AXP Edge overview"
+description: "How AXP Edge serves AI crawlers a clean, agent-first version of your existing site."
+---
+
+AXP Edge is an edge-rendering layer that sits in front of your existing site on your CDN. It detects who's making a request and routes AI agents to a clean, structured, agent-first version of the page — while humans and search engines continue to see your site exactly as it is today.
+
+## How it works
+
+```mermaid
+flowchart LR
+    A[Request arrives at your CDN] --> B{AXP Edge identifies the requester}
+    B -->|Human visitor| C[Your site, untouched]
+    B -->|Search crawler e.g. Googlebot, Bingbot| C
+    B -->|AI agent e.g. GPTBot, PerplexityBot| D[Agent-first HTML]
+    D --> E[JS rendered, token-optimized, clean structure]
+```
+
+Requests are split by requester type at the edge, before they reach your origin:
+
+- **Humans and SEO bots** pass straight through to your site, byte-identical to what they get today. Nothing about your site, SEO, or user experience changes.
+- **AI agents** (ChatGPT, Gemini, Perplexity, and similar) receive a JS-rendered, token-optimized version of the same page — no navigation chrome or scripts, just the structured content an AI agent needs to read and cite.
+
+## Not cloaking
+
+AXP Edge only cleans up and restructures content that's already on the page — it doesn't show AI agents anything different in substance from what a human sees. Cloaking, by contrast, serves search engines different content to manipulate rankings. AXP Edge serves AI agents the same facts, in a form they can actually parse.
+
+<Note>
+  Search engines like Google and Bing are treated the same as human visitors — they receive your normal pages, so your existing SEO is unaffected.
+</Note>
+
+## What changes for AI agents
+
+| Signal | Effect |
+|---|---|
+| Tokens to read | ~90% fewer tokens than the human page, since navigation, scripts, and chrome are stripped |
+| Rendering | Server-side rendered, so AI crawlers that don't execute JavaScript can still read the full content |
+| Structure | Clean, semantic HTML built for citation rather than layout |
+
+Brands running AXP Edge on already-indexed pages have seen roughly 15-20% more AI citations from the same underlying content, simply because it becomes easier for an AI agent to parse and trust.
+
+## Enterprise-safe by design
+
+- **Nothing changes for customers** — only AI tools receive the cleaned-up version.
+- **It stays on your own domain** — there's no second page to manage, and citations point back to your real URL.
+- **It fails safe** — if the edge layer is ever unavailable, requests fall straight back to your normal origin.
+
+## Next steps
+
+<Card title="Set up AXP Edge" icon="bolt" href="/axp/axp-edge/setup">
+  Connect your CDN and go live in under two hours.
+</Card>

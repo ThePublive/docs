@@ -1,0 +1,138 @@
+---
+title: "Post Listing"
+description: Fetch a paginated and filterable list of published posts
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/posts/"
+---
+
+Returns a paginated list of published posts with support for advanced filtering, sorting, and search. This is the primary endpoint for fetching content on your frontend.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+
+
+<ParamField query="page" type="integer" default="1">
+  Page number (max: 1000)
+</ParamField>
+
+<ParamField query="limit" type="integer" default="10">
+  Items per page (max: 50)
+</ParamField>
+
+
+#### Advanced Filtering
+
+Append operator suffixes to filterable fields to build queries:
+
+| Operator | Description | Example |
+| -------- | ----------- | ------- |
+| `__eq` | Equals | `type__eq=Article` |
+| `__neq` | Not equals | `type__neq=Video` |
+| `__contains` | Contains substring | `title__contains=election` |
+| `__in` | In list (comma-separated) | `type__in=Article,Video` |
+| `__nin` | Not in list | `type__nin=Gallery,LiveBlog` |
+| `__gte` | Greater than or equal | `created_at__gte=2026-01-01` |
+| `__lte` | Less than or equal | `created_at__lte=2026-12-31` |
+| `__gt` | Greater than | `word_count__gt=500` |
+| `__lt` | Less than | `word_count__lt=2000` |
+
+**Filterable Fields:**
+
+| Field | Description |
+| ----- | ----------- |
+| `title` | Post title |
+| `type` | Post type (`Article`, `Video`, `Web Story`, `Gallery`, `LiveBlog`, `CustomPage`, `BlankPage`) |
+| `categories.id` | Category ID |
+| `tags.id` | Tag ID |
+| `contributors.id` | Author/contributor ID |
+| `primary_category.id` | Primary category ID |
+
+#### Filter Examples
+
+```bash
+# Get all articles
+/posts/?type__eq=Article
+
+# Get posts in a specific category
+/posts/?categories.id__eq=100
+
+# Get posts by a specific author
+/posts/?contributors.id__eq=5
+
+# Search posts by title
+/posts/?title__contains=budget
+
+# Combine filters: articles in a specific category
+/posts/?type__eq=Article&primary_category.id__eq=100
+```
+
+<Info>
+**Tip:** This endpoint replaces several deprecated endpoints. Use filters instead of `/posts_by_category/`, `/posts_by_tag/`, `/posts_by_author/`, and `/search/`. See [Deprecated Endpoints](/dxp/api-reference/deprecated).
+</Info>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "ok",
+  "data": [
+    {
+      "id": 12345,
+      "title": "Union Budget 2026 Highlights",
+      "slug": "union-budget-2026-highlights",
+      "type": "Article",
+      "banner_url": "https://cdn.publive.com/images/budget-2026.jpg",
+      "short_description": "Key takeaways from the Union Budget 2026",
+      "summary": "Here are the major announcements from the budget session.",
+      "primary_category": {
+        "id": 100,
+        "name": "Business",
+        "slug": "business"
+      },
+      "categories": [
+        {"id": 100, "name": "Business", "slug": "business"},
+        {"id": 101, "name": "Economy", "slug": "economy"}
+      ],
+      "tags": [
+        {"id": 500, "name": "Budget 2026", "slug": "budget-2026"},
+        {"id": 501, "name": "Finance", "slug": "finance"}
+      ],
+      "contributors": [
+        {"id": 1, "name": "Jane Doe", "slug": "jane-doe"}
+      ],
+      "content_html": "<p>The Union Budget 2026 was presented today...</p>",
+      "meta_data": {
+        "access_type": "Free"
+      },
+      "media_file_banner": {
+        "id": 999,
+        "filename": "budget-2026.jpg",
+        "path": "https://cdn.publive.com/images/budget-2026.jpg",
+        "alt_text": "Union Budget 2026",
+        "meta_data": {"width": 1200, "height": 630}
+      },
+      "word_count": 1250,
+      "access_type": "Free",
+      "hide_banner_image": false,
+      "banner_description": "Budget session in Parliament",
+      "language_code": "en",
+      "custom_entity": null,
+      "absolute_url": "/business/union-budget-2026-highlights-12345",
+      "formatted_first_published_at_datetime": "2026-02-01T09:00:00Z",
+      "formatted_last_published_at_datetime": "2026-02-01T12:30:00Z"
+    }
+  ],
+  "message": "",
+  "page_no": 1,
+  "per_page": 10
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+</ResponseExample>

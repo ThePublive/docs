@@ -1,0 +1,64 @@
+---
+title: "Post Details by URL"
+description: Fetch a post by its legacy or relative URL path
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/post/"
+---
+
+Returns a single post by matching its legacy or relative URL path. Useful for URL-based routing or migrating from legacy systems.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+
+
+<ParamField query="legacy_url" type="string" required>
+  Relative URL path (e.g., `/news/my-article-12345`)
+</ParamField>
+
+#### Example Request
+
+```bash
+curl -X GET \
+  'https://cds.thepublive.com/publisher/123/post/?legacy_url=/business/union-budget-2026-highlights-12345' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>'
+```
+
+Returns the same post object as the [Post Details](/dxp/api-reference/content-delivery/post-details) endpoint.
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "ok",
+  "data": {
+    "id": 12345,
+    "title": "Union Budget 2026 Highlights",
+    "slug": "union-budget-2026-highlights",
+    "type": "Article",
+    "primary_category": {
+      "id": 100,
+      "name": "Business",
+      "slug": "business"
+    },
+    "content_html": "<p>The Union Budget 2026 was presented today...</p>",
+    "absolute_url": "/business/union-budget-2026-highlights-12345"
+  },
+  "message": ""
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+```json 404
+{
+  "status": "error",
+  "message": "Post not found"
+}
+```
+
+</ResponseExample>

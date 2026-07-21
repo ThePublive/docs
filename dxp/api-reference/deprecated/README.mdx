@@ -1,0 +1,24 @@
+---
+title: "Deprecated Endpoints"
+description: Deprecated CDS endpoints and their modern replacements
+---
+
+The following Content Delivery Service endpoints are deprecated. They still function but will be removed in a future version. Use the modern replacements listed below.
+
+<Warning>
+**Migration Required:** All deprecated endpoints should be replaced with the [Post Listing](/dxp/api-reference/content-delivery/post-listing) endpoint using query filters.
+</Warning>
+
+## Migration Guide
+
+| Deprecated Endpoint | Replacement |
+| ------------------- | ----------- |
+| [Posts by Category](/dxp/api-reference/deprecated/posts-by-category) `/posts_by_category/{id}/` | `/posts/?categories.id__eq={id}` |
+| [Posts by Tag](/dxp/api-reference/deprecated/posts-by-tag) `/posts_by_tag/{id}/` | `/posts/?tags.id__eq={id}` |
+| [Posts by Author](/dxp/api-reference/deprecated/posts-by-author) `/posts_by_author/{id}/` | `/posts/?contributors.id__eq={id}` |
+| [Latest Posts](/dxp/api-reference/deprecated/latest-posts) `/latest-posts/{type}/` | `/posts/?type__eq={type}` |
+| [Homepage](/dxp/api-reference/deprecated/homepage) `/homepage/` | `/posts/` |
+| [Related Posts](/dxp/api-reference/deprecated/related-posts) `/related-posts/{id}/` | `/posts/?primary_category.id__eq={category_id}` |
+| [Featured Posts](/dxp/api-reference/deprecated/featured-posts) `/featured-posts/` | No direct replacement |
+| [Post by Slug](/dxp/api-reference/deprecated/post-by-slug) `/posts_by_slug/{slug}/` | `/post/{slug}/` |
+| [Search Posts](/dxp/api-reference/deprecated/search-posts) `/search/` | `/posts/?title__contains={term}` |

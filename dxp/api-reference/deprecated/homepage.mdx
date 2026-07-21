@@ -1,0 +1,22 @@
+---
+title: "Homepage"
+description: "[DEPRECATED] Fetch homepage posts"
+---
+
+<Warning>
+**Deprecated:** Use `/posts/` instead. See [Post Listing](/dxp/api-reference/content-delivery/post-listing).
+</Warning>
+
+`GET` `https://cds.thepublive.com/publisher/{publisher_id}/homepage/`
+
+Returns posts for the homepage.
+
+#### Migration
+
+```bash
+# Old (deprecated)
+GET /homepage/
+
+# New (recommended)
+GET /posts/?limit=20&sort_by=created_at&sort_order=desc
+```

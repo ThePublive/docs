@@ -18,7 +18,10 @@
 
 - Use **workspace** instead of **project**.
 - Use **member** instead of **user** when referring to platform/dashboard participants. Use **user** for end-readers or generic technical contexts.
-- Always use the spelling **Publive** when referring to the product.
+- This site documents two distinct products — never use bare "Publive" when the product is ambiguous:
+  - **Publive DXP** — the headless CMS product (`documentation/`, `api-reference/`, existing `Documentation` / `Guides` / `API Reference` tabs).
+  - **Publive AXP** — the AI-visibility product (`axp/` folder), made up of two sub-products: **AXP Edge** and **AI Streams**.
+- AXP docs are customer/technical-facing (setup, configuration, dashboard usage, FAQ). Do not port over pricing tables, ROI/case-study stats, competitor comparisons, or sales objection-handling copy from the marketing site.
 - Capitalize features correctly (e.g., **Webhooks**, **Custom Entities**).
 - Always refer to authentication as **Basic Auth** rather than legacy username/password.
 

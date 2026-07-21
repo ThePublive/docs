@@ -2,3 +2,35 @@
 #content-container {
   max-width: 100% !important;
 }
+
+/* Product switcher: show only the logo icon, no product name text */
+nav-dropdown-products-selector-trigger span.truncate,
+.nav-dropdown-products-selector-trigger span.truncate,
+button.nav-dropdown-products-selector-trigger span.truncate {
+  display: none !important;
+}
+
+nav-dropdown-products-selector-item-title,
+.nav-dropdown-products-selector-item-title,
+nav-dropdown-products-selector-item-description,
+.nav-dropdown-products-selector-item-description {
+  display: none !important;
+}
+
+/* Fix squished product logos (source images are 180x96, box is a fixed 16x16 square) and size up slightly */
+.nav-dropdown-products-selector-trigger img,
+.nav-dropdown-products-selector-item-icon img {
+  height: 1.375rem !important;
+  width: auto !important;
+  object-fit: contain !important;
+}
+
+/* Remove the checkmark next to the selected product in the dropdown */
+.nav-dropdown-products-selector-item > svg {
+  display: none !important;
+}
+
+/* Pull the product switcher closer to the Publive logo so it reads as one lockup */
+.nav-dropdown-products-selector-trigger {
+  margin-left: -1.5rem !important;
+}
