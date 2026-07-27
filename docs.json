@@ -2,7 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "aspen",
   "name": "Publive Docs",
-  "description": "API documentation and developer guides for Publive — India's headless CMS for digital publishers. Covers Content Delivery API, Content Management API, frontend integrations, and editorial workflows.",
+  "description": "Docs for Publive DXP and AXP: the headless CMS for digital publishers, and the platform that makes brands visible and citable in ChatGPT, AI Overviews, Perplexity, and Gemini.",
   "seo": {
     "indexing": "all",
     "metatags": {
@@ -28,7 +28,7 @@
   "styling": {
     "eyebrows": "breadcrumbs"
   },
-  "favicon": "https://dashboard.thepublive.com/v2/public/favicon.ico",
+  "favicon": "https://img-cdn.publive.online/thepublive/media/media_files/2026/07/27/favicon-2026-07-27-13-26-45.svg",
   "navigation": {
     "global": {
       "anchors": [
