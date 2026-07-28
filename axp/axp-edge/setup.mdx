@@ -6,18 +6,17 @@ description: "Connect AXP Edge to your CDN and go live."
 ## Prerequisites
 
 - Admin access to your domain's DNS / nameserver records.
-- Access to your CDN or edge network configuration (Cloudflare, Amazon CloudFront, Akamai, or similar).
+- Access to your CDN or edge network configuration (Cloudflare, Vercel, or similar).
 - A Publive AXP account with AXP Edge enabled for your domain.
 
 ## Supported CDNs and platforms
 
 AXP Edge integrates at the CDN layer, so it works with any site already served through one:
 
-- Cloudflare
-- Amazon CloudFront
-- Akamai
+- [Cloudflare](/axp/axp-edge/integrations/cloudflare)
+- [Vercel](/axp/axp-edge/integrations/vercel)
 
-If your site sits behind a different CDN or edge network, AXP Edge can almost certainly still integrate — [contact your Publive CSM](https://axp.thepublive.com/contact) to confirm.
+If your site sits behind a different CDN or edge network, AXP Edge can almost certainly still integrate — [contact Publive](https://axp.thepublive.com/contact) to confirm.
 
 ## Go live
 
@@ -50,6 +49,19 @@ You can exclude specific pages or sections of your site from AXP Edge optimizati
 <Frame>
   <img src="/images/axp/axp-edge-global-rules.png" alt="AXP Edge Global Rules tab showing default serving behaviour and URL/bot override tables" style={{ borderRadius: '0.5rem' }} />
 </Frame>
+
+## Integration guides
+
+Setting up AXP Edge yourself instead of pointing DNS at it? Use the platform-specific guide for your stack:
+
+<CardGroup cols={2}>
+  <Card title="Deploy on Vercel" icon="bolt" href="/axp/axp-edge/integrations/vercel">
+    Next.js Middleware-based routing for apps hosted on Vercel.
+  </Card>
+  <Card title="Deploy on Cloudflare" icon="bolt" href="/axp/axp-edge/integrations/cloudflare">
+    Cloudflare Worker-based routing, with automatic origin failover.
+  </Card>
+</CardGroup>
 
 ## Next steps
 

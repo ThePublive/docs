@@ -31,7 +31,7 @@ The two products solve different problems, so you can run one or both.
 | | AXP Edge | AI Streams |
 |---|---|---|
 | What it does | Serves your existing pages to AI, clean and structured | Builds new AI-first content on your domain |
-| Effort | Plug and play at the CDN layer, no rebuild | Managed by Publive's content engine |
+| Effort | Plug and play at the CDN layer, no rebuild | Managed by Publive AXP's content engine |
 | New content? | No — it re-renders what you already have | Yes — prompt-researched pages published to a `/streams` section |
 | Learn more | [AXP Edge overview](/axp/axp-edge/overview) | Coming soon |
 
@@ -54,27 +54,21 @@ The two products solve different problems, so you can run one or both.
 
 ## Who it's for
 
-Consider AXP if AI answers already shape how customers in your category discover, compare, or decide between brands.
+Publive AXP is built for engineering, technical SEO, and platform teams looking to make web properties AI-readable and citable:
 
-| Role | Why AXP matters to them |
+| Team / role | Technical focus |
 |---|---|
-| Founders & CEOs | AI answers are already defining your category. The longer you wait, the harder it is to reclaim ground from competitors already cited. |
-| Marketing / CMO | Buyers increasingly ask AI chat tools before booking a demo. You need to be the cited answer, with your brand narrative intact. |
-| SEO & GEO leads | AI Overviews reduce clicks to your site. You now need to optimize for citations and schema, not just rankings. |
-| Digital transformation teams | AI-readiness (SSR, schema, governance) needs to live in your platform, not get bolted on per campaign. |
+| Engineering & DevOps | Deploy AI-first SSR rendering and CDN-layer routing without altering application code or origin infrastructure. |
+| Technical SEO & GEO leads | Ensure clean JSON-LD, structured schema, and bot user-agent management for generative engine optimization. |
+| Content & Platform leads | Serve token-optimized content directly to AI agents while maintaining existing brand design for human visitors. |
 
-## Industries
+## Supported architectures
 
-| Industry | Why AXP applies |
+| Site architecture | Integration approach |
 |---|---|
-| B2B SaaS | AI generates "best tool for…" shortlists before a buyer compares vendors directly. |
-| Financial services | Trust and "is it safe" queries decide whether AI even considers your brand. |
-| SEO & digital agencies | You can offer generative engine optimization (GEO) as a measurable, deliverable service. |
-| Hospitality & hotels | AI now answers "best hotel near me"-style queries directly. |
-| Education & edtech | Students and parents ask AI to compare programs and institutions. |
-| Consumer durables | AI summarizes spec-heavy comparisons before a purchase decision. |
-| Automobiles | AI answers model and spec comparisons first. |
-| AlcoBev | Discovery and provenance queries increasingly run through AI. |
+| Decoupled & Headless | Edge middleware or CDN worker routing (Vercel, Cloudflare, Fastly). |
+| Server-Rendered / Monolithic | DNS-level edge proxy with zero origin code changes. |
+| Multi-Domain / Enterprise | Centralized rule management across multiple brand properties. |
 
 ## Next steps
 
