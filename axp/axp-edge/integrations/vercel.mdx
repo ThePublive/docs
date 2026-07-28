@@ -1,0 +1,401 @@
+---
+title: "Deploy AXP Edge with Vercel"
+description: "Route AI agent traffic to AXP Edge from Next.js Middleware on Vercel."
+---
+
+This guide adds a Next.js Middleware that routes AI agent traffic (GPTBot, ClaudeBot, Google-Extended, and similar) to the Publive CDS backend, while human visitors and SEO bots continue to hit your app exactly as before. It ships as part of your normal Next.js build — no separate infrastructure to stand up.
+
+<Note>
+  Make sure `PubliveBot/1.0 (+https://axp.thepublive.com/bot)` is unblocked on your CDN.
+</Note>
+
+## Prerequisites
+
+- A Next.js app deployed on Vercel (App Router or Pages Router; Middleware support in both).
+- Your Publive Edge CDS API key and backend URL (issued per client — contact your Publive CSM if you don't have these).
+- The [Vercel CLI](https://vercel.com/docs/cli), if you plan to test Middleware locally (see [Local development](#local-development)).
+
+## How routing works
+
+Middleware runs on every request inside your Next.js app, ahead of routing. It passes `_next/` paths through untouched, returns a 404 directly for any `.well-known/` path, and delegates every other request's eligibility decision to a shared `routeToPublive()` module. A request only qualifies for AXP Edge when **all** of the following are true:
+
+- The request hostname matches your configured `NEXT_PL_EDGE_CLIENT_HOST`.
+- The request hasn't already been routed once (a loop guard header prevents re-routing looped requests).
+- The method is `GET` or `HEAD`, and the path isn't a static asset (`.js`, `.css`, images, fonts, and similar are always skipped).
+- The user-agent matches a known AI agent, or the request carries a preview flag.
+
+If the request qualifies, Middleware proxies it to Publive CDS with the required headers. If CDS errors or is unreachable, the request falls through to normal Next.js rendering — visitors never see an error.
+
+<Warning>
+  The `.well-known/` handling in the code below returns a 404 for **every** path under `.well-known/`, unconditionally. If your app serves anything from that path — ACME HTTP-01 challenge files, `apple-app-site-association`, `security.txt`, third-party domain verification files — this Middleware will block it before your app ever sees the request. Remove or adjust that block if you rely on any `.well-known/` route.
+</Warning>
+
+## Set up the integration
+
+<Steps>
+  <Step title="Add the middleware entry point">
+    Create `middleware.ts` at the app root:
+
+    ```tsx middleware.ts
+    import { NextRequest, NextResponse } from "next/server"
+    import { routeToPublive } from "./middleware/routeToPublive"
+    import { debugLog } from "./middleware/debugLog"
+
+    export async function middleware(req: NextRequest) {
+      const { pathname } = req.nextUrl
+
+      if (pathname.startsWith("/_next/")) {
+        return NextResponse.next()
+      }
+
+      if (pathname.startsWith("/.well-known/")) {
+        return NextResponse.json({ error: 'Not Found' }, { status: 404 })
+      }
+
+      const cdsResponse = await routeToPublive(req, process.env)
+      if (cdsResponse) {
+        debugLog(process.env, "middleware:serving-cds-response")
+        return cdsResponse
+      }
+      debugLog(process.env, "middleware:falling-through-to-app")
+
+      const res = NextResponse.next()
+
+      // Add the origin path to the response headers for logging purposes
+      res.headers.set("x-origin-path", req.nextUrl.pathname + req.nextUrl.search)
+      return res
+    }
+    ```
+  </Step>
+  <Step title="Add the debug logger">
+    Create `middleware/debugLog.ts`:
+
+    ```tsx middleware/debugLog.ts
+    // Toggle via env var — no code change needed to enable/disable.
+    // Set NEXT_PL_EDGE_DEBUG=1 in .env.local or your Vercel project settings.
+    export function debugLog(
+      env: Record<string, any>,
+      step: string,
+      data?: Record<string, unknown>
+    ) {
+      if (env?.NEXT_PL_EDGE_DEBUG !== "1") return;
+      console.log(`[pl-edge:${step}]`, data ? JSON.stringify(data) : "");
+    }
+    ```
+  </Step>
+  <Step title="Add the routing module">
+    Create `middleware/routeToPublive.ts` with the shared eligibility, header-building, and error-logging logic:
+
+    ```tsx middleware/routeToPublive.ts expandable
+    import { debugLog } from "./debugLog";
+
+    const LOOP_GUARD_HEADER = "x-pl-request";
+    const PREVIEW_HEADER = "x-pl-preview";
+    const SKIP_UA_HEADER = "x-pl-skip";
+    const HOST_HEADER = "x-pl-host";
+    const URL_HEADER = "x-pl-url";
+    const API_KEY_HEADER = "x-pl-api-key";
+    const CLIENT_IP_HEADER = "x-pl-client-ip";
+    const CLIENT_AGENT_HEADER = "x-pl-client-agent";
+    const PROTOCOL_HEADER = "x-pl-protocol";
+    const REFERER_HEADER = "x-pl-referer";
+    const ACCEPT_LANGUAGE_HEADER = "x-pl-accept-language";
+
+    const DEFAULT_AGENTIC_BOTS = [
+      "GPTBot",
+      "OAI-SearchBot",
+      "ChatGPT-User",
+      "ClaudeBot",
+      "Claude-User",
+      "Claude-SearchBot",
+      "Google-Extended",
+      "anthropic-ai"
+    ];
+
+    const INBOUND_HEADERS_TO_STRIP = [
+      "host",
+      API_KEY_HEADER,
+      URL_HEADER,
+      HOST_HEADER,
+      CLIENT_IP_HEADER,
+      LOOP_GUARD_HEADER,
+      PREVIEW_HEADER
+    ];
+
+    // Resolves the active agentic-bot list.
+    // If NEXT_PL_EDGE_AGENTIC_BOTS is set (comma-separated) and non-empty after
+    // trimming, it fully replaces the default list. Otherwise falls back to
+    // DEFAULT_AGENTIC_BOTS.
+    function getAgenticBots(env) {
+      const configured = env?.NEXT_PL_EDGE_AGENTIC_BOTS;
+      if (!configured || !configured.trim()) {
+        return DEFAULT_AGENTIC_BOTS;
+      }
+      const list = configured
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+      return list.length > 0 ? list : DEFAULT_AGENTIC_BOTS;
+    }
+
+    function isAgenticUA(ua, env) {
+      const lower = ua.toLowerCase();
+      const bots = getAgenticBots(env);
+      return bots.some((bot) => lower.includes(bot.toLowerCase()));
+    }
+
+    const STATIC_FILE_EXTENSIONS = /\.(js|css|map|json|xml|txt|ico|png|jpe?g|gif|svg|webp|avif|woff2?|ttf|eot|otf|mp4|webm|mov|mp3|wav|pdf|zip|rar|7z|gz)$/i;
+
+    function isHtmlPath(pathname) {
+      return !STATIC_FILE_EXTENSIONS.test(pathname);
+    }
+
+    function isHtmlPageRequest(request, pathname) {
+      if (request.method !== "GET" && request.method !== "HEAD") {
+        return false;
+      }
+      return isHtmlPath(pathname)
+    }
+
+    function isBotUA(request, env) {
+      const skipUA = request.headers.get(SKIP_UA_HEADER) === "1";
+      return !skipUA && isAgenticUA(request.headers.get("user-agent") ?? "", env);
+    }
+
+    function buildCDSHeaders(request, url, env, preview) {
+      const headers = new Headers(request.headers);
+      INBOUND_HEADERS_TO_STRIP.forEach((k) => headers.delete(k));
+
+      headers.set(HOST_HEADER, env.NEXT_PL_EDGE_CLIENT_HOST);
+      headers.set(URL_HEADER, `${url.pathname}${url.search}`);
+      headers.set(API_KEY_HEADER, env.NEXT_PL_EDGE_API_KEY);
+      headers.set(LOOP_GUARD_HEADER, preview ? "preview" : "edge");
+      headers.set(CLIENT_IP_HEADER, request.headers.get("cf-connecting-ip") ?? "");
+      headers.set(CLIENT_AGENT_HEADER, request.headers.get("user-agent") ?? "");
+      headers.set(PROTOCOL_HEADER, url.protocol.replace(/:$/, ""));
+      headers.set(ACCEPT_LANGUAGE_HEADER, request.headers.get("accept-language") ?? "");
+      const referer = request.headers.get("referer");
+      if (referer) headers.set(REFERER_HEADER, referer);
+      return headers;
+    }
+
+    async function logErrorResponse(response, path, env) {
+      if (response.status < 400) {
+        return false;
+      }
+
+      const rawText = await response.clone().text();
+      const contentType = response.headers.get("content-type") ?? "";
+
+      let body;
+      if (contentType.includes("application/json")) {
+        try {
+          body = JSON.parse(rawText);
+        } catch {
+          body = rawText.slice(0, 2000);
+        }
+      } else if (contentType.includes("text/html")) {
+        body = { message: "HTML error response received", htmlPreview: rawText.slice(0, 2000) };
+      } else {
+        body = rawText.slice(0, 2000);
+      }
+
+      console.error("[error] CDS responded with error status", { status: response.status, contentType, body });
+      debugLog(env, "skip:cds-error-status", { status: response.status, contentType });
+
+      return true;
+    }
+
+    async function routeToPublive(request, env) {
+      const url = new URL(request.url);
+      debugLog(env, "entry", { path: url.pathname, method: request.method });
+
+      // Check 1: hostname must match the configured client host.
+      if (url.hostname !== env.NEXT_PL_EDGE_CLIENT_HOST) {
+        debugLog(env, "skip:not-valid-hostname", { request_hostname: url.hostname, env_hostname: env.NEXT_PL_EDGE_CLIENT_HOST });
+        return null;
+      }
+
+      // Check 2: loop guard — if this request already carries our own
+      // routing header, it's already been through routeToPublive once
+      // (or is looping back from CDS/origin), so don't route it again.
+      const loopGuardValue = request.headers.get(LOOP_GUARD_HEADER);
+      if (loopGuardValue) {
+        debugLog(env, "skip:already-looped", { loopGuardValue });
+        return null;
+      }
+
+      // Check 3: only GET/HEAD requests for HTML-ish (non-static) paths are eligible.
+      if (!isHtmlPageRequest(request, url.pathname)) {
+        debugLog(env, "skip:not-html-page-request", { method: request.method, path: url.pathname });
+        return null;
+      }
+
+      // Check 4: must be a preview request or come from a recognized agentic bot.
+      const preview = request.headers.get(PREVIEW_HEADER) === "1";
+      const botMatch = isBotUA(request, env);
+      debugLog(env, "eligibility-check", {
+        preview,
+        botMatch,
+        ua: request.headers.get("user-agent"),
+        botsSource: env?.NEXT_PL_EDGE_AGENTIC_BOTS?.trim() ? "env" : "default",
+      });
+
+      if (!preview && !botMatch) {
+        debugLog(env, "skip:not-preview-not-bot");
+        return null;
+      }
+
+      if (!env.NEXT_PL_EDGE_API_KEY || !env.NEXT_PL_AXP_EDGE_BACKEND_URL) {
+        console.error("[error] NEXT_PL_EDGE_API_KEY or NEXT_PL_AXP_EDGE_BACKEND_URL not configured for this worker");
+        debugLog(env, "skip:missing-config", {
+          hasApiKey: !!env.NEXT_PL_EDGE_API_KEY,
+          hasBackendUrl: !!env.NEXT_PL_AXP_EDGE_BACKEND_URL,
+        });
+        return null;
+      }
+
+      const headers = buildCDSHeaders(request, url, env, preview);
+      debugLog(env, "fetching-cds", { backendUrl: env.NEXT_PL_AXP_EDGE_BACKEND_URL });
+
+      try {
+        const response = await fetch(
+          new Request(env.NEXT_PL_AXP_EDGE_BACKEND_URL, {
+            method: request.method,
+            headers,
+            redirect: "manual",
+            cache: "no-store"
+          }),
+        );
+        debugLog(env, "cds-response", { status: response.status });
+
+        if (await logErrorResponse(response, url.pathname, env))
+          return null;
+
+        const outHeaders = new Headers(response.headers);
+        outHeaders.set("Cache-Control", "private, no-store, must-revalidate");
+        outHeaders.set("CDN-Cache-Control", "no-store");
+        outHeaders.set("Vercel-CDN-Cache-Control", "no-store");
+
+        debugLog(env, "success:returning-cds-response");
+        return new Response(response.body, {
+          status: response.status,
+          statusText: response.statusText,
+          headers: outHeaders,
+        });
+      } catch (err) {
+        console.error("[error] CDS fetch failed", String(err));
+        debugLog(env, "skip:fetch-threw", { error: String(err) });
+        return null;
+      }
+    }
+
+    export { routeToPublive };
+    ```
+  </Step>
+  <Step title="Configure environment variables">
+    In your Vercel project (**Settings → Environment Variables**) or `.env.local`, add:
+
+    | Variable | Description | Required | Example |
+    | --- | --- | --- | --- |
+    | `NEXT_PL_EDGE_CLIENT_HOST` | Hostname only (no protocol). Identifies the site to CDS and is used as the failover origin. | Yes | `thepublive.com` |
+    | `NEXT_PL_EDGE_API_KEY` | Edge CDS API key issued per client via Publive. Store as an **encrypted** secret. | Yes | `xxxxxxx` |
+    | `NEXT_PL_AXP_EDGE_BACKEND_URL` | Publive CDS backend URL. | Yes | `https://cds.thepublive.com/axp/view/` |
+    | `NEXT_PL_EDGE_DEBUG` | Set to `1` to enable step-by-step routing logs. Leave unset in production. | No | `1` |
+    | `NEXT_PL_EDGE_AGENTIC_BOTS` | Comma-separated user-agent substrings treated as agentic bots. If unset, empty, or whitespace-only, falls back to the built-in default list. When set, it **fully replaces** the default list rather than adding to it. Matching is case-insensitive substring matching against `user-agent`. | No | `GPTBot, ClaudeBot, Google-Extended` |
+  </Step>
+  <Step title="Deploy">
+    Ship the Middleware as part of your normal app build/deploy pipeline — there's no separate infrastructure to stand up.
+  </Step>
+</Steps>
+
+## Local development
+
+<Info>
+  Skip this section if `next dev` correctly triggers your Middleware locally. It's only needed when the app embeds or proxies to another framework (Astro, and similar), where that framework's local dev server can intercept requests before they reach Next's own pipeline — in that case Middleware never runs under plain `next dev`.
+</Info>
+
+The fix is to develop against the actual Vercel platform locally, using the Vercel CLI, instead of relying on `next dev`.
+
+<Steps>
+  <Step title="Add dev/deploy scripts">
+    In `package.json`:
+
+    ```json package.json
+    {
+      "scripts": {
+        "dev": "next dev",
+        "dev:edge": "vercel dev",
+        "build": "next build",
+        "start": "next start",
+        "deploy:preview": "vercel",
+        "deploy": "vercel --prod"
+      }
+    }
+    ```
+
+    - `dev` — normal fast local iteration; use for everything that isn't middleware/routing-specific.
+    - `dev:edge` — runs the real Vercel dev server, which correctly simulates Edge Middleware dispatch, env vars, and routing exactly as production behaves. **Use this whenever testing or debugging the Publive routing logic.**
+    - `deploy:preview` — pushes a preview deployment without touching production.
+    - `deploy` — ships to production.
+  </Step>
+  <Step title="One-time setup per project, per machine">
+    ```bash
+    npm install -g vercel        # if not already installed
+    vercel login                 # one-time auth
+    vercel link                  # links this folder to the Vercel project
+    vercel env pull .env.local   # pulls NEXT_PL_EDGE_* and other env vars from the Vercel dashboard
+    ```
+  </Step>
+  <Step title="Run the edge dev server">
+    ```bash
+    npm run dev:edge
+    ```
+
+    This starts a local server that behaves like the real Vercel edge network — Middleware runs on every matched request, exactly as it will in production.
+  </Step>
+</Steps>
+
+## Verify
+
+- **Bot traffic** — a request with an AI agent user-agent returns a response with the CDS routing confirmation header present.
+- **Human traffic** — a normal browser request shows no CDS header, and content/response time is unchanged.
+- **Failover** — simulate a CDS failure and confirm the request falls back to normal Next.js rendering instead of erroring.
+
+Test with:
+
+```bash
+curl -s https://<HOST>/<PATH> \
+  -H "user-agent: ChatGPT-User" \
+  -o /dev/null -D -
+```
+
+## Troubleshooting
+
+If verification doesn't behave as expected, add `NEXT_PL_EDGE_DEBUG=1` to `.env.local` (local) or the platform's env var settings (deployed), then restart/redeploy. Watch the terminal (`next dev` / `vercel dev`) or the platform's log viewer (**Vercel → Logs**) while sending a test request.
+
+A healthy run logs `entry` → `eligibility-check` (`botMatch: true`) → `fetching-cds` → `cds-response` → `success:returning-cds-response` → `middleware:serving-cds-response`. Whichever line the chain stops at tells you what to fix:
+
+| Log line where the chain stops | Cause | Fix |
+| --- | --- | --- |
+| `skip:not-valid-hostname` | Request hostname doesn't match `NEXT_PL_EDGE_CLIENT_HOST` | Confirm the variable matches the domain exactly, including any `www.` prefix |
+| `skip:already-looped` | Request already carries the internal routing header | Expected on retries; not an issue unless it appears on a fresh request |
+| `skip:not-html-page-request` | Path matched a static file extension, or method wasn't `GET`/`HEAD` | Expected for assets; test against an actual page path instead |
+| `skip:not-preview-not-bot` | User-agent didn't match any entry in the agentic bot list | Confirm you're testing with a recognized bot UA, or check `NEXT_PL_EDGE_AGENTIC_BOTS` didn't override the default list unexpectedly |
+| `skip:missing-config` | `NEXT_PL_EDGE_API_KEY` or `NEXT_PL_AXP_EDGE_BACKEND_URL` not set | Add the missing variable and redeploy/restart |
+| `skip:cds-error-status` | CDS backend returned a 4xx/5xx | Request falls through to normal rendering — check CDS-side logs for the underlying error |
+| `skip:fetch-threw` | Network error reaching CDS | Check `NEXT_PL_AXP_EDGE_BACKEND_URL` is reachable |
+| No `[pl-edge:*]` logs at all | Middleware isn't being invoked | Confirm `middleware.ts` hasn't been changed to skip the test path, and that you're running `vercel dev`, not plain `next dev`, if your app embeds another framework |
+
+Remove or unset `NEXT_PL_EDGE_DEBUG` once verified, to avoid noisy step-by-step logs in production. Note that `console.error` calls (backend errors, missing config, failed fetches) log regardless of this flag — that's independent, always-on error logging, not affected by the debug toggle.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="AXP Edge dashboard" icon="gauge" href="/axp/axp-edge/dashboard">
+    Monitor agent traffic and manage optimization rules.
+  </Card>
+  <Card title="Deploy on Cloudflare" icon="bolt" href="/axp/axp-edge/integrations/cloudflare">
+    Not on Vercel? Use the Cloudflare Worker-based guide instead.
+  </Card>
+</CardGroup>

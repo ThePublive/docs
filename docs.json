@@ -403,25 +403,15 @@
         "icon": "https://img-cdn.publive.online/thepublive/media/media_files/2026/07/20/axp-only-logo-2026-07-20-18-23-01.png",
         "tabs": [
           {
-            "tab": "Overview",
+            "tab": "Documentation",
             "groups": [
               {
-                "group": "Overview",
+                "group": "Getting Started",
                 "pages": [
-                  "axp/overview/index"
-                ]
-              },
-              {
-                "group": "Audit Hub",
-                "pages": [
+                  "axp/overview/index",
                   "axp/audit-hub/overview"
                 ]
-              }
-            ]
-          },
-          {
-            "tab": "AXP Edge",
-            "groups": [
+              },
               {
                 "group": "AXP Edge",
                 "pages": [
@@ -429,6 +419,18 @@
                   "axp/axp-edge/setup",
                   "axp/axp-edge/dashboard",
                   "axp/axp-edge/faq"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "Guides",
+            "groups": [
+              {
+                "group": "Integrations",
+                "pages": [
+                  "axp/axp-edge/integrations/vercel",
+                  "axp/axp-edge/integrations/cloudflare"
                 ]
               }
             ]

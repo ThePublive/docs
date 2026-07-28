@@ -1,0 +1,307 @@
+---
+title: "Deploy AXP Edge with Cloudflare"
+description: "Route AI agent traffic to AXP Edge from a Cloudflare Worker, with automatic failover to your origin."
+---
+
+This guide deploys AXP Edge as a Cloudflare Worker that sits in front of your domain. The worker inspects each request's user-agent; requests from recognized AI agents (GPTBot, ClaudeBot, Google-Extended, and similar) are routed to the Publive CDS backend instead of your origin. Every other request — human visitors and SEO bots — passes through untouched.
+
+Use this approach when your site isn't on Next.js/Vercel, or when you need agent routing live without an application deploy.
+
+<Note>
+  Make sure `PubliveBot/1.0 (+https://axp.thepublive.com/bot)` is unblocked on your CDN.
+</Note>
+
+## Prerequisites
+
+- A Cloudflare account with the target domain's zone already active (orange-clouded DNS or a Worker route you control).
+- Permission to create or edit Workers on that account.
+- Your Publive Edge CDS API key and backend URL (issued per client — contact your Publive CSM if you don't have these).
+
+## How routing works
+
+The worker makes one decision per request: serve it from AXP Edge, or fall through to your origin. A request only qualifies for AXP Edge when **all** of the following are true:
+
+- The request hostname matches your configured `PL_EDGE_CLIENT_HOST`.
+- The request hasn't already been routed once (a loop guard header prevents re-routing looped or failed-over requests).
+- The method is `GET` or `HEAD`, and the path isn't a static asset (`.js`, `.css`, images, fonts, and similar are always skipped).
+- The user-agent matches a known AI agent, or the request carries a preview flag.
+
+If the request qualifies, the worker fetches the page from CDS and returns it. If CDS errors or is unreachable, the worker automatically fails over to your real origin and tags the response with a failover header — visitors never see an error.
+
+Unlike the [Vercel integration](/axp/axp-edge/integrations/vercel), the agent bot list here is fixed in the Worker code (the `AGENT_BOTS` array) rather than configurable via an environment variable — to add or remove a bot, edit that array directly and redeploy.
+
+## Set up the integration
+
+<Steps>
+  <Step title="Create or reuse a Worker">
+    In the Cloudflare dashboard, go to **Workers & Pages → Create application → Create Worker**. Name it something identifiable, like `<PUBLISHER_NAME>-router`, and click **Deploy** to create it with the default code.
+
+    If a Worker already exists for this domain, merge the code below into it instead of replacing it — don't run two competing routers on the same route.
+  </Step>
+  <Step title="Add the worker code">
+    Open the Worker, click **Edit code**, and replace the default code with:
+
+    ```js worker.js expandable
+    // Publive Publisher Router Worker
+
+    const LOOP_GUARD_HEADER = "x-pl-request";
+    const PREVIEW_HEADER = "x-pl-preview";
+    const SKIP_UA_HEADER = "x-pl-skip";
+    const HOST_HEADER = "x-pl-host";
+    const URL_HEADER = "x-pl-url";
+    const API_KEY_HEADER = "x-pl-api-key";
+    const CLIENT_IP_HEADER = "x-pl-client-ip";
+    const CLIENT_AGENT_HEADER = "x-pl-client-agent";
+    const PROTOCOL_HEADER = "x-pl-protocol";
+    const REFERER_HEADER = "x-pl-referer";
+    const ACCEPT_LANGUAGE_HEADER = "x-pl-accept-language";
+    const FAILOVER_HEADER = "x-pl-fo";
+
+    const AGENT_BOTS = [
+      "GPTBot",
+      "OAI-SearchBot",
+      "ChatGPT-User",
+      "ClaudeBot",
+      "Claude-User",
+      "Claude-SearchBot",
+      "Google-Extended",
+      "anthropic-ai"
+    ];
+
+    const INBOUND_HEADERS_TO_STRIP = [
+      "host",
+      API_KEY_HEADER,
+      URL_HEADER,
+      HOST_HEADER,
+      CLIENT_IP_HEADER,
+      LOOP_GUARD_HEADER,
+      PREVIEW_HEADER
+    ];
+
+    const STATIC_FILE_EXTENSIONS = /\.(js|css|map|json|xml|txt|ico|png|jpe?g|gif|svg|webp|avif|woff2?|ttf|eot|otf|mp4|webm|mov|mp3|wav|pdf|zip|rar|7z|gz)$/i;
+
+    const FAILOVER_ON_4XX = true;
+    const FAILOVER_ON_5XX = true;
+
+    function debugLog(env, step, data) {
+      if (env.PL_EDGE_DEBUG !== "1") return;
+      console.log(`[pl-edge:${step}]`, data ? JSON.stringify(data) : "");
+    }
+
+    function isAgenticUA(ua) {
+      const lower = ua.toLowerCase();
+      return AGENT_BOTS.some((bot) => lower.includes(bot.toLowerCase()));
+    }
+
+    function isHtmlPageRequest(request, pathname) {
+      const isGetOrHead = request.method === "GET" || request.method === "HEAD";
+      return isGetOrHead && !STATIC_FILE_EXTENSIONS.test(pathname);
+    }
+
+    function isBotUA(request) {
+      const skipUA = request.headers.get(SKIP_UA_HEADER) === "1";
+      return !skipUA && isAgenticUA(request.headers.get("user-agent") ?? "");
+    }
+
+    // Single decision point: should this request be routed to the backend?
+    function isEligibleForOptimization(request, url, env) {
+      if (url.hostname != env.PL_EDGE_CLIENT_HOST) {
+        debugLog(env, "skip:hostname-mismatch", { hostname: url.hostname, expected: env.PL_EDGE_CLIENT_HOST });
+        return false;
+      }
+
+      const isLoopedRequest = !!request.headers.get(LOOP_GUARD_HEADER);
+      if (isLoopedRequest) {
+        debugLog(env, "skip:loop-guard");
+        return false;
+      }
+
+      const preview = request.headers.get(PREVIEW_HEADER) === "1";
+      const botMatch = isBotUA(request);
+      debugLog(env, "eligibility-check", { preview, botMatch, ua: request.headers.get("user-agent") });
+
+      if (!preview && !botMatch) {
+        debugLog(env, "skip:not-preview-not-bot");
+        return false;
+      }
+
+      if (!isHtmlPageRequest(request, url.pathname)) {
+        debugLog(env, "skip:not-html-page", { pathname: url.pathname });
+        return false;
+      }
+
+      return true;
+    }
+
+    function buildCDSHeaders(request, url, env) {
+      const preview = request.headers.get(PREVIEW_HEADER) === "1";
+      const headers = new Headers(request.headers);
+      INBOUND_HEADERS_TO_STRIP.forEach((k) => headers.delete(k));
+
+      headers.set(HOST_HEADER, env.PL_EDGE_CLIENT_HOST);
+      headers.set(URL_HEADER, `${url.pathname}${url.search}`);
+      headers.set(API_KEY_HEADER, env.PL_EDGE_API_KEY);
+      headers.set(LOOP_GUARD_HEADER, preview ? "preview" : "edge");
+      headers.set(CLIENT_IP_HEADER, request.headers.get("cf-connecting-ip") ?? "");
+      headers.set(CLIENT_AGENT_HEADER, request.headers.get("user-agent") ?? "");
+      headers.set(PROTOCOL_HEADER, url.protocol.replace(/:$/, ""));
+      headers.set(ACCEPT_LANGUAGE_HEADER, request.headers.get("accept-language") ?? "");
+      const referer = request.headers.get("referer");
+      if (referer) headers.set(REFERER_HEADER, referer);
+      return headers;
+    }
+
+    function isErrorStatus(status) {
+      const is4xx = FAILOVER_ON_4XX && status >= 400 && status < 500;
+      const is5xx = FAILOVER_ON_5XX && status >= 500 && status < 600;
+      return is4xx || is5xx;
+    }
+
+    async function routeToPublive(request, url, env) {
+      if (!env.PL_EDGE_API_KEY || !env.PL_EDGE_BACKEND_URL) {
+        console.error("[error] PL_EDGE_API_KEY or PL_EDGE_BACKEND_URL not configured", { path: url.pathname });
+        debugLog(env, "skip:missing-config", {
+          hasApiKey: !!env.PL_EDGE_API_KEY,
+          hasBackendUrl: !!env.PL_EDGE_BACKEND_URL,
+        });
+        return null;
+      }
+
+      const headers = buildCDSHeaders(request, url, env);
+      const backendURL = `${env.PL_EDGE_BACKEND_URL}`;
+      debugLog(env, "fetching-cds", { backendURL, path: url.pathname });
+
+      try {
+        const response = await fetch(
+          new Request(backendURL, { method: request.method, headers, redirect: "manual" }),
+          { cf: { cacheEverything: false } }
+        );
+
+        debugLog(env, "cds-response", { status: response.status });
+
+        if (isErrorStatus(response.status)) {
+          console.error("[error] backend responded with error status", { status: response.status, path: url.pathname });
+          debugLog(env, "skip:cds-error-status", { status: response.status });
+          return null;
+        }
+
+        debugLog(env, "success:returning-cds-response");
+        return response;
+      } catch (err) {
+        console.error("[error] backend fetch failed", String(err), { path: url.pathname });
+        debugLog(env, "skip:fetch-threw", { error: String(err) });
+        return null;
+      }
+    }
+
+    async function fetchOrigin(request, env, url, { failover = false } = {}) {
+      if (!failover) {
+        debugLog(env, "serving-origin-directly");
+        return fetch(request);
+      }
+
+      const originHost = env.PL_EDGE_CLIENT_HOST ?? url.host;
+      const originURL = `https://${originHost}${url.pathname}${url.search}`;
+      debugLog(env, "failover-to-origin", { originURL });
+
+      const headers = new Headers(request.headers);
+      headers.set("Host", originHost);
+      headers.set(LOOP_GUARD_HEADER, "fo");
+      try {
+        const response = await fetch(new Request(originURL, {
+          method: request.method,
+          headers,
+          body: request.body,
+          redirect: "manual",
+        }));
+
+        const failoverResponse = new Response(response.body, response);
+        failoverResponse.headers.set(FAILOVER_HEADER, "1");
+        return failoverResponse;
+      } catch (err) {
+        console.error("failed in fetching failover", err);
+        debugLog(env, "failover-fetch-threw", { error: String(err) });
+        return fetch(request);
+      }
+    }
+
+    export default {
+      async fetch(request, env) {
+        const url = new URL(request.url);
+        debugLog(env, "entry", { path: url.pathname, method: request.method });
+
+        if (!isEligibleForOptimization(request, url, env)) {
+          return fetchOrigin(request, env, url);
+        }
+
+        const response = await routeToPublive(request, url, env);
+        return response ?? fetchOrigin(request, env, url, { failover: true });
+      },
+    };
+
+    export { isEligibleForOptimization, routeToPublive, fetchOrigin };
+    ```
+
+    Click **Save and deploy**.
+
+    <Note>
+      If you're merging into an existing Worker, keep this file's exported functions distinct (rename on collision) and call `isEligibleForOptimization` / `routeToPublive` from your existing `fetch` handler rather than replacing it outright.
+    </Note>
+  </Step>
+  <Step title="Configure environment variables">
+    In the Worker, go to **Settings → Variables** and add:
+
+    | Variable | Description | Example |
+    | --- | --- | --- |
+    | `PL_EDGE_CLIENT_HOST` | Hostname only (no protocol). Identifies the site to CDS and is used as the failover origin. | `thepublive.com` |
+    | `PL_EDGE_API_KEY` | Edge CDS API key issued per client via Publive. Store as an **encrypted** secret. | `xxxxxxx` |
+    | `PL_EDGE_BACKEND_URL` | Publive CDS backend URL. | `cds.thepublive.com` |
+    | `PL_EDGE_DEBUG` | Optional. Set to `1` to enable step-by-step routing logs. Leave unset in production. | `1` |
+  </Step>
+  <Step title="Add a route linking the Worker to the domain">
+    Go to the Worker's **Domains & Routes → Add route**, select your domain, and enter the pattern to match — for example `example.com/*` or `www.example.com/*` — then **Save**.
+
+    Alternatively, configure the route at the zone level: open the domain in Cloudflare, go to **Workers Routes**, and add a route pointing to this Worker.
+  </Step>
+</Steps>
+
+## Verify
+
+- **Bot traffic** — a request with an AI agent user-agent returns a response with the CDS routing confirmation header present.
+- **Human traffic** — a normal browser request shows no CDS header, and content/response time is unchanged.
+- **Failover** — temporarily break the backend config (or simulate a CDS outage) and confirm the response carries `x-pl-fo: 1` and still serves your real origin content.
+
+## Troubleshooting
+
+If step verification doesn't behave as expected, set `PL_EDGE_DEBUG=1` in **Settings → Variables**, redeploy, then watch **Worker → Logs** (or `wrangler tail`) while sending a test request:
+
+```bash
+curl -s https://<DOMAIN>/<PATH> \
+  -H "user-agent: ChatGPT-User" \
+  -o /dev/null -D -
+```
+
+A healthy run logs `entry` → `eligibility-check` (`botMatch: true`) → `fetching-cds` → `cds-response` → `success:returning-cds-response`. Whichever line the chain stops at tells you what to fix:
+
+| Log line where the chain stops | Cause | Fix |
+| --- | --- | --- |
+| `skip:hostname-mismatch` | Request hostname doesn't match `PL_EDGE_CLIENT_HOST` | Confirm the variable matches the domain exactly, including any `www.` prefix |
+| `skip:loop-guard` | Request already carries the internal routing header | Expected on failover retries; not an issue unless it appears on a fresh request |
+| `skip:not-preview-not-bot` | User-agent didn't match any entry in `AGENT_BOTS` | Confirm you're testing with a recognized bot UA (see the list in the worker code) |
+| `skip:not-html-page` | Path matched a static file extension, or method wasn't `GET`/`HEAD` | Expected for assets; test against an actual page path instead |
+| `skip:missing-config` | `PL_EDGE_API_KEY` or `PL_EDGE_BACKEND_URL` not set | Add the missing variable in **Settings → Variables** |
+| `skip:cds-error-status` | CDS backend returned a 4xx/5xx | Response should still show origin content via failover — check CDS-side logs for the underlying error |
+| `skip:fetch-threw` | Network error reaching CDS | Check `PL_EDGE_BACKEND_URL` is reachable from Cloudflare's network |
+
+Remove or unset `PL_EDGE_DEBUG` once verified, to avoid noisy step-by-step logs in production. Note that `console.error` calls (backend errors, missing config, failed fetches) log regardless of this flag — that's independent, always-on error logging, not affected by the debug toggle.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="AXP Edge dashboard" icon="gauge" href="/axp/axp-edge/dashboard">
+    Monitor agent traffic and manage optimization rules.
+  </Card>
+  <Card title="Deploy on Vercel" icon="bolt" href="/axp/axp-edge/integrations/vercel">
+    Integrating a Next.js app on Vercel instead? Use the middleware-based guide.
+  </Card>
+</CardGroup>
