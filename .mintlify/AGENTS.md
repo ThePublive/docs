@@ -50,12 +50,14 @@
 ## Mintlify Components & UI
 
 - **Expandables**: Use `<Accordion>` or `<AccordionGroup>` for secondary details, large API responses, or long code snippets.
+- **Code Block Expandables**: All long code blocks (e.g., full implementation files, modules over 30 lines) must use the `expandable` attribute on the fence line (e.g., ` ```tsx middleware/routeToPublive.ts expandable `).
 - **Callouts**: Use Mintlify's `<Note>`, `<Warning>`, `<Info>`, and `<Tip>` components for important context.
 - **Diagrams**: Always use modern `mermaid` code boxes for architecture or workflows. DO NOT use ASCII art or static placeholder images.
 
 ## Linking Rules
 
 - **Internal Links**: Always use absolute paths from the root without the file extension (e.g., `[Billing](/settings/billing)` instead of `[Billing](./billing.mdx)`).
+- **Contact & Support Links**: Wherever text mentions contacting support, Publive, or a CSM (e.g., "contact Publive", "contact support", "talk to Publive"), it must include an explicit link to the contact/support page (e.g., `[contact Publive](https://axp.thepublive.com/contact)` or `[Support](https://help.thepublive.com/support/solutions)`).
 
 ## API Reference conventions
 
