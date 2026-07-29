@@ -44,27 +44,27 @@ If the request qualifies, Middleware proxies it to Publive CDS with the required
     import { NextRequest, NextResponse } from "next/server"
     import { routeToPublive } from "./middleware/routeToPublive"
     import { debugLog } from "./middleware/debugLog"
-
+    
     export async function middleware(req: NextRequest) {
       const { pathname } = req.nextUrl
-
+    
       if (pathname.startsWith("/_next/")) {
         return NextResponse.next()
       }
-
+    
       if (pathname.startsWith("/.well-known/")) {
         return NextResponse.json({ error: 'Not Found' }, { status: 404 })
       }
-
+    
       const cdsResponse = await routeToPublive(req, process.env)
       if (cdsResponse) {
         debugLog(process.env, "middleware:serving-cds-response")
         return cdsResponse
       }
       debugLog(process.env, "middleware:falling-through-to-app")
-
+    
       const res = NextResponse.next()
-
+    
       // Add the origin path to the response headers for logging purposes
       res.headers.set("x-origin-path", req.nextUrl.pathname + req.nextUrl.search)
       return res
@@ -92,7 +92,7 @@ If the request qualifies, Middleware proxies it to Publive CDS with the required
 
     ```tsx middleware/routeToPublive.ts expandable
     import { debugLog } from "./debugLog";
-
+    
     const LOOP_GUARD_HEADER = "x-pl-request";
     const PREVIEW_HEADER = "x-pl-preview";
     const SKIP_UA_HEADER = "x-pl-skip";
@@ -104,7 +104,7 @@ If the request qualifies, Middleware proxies it to Publive CDS with the required
     const PROTOCOL_HEADER = "x-pl-protocol";
     const REFERER_HEADER = "x-pl-referer";
     const ACCEPT_LANGUAGE_HEADER = "x-pl-accept-language";
-
+    
     const DEFAULT_AGENTIC_BOTS = [
       "GPTBot",
       "OAI-SearchBot",
@@ -115,7 +115,7 @@ If the request qualifies, Middleware proxies it to Publive CDS with the required
       "Google-Extended",
       "anthropic-ai"
     ];
-
+    
     const INBOUND_HEADERS_TO_STRIP = [
       "host",
       API_KEY_HEADER,
@@ -125,7 +125,7 @@ If the request qualifies, Middleware proxies it to Publive CDS with the required
       LOOP_GUARD_HEADER,
       PREVIEW_HEADER
     ];
-
+    
     // Resolves the active agentic-bot list.
     // If NEXT_PL_EDGE_AGENTIC_BOTS is set (comma-separated) and non-empty after
     // trimming, it fully replaces the default list. Otherwise falls back to
@@ -141,39 +141,38 @@ If the request qualifies, Middleware proxies it to Publive CDS with the required
         .filter(Boolean);
       return list.length > 0 ? list : DEFAULT_AGENTIC_BOTS;
     }
-
+    
     function isAgenticUA(ua, env) {
       const lower = ua.toLowerCase();
       const bots = getAgenticBots(env);
       return bots.some((bot) => lower.includes(bot.toLowerCase()));
     }
-
+    
     const STATIC_FILE_EXTENSIONS = /\.(js|css|map|json|xml|txt|ico|png|jpe?g|gif|svg|webp|avif|woff2?|ttf|eot|otf|mp4|webm|mov|mp3|wav|pdf|zip|rar|7z|gz)$/i;
-
+    
     function isHtmlPath(pathname) {
       return !STATIC_FILE_EXTENSIONS.test(pathname);
     }
-
+    
     function isHtmlPageRequest(request, pathname) {
       if (request.method !== "GET" && request.method !== "HEAD") {
         return false;
       }
       return isHtmlPath(pathname)
     }
-
+    
     function isBotUA(request, env) {
       const skipUA = request.headers.get(SKIP_UA_HEADER) === "1";
       return !skipUA && isAgenticUA(request.headers.get("user-agent") ?? "", env);
     }
-
+    
     function buildCDSHeaders(request, url, env, preview) {
       const headers = new Headers(request.headers);
       INBOUND_HEADERS_TO_STRIP.forEach((k) => headers.delete(k));
-
+    
       headers.set(HOST_HEADER, env.NEXT_PL_EDGE_CLIENT_HOST);
       headers.set(URL_HEADER, `${url.pathname}${url.search}`);
       headers.set(API_KEY_HEADER, env.NEXT_PL_EDGE_API_KEY);
-      headers.set(LOOP_GUARD_HEADER, preview ? "preview" : "edge");
       headers.set(CLIENT_IP_HEADER, request.headers.get("cf-connecting-ip") ?? "");
       headers.set(CLIENT_AGENT_HEADER, request.headers.get("user-agent") ?? "");
       headers.set(PROTOCOL_HEADER, url.protocol.replace(/:$/, ""));
@@ -182,15 +181,15 @@ If the request qualifies, Middleware proxies it to Publive CDS with the required
       if (referer) headers.set(REFERER_HEADER, referer);
       return headers;
     }
-
+    
     async function logErrorResponse(response, path, env) {
       if (response.status < 400) {
         return false;
       }
-
+    
       const rawText = await response.clone().text();
       const contentType = response.headers.get("content-type") ?? "";
-
+    
       let body;
       if (contentType.includes("application/json")) {
         try {
@@ -203,23 +202,23 @@ If the request qualifies, Middleware proxies it to Publive CDS with the required
       } else {
         body = rawText.slice(0, 2000);
       }
-
+    
       console.error("[error] CDS responded with error status", { status: response.status, contentType, body });
       debugLog(env, "skip:cds-error-status", { status: response.status, contentType });
-
+    
       return true;
     }
-
+    
     async function routeToPublive(request, env) {
       const url = new URL(request.url);
       debugLog(env, "entry", { path: url.pathname, method: request.method });
-
+    
       // Check 1: hostname must match the configured client host.
       if (url.hostname !== env.NEXT_PL_EDGE_CLIENT_HOST) {
         debugLog(env, "skip:not-valid-hostname", { request_hostname: url.hostname, env_hostname: env.NEXT_PL_EDGE_CLIENT_HOST });
         return null;
       }
-
+    
       // Check 2: loop guard. If this request already carries our own
       // routing header, it's already been through routeToPublive once
       // (or is looping back from CDS/origin), so don't route it again.
@@ -228,13 +227,13 @@ If the request qualifies, Middleware proxies it to Publive CDS with the required
         debugLog(env, "skip:already-looped", { loopGuardValue });
         return null;
       }
-
+    
       // Check 3: only GET/HEAD requests for HTML-ish (non-static) paths are eligible.
       if (!isHtmlPageRequest(request, url.pathname)) {
         debugLog(env, "skip:not-html-page-request", { method: request.method, path: url.pathname });
         return null;
       }
-
+    
       // Check 4: must be a preview request or come from a recognized agentic bot.
       const preview = request.headers.get(PREVIEW_HEADER) === "1";
       const botMatch = isBotUA(request, env);
@@ -244,12 +243,12 @@ If the request qualifies, Middleware proxies it to Publive CDS with the required
         ua: request.headers.get("user-agent"),
         botsSource: env?.NEXT_PL_EDGE_AGENTIC_BOTS?.trim() ? "env" : "default",
       });
-
+    
       if (!preview && !botMatch) {
         debugLog(env, "skip:not-preview-not-bot");
         return null;
       }
-
+    
       if (!env.NEXT_PL_EDGE_API_KEY || !env.NEXT_PL_EDGE_BACKEND_URL) {
         console.error("[error] NEXT_PL_EDGE_API_KEY or NEXT_PL_EDGE_BACKEND_URL not configured for this worker");
         debugLog(env, "skip:missing-config", {
@@ -258,10 +257,10 @@ If the request qualifies, Middleware proxies it to Publive CDS with the required
         });
         return null;
       }
-
+    
       const headers = buildCDSHeaders(request, url, env, preview);
       debugLog(env, "fetching-cds", { backendUrl: env.NEXT_PL_EDGE_BACKEND_URL });
-
+    
       try {
         const response = await fetch(
           new Request(env.NEXT_PL_EDGE_BACKEND_URL, {
@@ -272,15 +271,15 @@ If the request qualifies, Middleware proxies it to Publive CDS with the required
           }),
         );
         debugLog(env, "cds-response", { status: response.status });
-
+    
         if (await logErrorResponse(response, url.pathname, env))
           return null;
-
+    
         const outHeaders = new Headers(response.headers);
         outHeaders.set("Cache-Control", "private, no-store, must-revalidate");
         outHeaders.set("CDN-Cache-Control", "no-store");
         outHeaders.set("Vercel-CDN-Cache-Control", "no-store");
-
+    
         debugLog(env, "success:returning-cds-response");
         return new Response(response.body, {
           status: response.status,
@@ -293,7 +292,7 @@ If the request qualifies, Middleware proxies it to Publive CDS with the required
         return null;
       }
     }
-
+    
     export { routeToPublive };
     ```
   </Step>
@@ -399,6 +398,7 @@ Remove or unset `NEXT_PL_EDGE_DEBUG` once verified, to avoid noisy step-by-step 
   <Card title="AXP Edge dashboard" icon="gauge" href="/axp/axp-edge/dashboard">
     Monitor agent traffic and manage optimization rules.
   </Card>
+
   <Card title="Deploy on Cloudflare" icon="bolt" href="/axp/axp-edge/integrations/cloudflare">
     Not on Vercel? Use the Cloudflare Worker-based guide instead.
   </Card>
