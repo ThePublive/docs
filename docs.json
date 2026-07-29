@@ -428,10 +428,14 @@
             "tab": "Guides",
             "groups": [
               {
-                "group": "Integrations",
+                "group": "AXP Edge",
                 "pages": [
                   "axp/axp-edge/integrations/vercel",
-                  "axp/axp-edge/integrations/cloudflare"
+                  "axp/axp-edge/integrations/cloudflare",
+                  "axp/axp-edge/integrations/cloudfront",
+                  "axp/axp-edge/integrations/fastly",
+                  "axp/axp-edge/integrations/akamai",
+                  "axp/axp-edge/integrations/dont-have-a-cdn"
                 ]
               }
             ]
