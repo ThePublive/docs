@@ -250,21 +250,21 @@ If the request qualifies, Middleware proxies it to Publive CDS with the required
         return null;
       }
 
-      if (!env.NEXT_PL_EDGE_API_KEY || !env.NEXT_PL_AXP_EDGE_BACKEND_URL) {
-        console.error("[error] NEXT_PL_EDGE_API_KEY or NEXT_PL_AXP_EDGE_BACKEND_URL not configured for this worker");
+      if (!env.NEXT_PL_EDGE_API_KEY || !env.NEXT_PL_EDGE_BACKEND_URL) {
+        console.error("[error] NEXT_PL_EDGE_API_KEY or NEXT_PL_EDGE_BACKEND_URL not configured for this worker");
         debugLog(env, "skip:missing-config", {
           hasApiKey: !!env.NEXT_PL_EDGE_API_KEY,
-          hasBackendUrl: !!env.NEXT_PL_AXP_EDGE_BACKEND_URL,
+          hasBackendUrl: !!env.NEXT_PL_EDGE_BACKEND_URL,
         });
         return null;
       }
 
       const headers = buildCDSHeaders(request, url, env, preview);
-      debugLog(env, "fetching-cds", { backendUrl: env.NEXT_PL_AXP_EDGE_BACKEND_URL });
+      debugLog(env, "fetching-cds", { backendUrl: env.NEXT_PL_EDGE_BACKEND_URL });
 
       try {
         const response = await fetch(
-          new Request(env.NEXT_PL_AXP_EDGE_BACKEND_URL, {
+          new Request(env.NEXT_PL_EDGE_BACKEND_URL, {
             method: request.method,
             headers,
             redirect: "manual",
@@ -304,7 +304,7 @@ If the request qualifies, Middleware proxies it to Publive CDS with the required
     | --- | --- | --- | --- |
     | `NEXT_PL_EDGE_CLIENT_HOST` | Hostname only (no protocol). Identifies the site to CDS and is used as the failover origin. | Yes | `thepublive.com` |
     | `NEXT_PL_EDGE_API_KEY` | Edge CDS API key issued per client via Publive. Store as an **encrypted** secret. | Yes | `xxxxxxx` |
-    | `NEXT_PL_AXP_EDGE_BACKEND_URL` | Publive CDS backend URL. | Yes | `https://cds.thepublive.com/axp/view/` |
+    | `NEXT_PL_EDGE_BACKEND_URL` | Publive CDS backend URL. | Yes | `https://cds.thepublive.com/axp/view/` |
     | `NEXT_PL_EDGE_DEBUG` | Set to `1` to enable step-by-step routing logs. Leave unset in production. | No | `1` |
     | `NEXT_PL_EDGE_AGENTIC_BOTS` | Comma-separated user-agent substrings treated as agentic bots. If unset, empty, or whitespace-only, falls back to the built-in default list. When set, it **fully replaces** the default list rather than adding to it. Matching is case-insensitive substring matching against `user-agent`. | No | `GPTBot, ClaudeBot, Google-Extended` |
   </Step>
@@ -362,7 +362,7 @@ The fix is to develop against the actual Vercel platform locally, using the Verc
 
 ## Verify
 
-- **Bot traffic**: a request with an AI agent user-agent returns a response with the CDS routing confirmation header present.
+- **Bot traffic**: a request with an AI agent user-agent returns a response with the `x-pl-request-id` header present, confirming it was served by CDS.
 - **Human traffic**: a normal browser request shows no CDS header, and content/response time is unchanged.
 - **Failover**: simulate a CDS failure and confirm the request falls back to normal Next.js rendering instead of erroring.
 
@@ -386,9 +386,9 @@ A healthy run logs `entry` → `eligibility-check` (`botMatch: true`) → `fetch
 | `skip:already-looped` | Request already carries the internal routing header | Expected on retries; not an issue unless it appears on a fresh request |
 | `skip:not-html-page-request` | Path matched a static file extension, or method wasn't `GET`/`HEAD` | Expected for assets; test against an actual page path instead |
 | `skip:not-preview-not-bot` | User-agent didn't match any entry in the agentic bot list | Confirm you're testing with a recognized bot UA, or check `NEXT_PL_EDGE_AGENTIC_BOTS` didn't override the default list unexpectedly |
-| `skip:missing-config` | `NEXT_PL_EDGE_API_KEY` or `NEXT_PL_AXP_EDGE_BACKEND_URL` not set | Add the missing variable and redeploy/restart |
+| `skip:missing-config` | `NEXT_PL_EDGE_API_KEY` or `NEXT_PL_EDGE_BACKEND_URL` not set | Add the missing variable and redeploy/restart |
 | `skip:cds-error-status` | CDS backend returned a 4xx/5xx | Request falls through to normal rendering; check CDS-side logs for the underlying error |
-| `skip:fetch-threw` | Network error reaching CDS | Check `NEXT_PL_AXP_EDGE_BACKEND_URL` is reachable |
+| `skip:fetch-threw` | Network error reaching CDS | Check `NEXT_PL_EDGE_BACKEND_URL` is reachable |
 | No `[pl-edge:*]` logs at all | Middleware isn't being invoked | Confirm `middleware.ts` hasn't been changed to skip the test path, and that you're running `vercel dev`, not plain `next dev`, if your app embeds another framework |
 
 Remove or unset `NEXT_PL_EDGE_DEBUG` once verified, to avoid noisy step-by-step logs in production. Note that `console.error` calls (backend errors, missing config, failed fetches) log regardless of this flag. That's independent, always-on error logging, not affected by the debug toggle.
