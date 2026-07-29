@@ -285,7 +285,7 @@ Check **Security → Bots** and allow the Agent and Training categories, or this
 
 ## Verify
 
-- **Bot traffic**: a request with an AI agent user-agent returns a response with the CDS routing confirmation header present.
+- **Bot traffic**: a request with an AI agent user-agent returns a response with the `x-pl-request-id` header present, confirming it was served by CDS.
 - **Human traffic**: a normal browser request shows no CDS header, and content/response time is unchanged.
 - **Failover**: temporarily break the backend config (or simulate a CDS outage) and confirm the response carries `x-pl-fo: 1` and still serves your real origin content.
 
