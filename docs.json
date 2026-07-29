@@ -77,7 +77,8 @@
                       "dxp/documentation/concepts-features/ai-tag-suggestion"
                     ]
                   },
-                  "dxp/documentation/concepts-features/content-scoring"
+                  "dxp/documentation/concepts-features/content-scoring",
+                  "dxp/documentation/concepts-features/google-discover-headline"
                 ]
               },
               {
