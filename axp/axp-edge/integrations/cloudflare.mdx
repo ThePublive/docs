@@ -3,7 +3,7 @@ title: "Deploy AXP Edge with Cloudflare"
 description: "Route AI agent traffic to AXP Edge from a Cloudflare Worker, with automatic failover to your origin."
 ---
 
-This guide deploys AXP Edge as a Cloudflare Worker that sits in front of your domain. The worker inspects each request's user-agent; requests from recognized AI agents (GPTBot, ClaudeBot, Google-Extended, and similar) are routed to the Publive CDS backend instead of your origin. Every other request — human visitors and SEO bots — passes through untouched.
+This guide deploys AXP Edge as a Cloudflare Worker that sits in front of your domain. The worker inspects each request's user-agent; requests from recognized AI agents (GPTBot, ClaudeBot, Google-Extended, and similar) are routed to the Publive CDS backend instead of your origin. Every other request (human visitors and SEO bots) passes through untouched.
 
 Use this approach when your site isn't on Next.js/Vercel, or when you need agent routing live without an application deploy.
 
@@ -11,11 +11,15 @@ Use this approach when your site isn't on Next.js/Vercel, or when you need agent
   Make sure `PubliveBot/1.0 (+https://axp.thepublive.com/bot)` is unblocked on your CDN.
 </Note>
 
+<Note>
+  Make sure LLM user agents (GPTBot, ClaudeBot, Google-Extended, and similar) are unblocked on your CDN, in `robots.txt`, and in any firewall/WAF rules. If one of these layers blocks a bot's request before it reaches this Worker, that traffic never gets a chance to route to AXP Edge.
+</Note>
+
 ## Prerequisites
 
 - A Cloudflare account with the target domain's zone already active (orange-clouded DNS or a Worker route you control).
 - Permission to create or edit Workers on that account.
-- Your Publive Edge CDS API key and backend URL (issued per client — contact [Publive](https://axp.thepublive.com/contact) if you don't have these).
+- Your Publive Edge CDS API key and backend URL (issued per client, contact [support@thepublive.com](mailto:support@thepublive.com) if you don't have these).
 
 ## How routing works
 
@@ -26,9 +30,23 @@ The worker makes one decision per request: serve it from AXP Edge, or fall throu
 - The method is `GET` or `HEAD`, and the path isn't a static asset (`.js`, `.css`, images, fonts, and similar are always skipped).
 - The user-agent matches a known AI agent, or the request carries a preview flag.
 
-If the request qualifies, the worker fetches the page from CDS and returns it. If CDS errors or is unreachable, the worker automatically fails over to your real origin and tags the response with a failover header — visitors never see an error.
+If the request qualifies, the worker fetches the page from CDS and returns it. If CDS errors or is unreachable, the worker automatically fails over to your real origin and tags the response with a failover header. Visitors never see an error.
 
-Unlike the [Vercel integration](/axp/axp-edge/integrations/vercel), the agent bot list here is fixed in the Worker code (the `AGENT_BOTS` array) rather than configurable via an environment variable — to add or remove a bot, edit that array directly and redeploy.
+Unlike the [Vercel integration](/axp/axp-edge/integrations/vercel), the agent bot list here is fixed in the Worker code (the `AGENT_BOTS` array) rather than configurable via an environment variable. To add or remove a bot, edit that array directly and redeploy.
+
+## Cloudflare's AI bot defaults (effective September 15, 2026)
+
+For new domains, Cloudflare will block Agent and Training bots by default on ad-monetized pages ([announcement](https://blog.cloudflare.com/content-independence-day-ai-options/)), before requests reach this Worker. Most of `AGENT_BOTS` falls into those two categories.
+
+<Accordion title="Which AGENT_BOTS entries are affected">
+  | Category | Bots |
+  | --- | --- |
+  | Training | `GPTBot`, `ClaudeBot`, `Google-Extended`, `anthropic-ai` |
+  | Agent | `ChatGPT-User`, `Claude-User` |
+  | Search (allowed) | `OAI-SearchBot`, `Claude-SearchBot` |
+</Accordion>
+
+Check **Security → Bots** and allow the Agent and Training categories, or this traffic never reaches the Worker. Applies only to new domains after September 15, 2026 on ad-monetized pages; existing zones are unaffected, and it's an opt-out default.
 
 ## Set up the integration
 
@@ -36,7 +54,7 @@ Unlike the [Vercel integration](/axp/axp-edge/integrations/vercel), the agent bo
   <Step title="Create or reuse a Worker">
     In the Cloudflare dashboard, go to **Workers & Pages → Create application → Create Worker**. Name it something identifiable, like `<PUBLISHER_NAME>-router`, and click **Deploy** to create it with the default code.
 
-    If a Worker already exists for this domain, merge the code below into it instead of replacing it — don't run two competing routers on the same route.
+    If a Worker already exists for this domain, merge the code below into it instead of replacing it. Don't run two competing routers on the same route.
   </Step>
   <Step title="Add the worker code">
     Open the Worker, click **Edit code**, and replace the default code with:
@@ -259,7 +277,7 @@ Unlike the [Vercel integration](/axp/axp-edge/integrations/vercel), the agent bo
     | `PL_EDGE_DEBUG` | Optional. Set to `1` to enable step-by-step routing logs. Leave unset in production. | `1` |
   </Step>
   <Step title="Add a route linking the Worker to the domain">
-    Go to the Worker's **Domains & Routes → Add route**, select your domain, and enter the pattern to match — for example `example.com/*` or `www.example.com/*` — then **Save**.
+    Go to the Worker's **Domains & Routes → Add route**, select your domain, and enter the pattern to match (for example, `example.com/*` or `www.example.com/*`), then **Save**.
 
     Alternatively, configure the route at the zone level: open the domain in Cloudflare, go to **Workers Routes**, and add a route pointing to this Worker.
   </Step>
@@ -267,9 +285,9 @@ Unlike the [Vercel integration](/axp/axp-edge/integrations/vercel), the agent bo
 
 ## Verify
 
-- **Bot traffic** — a request with an AI agent user-agent returns a response with the CDS routing confirmation header present.
-- **Human traffic** — a normal browser request shows no CDS header, and content/response time is unchanged.
-- **Failover** — temporarily break the backend config (or simulate a CDS outage) and confirm the response carries `x-pl-fo: 1` and still serves your real origin content.
+- **Bot traffic**: a request with an AI agent user-agent returns a response with the CDS routing confirmation header present.
+- **Human traffic**: a normal browser request shows no CDS header, and content/response time is unchanged.
+- **Failover**: temporarily break the backend config (or simulate a CDS outage) and confirm the response carries `x-pl-fo: 1` and still serves your real origin content.
 
 ## Troubleshooting
 
@@ -290,10 +308,10 @@ A healthy run logs `entry` → `eligibility-check` (`botMatch: true`) → `fetch
 | `skip:not-preview-not-bot` | User-agent didn't match any entry in `AGENT_BOTS` | Confirm you're testing with a recognized bot UA (see the list in the worker code) |
 | `skip:not-html-page` | Path matched a static file extension, or method wasn't `GET`/`HEAD` | Expected for assets; test against an actual page path instead |
 | `skip:missing-config` | `PL_EDGE_API_KEY` or `PL_EDGE_BACKEND_URL` not set | Add the missing variable in **Settings → Variables** |
-| `skip:cds-error-status` | CDS backend returned a 4xx/5xx | Response should still show origin content via failover — check CDS-side logs for the underlying error |
+| `skip:cds-error-status` | CDS backend returned a 4xx/5xx | Response should still show origin content via failover; check CDS-side logs for the underlying error |
 | `skip:fetch-threw` | Network error reaching CDS | Check `PL_EDGE_BACKEND_URL` is reachable from Cloudflare's network |
 
-Remove or unset `PL_EDGE_DEBUG` once verified, to avoid noisy step-by-step logs in production. Note that `console.error` calls (backend errors, missing config, failed fetches) log regardless of this flag — that's independent, always-on error logging, not affected by the debug toggle.
+Remove or unset `PL_EDGE_DEBUG` once verified, to avoid noisy step-by-step logs in production. Note that `console.error` calls (backend errors, missing config, failed fetches) log regardless of this flag. That's independent, always-on error logging, not affected by the debug toggle.
 
 ## Next steps
 
