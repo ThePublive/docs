@@ -3,16 +3,20 @@ title: "Deploy AXP Edge with Vercel"
 description: "Route AI agent traffic to AXP Edge from Next.js Middleware on Vercel."
 ---
 
-This guide adds a Next.js Middleware that routes AI agent traffic (GPTBot, ClaudeBot, Google-Extended, and similar) to the Publive CDS backend, while human visitors and SEO bots continue to hit your app exactly as before. It ships as part of your normal Next.js build — no separate infrastructure to stand up.
+This guide adds a Next.js Middleware that routes AI agent traffic (GPTBot, ClaudeBot, Google-Extended, and similar) to the Publive CDS backend, while human visitors and SEO bots continue to hit your app exactly as before. It ships as part of your normal Next.js build, so there's no separate infrastructure to stand up.
 
 <Note>
   Make sure `PubliveBot/1.0 (+https://axp.thepublive.com/bot)` is unblocked on your CDN.
 </Note>
 
+<Note>
+  Make sure LLM user agents (GPTBot, ClaudeBot, Google-Extended, and similar) are unblocked on your CDN, in `robots.txt`, and in any firewall/WAF rules. If one of these layers blocks a bot's request before it reaches this Middleware, that traffic never gets a chance to route to AXP Edge.
+</Note>
+
 ## Prerequisites
 
 - A Next.js app deployed on Vercel (App Router or Pages Router; Middleware support in both).
-- Your Publive Edge CDS API key and backend URL (issued per client — contact [Publive](https://axp.thepublive.com/contact) if you don't have these).
+- Your Publive Edge CDS API key and backend URL (issued per client, contact [support@thepublive.com](mailto:support@thepublive.com) if you don't have these).
 - The [Vercel CLI](https://vercel.com/docs/cli), if you plan to test Middleware locally (see [Local development](#local-development)).
 
 ## How routing works
@@ -24,10 +28,10 @@ Middleware runs on every request inside your Next.js app, ahead of routing. It p
 - The method is `GET` or `HEAD`, and the path isn't a static asset (`.js`, `.css`, images, fonts, and similar are always skipped).
 - The user-agent matches a known AI agent, or the request carries a preview flag.
 
-If the request qualifies, Middleware proxies it to Publive CDS with the required headers. If CDS errors or is unreachable, the request falls through to normal Next.js rendering — visitors never see an error.
+If the request qualifies, Middleware proxies it to Publive CDS with the required headers. If CDS errors or is unreachable, the request falls through to normal Next.js rendering. Visitors never see an error.
 
 <Warning>
-  The `.well-known/` handling in the code below returns a 404 for **every** path under `.well-known/`, unconditionally. If your app serves anything from that path — ACME HTTP-01 challenge files, `apple-app-site-association`, `security.txt`, third-party domain verification files — this Middleware will block it before your app ever sees the request. Remove or adjust that block if you rely on any `.well-known/` route.
+  The `.well-known/` handling in the code below returns a 404 for **every** path under `.well-known/`, unconditionally. If your app serves anything from that path (ACME HTTP-01 challenge files, `apple-app-site-association`, `security.txt`, third-party domain verification files), this Middleware will block it before your app ever sees the request. Remove or adjust that block if you rely on any `.well-known/` route.
 </Warning>
 
 ## Set up the integration
@@ -71,7 +75,7 @@ If the request qualifies, Middleware proxies it to Publive CDS with the required
     Create `middleware/debugLog.ts`:
 
     ```tsx middleware/debugLog.ts
-    // Toggle via env var — no code change needed to enable/disable.
+    // Toggle via env var, no code change needed to enable/disable.
     // Set NEXT_PL_EDGE_DEBUG=1 in .env.local or your Vercel project settings.
     export function debugLog(
       env: Record<string, any>,
@@ -216,7 +220,7 @@ If the request qualifies, Middleware proxies it to Publive CDS with the required
         return null;
       }
 
-      // Check 2: loop guard — if this request already carries our own
+      // Check 2: loop guard. If this request already carries our own
       // routing header, it's already been through routeToPublive once
       // (or is looping back from CDS/origin), so don't route it again.
       const loopGuardValue = request.headers.get(LOOP_GUARD_HEADER);
@@ -305,14 +309,14 @@ If the request qualifies, Middleware proxies it to Publive CDS with the required
     | `NEXT_PL_EDGE_AGENTIC_BOTS` | Comma-separated user-agent substrings treated as agentic bots. If unset, empty, or whitespace-only, falls back to the built-in default list. When set, it **fully replaces** the default list rather than adding to it. Matching is case-insensitive substring matching against `user-agent`. | No | `GPTBot, ClaudeBot, Google-Extended` |
   </Step>
   <Step title="Deploy">
-    Ship the Middleware as part of your normal app build/deploy pipeline — there's no separate infrastructure to stand up.
+    Ship the Middleware as part of your normal app build/deploy pipeline, so there's no separate infrastructure to stand up.
   </Step>
 </Steps>
 
 ## Local development
 
 <Info>
-  Skip this section if `next dev` correctly triggers your Middleware locally. It's only needed when the app embeds or proxies to another framework (Astro, and similar), where that framework's local dev server can intercept requests before they reach Next's own pipeline — in that case Middleware never runs under plain `next dev`.
+  Skip this section if `next dev` correctly triggers your Middleware locally. It's only needed when the app embeds or proxies to another framework (Astro, and similar), where that framework's local dev server can intercept requests before they reach Next's own pipeline. In that case, Middleware never runs under plain `next dev`.
 </Info>
 
 The fix is to develop against the actual Vercel platform locally, using the Vercel CLI, instead of relying on `next dev`.
@@ -334,10 +338,10 @@ The fix is to develop against the actual Vercel platform locally, using the Verc
     }
     ```
 
-    - `dev` — normal fast local iteration; use for everything that isn't middleware/routing-specific.
-    - `dev:edge` — runs the real Vercel dev server, which correctly simulates Edge Middleware dispatch, env vars, and routing exactly as production behaves. **Use this whenever testing or debugging the Publive routing logic.**
-    - `deploy:preview` — pushes a preview deployment without touching production.
-    - `deploy` — ships to production.
+    - `dev`: normal fast local iteration; use for everything that isn't middleware/routing-specific.
+    - `dev:edge`: runs the real Vercel dev server, which correctly simulates Edge Middleware dispatch, env vars, and routing exactly as production behaves. **Use this whenever testing or debugging the Publive routing logic.**
+    - `deploy:preview`: pushes a preview deployment without touching production.
+    - `deploy`: ships to production.
   </Step>
   <Step title="One-time setup per project, per machine">
     ```bash
@@ -352,15 +356,15 @@ The fix is to develop against the actual Vercel platform locally, using the Verc
     npm run dev:edge
     ```
 
-    This starts a local server that behaves like the real Vercel edge network — Middleware runs on every matched request, exactly as it will in production.
+    This starts a local server that behaves like the real Vercel edge network. Middleware runs on every matched request, exactly as it will in production.
   </Step>
 </Steps>
 
 ## Verify
 
-- **Bot traffic** — a request with an AI agent user-agent returns a response with the CDS routing confirmation header present.
-- **Human traffic** — a normal browser request shows no CDS header, and content/response time is unchanged.
-- **Failover** — simulate a CDS failure and confirm the request falls back to normal Next.js rendering instead of erroring.
+- **Bot traffic**: a request with an AI agent user-agent returns a response with the CDS routing confirmation header present.
+- **Human traffic**: a normal browser request shows no CDS header, and content/response time is unchanged.
+- **Failover**: simulate a CDS failure and confirm the request falls back to normal Next.js rendering instead of erroring.
 
 Test with:
 
@@ -383,11 +387,11 @@ A healthy run logs `entry` → `eligibility-check` (`botMatch: true`) → `fetch
 | `skip:not-html-page-request` | Path matched a static file extension, or method wasn't `GET`/`HEAD` | Expected for assets; test against an actual page path instead |
 | `skip:not-preview-not-bot` | User-agent didn't match any entry in the agentic bot list | Confirm you're testing with a recognized bot UA, or check `NEXT_PL_EDGE_AGENTIC_BOTS` didn't override the default list unexpectedly |
 | `skip:missing-config` | `NEXT_PL_EDGE_API_KEY` or `NEXT_PL_AXP_EDGE_BACKEND_URL` not set | Add the missing variable and redeploy/restart |
-| `skip:cds-error-status` | CDS backend returned a 4xx/5xx | Request falls through to normal rendering — check CDS-side logs for the underlying error |
+| `skip:cds-error-status` | CDS backend returned a 4xx/5xx | Request falls through to normal rendering; check CDS-side logs for the underlying error |
 | `skip:fetch-threw` | Network error reaching CDS | Check `NEXT_PL_AXP_EDGE_BACKEND_URL` is reachable |
 | No `[pl-edge:*]` logs at all | Middleware isn't being invoked | Confirm `middleware.ts` hasn't been changed to skip the test path, and that you're running `vercel dev`, not plain `next dev`, if your app embeds another framework |
 
-Remove or unset `NEXT_PL_EDGE_DEBUG` once verified, to avoid noisy step-by-step logs in production. Note that `console.error` calls (backend errors, missing config, failed fetches) log regardless of this flag — that's independent, always-on error logging, not affected by the debug toggle.
+Remove or unset `NEXT_PL_EDGE_DEBUG` once verified, to avoid noisy step-by-step logs in production. Note that `console.error` calls (backend errors, missing config, failed fetches) log regardless of this flag. That's independent, always-on error logging, not affected by the debug toggle.
 
 ## Next steps
 

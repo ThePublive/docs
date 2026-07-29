@@ -57,7 +57,9 @@
 ## Linking Rules
 
 - **Internal Links**: Always use absolute paths from the root without the file extension (e.g., `[Billing](/settings/billing)` instead of `[Billing](./billing.mdx)`).
-- **Contact & Support Links**: Wherever text mentions contacting support, Publive, or a CSM (e.g., "contact Publive", "contact support", "talk to Publive"), it must include an explicit link to the contact/support page (e.g., `[contact Publive](https://axp.thepublive.com/contact)` or `[Support](https://help.thepublive.com/support/solutions)`).
+- **Contact & Support Links**: Wherever text mentions contacting support, Publive, or a CSM (e.g., "contact Publive", "contact support", "talk to Publive"), it must include an explicit link to the contact/support page. Which link depends on the audience:
+  - **New client / entry point** (prospective clients, general product inquiries, requesting a new capability be enabled) — link to `https://axp.thepublive.com/contact` (e.g., `[contact Publive](https://axp.thepublive.com/contact)`).
+  - **Existing client technical support** (setup/integration guides for clients already onboarded, e.g. AXP Edge CDN setup) — link to `mailto:support@thepublive.com` (e.g., `[support@thepublive.com](mailto:support@thepublive.com)`).
 
 ## API Reference conventions
 

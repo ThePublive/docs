@@ -1,5 +1,5 @@
 ---
-title: "Set up AXP Edge"
+title: "Getting started"
 description: "Connect AXP Edge to your CDN and go live."
 ---
 
@@ -7,7 +7,7 @@ description: "Connect AXP Edge to your CDN and go live."
 
 - Admin access to your domain's DNS / nameserver records.
 - Access to your CDN or edge network configuration (Cloudflare, Vercel, or similar).
-- A Publive AXP account with AXP Edge enabled for your domain.
+- A Publive AXP account with AXP Edge enabled for your domain. [Get AXP Edge](https://axp.thepublive.com/contact).
 
 ## Supported CDNs and platforms
 
@@ -15,8 +15,15 @@ AXP Edge integrates at the CDN layer, so it works with any site already served t
 
 - [Cloudflare](/axp/axp-edge/integrations/cloudflare)
 - [Vercel](/axp/axp-edge/integrations/vercel)
+- Amazon CloudFront (**Coming soon**)
+- Fastly (**Coming soon**)
+- Akamai (**Coming soon**)
 
-If your site sits behind a different CDN or edge network, AXP Edge can almost certainly still integrate — [contact Publive](https://axp.thepublive.com/contact) to confirm.
+If your site sits behind a different CDN or edge network, AXP Edge can almost certainly still integrate. [Get AXP Edge integrated here](https://axp.thepublive.com/contact).
+
+### Don't have a CDN yet?
+
+We recommend [Cloudflare](https://www.cloudflare.com/products/cdn/), since it has the fastest path to going live with AXP Edge. Publive can set it up for you or assist your team through the setup: [contact us](https://axp.thepublive.com/contact).
 
 ## Go live
 
@@ -35,7 +42,7 @@ If your site sits behind a different CDN or edge network, AXP Edge can almost ce
 Most domains are live within two hours of DNS propagation, with no site rebuild and no code changes to your application.
 
 <Note>
-  Rollback is one click — disabling AXP Edge immediately returns all traffic (including AI agent traffic) to your normal origin.
+  Rollback is one click: disabling AXP Edge immediately returns all traffic (including AI agent traffic) to your normal origin.
 </Note>
 
 ## How AXP Edge decides who gets the agent view
@@ -44,7 +51,7 @@ AXP Edge detects AI crawlers and agents using user-agent and network signals. Hu
 
 ## Bypass rules
 
-You can exclude specific pages or sections of your site from AXP Edge optimization, so AI bots hit your unoptimized origin pages for those paths instead. This is useful for comparing optimized vs. unoptimized performance on your own domain, or for excluding pages that shouldn't be exposed to AI agents at all. Configure bypass rules from the **Content & Global Rules** section of your AXP dashboard — see [AXP Edge dashboard](/axp/axp-edge/dashboard).
+You can exclude specific pages or sections of your site from AXP Edge optimization, so AI bots hit your unoptimized origin pages for those paths instead. This is useful for comparing optimized vs. unoptimized performance on your own domain, or for excluding pages that shouldn't be exposed to AI agents at all. Configure bypass rules from the **Content & Global Rules** section of your AXP dashboard. See [AXP Edge dashboard](/axp/axp-edge/dashboard).
 
 <Frame>
   <img src="/images/axp/axp-edge-global-rules.png" alt="AXP Edge Global Rules tab showing default serving behaviour and URL/bot override tables" style={{ borderRadius: '0.5rem' }} />
@@ -69,7 +76,9 @@ Setting up AXP Edge yourself instead of pointing DNS at it? Use the platform-spe
   <Card title="AXP Edge dashboard" icon="gauge" href="/axp/axp-edge/dashboard">
     Monitor agent traffic and manage optimization rules.
   </Card>
-  <Card title="Get in touch" icon="comments" href="https://axp.thepublive.com/contact">
-    Need help getting AXP Edge set up? Talk to Publive.
+  <Card title="Contact Support" icon="envelope" href="mailto:support@thepublive.com">
+    Need help getting AXP Edge set up? Reach out to support.
   </Card>
 </CardGroup>
+
+We can also provide live assistance for setup: [contact us](https://axp.thepublive.com/contact).
