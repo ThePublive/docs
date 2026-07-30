@@ -17,12 +17,12 @@ This guide adds a Next.js Middleware that routes AI agent traffic (GPTBot, Claud
 ## Prerequisites
 
 - A Next.js app deployed on Vercel (App Router or Pages Router; Middleware support in both).
-- Your Publive Edge CDS API key and backend URL (issued per client, contact [support@thepublive.com](mailto:support@thepublive.com) if you don't have these).
+- Your Publive Edge CDS API key and backend URL (issued per client, [contact us](mailto:support@thepublive.com) if you don't have these).
 - The [Vercel CLI](https://vercel.com/docs/cli), if you plan to test Middleware locally (see [Local development](#local-development)).
 
 ## How routing works
 
-Middleware runs on every request inside your Next.js app, ahead of routing. It passes `_next/` paths through untouched, returns a 404 directly for any `.well-known/` path, and delegates every other request's eligibility decision to a shared `routeToPublive()` module. A request only qualifies for AXP Edge when **all** of the following are true:
+Middleware runs on every request inside your Next.js app, ahead of routing. It passes `_next/` paths through untouched, and delegates every request's eligibility decision to a shared `routeToPublive()` module. A request only qualifies for AXP Edge when **all** of the following are true:
 
 - The request hostname matches your configured `NEXT_PL_EDGE_CLIENT_HOST`.
 - The request hasn't already been routed once (a loop guard header prevents re-routing looped requests).
@@ -31,9 +31,6 @@ Middleware runs on every request inside your Next.js app, ahead of routing. It p
 
 If the request qualifies, Middleware proxies it to Publive CDS with the required headers. If CDS errors or is unreachable, the request falls through to normal Next.js rendering. Visitors never see an error.
 
-<Warning>
-  The `.well-known/` handling in the code below returns a 404 for **every** path under `.well-known/`, unconditionally. If your app serves anything from that path (ACME HTTP-01 challenge files, `apple-app-site-association`, `security.txt`, third-party domain verification files), this Middleware will block it before your app ever sees the request. Remove or adjust that block if you rely on any `.well-known/` route.
-</Warning>
 
 ## Set up the integration
 
