@@ -25,25 +25,25 @@ If your site sits behind a different CDN or edge network, AXP Edge can almost ce
 
 [Don't have a CDN?](/axp/axp-edge/integrations/dont-have-a-cdn) We recommend Cloudflare and can help you get set up.
 
-## Go live
-
-<Steps>
-  <Step title="Point your CDN or nameservers to AXP Edge">
-    Update the NS records (or equivalent CDN configuration) for the domain you want optimized. Your Publive CSM confirms the exact records for your setup.
-  </Step>
-  <Step title="Human review of the pre-go-live configuration">
-    Before traffic is routed live, Publive reviews the bot-detection rules and agent-view rendering for your domain to confirm nothing is misconfigured.
-  </Step>
-  <Step title="Go live">
-    Once records propagate, AI agent traffic is routed through AXP Edge automatically. Human and search-engine traffic is unaffected throughout.
-  </Step>
-</Steps>
-
-Most domains are live within two hours of DNS propagation, with no site rebuild and no code changes to your application.
-
 <Note>
   Rollback is one click: disabling AXP Edge immediately returns all traffic (including AI agent traffic) to your normal origin.
 </Note>
+
+## Go live in three steps
+
+A high-level path from zero to live. Each step links to the detail below. Most teams are live in under two hours.
+
+<Steps>
+  <Step title="Get set up">
+    Publive provides **AXP Edge enabled for your domain**, your **Edge CDS API key**, and your **backend URL**. You provide admin access to your CDN. Make sure `PubliveBot/1.0` and LLM user-agents (GPTBot, ClaudeBot, Google-Extended, and similar) are unblocked across your CDN, `robots.txt`, and WAF.
+  </Step>
+  <Step title="Deploy your integration">
+    Pick the [integration guide](#integration-guides) for your stack ([Vercel](/axp/axp-edge/integrations/vercel) or [Cloudflare](/axp/axp-edge/integrations/cloudflare)), add the Worker/Middleware, set the environment variables (store the API key as an encrypted secret), and attach the route. No CDN yet? [Start here](/axp/axp-edge/integrations/dont-have-a-cdn).
+  </Step>
+  <Step title="Verify and monitor">
+    Confirm bot traffic is served by CDS and human traffic is unchanged, then use the [AXP Edge dashboard](/axp/axp-edge/dashboard) to set rules and watch agent traffic grow. Rollback is one click: disabling AXP Edge returns all traffic to your origin.
+  </Step>
+</Steps>
 
 ## How AXP Edge decides who gets the agent view
 
@@ -52,10 +52,6 @@ AXP Edge detects AI crawlers and agents using user-agent and network signals. Hu
 ## Bypass rules
 
 You can exclude specific pages or sections of your site from AXP Edge optimization, so AI bots hit your unoptimized origin pages for those paths instead. This is useful for comparing optimized vs. unoptimized performance on your own domain, or for excluding pages that shouldn't be exposed to AI agents at all. Configure bypass rules from the **Content & Global Rules** section of your AXP dashboard. See [AXP Edge dashboard](/axp/axp-edge/dashboard).
-
-<Warning>
-  Dashboard bypass rules apply to the DNS-routed setup described above. They are not read by the self-hosted [Vercel](/axp/axp-edge/integrations/vercel) or [Cloudflare](/axp/axp-edge/integrations/cloudflare) integrations — that Worker/Middleware code makes its routing decision locally and never calls back to the AXP dashboard. If you're running one of those integrations and need to exclude a path or bot, do it directly in your Worker or Middleware code (for example, add a path check next to the static-asset check, or edit the agent bot list) rather than relying on the dashboard.
-</Warning>
 
 <Frame>
   <img src="/images/axp/axp-edge-global-rules.png" alt="AXP Edge Global Rules tab showing default serving behaviour and URL/bot override tables" style={{ borderRadius: '0.5rem' }} />
