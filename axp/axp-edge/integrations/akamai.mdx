@@ -1,9 +1,239 @@
 ---
 title: "Deploy AXP Edge with Akamai"
 sidebarTitle: "Deploy on Akamai"
-description: "Route AI agent traffic to AXP Edge from Akamai EdgeWorkers."
+description: "Route AI agent traffic to AXP Edge from Akamai Property Manager, with automatic failover to your origin."
 ---
 
+This guide adds two rules to the Akamai property that already fronts your domain. The first rule checks each request's user-agent; requests from recognized AI agents (GPTBot, ClaudeBot, Google-Extended, and similar) go to the Publive CDS backend instead of your origin. Everything else — human visitors and SEO bots — passes through untouched.
+
+There's no code to deploy and no EdgeWorkers entitlement needed.
+
 <Note>
-  **Coming soon.** We're working on a full Akamai integration guide. In the meantime, we can still help you set it up — [get in touch](https://axp.thepublive.com/contact).
+  Make sure `PubliveBot/1.0 (+https://axp.thepublive.com/bot)` is unblocked on your CDN, including in Akamai Bot Manager. CDS fetches your origin pages to build the agent view, so if this is blocked, nothing works.
 </Note>
+
+<Note>
+  Make sure LLM user agents (GPTBot, ClaudeBot, Google-Extended, and similar) are unblocked on your CDN, in `robots.txt`, and in any firewall/WAF rules. If one of these layers blocks a bot before it reaches the routing rule, that traffic never gets a chance to route to AXP Edge.
+</Note>
+
+## Prerequisites
+
+- Access to Akamai Property Manager for your domain, with permission to activate.
+- The **Advanced** behavior on your contract (used once, in [Step 5](#step-5-turn-off-caching-and-add-failover)). If you don't see it, ask your Akamai account team. Without it failover still works — you just lose the `x-pl-fo` marker.
+- Your Publive Edge CDS API key (issued per client, [support@thepublive.com](mailto:support@thepublive.com) if you don't have one).
+- Access to the Akamai staging network.
+
+## How routing works
+
+A request goes to AXP Edge only when all of these are true:
+
+- The hostname matches your domain.
+- The method is `GET` or `HEAD`, and the path is an HTML page rather than a static asset.
+- The user-agent matches a known AI agent.
+- The request doesn't already carry `x-pl-request` (the loop guard, set on failover).
+
+Anything else falls through to your origin exactly as before.
+
+CDS serves agent views under a path prefix, so `www.example.com/pricing` becomes `cds.thepublive.com/axp/view/pricing`. Akamai handles that with **Origin Base Path**, which prepends the prefix automatically — the query string and the rest of the path come along unchanged. The original URL also travels in the `x-pl-url` header, matching the [Cloudflare](/axp/axp-edge/integrations/cloudflare) and [Vercel](/axp/axp-edge/integrations/vercel) integrations.
+
+If CDS errors or is unreachable, Site Failover sends the request to your origin and tags the response `x-pl-fo: 1`. Visitors never see an error.
+
+## Set up the integration
+
+You'll create two rules as **siblings** at the same level:
+
+```
+▼ Parent Rule
+    ▶ AXP Edge Routing              ← Steps 2–5
+    ▶ AXP Edge Failover Test Header ← Step 6
+```
+
+<Steps>
+  <Step title="Create the property variables">
+    Under **Property Configuration Settings → Property Variables**, add:
+
+    | Variable | Value | Security |
+    | --- | --- | --- |
+    | `PMUSER_PL_EDGE_API_KEY` | Your Edge CDS API key | Sensitive |
+    | `PMUSER_PL_EDGE_CLIENT_AGENT` | Leave blank | Default |
+    | `PMUSER_PL_EDGE_ACCEPT_LANGUAGE` | Leave blank | Default |
+    | `PMUSER_PL_EDGE_REFERER` | Leave blank | Default |
+
+    Only the API key needs a value. The other three are scratch variables — Property Manager can't copy one header into another directly, so they act as a hop. You'll fill them at request time in [Step 4](#step-4-set-the-headers).
+  </Step>
+  <Step title="Create the routing rule">
+    Add a rule named **AXP Edge Routing** and set its criteria to match all of:
+
+    - **Hostname** is one of `www.example.com`
+    - **Request Method** is one of `GET`, `HEAD`
+    - **File Extension** is one of `html`, `htm`, `EMPTY_STRING`
+    - **Request Header** `x-pl-request` **does not exist**
+    - **User-Agent** matches one of:
+
+    ```
+    *GPTBot*
+    *OAI-SearchBot*
+    *ChatGPT-User*
+    *ClaudeBot*
+    *Claude-User*
+    *Claude-SearchBot*
+    *Google-Extended*
+    *anthropic-ai*
+    *PerplexityBot*
+    *Perplexity-User*
+    ```
+
+    `EMPTY_STRING` covers extensionless page URLs. This is the same agent list the Cloudflare and Vercel integrations ship with — add or remove entries per domain, and keep them consistent across properties for the same brand.
+
+    <Warning>
+      File Extension is an allowlist, so pages served from any other extension are silently skipped. If your site serves HTML from `.php`, `.aspx`, or `.jsp`, add those here too. Going the other way: if you have extensionless routes that aren't pages (`/api/`, health checks), add a Path criterion excluding them.
+    </Warning>
+  </Step>
+  <Step title="Point the rule at CDS">
+    Inside the routing rule, add **Origin Server**:
+
+    | Setting | Value |
+    | --- | --- |
+    | Origin Server Hostname | `cds.thepublive.com` |
+    | Origin Base Path | `/axp/view/` |
+    | Forward Host Header | Origin Hostname |
+    | Cache Key Hostname | Incoming Host Header |
+    | Send True Client IP Header | Yes |
+    | Match CN/SAN to | `*.thepublive.com` |
+    | Origin SSL Certificate Verification | Match your default rule's setting |
+
+    Your real host reaches CDS in the `x-pl-host` header, so forwarding the origin hostname here is correct — it lets CDS terminate TLS and resolve its own vhost.
+
+    <Warning>
+      Don't add a **Modify Outgoing Request Path** behavior to this rule. Origin Base Path already produces the prefix, and it can't be overridden — a path rewrite composes on top of it and you'd get `/axp/view/axp/view/pricing`.
+    </Warning>
+
+    <Note>
+      If activation fails after adding this rule, check whether it uses a different Origin SSL verification mode than your default rule, and match it.
+    </Note>
+  </Step>
+  <Step title="Set the headers">
+    First add three **Set Variable** behaviors to capture the headers CDS needs passed through:
+
+    | Variable | Create Value From | Header |
+    | --- | --- | --- |
+    | `PMUSER_PL_EDGE_CLIENT_AGENT` | Incoming Request Header | `User-Agent` |
+    | `PMUSER_PL_EDGE_ACCEPT_LANGUAGE` | Incoming Request Header | `Accept-Language` |
+    | `PMUSER_PL_EDGE_REFERER` | Incoming Request Header | `Referer` |
+
+    Next, strip any inbound `x-pl-*` headers. These are all set by the edge, so an inbound one is either a mistake or someone probing. Add a **Modify Incoming Request Header** behavior with action **Delete** for each:
+
+    ```
+    x-pl-api-key          x-pl-protocol
+    x-pl-host             x-pl-accept-language
+    x-pl-url              x-pl-referer
+    x-pl-client-ip        x-pl-preview
+    x-pl-client-agent     x-pl-skip
+    ```
+
+    Then add the real ones, with action **Add**:
+
+    | Header | Value |
+    | --- | --- |
+    | `x-pl-api-key` | `{{user.PMUSER_PL_EDGE_API_KEY}}` |
+    | `x-pl-host` | `{{builtin.AK_HOST}}` |
+    | `x-pl-url` | `{{builtin.AK_URL}}` |
+    | `x-pl-client-ip` | `{{builtin.AK_CLIENT_IP}}` |
+    | `x-pl-client-agent` | `{{user.PMUSER_PL_EDGE_CLIENT_AGENT}}` |
+    | `x-pl-accept-language` | `{{user.PMUSER_PL_EDGE_ACCEPT_LANGUAGE}}` |
+    | `x-pl-referer` | `{{user.PMUSER_PL_EDGE_REFERER}}` |
+    | `x-pl-protocol` | `https` |
+
+    Finally, one **Modify Outgoing Request Header** with action **Add**: `x-forwarded-host` set to `{{builtin.AK_HOST}}`.
+
+    <Note>
+      The deletes must be ordered before the adds. Don't delete the `Host` header — Akamai manages that through Forward Host Header.
+    </Note>
+  </Step>
+  <Step title="Turn off caching and add failover">
+    Add **Caching** and set it to **No Store**. CDS caches agent views itself, matching the Cloudflare and Vercel integrations. This also means an agent response and a human response can never collide on a shared cache key.
+
+    Add **Site Failover**: trigger on origin `4xx` and `5xx` plus connection errors, alternate hostname set to your default origin, preserve path and query.
+
+    Then add the **Advanced** behavior so the failed-over request is identifiable:
+
+    ```xml
+    <forward:availability.fail-action2>
+      <add-header>
+        <status>on</status>
+        <name>x-pl-request</name>
+        <value>fo</value>
+      </add-header>
+    </forward:availability.fail-action2>
+    ```
+  </Step>
+  <Step title="Add the failover test rule">
+    Create a second rule named **AXP Edge Failover Test Header** as a **sibling** of the routing rule, not nested inside it:
+
+    - **Criteria:** Request Header `x-pl-request` matches `fo`
+    - **Behavior:** Modify Outgoing Response Header → Add `x-pl-fo` = `1`
+
+    As a sibling it evaluates for all routing rules rather than just one. This is what makes failover visible in a curl and in the AXP Edge dashboard.
+  </Step>
+  <Step title="Activate">
+    Activate on the Akamai staging network first, run the checks below, then activate to production. Both rules go out together.
+
+    Before you do, check that no later rule resets Origin Server, Origin Base Path, or Caching for these requests — in Property Manager, last match wins.
+  </Step>
+</Steps>
+
+## Verify
+
+- **Bot traffic**: a request with an AI agent user-agent returns `x-pl-request-id`, confirming it was served by CDS.
+- **Human traffic**: a normal browser request has no `x-pl-request-id`, and content and response time are unchanged.
+- **Right page**: request two different bot URLs and confirm you get two different pages. This is the check that the path prefix is composing correctly.
+- **Failover**: point the CDS origin at an unreachable hostname on staging, resend the bot request, and confirm `x-pl-fo: 1` with your real origin page in the body — not a 404.
+
+```bash
+curl -svo /dev/null https://www.example.com/pricing \
+  --header "user-agent: ChatGPT-User"
+```
+
+```
+< HTTP/2 200
+< x-pl-request-id: 50fce12d-0519-4fc6-af78-d928785c1b85
+```
+
+Routing status also shows in the AXP Edge dashboard under **Brand Configuration → Integrations → CDN**, which turns green once agent traffic is observed.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| No `x-pl-request-id` on a bot request | User-Agent criterion didn't match | Check the wildcards are on both sides (`*GPTBot*`) and the UA is in the list |
+| Works on `/about` but not `/about.php` | File Extension allowlist | Add `php`, `aspx`, or `jsp` to the match |
+| No `x-pl-request-id` on an extensionless path | `EMPTY_STRING` missing from File Extension | Add it |
+| Correct UA and path, still no header | Hostname criterion mismatch | Match the domain exactly, including any `www.` prefix |
+| Rule matches but you get origin content | A later rule resets Origin Server | Move the routing rule later, or exclude these requests from the conflicting rule |
+| 404s on everything | Origin Base Path wrong, or a path rewrite stacked on top | Confirm it's exactly `/axp/view/` and no Modify Outgoing Request Path applies |
+| Same page returned for every URL | `x-pl-url` empty | Confirm `{{builtin.AK_URL}}` resolves with the query string |
+| `x-pl-fo: 1` on every request | CDS rejecting — usually a bad API key | Re-check `PMUSER_PL_EDGE_API_KEY` |
+| `x-pl-fo: 1` occasionally | CDS cold-miss timeouts on uncached paths | Ask Publive to pre-warm your paths from the sitemap; expect under 1% |
+| Failover works but no `x-pl-fo` | Test rule nested instead of sibling | Move it to the same level as the routing rule |
+| Activation fails | Origin SSL verification differs from the default rule | Match the default rule's mode |
+| CDS gets your block page | Publive's fetcher blocked | Allowlist `*PubliveBot/1.0*` in your WAF and Bot Manager |
+
+## Rollback
+
+Deactivate or delete the **AXP Edge Routing** rule and reactivate the property. Traffic returns to your origin within minutes, and there's no origin-side state to unwind. The failover test rule is harmless to leave in place.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="AXP Edge dashboard" icon="gauge" href="/axp/axp-edge/dashboard">
+    Monitor agent traffic and manage optimization rules.
+  </Card>
+
+  <Card title="Deploy on Cloudflare" icon="bolt" href="/axp/axp-edge/integrations/cloudflare">
+    Not on Akamai? Use the Cloudflare Worker-based guide instead.
+  </Card>
+
+  <Card title="Deploy on Vercel" icon="triangle" href="/axp/axp-edge/integrations/vercel">
+    Integrating a Next.js app on Vercel instead? Use the middleware-based guide.
+  </Card>
+</CardGroup>
