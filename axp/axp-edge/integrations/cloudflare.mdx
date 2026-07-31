@@ -42,8 +42,8 @@ For new domains, Cloudflare will block Agent and Training bots by default on ad-
 <Accordion title="Which AGENT_BOTS entries are affected">
   | Category | Bots |
   | --- | --- |
-  | Training | `GPTBot`, `ClaudeBot`, `Google-Extended`, `anthropic-ai` |
-  | Agent | `ChatGPT-User`, `Claude-User` |
+  | Training | `GPTBot`, `ClaudeBot`, `Google-Extended`, `anthropic-ai`, `PerplexityBot` |
+  | Agent | `ChatGPT-User`, `Claude-User`, `Perplexity-User` |
   | Search (allowed) | `OAI-SearchBot`, `Claude-SearchBot` |
 </Accordion>
 
@@ -84,7 +84,9 @@ Check **Security → Bots** and allow the Agent and Training categories, or this
       "Claude-User",
       "Claude-SearchBot",
       "Google-Extended",
-      "anthropic-ai"
+      "anthropic-ai",
+      "PerplexityBot",
+      "Perplexity-User"
     ];
 
     const INBOUND_HEADERS_TO_STRIP = [
