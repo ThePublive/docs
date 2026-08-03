@@ -8,29 +8,47 @@ rss: true
   Subscribe to this changelog via RSS at `https://docs.thepublive.com/changelog/axp/rss.xml`: paste the URL into Slack (`/feed subscribe`), an RSS reader, or a tool like Zapier to get notified of new releases.
 </Tip>
 
-<Update label="June 11, 2026" tags={["New releases", "Improvements", "Bug fixes"]} rss={{ title: "Introducing the AXP Dashboard and AXP Edge, brand profiles, agent analytics, bot controls" }}>
-  ### Introducing the AXP Dashboard
+<Update label="July 28, 2026" tags={["Improvements"]} rss={{ title: "AXP Edge: Global Rules and Bot Override Controls" }}>
+  ### Global Rules and Bot Override Controls
 
-  We're launching the **AXP Dashboard**, a single place to manage how AI agents discover, read, and cite your content.
+  New controls give you finer-grained management over how AXP Edge behaves across your site.
 
-  * A new **Brand Profile** page lets you define and manage your brand's presence for AI agents.
-  * A new **Content** page shows how your content is being surfaced to agents.
-  * A new **Agent Analytics** page tracks agent activity on your site.
-  * The dashboard is rolling out gradually. [Contact Publive](https://axp.thepublive.com/contact) to improve your AI visibility.
+  * A new **Global Rules** page lets you control how AXP Edge treats requests across your entire site from one place.
+  * **Bot Override Controls:** The bot override field now accepts multiple AI bots at once, so you can manage rules across several agents in a single update.
+</Update>
 
+<Update label="July 14, 2026" tags={["New releases"]} rss={{ title: "Introducing AXP Edge" }}>
   ### Introducing AXP Edge
 
-  Also launching inside the AXP Dashboard: **AXP Edge**, an edge-rendering layer that sits in front of your existing site on your CDN and serves AI agents a clean, agent-first version of your content.
+  We're launching **AXP Edge**, an edge-rendering layer that sits in front of your existing site on your CDN and serves AI agents a clean, agent-first version of your content.
 
   * At the edge, requests are split by requester type before they reach your origin. Humans and SEO bots pass straight through to your site, byte-for-byte identical to what they get today. AI agents (ChatGPT, Gemini, Perplexity, and similar) get a server-side-rendered, token-optimized version of the same page, stripped of navigation chrome and scripts so only the structured content an agent needs to read and cite remains.
   * It isn't cloaking. AI agents see the same facts as everyone else, restructured for parsing rather than layout. Search engines are treated exactly like human visitors, so your existing SEO stays intact.
   * Pages served through AXP Edge use roughly 90% fewer tokens than the standard human page, and brands running it on already-indexed pages have seen roughly 15-20% more AI citations from the same content.
   * It fails safe. If the edge layer is ever unavailable, requests fall straight back to your normal site.
-  * New **Global Rules** page in the dashboard give you control over how AXP Edge behaves across your site.
   * See [AXP Edge: Overview](/axp/axp-edge/overview) for how it works, or [Getting started](/axp/axp-edge/setup) to connect your CDN and go live in under two hours.
-  * **Bot Override Controls:** The bot override field accepts multiple AI bots at once, so you can manage rules across several agents in a single update.
+</Update>
 
+<Update label="June 30, 2026" tags={["New releases"]} rss={{ title: "Brand Profile and Content pages" }}>
+  ### Brand Profile and Content
+
+  Two new pages help you shape and track how AI agents see your brand.
+
+  * A new **Brand Profile** page lets you define and manage your brand's presence for AI agents.
+  * A new **Content** page shows how your content is being surfaced to agents.
+</Update>
+
+<Update label="June 25, 2026" tags={["New releases"]} rss={{ title: "Introducing Agent Analytics" }}>
   ### Agent Analytics
 
-  The new Agent Analytics page is live for monitoring Ai bot traffic, interactions, success rate, time-to-first-byte, top & bottom movers (percentage change in AI bot hits to a URL) etc.
+  The new **Agent Analytics** page is live for monitoring AI bot traffic, interactions, success rate, time-to-first-byte, and top & bottom movers (percentage change in AI bot hits to a URL).
+</Update>
+
+<Update label="June 11, 2026" tags={["New releases"]} rss={{ title: "Introducing the AXP Dashboard" }}>
+  ### Introducing the AXP Dashboard
+
+  We're launching the **AXP Dashboard**, a single place to manage how AI agents discover, read, and cite your content. It's the foundation we'll build on over the coming weeks.
+
+  * The dashboard is your home for shaping and measuring your brand's presence with AI agents.
+  * It's rolling out gradually. [Contact Publive](https://axp.thepublive.com/contact) to improve your AI visibility.
 </Update>
