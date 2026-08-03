@@ -1,9 +1,599 @@
 ---
 title: "Deploy AXP Edge with CloudFront"
 sidebarTitle: "Deploy on CloudFront"
-description: "Route AI agent traffic to AXP Edge from an Amazon CloudFront distribution."
+description: "Route AI agent traffic to AXP Edge from an Amazon CloudFront distribution, with automatic failover to your origin."
 ---
 
+This guide configures AXP Edge on an existing CloudFront distribution using a CloudFront Function (viewer request) plus a Lambda@Edge function (origin request / origin response). Requests from recognized AI agents (GPTBot, ClaudeBot, Google-Extended, and similar) are routed to the Publive CDS backend instead of your origin. Every other request (human visitors and SEO bots) passes through to your existing origin, unchanged.
+
+Use this approach when your site is served from CloudFront and you want agent routing configured at the CDN layer, without an application deploy.
+
 <Note>
-  **Coming soon.** We're working on a full CloudFront integration guide. In the meantime, we can still help you set it up — [get in touch](https://axp.thepublive.com/contact).
+  Make sure `PubliveBot/1.0 (+https://axp.thepublive.com/bot)` is unblocked on your CDN.
 </Note>
+
+<Note>
+  Make sure LLM user agents (GPTBot, ClaudeBot, Google-Extended, and similar) are unblocked on your CDN, in `robots.txt`, and in any firewall/WAF rules. If one of these layers blocks a bot's request before it reaches CloudFront's function associations, that traffic never gets a chance to route to AXP Edge.
+</Note>
+
+## Prerequisites
+
+- An existing CloudFront distribution serving your website.
+- AWS IAM permissions to create CloudFront functions, Lambda functions, IAM roles, cache policies, and to edit distribution behaviors.
+- Your Publive Edge CDS API key and backend URL (issued per client, contact [support@thepublive.com](mailto:support@thepublive.com) if you don't have these).
+
+## How routing works
+
+CloudFront splits this integration across two function types, run at two different points in the request lifecycle:
+
+- **A CloudFront Function** (`pl-edge-routing`), running on **viewer request** — a lightweight JS function that decides, per request, whether this looks like agent traffic. It doesn't call out to Publive; it only tags the request so the right origin gets picked.
+- **A Lambda@Edge function** (`pl-edge-origin`), running on **origin request** and **origin response** — this is what actually fetches from the Publive CDS backend, applies failover if CDS errors, and shapes the response.
+
+A request only qualifies for AXP Edge when **all** of the following are true:
+
+- The request hostname matches your configured client host.
+- The request hasn't already been routed once (a loop guard header prevents re-routing looped or failed-over requests).
+- The method is `GET` or `HEAD`, and the path isn't a static asset (`.js`, `.css`, images, fonts, and similar are always skipped).
+- The user-agent matches a known AI agent, or the request carries a preview flag.
+
+If the request qualifies, the Lambda@Edge origin-request function fetches the page from CDS and returns it. If CDS errors or is unreachable, the function automatically fails over to your real origin and tags the response with a failover header. Visitors never see an error.
+
+Unlike the [Cloudflare integration](/axp/axp-edge/integrations/cloudflare), where the whole routing decision and the backend fetch live in one Worker, CloudFront splits this across the CloudFront Function (cheap, runs on every request, viewer-request only) and Lambda@Edge (heavier, only invoked for requests the CloudFront Function has already flagged as candidates). This two-tier design is a CloudFront constraint, not a Publive choice — CloudFront Functions cannot make network calls, so the actual CDS fetch has to happen in Lambda@Edge.
+
+## Set up the integration
+
+<Steps>
+  <Step title="Create the Publive CDS origin">
+    **Navigation:** AWS Console > CloudFront > Distributions > [Your Distribution] > Origins tab
+
+    1. Click **Create origin**.
+    2. Configure the origin:
+       - **Origin domain:** your Publive Edge CDS backend URL (for example, `cds.thepublive.com`)
+       - **Name:** `Publive_CDS_Origin`
+    3. Leave all other fields at their default values.
+    4. Add custom headers:
+
+       | Header | Value |
+       | --- | --- |
+       | `x-pl-api-key` | Your Publive Edge CDS API key |
+       | `x-pl-host` | `www.example.com` (replace with your actual website domain) |
+       | `x-pl-fetcher-key` | Your fetcher key (required only if your CDN/WAF needs additional verification beyond user-agent — see [Allow AXP Edge through firewall rules](#allow-axp-edge-through-firewall-rules-optional)) |
+
+    5. Click **Create origin**.
+
+    `[SCREENSHOT: CloudFront → Distributions → Origins → Create origin, showing the Publive_CDS_Origin domain and custom headers]`
+  </Step>
+
+  <Step title="Create the viewer request function">
+    **Navigation:** AWS Console > CloudFront > Functions
+
+    1. Click **Create function**.
+    2. Configure:
+       - **Name:** `pl-edge-routing`
+       - **Runtime:** `cloudfront-js-2.0`
+    3. Replace the default code with the routing code below.
+
+       Before publishing, customize:
+       - `YOUR_DEFAULT_ORIGIN` — the name of your existing default origin (found in CloudFront > Distributions > [Your Distribution] > Origins tab).
+       - `TARGETED_PATHS` — set to `null` to target all HTML pages, or an array of specific paths, for example `['/', '/products', '/about']`.
+
+    ```js viewer-request.js expandable theme={null}
+    // Publive AXP Edge — CloudFront Function (viewer request)
+    // Tags eligible requests so the origin-request Lambda@Edge function
+    // knows whether to route to Publive CDS or pass through to origin.
+    // CloudFront Functions cannot make network calls — this only inspects
+    // and tags the request; the actual CDS fetch happens in Lambda@Edge.
+
+    var AGENT_BOTS = [
+      "GPTBot",
+      "OAI-SearchBot",
+      "ChatGPT-User",
+      "ClaudeBot",
+      "Claude-User",
+      "Claude-SearchBot",
+      "Google-Extended",
+      "anthropic-ai",
+      "PerplexityBot",
+      "Perplexity-User"
+    ];
+
+    var TARGETED_PATHS = null; // null = all HTML pages, or e.g. ['/', '/products', '/about']
+    var YOUR_DEFAULT_ORIGIN = "YOUR_DEFAULT_ORIGIN"; // replace with your existing origin name
+
+    var STATIC_FILE_EXTENSIONS = /\.(js|css|map|json|xml|txt|ico|png|jpe?g|gif|svg|webp|avif|woff2?|ttf|eot|otf|mp4|webm|mov|mp3|wav|pdf|zip|rar|7z|gz)$/i;
+
+    function isAgenticUA(ua) {
+      var lower = ua.toLowerCase();
+      for (var i = 0; i < AGENT_BOTS.length; i++) {
+        if (lower.indexOf(AGENT_BOTS[i].toLowerCase()) !== -1) return true;
+      }
+      return false;
+    }
+
+    function isHtmlPageRequest(method, uri) {
+      var isGetOrHead = method === "GET" || method === "HEAD";
+      return isGetOrHead && !STATIC_FILE_EXTENSIONS.test(uri);
+    }
+
+    function isTargetedPath(uri) {
+      if (TARGETED_PATHS === null) return true;
+      return TARGETED_PATHS.indexOf(uri) !== -1;
+    }
+
+    function handler(event) {
+      var request = event.request;
+      var headers = request.headers;
+      var uri = request.uri;
+      var method = request.method;
+
+      var ua = headers["user-agent"] ? headers["user-agent"].value : "";
+      var alreadyRouted = !!headers["x-pl-request"];
+      var previewFlag = headers["x-pl-preview"] && headers["x-pl-preview"].value === "1";
+      var botMatch = isAgenticUA(ua);
+
+      var eligible =
+        !alreadyRouted &&
+        (previewFlag || botMatch) &&
+        isHtmlPageRequest(method, uri) &&
+        isTargetedPath(uri);
+
+      if (eligible) {
+        console.log("Routing to Publive CDS origin for userAgent: " + ua);
+        request.headers["x-pl-origin-choice"] = { value: "cds" };
+      } else {
+        console.log("Routing to Default origin for userAgent: " + ua);
+        request.headers["x-pl-origin-choice"] = { value: YOUR_DEFAULT_ORIGIN };
+      }
+
+      return request;
+    }
+    ```
+
+    4. Click **Save changes** > **Publish function**.
+
+    `[SCREENSHOT: CloudFront → Functions → pl-edge-routing, showing the published function code]`
+  </Step>
+
+  <Step title="Configure the cache policy">
+    **Navigation:** AWS Console > CloudFront > Distributions > [Your Distribution] > Behaviors
+
+    Check the cache policy currently attached to your behavior. Click **Edit** on your behavior and look at the **Cache key and origin requests** section to identify your scenario:
+
+    - **Scenario A (Legacy):** **Legacy cache settings** is selected — no policy-name dropdown, just inline TTL and header settings.
+    - **Scenario B (Custom policy):** **Cache policy** is selected, with a policy name your team created (not an AWS-provided policy).
+    - **Scenario C (Managed policy):** **Cache policy** is selected with an AWS-provided name like `CachingOptimized`, `CachingDisabled`, or `CachingOptimizedForUncompressedObjects` — these cannot be edited directly.
+
+    **Scenario A: Legacy cache settings**
+
+    1. Under **Cache key and origin requests**, confirm **Legacy cache settings** is selected.
+    2. Add `x-pl-url` and `x-pl-origin-choice` to the **Headers** allow list:
+       - Select **Include the following headers** from the dropdown.
+       - Add `x-pl-url` and `x-pl-origin-choice`.
+
+       `[SCREENSHOT: Legacy cache settings — Headers allow list with x-pl-url and x-pl-origin-choice added]`
+
+       > If you already have **All** selected in the Headers dropdown, skip this step — all headers are automatically forwarded to the origin.
+
+    3. Check **Object caching**:
+       - If set to **Customize**, set **Minimum TTL** to `0` — recommended. If your current Minimum TTL is already very short, you may not need to change it.
+       - If set to **Use origin cache headers**, no change needed.
+    4. Click **Save changes**.
+
+    **Scenario B: Non-legacy with a custom cache policy**
+
+    **Navigation:** AWS Console > CloudFront > Policies > Cache
+
+    1. Click your existing policy, then **Edit**.
+    2. Set **Minimum TTL** to `0` — recommended. If your current Minimum TTL is already very short, you may not need to change it.
+
+       `[SCREENSHOT: Cache policy TTL settings — generic AWS view, reusable as a layout reference]`
+
+    3. Under **Cache key settings** > **Headers**, along with your existing inclusions, add `x-pl-url` and `x-pl-origin-choice`.
+
+       `[SCREENSHOT: Cache policy headers — generic AWS view, reusable as a layout reference]`
+
+    4. Click **Save changes**.
+
+    **Scenario C: Non-legacy with a managed (AWS) cache policy**
+
+    If your behavior uses an AWS managed cache policy (for example, `CachingOptimized`), you can't edit it directly — you need a new custom policy that replicates it and adds Publive's headers.
+
+    **Part 1 — note your current managed cache policy settings**
+
+    **Navigation:** AWS Console > CloudFront > Policies > Cache
+
+    1. Find and open the managed cache policy attached to your behavior.
+    2. Note: Minimum TTL, Maximum TTL, Default TTL; headers, cookies, and query strings included in the cache key; compression support (Gzip, Brotli).
+
+    **Part 2 — create a new custom cache policy with the same settings + Publive headers**
+
+    **Navigation:** AWS Console > CloudFront > Policies > Cache
+
+    1. Click **Create cache policy**.
+    2. **Name:** `pl-edge-cache`
+
+       `[SCREENSHOT: Cache policy name field — generic AWS view, reusable as a layout reference]`
+
+    3. Replicate all settings noted in Part 1, with these modifications:
+       - Set **Minimum TTL** to `0` — recommended, unless your current Minimum TTL is already very short.
+       - Under **Cache key settings** > **Headers**, include everything the managed policy had, plus `x-pl-url` and `x-pl-origin-choice`.
+    4. Click **Create**.
+    5. Go back to your behavior and associate the new policy:
+
+       **Navigation:** AWS Console > CloudFront > Distributions > [Your Distribution] > Behaviors
+
+       1. Edit your behavior.
+       2. Under **Cache key and origin requests**, select **Cache policy**.
+       3. Choose `pl-edge-cache` from the dropdown.
+       4. Click **Save changes**.
+  </Step>
+
+  <Step title="Create the Lambda@Edge function (origin request and response)">
+    <Warning>
+      Lambda@Edge functions **must be created in the `us-east-1` (N. Virginia) region.** This is an AWS requirement. Even though the function is created in `us-east-1`, AWS automatically replicates it to all CloudFront edge locations worldwide, so it executes at the edge location nearest the viewer. Confirm you're in `us-east-1` in the AWS Console before proceeding.
+    </Warning>
+
+    **Create the function**
+
+    **Navigation:** AWS Console > Lambda
+
+    1. Click **Create function**.
+    2. Select **Author from scratch**.
+    3. Configure:
+       - **Function name:** `pl-edge-origin`
+       - Leave all other fields at their default values.
+    4. Click **Create function**.
+    5. In the code editor, replace the default code with the origin-request/origin-response code below.
+    6. Click **Deploy** to save the code.
+    7. Note the **execution role name** shown under **Configuration** > **Permissions** (for example, `pl-edge-origin-role-xxxxx`) — you need this in the next two steps.
+
+    ```js origin-request-response.js expandable theme={null}
+    // Publive AXP Edge — Lambda@Edge (origin request + origin response)
+    // Origin request: fetches from Publive CDS for eligible requests; on
+    // error, marks the request to fail over to the client's real origin.
+    // Origin response: tags failover responses with x-pl-fo.
+
+    'use strict';
+
+    const https = require('https');
+
+    const CLIENT_HOST = 'www.example.com'; // replace with your domain
+    const CDS_BACKEND_HOST = 'cds.thepublive.com'; // replace with your CDS backend host
+    const API_KEY = 'YOUR_PL_EDGE_API_KEY'; // replace, or source from a secrets mechanism
+    const FAILOVER_ON_4XX = true;
+    const FAILOVER_ON_5XX = true;
+
+    exports.handler = async (event) => {
+      const cf = event.Records[0].cf;
+      const request = cf.request;
+      const eventType = cf.config.eventType;
+
+      if (eventType === 'origin-request') {
+        return handleOriginRequest(request);
+      }
+      if (eventType === 'origin-response') {
+        return handleOriginResponse(request, cf.response);
+      }
+      return request;
+    };
+
+    function handleOriginRequest(request) {
+      const headers = request.headers;
+      const originChoice = headers['x-pl-origin-choice']
+        ? headers['x-pl-origin-choice'][0].value
+        : null;
+
+      // CloudFront Function (viewer request) already decided eligibility.
+      // If it tagged this request for the default origin, do nothing —
+      // let it pass through to the distribution's configured origin.
+      if (originChoice !== 'cds') {
+        return request;
+      }
+
+      // Strip inbound trusted headers before setting our own (header hygiene).
+      delete headers['x-pl-api-key'];
+      delete headers['x-pl-url'];
+      delete headers['x-pl-host'];
+      delete headers['x-pl-client-ip'];
+      delete headers['x-pl-origin-choice'];
+
+      const clientIp =
+        (request.clientIp) || '';
+
+      headers['x-pl-host'] = [{ key: 'x-pl-host', value: CLIENT_HOST }];
+      headers['x-pl-url'] = [{ key: 'x-pl-url', value: request.uri + (request.querystring ? '?' + request.querystring : '') }];
+      headers['x-pl-api-key'] = [{ key: 'x-pl-api-key', value: API_KEY }];
+      headers['x-pl-request'] = [{ key: 'x-pl-request', value: 'edge' }];
+      headers['x-pl-client-ip'] = [{ key: 'x-pl-client-ip', value: clientIp }];
+
+      // Redirect this request to the Publive CDS origin.
+      request.origin = {
+        custom: {
+          domainName: CDS_BACKEND_HOST,
+          port: 443,
+          protocol: 'https',
+          sslProtocols: ['TLSv1.2'],
+          readTimeout: 20,
+          keepaliveTimeout: 5,
+          path: '',
+          customHeaders: {}
+        }
+      };
+      request.headers['host'] = [{ key: 'host', value: CDS_BACKEND_HOST }];
+
+      return request;
+    }
+
+    function handleOriginResponse(request, response) {
+      const status = parseInt(response.status, 10);
+      const isErrorStatus =
+        (FAILOVER_ON_4XX && status >= 400 && status < 500) ||
+        (FAILOVER_ON_5XX && status >= 500 && status < 600);
+
+      const wasCdsRequest = request.headers['x-pl-request'] &&
+        request.headers['x-pl-request'][0].value === 'edge';
+
+      if (wasCdsRequest && isErrorStatus) {
+        console.log('Failover Triggered for agentic requests');
+        // In production this branch performs (or signals) a same-request
+        // fetch to the client's real origin and returns that body, tagging
+        // the response with x-pl-fo: 1. Implementation depends on whether
+        // failover is done via a second Lambda@Edge origin-request pass or
+        // an origin-group configured on the distribution (see Troubleshooting).
+        response.headers['x-pl-fo'] = [{ key: 'x-pl-fo', value: '1' }];
+        return response;
+      }
+
+      if (wasCdsRequest) {
+        console.log('Calling Publive CDS Origin for agentic requests');
+      }
+
+      return response;
+    }
+    ```
+
+    <Note>
+      The sample above shows the routing and header-injection contract explicitly, but production failover on CloudFront typically uses a CloudFront **origin group** (primary: Publive CDS, secondary: your origin) configured on the distribution, rather than a second fetch performed inline in Lambda@Edge — Lambda@Edge cannot make outbound network calls of its own in the origin-response phase in all runtimes. Confirm the failover mechanism with your Publive representative before going live; the origin-group approach is what the **Verify** steps below assume.
+    </Note>
+
+    **Update the execution role's trust policy**
+
+    The auto-created role only trusts `lambda.amazonaws.com`. For Lambda@Edge, you must also add `edgelambda.amazonaws.com`.
+
+    **Navigation:** AWS Console > IAM > Roles > [your role from the previous step] > Trust relationships tab
+
+    1. Click **Edit trust policy**.
+    2. Replace the policy with:
+
+    ```json trust-policy.json theme={null}
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "Service": [
+              "lambda.amazonaws.com",
+              "edgelambda.amazonaws.com"
+            ]
+          },
+          "Action": "sts:AssumeRole"
+        }
+      ]
+    }
+    ```
+
+    3. Click **Update policy**.
+
+    <Warning>
+      The `edgelambda.amazonaws.com` service principal is **required** for Lambda@Edge. Without it, CloudFront cannot invoke your function at edge locations.
+    </Warning>
+
+    **Fix the CloudWatch Logs permission policy**
+
+    The auto-created role ships with an `AWSLambdaBasicExecutionRole` policy configured for regular Lambda, which has the wrong region and log-group name for Lambda@Edge.
+
+    **Navigation:** AWS Console > IAM > Roles > [your role] > Permissions tab > click the attached policy name (for example, `AWSLambdaBasicExecutionRole-xxxx`)
+
+    1. Click **Edit**.
+    2. Replace the policy with:
+
+    ```json cloudwatch-policy.json theme={null}
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents"
+          ],
+          "Resource": "arn:aws:logs:*:ACCOUNT_ID:log-group:/aws/lambda/*.FUNCTION_NAME:*"
+        }
+      ]
+    }
+    ```
+
+    Replace `ACCOUNT_ID` with your AWS account ID (top-right corner of the AWS Console) and `FUNCTION_NAME` with your Lambda function's name (for example, `pl-edge-origin`).
+
+    3. Click **Save changes**.
+
+    <Warning>
+      The region in the ARN must be `*` — Lambda@Edge executes at the edge location nearest the viewer, so logs are written to CloudWatch in the region of that edge location (for example, `ap-south-1`, `eu-west-1`), not necessarily `us-east-1`. The log group uses a region-prefixed name: `/aws/lambda/us-east-1.FUNCTION_NAME`, where `us-east-1` is always the function's home region.
+    </Warning>
+
+    **Publish a version**
+
+    1. On the function page, click **Actions** (top right) > **Publish new version**.
+    2. Add a description.
+    3. Click **Publish**.
+    4. Copy the **Function ARN** — you need it in the next step.
+
+    `[SCREENSHOT: Lambda — publish new version dialog]`
+    `[SCREENSHOT: Lambda — versioned Function ARN shown on the function page]`
+  </Step>
+
+  <Step title="Associate the functions and cache policy with the behavior">
+    **Navigation:** AWS Console > CloudFront > Distributions > [Your Distribution] > Behaviors
+
+    1. Edit your behavior.
+    2. If you created a new cache policy in the previous step (Scenario C), set **Cache policy** to `pl-edge-cache`.
+    3. Under **Function associations**, configure:
+
+       | Event | Set to |
+       | --- | --- |
+       | Viewer request | `pl-edge-routing` (CloudFront function) |
+       | Origin request | Versioned Function ARN for `pl-edge-origin` |
+       | Origin response | Versioned Function ARN for `pl-edge-origin` |
+
+    4. Click **Save changes**.
+
+    `[SCREENSHOT: Cache policy dropdown on the behavior, set to pl-edge-cache]`
+    `[SCREENSHOT: Function associations — Viewer request / Origin request / Origin response set to Publive's functions]`
+  </Step>
+</Steps>
+
+## Allow AXP Edge through firewall rules (optional)
+
+If your CDN uses a WAF or Bot Manager:
+
+- Allowlist the `PubliveBot/1.0 (+https://axp.thepublive.com/bot)` user agent so the AXP Edge service can fetch your origin content during failover and cache-warming.
+- If your firewall requires additional verification beyond user agent, generate a secret (for example, `openssl rand -hex 32`) and:
+  - Add `x-pl-fetcher-key` with the secret to the Publive CDS origin's custom headers (Step 1).
+  - Add a WAF or Bot Manager rule allowing requests where `x-pl-fetcher-key` matches the same secret.
+- AXP Edge forwards this header as-is — you own the full key lifecycle.
+
+## Verify
+
+**1. Test bot traffic (should be optimized)**
+
+Simulate an AI bot request using an agentic user-agent:
+
+```bash theme={null}
+curl -svo /dev/null https://www.example.com/page.html \
+  --header "user-agent: ChatGPT-User"
+```
+
+A successful response includes the `x-pl-request-id` header, confirming the request was routed through AXP Edge:
+
+```
+< HTTP/2 200
+< x-pl-request-id: 50fce12d-0519-4fc6-af78-d928785c1b85
+```
+
+**2. Test human traffic (should NOT be affected)**
+
+```bash theme={null}
+curl -svo /dev/null https://www.example.com/page.html \
+  --header "user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+```
+
+The response should **not** contain the `x-pl-request-id` header. Page content and response time should be identical to before enabling AXP Edge.
+
+**3. How to differentiate between the two scenarios**
+
+| Header | Bot traffic (optimized) | Human traffic (unaffected) |
+| --- | --- | --- |
+| `x-pl-request-id` | Present — unique request ID | Absent |
+| `x-pl-fo` | Present only if failover occurred (value: `1`) | Absent |
+
+You can also check routing status in the AXP dashboard: **Brand Configuration > Integrations > CDN**.
+
+`[SCREENSHOT: AXP dashboard — CDN integration status showing "verified" for the CloudFront connection]`
+
+**4. Verify logs are flowing correctly**
+
+*CloudFront Function logs (`pl-edge-routing`)*
+
+**Navigation:** AWS Console > CloudWatch > Log groups (in `us-east-1`, or the region where your CloudFront distribution is configured)
+
+1. Look for a log group named `/aws/cloudfront/function/pl-edge-routing`.
+2. Open the latest log stream.
+3. For agentic requests, expect entries such as:
+   - `Routing to Publive CDS origin for userAgent: ChatGPT-User`
+4. For non-agentic requests, expect:
+   - `Routing to Default origin for userAgent: ...`
+
+You can also check the **Metrics** tab under **AWS Console > CloudFront > Functions > pl-edge-routing** for invocation counts and error rates.
+
+*Lambda@Edge logs (`pl-edge-origin`)*
+
+<Warning>
+  Lambda@Edge logs are written to CloudWatch in the **region of the edge location** that served the request, not `us-east-1`. Check CloudWatch in the AWS region closest to where you ran the curl command.
+</Warning>
+
+**Navigation:** AWS Console > CloudWatch > Log groups (confirm you're in the correct region)
+
+1. Look for a log group named `/aws/lambda/us-east-1.pl-edge-origin`.
+2. Open the latest log stream.
+3. For agentic requests, expect entries such as:
+   - `Calling Publive CDS Origin for agentic requests` — primary path
+   - `Failover Triggered for agentic requests` — origin-response failover detection
+
+If the log group isn't present, verify the IAM permissions were updated correctly. Also check other nearby AWS regions — the edge location that served your request may differ from what you expect.
+
+## Troubleshooting
+
+| Issue | Possible cause | Solution |
+| --- | --- | --- |
+| No `x-pl-request-id` in response for agentic requests | Origin routing not reaching Publive CDS | Verify `YOUR_DEFAULT_ORIGIN` was replaced correctly in the CloudFront Function code, and that the origin-request Lambda@Edge is checking `x-pl-origin-choice` correctly. |
+| 403 errors on agentic requests | Invalid or missing API key | Check the `x-pl-api-key` header value on the Publive CDS origin's custom headers. |
+| Cannot find CloudWatch logs for Lambda@Edge | Wrong IAM permissions | Verify the CloudWatch Logs permission policy was updated. Lambda@Edge logs appear in the edge region that served the request, not necessarily `us-east-1`. |
+| Cache not honoring `cache-control: no-store` | Minimum TTL may be too high | Set Minimum TTL to `0` in your cache policy. If Minimum TTL is already very short, this may not be the issue. |
+| Regular (non-agentic) traffic broken after setup | Cache policy misconfiguration | If you created a new cache policy (Scenario C), confirm you replicated all settings from the original managed policy. |
+
+## Rollback
+
+The Lambda@Edge function (`pl-edge-origin`) is associated with the origin request and origin response events of your CloudFront behavior. Because it runs inline on every request passing through that behavior — both human and agentic — a Lambda@Edge outage will impact all live traffic, not just agentic requests. If you detect a Lambda@Edge outage, remove the function associations immediately to restore normal traffic flow to your default origin.
+
+**How to detect a Lambda@Edge outage**
+
+- **AWS Service Health Dashboard** — check for active incidents affecting **Amazon CloudFront** or **AWS Lambda**.
+- **Lambda@Edge errors** — **AWS Console > CloudFront > Monitoring > [Your Distribution] > Lambda@Edge errors** tab; check the **Execution errors** graph.
+
+**Detaching the Lambda@Edge function**
+
+**Navigation:** AWS Console > CloudFront > Distributions > [Your Distribution] > Behaviors
+
+1. Click **Edit** on your behavior.
+2. Under **Function associations**, set the following to **No association**:
+
+   | Event | Change to |
+   | --- | --- |
+   | Viewer request | No association |
+   | Origin request | No association |
+   | Origin response | No association |
+
+3. Click **Save changes**.
+4. Wait for the distribution to finish deploying (status changes from **Deploying** to the last-modified date, typically within a few minutes).
+
+Once deployed, all traffic routes directly to your default origin. No configuration is deleted; the Lambda function and its associations can be restored at any time.
+
+**Re-attaching the Lambda@Edge function**
+
+**Navigation:** AWS Console > CloudFront > Distributions > [Your Distribution] > Behaviors
+
+1. Click **Edit** on your behavior.
+2. Under **Function associations**, restore:
+
+   | Event | Set to |
+   | --- | --- |
+   | Viewer request | `pl-edge-routing` (CloudFront function) |
+   | Origin request | Versioned Lambda ARN for `pl-edge-origin` |
+   | Origin response | Versioned Lambda ARN for `pl-edge-origin` |
+
+3. Click **Save changes**.
+4. Wait for the distribution to finish deploying, then verify agentic requests return the `x-pl-request-id` header as described in **Verify**.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="AXP Edge dashboard" icon="gauge" href="/axp/axp-edge/dashboard">
+    Monitor agent traffic and manage optimization rules.
+  </Card>
+
+  <Card title="Deploy on Cloudflare" icon="bolt" href="/axp/axp-edge/integrations/cloudflare">
+    Site behind Cloudflare instead of CloudFront? Use the Worker-based guide.
+  </Card>
+</CardGroup>
