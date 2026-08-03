@@ -11,7 +11,7 @@ description: "An opt-in field in Post Details that controls the headline shown w
 
 ## Enabling it
 
-Google Discover Headline is opt-in — email [support@thepublive.com](mailto:support@thepublive.com) to have it enabled for your account. There's no setup required beyond that request.
+Google Discover Headline is opt-in — [contact us](mailto:support@thepublive.com) to have it enabled for your account. There's no setup required beyond that request.
 
 <Note>
   If you don't request this, nothing changes in your dashboard. OG Title stays exactly where it is today, in SEO Properties, working exactly as it always has.
@@ -31,9 +31,9 @@ Once enabled, your existing OG Title value carries over into the new field autom
 
 ## Why it matters
 
-Google Discover Headline controls one specific thing: the headline that appears when your content shows up in Google Discover. It's not your page's Title (H1), and it's not your Meta Title — those are separate fields with separate jobs. Grouped inside SEO Properties alongside several similarly named fields, that distinction was easy to miss.
+Google Discover Headline is the strongest signal you can give Google for the headline shown when your content appears in Google Discover — though not a guarantee of what displays, since Google's own systems make the final call. It's a distinct field from your page's Title (H1) and your Meta Title, which serve separate jobs. Grouped inside SEO Properties alongside several similarly named fields, that distinction was easy to miss.
 
-[Google's own Discover documentation](https://developers.google.com/search/docs/appearance/google-discover) calls out compelling, non-misleading titles as a factor in whether content gets picked up by the feed — which is why this field now has a dedicated, visible spot next to Title.
+[Google's own Discover documentation](https://developers.google.com/search/docs/appearance/google-discover) calls out compelling, non-misleading titles as a factor in whether content gets picked up by the feed, which is why this field now has a dedicated, visible spot next to Title. If left blank, Discover falls back to your page's Title instead.
 
 ## Using the field
 
@@ -54,6 +54,18 @@ Google Discover Headline is available on every content type that previously supp
   </Accordion>
   <Accordion title="Does this affect my Meta Title, Twitter Title, or my page's H1?">
     No, whether or not you enable this. Google Discover Headline only controls what was previously OG Title. Meta Title, Twitter Title, structured data, and your page's H1 are all untouched.
+  </Accordion>
+  <Accordion title="Will Google always show exactly the headline I set here?">
+    Not necessarily, and that's expected. Google Discover Headline is the signal you send to Google for the feed, but Google's own systems make the final decision on what to display. A few ordinary reasons the two might not match:
+
+    - **Indexing lag.** Google has to recrawl your page before a headline change appears in Discover — this can take hours to days, not seconds.
+    - **Google's own choice.** Discover can pull from the page Title, the on-page H1, or occasionally a headline it generates itself, if its systems judge that to be a better fit for the feed.
+    - **Caching.** What you see in your own Discover feed can be a cached, older version of the page.
+
+    If you've set the field and reopened the post to confirm it saved correctly, you've done everything on your end — the display choice from that point is Google's.
+  </Accordion>
+  <Accordion title="Does this affect my live pages, SEO, or existing traffic?">
+    No. The underlying value is unchanged and there's no data migration, so nothing about how your live pages render or get indexed changes. This only affects where you find and edit the field in the editor.
   </Accordion>
   <Accordion title="I can't find OG Title in SEO Properties anymore — is it gone?">
     OG Title only moves out of SEO Properties once Google Discover Headline is enabled for your account. If you haven't requested it, OG Title is exactly where it's always been.
