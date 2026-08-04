@@ -1,0 +1,234 @@
+---
+title: "Deploy AXP Edge with F5 Distributed Cloud"
+sidebarTitle: "Deploy on F5 XC"
+description: "Route AI agent traffic to AXP Edge from an F5 Distributed Cloud (XC) HTTP Load Balancer, with automatic failover to your origin."
+---
+
+# Deploy AXP Edge with F5 Distributed Cloud
+
+> Route AI agent traffic to AXP Edge from an F5 Distributed Cloud (XC) HTTP Load Balancer, with automatic failover to your origin.
+
+This guide deploys AXP Edge on **F5 Distributed Cloud (XC)** — F5's SaaS edge/CDN platform (formerly Volterra, identifiable by a `server: volt-adc` response header). XC inspects each request's user-agent at its edge; requests from recognized AI agents (GPTBot, ClaudeBot, Google-Extended, and similar) are routed to the Publive CDS backend as an alternate origin instead of your normal origin. Every other request (human visitors and SEO bots) reaches your origin untouched.
+
+Use this approach when F5 Distributed Cloud is the public-facing edge terminating your traffic and there is **no separate CDN** (Cloudflare, Akamai, Fastly, CloudFront) in front of it. If a CDN does sit in front of XC, integrate at that CDN layer instead.
+
+<Note>
+  F5 XC does not have a single programmable "worker" like Cloudflare. The routing decision is expressed across three XC constructs working together: a **Service Policy** (matches the AI-agent user-agent and page paths), an **HTTP Load Balancer route rule** (sends matched requests to the Publive origin pool), and a small **JavaScript v8 policy** on the F5 XC Mesh data plane (injects the Publive headers and enforces the loop guard). This guide sets up all three.
+</Note>
+
+<Note>
+  Make sure `PubliveBot/1.0 (+https://axp.thepublive.com/bot)` is unblocked in your XC **Bot Defense** / **WAF** / **Malicious Users** policies, and that LLM user agents (GPTBot, ClaudeBot, Google-Extended, and similar) are unblocked in XC, in `robots.txt`, and in any origin-side firewall rules. If XC's own Bot Defense blocks an agent before the Service Policy evaluates it, that traffic never gets a chance to route to AXP Edge.
+</Note>
+
+## Prerequisites
+
+* An F5 Distributed Cloud tenant with the target domain already served by an **HTTP Load Balancer** in the XC Console.
+* Permission in that tenant to create Service Policies, Origin Pools, Route rules, and (Mesh) JavaScript / service-policy rules on the Load Balancer.
+* Your Publive Edge CDS API key and backend URL (issued per client — contact [support@thepublive.com](mailto:support@thepublive.com) if you don't have these).
+* Confirmation that XC's data-plane JavaScript (v8) is available on your tenant plan. Header injection and the loop guard rely on it. If your plan does not include JavaScript data-plane programmability, see [Header injection without JavaScript](#header-injection-without-javascript) below.
+
+## How routing works
+
+XC makes one decision per request: send it to the AXP Edge origin pool, or serve it from your normal origin. A request only qualifies for AXP Edge when **all** of the following are true:
+
+* The request hostname matches your Load Balancer's configured domain.
+* The request hasn't already been routed once (a loop-guard header prevents re-routing looped or failed-over requests).
+* The method is `GET` or `HEAD`, and the path isn't a static asset (`.js`, `.css`, images, fonts, and similar are always skipped).
+* The user-agent matches a known AI agent (or the request carries the preview flag).
+
+If the request qualifies, XC routes it to the Publive CDS origin pool with the Publive headers injected, and returns the response. If CDS errors or is unreachable, XC's origin-pool failover returns your real origin content instead, tagged with a failover header. Visitors never see an error.
+
+Unlike the Cloudflare integration, the agent bot list here lives in the **Service Policy match expression** (and the JS policy's `AGENT_BOTS` array) rather than in a single Worker file. To add or remove a bot, edit the Service Policy rule and the JS array, then re-save the Load Balancer.
+
+## Set up the integration
+
+<Steps>
+  <Step title="Create the AXP Edge origin pool">
+    In the XC Console, go to **Multi-Cloud App Connect → Manage → Load Balancers → Origin Pools → Add Origin Pool**.
+
+    * **Name**: `publive-cds-pool`
+    * **Origin server**: the Publive CDS backend as a **DNS name** origin (public name, e.g. `cds.thepublive.com`).
+    * **TLS**: enable TLS to the origin; use SNI set to the CDS hostname.
+    * **Port**: `443`.
+    * **Health check**: use a simple HTTPS health check against the CDS health path (Publive provides this with your key).
+
+    This pool is the AXP Edge destination. Your existing origin pool (your real site) stays exactly as it is and remains the default.
+
+    <Warning>
+      CDS is a **single fixed endpoint**: `https://cds.thepublive.com/axp/view/`. The original request path is **not** appended to the CDS URL — it travels in the `x-pl-url` header instead (set by the JS policy in Step 3). By default, an XC origin pool preserves the incoming request path, which would incorrectly send `/pricing?x=1` to `cds.thepublive.com/pricing?x=1`. You must rewrite the outbound path to the fixed `/axp/view/` endpoint on the route (Step 4). The origin pool server here is just the host (`cds.thepublive.com`); the fixed `/axp/view/` path is applied by the route rewrite.
+    </Warning>
+  </Step>
+
+  <Step title="Create the agent-match Service Policy">
+    Go to **Web App & API Protection → Manage → Service Policies → Add Service Policy** (or add a custom rule set on the Load Balancer).
+
+    Add a rule named `match-ai-agents` that matches when **all** of:
+
+    * **HTTP method** is `GET` or `HEAD`.
+    * **Path** does **not** match the static-asset pattern:
+      `\.(js|css|map|json|xml|txt|ico|png|jpe?g|gif|svg|webp|avif|woff2?|ttf|eot|otf|mp4|webm|mov|mp3|wav|pdf|zip|rar|7z|gz)$` (case-insensitive).
+    * **`User-Agent` header** matches (case-insensitive, "contains" / regex `OR`) any of the agent bots listed below, **OR** the request carries header `x-pl-preview: 1`.
+
+    Set the rule **action** to a value your route rule can key on — either tag it (add request header `x-pl-agent-match: 1`) or use it directly as the route-match predicate in the next step. Tagging is cleaner because the JS policy and the route rule can both read one header.
+
+    <Accordion title="Agent bots to match (keep in sync with the JS policy)">
+      | Category         | Bots                                                                      |
+      | ---------------- | ------------------------------------------------------------------------- |
+      | Training         | `GPTBot`, `ClaudeBot`, `Google-Extended`, `anthropic-ai`, `PerplexityBot` |
+      | Agent            | `ChatGPT-User`, `Claude-User`, `Perplexity-User`                          |
+      | Search           | `OAI-SearchBot`, `Claude-SearchBot`                                       |
+    </Accordion>
+  </Step>
+
+  <Step title="Add the JavaScript data-plane policy (header injection + loop guard)">
+    On the Load Balancer, add a **JavaScript (v8) request policy** (XC Mesh data-plane programmability). This is the equivalent of the Cloudflare Worker's `buildCDSHeaders` and loop-guard logic. It runs only on requests the Service Policy tagged, strips any inbound spoofed `x-pl-*` headers, and injects Publive's trusted headers.
+
+    ```js publive-edge-xc.js expandable
+    // Publive AXP Edge — F5 XC data-plane request policy (v8)
+    // Runs on requests tagged by the match-ai-agents Service Policy.
+    // Injects CDS headers and enforces the loop guard. Mirrors the
+    // Cloudflare Worker's buildCDSHeaders() + loop-guard behaviour.
+
+    const LOOP_GUARD_HEADER  = "x-pl-request";
+    const PREVIEW_HEADER     = "x-pl-preview";
+    const HOST_HEADER        = "x-pl-host";
+    const URL_HEADER         = "x-pl-url";
+    const API_KEY_HEADER     = "x-pl-api-key";
+    const CLIENT_IP_HEADER   = "x-pl-client-ip";
+    const CLIENT_AGENT_HEADER    = "x-pl-client-agent";
+    const PROTOCOL_HEADER        = "x-pl-protocol";
+    const REFERER_HEADER         = "x-pl-referer";
+    const ACCEPT_LANGUAGE_HEADER = "x-pl-accept-language";
+
+    // Env values are configured as Load Balancer / policy variables (see next step).
+    // PL_EDGE_CLIENT_HOST, PL_EDGE_API_KEY
+
+    const AGENT_BOTS = [
+      "GPTBot", "OAI-SearchBot", "ChatGPT-User",
+      "ClaudeBot", "Claude-User", "Claude-SearchBot",
+      "Google-Extended", "anthropic-ai",
+      "PerplexityBot", "Perplexity-User"
+    ];
+
+    // Inbound headers a client must never be able to set themselves.
+    const INBOUND_HEADERS_TO_STRIP = [
+      API_KEY_HEADER, URL_HEADER, HOST_HEADER,
+      CLIENT_IP_HEADER, LOOP_GUARD_HEADER, PREVIEW_HEADER
+    ];
+
+    function isAgenticUA(ua) {
+      const lower = (ua || "").toLowerCase();
+      return AGENT_BOTS.some((bot) => lower.includes(bot.toLowerCase()));
+    }
+
+    // req is the XC data-plane request object; property/method names follow
+    // your tenant's JS policy API (getHeader/setHeader/deleteHeader/clientIP).
+    function onRequest(req, env) {
+      // Loop guard: a request already routed once (or failed over) is passed
+      // straight through with no re-injection.
+      if (req.getHeader(LOOP_GUARD_HEADER)) return;
+
+      const preview  = req.getHeader(PREVIEW_HEADER) === "1";
+      const botMatch = isAgenticUA(req.getHeader("user-agent"));
+      if (!preview && !botMatch) return;
+
+      // Strip any spoofed trusted headers before setting our own (header hygiene).
+      INBOUND_HEADERS_TO_STRIP.forEach((k) => req.deleteHeader(k));
+
+      req.setHeader(HOST_HEADER, env.PL_EDGE_CLIENT_HOST);
+      req.setHeader(URL_HEADER, req.path + (req.query ? "?" + req.query : ""));
+      req.setHeader(API_KEY_HEADER, env.PL_EDGE_API_KEY);
+      req.setHeader(LOOP_GUARD_HEADER, preview ? "preview" : "edge");
+      req.setHeader(CLIENT_IP_HEADER, req.clientIP() || "");
+      req.setHeader(CLIENT_AGENT_HEADER, req.getHeader("user-agent") || "");
+      req.setHeader(PROTOCOL_HEADER, (req.scheme || "https"));
+      req.setHeader(ACCEPT_LANGUAGE_HEADER, req.getHeader("accept-language") || "");
+      const referer = req.getHeader("referer");
+      if (referer) req.setHeader(REFERER_HEADER, referer);
+    }
+
+    export { onRequest, isAgenticUA };
+    ```
+
+    <Note>
+      XC's JavaScript data-plane API surface (object names, `getHeader`/`setHeader` signatures, how `env` variables are exposed) varies by tenant version. Treat the code above as the **contract to implement**, not a byte-for-byte drop-in: the required behaviour is (1) skip looped requests, (2) match agent UA or preview flag, (3) strip inbound `x-pl-*`, (4) inject the header set above. Confirm the exact API against your tenant's JavaScript policy documentation.
+    </Note>
+  </Step>
+
+  <Step title="Add the route rule to the Load Balancer">
+    Open your HTTP Load Balancer → **Routes → Add Route**.
+
+    * **Match**: the tag from the Service Policy (`x-pl-agent-match: 1`), or replicate the same UA + method + path predicate directly on the route.
+    * **Action**: route to **`publive-cds-pool`** (the origin pool from Step 1).
+    * **Path rewrite (required)**: rewrite the outbound request path to the fixed CDS endpoint **`/axp/view/`** — e.g. a route "replace path" / "prefix rewrite" action that discards the original path and sends every matched request to `/axp/view/`. The original path + query is preserved separately in the `x-pl-url` header (Step 3), so CDS reads the target page from that header, **not** from the URL. Without this rewrite, XC forwards the original path and CDS receives the wrong endpoint.
+    * **Failover**: set the route / pool so that on origin-pool failure (CDS 4xx/5xx, timeout, or unreachable) traffic **falls back to your default origin pool**. Mark failed-over responses by having XC add response header `x-pl-fo: 1` (response-header rule on the failover path).
+    * Leave the **default route** pointing at your existing origin pool so all non-matching (human + SEO) traffic is untouched.
+
+    Order matters: the agent-match route must be evaluated **before** the catch-all default route.
+  </Step>
+
+  <Step title="Configure variables / secrets">
+    Store these as Load Balancer or policy variables (use XC's **secret** type for the API key, never inline it in JS):
+
+    | Variable              | Description                                                                                 | Example              |
+    | --------------------- | ------------------------------------------------------------------------------------------- | -------------------- |
+    | `PL_EDGE_CLIENT_HOST` | Hostname only (no protocol). Identifies the site to CDS and is used as the failover origin.  | `thepublive.com`     |
+    | `PL_EDGE_API_KEY`     | Edge CDS API key issued per client via Publive. Store as an **XC secret (Blindfold)**.       | `xxxxxxx`            |
+    | `PL_EDGE_BACKEND_URL` | Publive CDS fixed endpoint (host in the origin pool, `/axp/view/` applied by the route rewrite). | `cds.thepublive.com/axp/view/` |
+  </Step>
+</Steps>
+
+## Verify
+
+Send test requests to a real page path (not a static asset) and inspect headers:
+
+```bash
+# Bot traffic — expect x-pl-request-id present (served by CDS)
+curl -s https://<DOMAIN>/<PATH> \
+  -H "user-agent: ChatGPT-User" \
+  -o /dev/null -D -
+
+# Human traffic — expect NO CDS header, unchanged content and timing
+curl -s https://<DOMAIN>/<PATH> \
+  -H "user-agent: Mozilla/5.0" \
+  -o /dev/null -D -
+```
+
+* **Bot traffic**: the AI-agent request returns a response with the `x-pl-request-id` header present, confirming it was served by CDS.
+* **Human traffic**: the browser-UA request shows no CDS header, and content/response time is unchanged.
+* **Failover**: temporarily point `publive-cds-pool` at an unreachable host (or simulate a CDS outage) and confirm the response carries `x-pl-fo: 1` and still serves your real origin content.
+* **XC fingerprint sanity check**: a normal response should still show `server: volt-adc` and an `x-volterra-location` header, confirming you're testing against the XC edge and not a bypassed path.
+
+## Troubleshooting
+
+XC does not have a per-request `PL_EDGE_DEBUG` log toggle like the Cloudflare Worker. Use the XC Console's **request logs** (and the Load Balancer's **security event** / **access log** views) to trace where a request stopped qualifying.
+
+| Symptom                                                                 | Cause                                                                        | Fix                                                                                                        |
+| ----------------------------------------------------------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Bot request served from origin, no `x-pl-request-id`                     | Service Policy didn't match the UA, so the route never fired                 | Confirm the UA is in the Service Policy match list; check case-insensitive "contains"/regex is used        |
+| Bot request served from origin, Service Policy shows a match             | Route rule not ordered before the default route, or route match predicate wrong | Move the agent-match route above the catch-all; confirm it keys on the same tag/predicate                |
+| Bot request reaches CDS but returns your origin content with `x-pl-fo:1` | CDS returned 4xx/5xx → origin-pool failover fired                            | Check CDS-side logs for the underlying error; confirm `PL_EDGE_API_KEY` and `PL_EDGE_CLIENT_HOST` are correct |
+| CDS returns 404 / wrong page for every bot request                       | Route path-rewrite missing — original path forwarded instead of `/axp/view/` | Confirm the route rewrites outbound path to the fixed `/axp/view/` endpoint, and that `x-pl-url` carries the original path + query |
+| CDS rejects the request (auth error)                                     | `x-pl-api-key` not injected, or JS policy not running on the matched request | Confirm the JS policy is attached and executes after the Service Policy tag; check the secret resolves     |
+| Loop / duplicate routing                                                 | Loop-guard header not honored on failover retry                              | Confirm the JS policy returns early when `x-pl-request` is already present                                 |
+| Bot never reaches the Service Policy at all                              | XC Bot Defense / WAF blocked the agent UA upstream                           | Allow the Agent/Training bot categories and `PubliveBot` in XC Bot Defense and WAF                         |
+
+### Header injection without JavaScript
+
+If your XC tenant plan does not include JavaScript data-plane programmability, the header injection in Step 3 can be approximated with **static request-header rules** on the route:
+
+* Set `x-pl-host`, `x-pl-api-key`, `x-pl-url` (from the built-in path variable), and `x-pl-client-ip` (from XC's client-IP variable) as fixed/route-variable request headers on the agent-match route.
+* Enforce the loop guard by making the agent-match route **not** match when `x-pl-request` is already present.
+* The trade-off: static rules are less expressive than the JS policy (e.g. conditional `referer` forwarding, dynamic loop-guard values), and header hygiene (stripping inbound spoofed `x-pl-*`) must be done as explicit delete-header rules ahead of the set-header rules. Confirm this path with Publive support before relying on it for a production client.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="AXP Edge dashboard" icon="gauge" href="/axp/axp-edge/dashboard">
+    Monitor agent traffic and manage optimization rules.
+  </Card>
+
+  <Card title="Deploy on Cloudflare" icon="cloudflare" href="/axp/axp-edge/integrations/cloudflare">
+    On Cloudflare instead? Use the Worker-based guide.
+  </Card>
+</CardGroup>
