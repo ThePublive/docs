@@ -64,11 +64,11 @@ curl -X POST \
   -F 'source=Staff Photographer'
 ```
 
-```bash External URL (application/json)
+```bash External URL (application/x-www-form-urlencoded)
 curl -X POST \
   'https://cms.thepublive.com/publisher/123/media-library/' \
   -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
-  -H 'Content-Type: application/json' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
   -d '{
     "filename": "hero-image.jpg",
     "path": "https://cdn.publive.com/images/hero-image.jpg",
