@@ -20,6 +20,7 @@ AXP Edge integrates at the CDN layer, so it works with any site already served t
 | Amazon CloudFront   | [Deploy on CloudFront](/axp/axp-edge/integrations/cloudfront)         |
 | Fastly              | [Deploy on Fastly](/axp/axp-edge/integrations/fastly)                 |
 | Akamai              | [Deploy on Akamai](/axp/axp-edge/integrations/akamai)                 |
+| F5 Distributed Cloud (XC) | [Deploy on F5 XC](/axp/axp-edge/integrations/f5-xc)             |
 
 If your site sits behind a different CDN or edge network, AXP Edge can almost certainly still integrate. [Get AXP Edge integrated here](https://axp.thepublive.com/contact).
 
@@ -64,20 +65,23 @@ You can exclude specific pages or sections of your site from AXP Edge optimizati
 Setting up AXP Edge yourself instead of pointing DNS at it? Use the guide for your CDN:
 
 <CardGroup cols={2}>
-  <Card title="Deploy on Cloudflare" icon="cloudflare" href="/axp/axp-edge/integrations/cloudflare">
+  <Card title="Deploy on Cloudflare" icon="/images/axp/logos/cloudflare.svg" href="/axp/axp-edge/integrations/cloudflare">
     Worker-based routing on Cloudflare, with automatic origin failover.
   </Card>
-  <Card title="Deploy on Vercel" icon="triangle" href="/axp/axp-edge/integrations/vercel">
+  <Card title="Deploy on Vercel" icon="/images/axp/logos/vercel.svg" href="/axp/axp-edge/integrations/vercel">
     Next.js Middleware-based routing for apps hosted on Vercel.
   </Card>
-  <Card title="Deploy on CloudFront" icon="aws" href="/axp/axp-edge/integrations/cloudfront">
+  <Card title="Deploy on CloudFront" icon="/images/axp/logos/aws.svg" href="/axp/axp-edge/integrations/cloudfront">
     Lambda@Edge routing for an Amazon CloudFront distribution.
   </Card>
-  <Card title="Deploy on Fastly" icon="bolt" href="/axp/axp-edge/integrations/fastly">
+  <Card title="Deploy on Fastly" icon="/images/axp/logos/fastly.svg" href="/axp/axp-edge/integrations/fastly">
     Compute@Edge routing for a Fastly service.
   </Card>
-  <Card title="Deploy on Akamai" icon="bolt" href="/axp/axp-edge/integrations/akamai">
+  <Card title="Deploy on Akamai" icon="/images/axp/logos/akamai.svg" href="/axp/axp-edge/integrations/akamai">
     Property Manager rules for routing on Akamai.
+  </Card>
+  <Card title="Deploy on F5 XC" icon="/images/axp/logos/f5.svg" href="/axp/axp-edge/integrations/f5-xc">
+    Service Policy and Load Balancer routing on F5 Distributed Cloud.
   </Card>
   <Card title="Don't have a CDN?" icon="circle-question" href="/axp/axp-edge/integrations/dont-have-a-cdn">
     Get a CDN in front of your domain, then connect AXP Edge.
