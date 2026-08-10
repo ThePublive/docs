@@ -540,6 +540,12 @@
     "default": "light"
   },
   "api": {
+    "openapi": [
+      "openapi/content-delivery.json",
+      "openapi/content-management.json",
+      "openapi/media-register-url.json",
+      "openapi/media-upload-file.json"
+    ],
     "mdx": {
       "auth": {
         "method": "basic"
