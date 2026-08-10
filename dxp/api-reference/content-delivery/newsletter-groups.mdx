@@ -1,0 +1,44 @@
+---
+title: "Newsletter Groups"
+description: Fetch newsletter group listings
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/newsletter-groups/"
+---
+
+Returns all configured newsletter groups with their metadata.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "ok",
+  "data": [
+    {
+      "id": 1,
+      "name": "Daily Digest",
+      "logo_url": "/media/newsletters/daily-digest.png",
+      "description": "Get the top stories delivered to your inbox every morning."
+    },
+    {
+      "id": 2,
+      "name": "Weekly Roundup",
+      "logo_url": "/media/newsletters/weekly-roundup.png",
+      "description": "A curated selection of the week's best stories."
+    }
+  ],
+  "message": ""
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+</ResponseExample>

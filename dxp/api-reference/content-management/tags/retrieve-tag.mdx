@@ -1,0 +1,39 @@
+---
+title: "Retrieve Tag"
+description: Retrieve a single tag by ID
+api: "GET https://cms.thepublive.com/publisher/{publisher_id}/tag/{id}/"
+---
+
+Returns the details of a specific tag.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField path="id" type="integer" required>
+  Tag ID
+</ParamField>
+
+
+
+<ResponseExample>
+
+```json 200
+{
+  "id": 500,
+  "name": "Breaking News",
+  "english_name": "Breaking News",
+  "slug": "breaking-news",
+  "absolute_url": "/tag/breaking-news",
+  "meta_title": "Breaking News",
+  "meta_description": "Latest breaking news stories"
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+</ResponseExample>

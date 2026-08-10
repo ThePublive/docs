@@ -63,55 +63,36 @@
 
 ## API Reference conventions
 
-**Structural change:** the Content Delivery API and Content Management API sections (`dxp/api-reference/content-delivery/`, `dxp/api-reference/content-management/`) are no longer individual per-endpoint `.mdx` files. They are generated from two OpenAPI 3.1 specs:
+### Page structure
 
-- `openapi/content-delivery.json` — all Content Delivery (CDS) endpoints
-- `openapi/content-management.json` — all Content Management (CMS) endpoints, including categories, tags, posts, live blogs, media, custom content types, custom components, forms, reader, and newsletter
+- Do not include an `## Authentication` section in individual endpoint pages. Authentication is documented globally and must not be repeated per-endpoint.
+- Do not add a `## Parameters` heading. `<ParamField>` components go directly after the intro paragraph, with no section heading.
+- Do not include an `## Example request` section or standalone curl code blocks. Request examples are rendered automatically by the Mintlify API playground from the `api:` frontmatter field.
 
-Only `README.mdx` overview pages remain as hand-written MDX per resource group (narrative content, endpoint tables, shared object field tables) — never delete these when touching an endpoint. Everything else is spec-driven.
+### Frontmatter
 
-**The `dxp/api-reference/deprecated/` section is the sole exception** and still uses the legacy `api:` frontmatter MDX pattern described under "Deprecated endpoints" below. Do not migrate it without explicit instruction.
+- Active endpoints must use the `api:` frontmatter field with the full URL and HTTP method (e.g., `api: "GET https://cds.thepublive.com/publisher/{publisher_id}/posts/"`). Deprecated endpoints must omit the `api:` field.
+- Path parameter placeholders in the `api:` field use `{lower_snake_case}` (e.g., `{publisher_id}`). In prose and code examples, use `<UPPER_SNAKE_CASE>` (e.g., `<PUBLISHER_ID>`).
 
-### Editing an existing endpoint
+### Parameters
 
-- To change parameters, request/response schemas, descriptions, or examples for an active (non-deprecated) endpoint, edit its operation in the relevant `openapi/*.json` file directly — do not create an `.mdx` file for it.
-- Every operation must keep: `operationId` (unique across the spec), `summary` (matches the sidebar/page title), `tags` (matches its `docs.json` subgroup name), and `x-mint: { "href": "..." }` pinning its exact public URL (e.g. `/dxp/api-reference/content-management/media/update-media`). Never change an operation's `x-mint.href` casually — it's a live, indexed, public URL; if a URL genuinely must move, add a redirect in `docs.json`'s `redirects` array.
-- Security: both specs default to `basicAuth` (HTTP Basic) via top-level `security`. Override per-operation only when the real endpoint differs — e.g. `security: []` for the reader/newsletter public flows, or the dedicated `formSubmissionAuth` apiKey scheme for form submission.
-- Request `Content-Type` must match what the real API actually requires per endpoint — most are `application/json`, but verify against real behavior (support tickets, curl repros) rather than assuming; several Media Library and form-submission endpoints require `multipart/form-data` or `application/x-www-form-urlencoded` instead. Getting this wrong reintroduces the exact bug this migration was built to fix.
-- After any spec edit: validate the file (`npx --yes --package=@apidevtools/swagger-cli -c "swagger-cli validate openapi/<file>.json"`), then run `mint validate` and `mint broken-links` for the whole site before considering the change done.
+- Always list path parameters before query parameters using `<ParamField path>` and `<ParamField query>` respectively.
+- Required parameters use the `required` attribute. Optional parameters use `default` instead of `required`.
+- Always describe the `publisher_id` path parameter as: "Your Publisher ID" — no variation.
+- Paginated listing endpoints must always include `page` (integer, default `1`, max `1000`) and `limit` (integer, default `10`, max `50`), with the max stated in the description.
 
-### `docs.json` wiring
+### Response examples
 
-- Each top-level API group (`"Content Delivery API"`, `"Content Management API"`) declares `"openapi": "openapi/<file>.json"` once; nested subgroups inherit it.
-- List individual endpoints as `"METHOD /path"` strings (exact path from the spec, HTTP method uppercase) — not file paths.
-- Never list both a raw `"METHOD /path"` nav entry and an `.mdx` file for the same operation in the same build — Mintlify treats that as a conflict.
-
-### Adding a new endpoint
-
-- Add the operation to the appropriate `openapi/*.json` file (with `operationId`, `summary`, `tags`, `x-mint.href` as above), then add its `"METHOD /path"` string to the matching subgroup in `docs.json`. Do not create an `.mdx` file for it.
-
-### Same real endpoint, multiple request content-types (dedicated pages)
-
-Some real endpoints legitimately accept more than one mutually exclusive request `Content-Type` for different use cases (e.g. Media Library's create endpoint: upload a file via `multipart/form-data`, or register an existing URL via `application/x-www-form-urlencoded`). If each variant should get its own dedicated page rather than one page with a content-type switcher:
-
-- **Do not** bind two pages to the same shared operation via `openapi:` frontmatter — Mintlify's playground defaults every page bound to one operation to whichever content-type is listed first in that operation's `requestBody.content`, so both pages end up showing the same (likely wrong) default for at least one of them. This is a known, tested failure mode — see `openapi/media-register-url.json` / `openapi/media-upload-file.json` as the reference example of the fix.
-- Instead, create one standalone companion spec file per variant (e.g. `openapi/media-register-url.json`, `openapi/media-upload-file.json`), each declaring the identical real `server` + path + method but only its own single `requestBody` content-type.
-- Create one hand-written `.mdx` page per variant with `openapi: "openapi/<companion-file>.json POST /path"` frontmatter (not `api:` — that reintroduces the JSON-default bug), a short intro, a cross-link to the sibling page, and a static example request block matching that variant's content type.
-- Register these pages in `docs.json` by file path (like a README), not as a `"METHOD /path"` string, and remove any raw nav entry for the shared operation so it isn't double-listed.
-- After creating/editing pages this way, verify with a fresh `mint dev` + curl on the rendered HTML that each page's embedded schema shows only its own content type — grepping for the string's presence alone is not sufficient, since both variants legitimately appear somewhere in a broken page too. Confirm the *count*/default, not just presence.
+- All response examples must use `<ResponseExample>` with labeled fenced code blocks (e.g., `` ```json 200 ``, `` ```json 401 ``) — never unlabeled blocks.
+- Every endpoint must include at minimum a `200` and a `401` response example. Include `404` when the endpoint fetches a single resource by ID or slug.
+- The `401` error response body must always be exactly: `{"detail": "Invalid Auth Credentials"}`.
+- Success response envelopes must include `"status": "ok"`, `"data"`, and `"message": ""`. Listing responses must additionally include `"page_no"` and `"per_page"`.
 
 ### Deprecated endpoints
 
-Applies only to `dxp/api-reference/deprecated/`, which still uses the legacy MDX pattern:
-
-- Deprecated endpoints use the `api:` frontmatter field with the full URL and HTTP method (e.g., `api: "GET https://cds.thepublive.com/publisher/{publisher_id}/posts/"`).
 - Deprecated page titles must use the `[DEPRECATED]` prefix in the `description` frontmatter field.
 - Deprecated pages must open with a `<Warning>` callout naming the replacement endpoint and linking to its page.
 - Deprecated pages must include a **Migration** section with a `bash` code block showing the old path and the new recommended path side by side.
-- Do not add an `## Authentication` section (documented globally) or a `## Parameters` heading (`<ParamField>` components go directly after the intro paragraph).
-- Path parameter placeholders in the `api:` field use `{lower_snake_case}` (e.g., `{publisher_id}`). In prose and code examples, use `<UPPER_SNAKE_CASE>` (e.g., `<PUBLISHER_ID>`).
-- Always describe the `publisher_id` path parameter as: "Your Publisher ID" — no variation.
-- All response examples must use `<ResponseExample>` with labeled fenced code blocks (e.g., `` ```json 200 ``, `` ```json 401 ``) — never unlabeled blocks. The `401` error response body must always be exactly: `{"detail": "Invalid Auth Credentials"}`.
 
 ### Callouts and tables
 

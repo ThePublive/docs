@@ -1,0 +1,44 @@
+---
+title: "Publisher Data"
+description: Fetch publisher profile, branding, and configuration data
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/"
+---
+
+Returns the complete publisher profile including branding, configuration, social links, ad settings, and metadata.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "ok",
+  "data": {
+    "name": "My Publication",
+    "logo": "https://cdn.publive.com/logos/my-pub-logo.png",
+    "favicon": "https://cdn.publive.com/logos/favicon.ico",
+    "primary_color": "#3B82F6",
+    "secondary_color": "#1E40AF",
+    "social_links": {
+      "twitter": "https://twitter.com/mypub",
+      "facebook": "https://facebook.com/mypub",
+      "instagram": "https://instagram.com/mypub"
+    },
+    "meta_title": "My Publication - Latest News",
+    "meta_description": "Your trusted source for news and analysis"
+  },
+  "message": ""
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+</ResponseExample>

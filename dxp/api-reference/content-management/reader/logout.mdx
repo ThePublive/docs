@@ -1,0 +1,26 @@
+---
+title: "Logout"
+description: "End a reader session"
+api: "POST https://cms.thepublive.com/publisher/{publisher_id}/reader/logout/"
+---
+
+Signals a reader logout. This endpoint makes no backend call and performs no token invalidation — token cleanup is fully client-side. The response is always `200 OK`.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<Note>
+  No request body or `Authorization` header is required. After calling this endpoint, discard the reader token on the client.
+</Note>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "ok",
+  "message": "Logged out successfully."
+}
+```
+
+</ResponseExample>

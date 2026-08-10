@@ -1,0 +1,55 @@
+---
+title: "Delete Form Schema"
+description: Delete a form schema
+api: "DELETE https://cms.thepublive.com/publisher/{publisher_id}/form/schema/{schema_id}"
+---
+
+Permanently deletes a form schema.
+
+<Warning>
+**Warning:** This action cannot be undone. Submissions collected against this schema may lose their schema reference.
+</Warning>
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField path="schema_id" type="string" required>
+  Form schema ID (24-character hex string)
+</ParamField>
+
+<ParamField header="Authorization" type="string" required>
+  `Basic <BASE64_AUTH_TOKEN>`
+</ParamField>
+
+#### Example Request
+
+```bash
+curl -X DELETE \
+  'https://cms.thepublive.com/publisher/123/form/schema/6a3e5832f9ec326ec5277006' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>'
+```
+
+<ResponseExample>
+
+```json 200
+{
+  "status": 200,
+  "message": "Deleted successfully"
+}
+```
+
+```json 401
+{
+  "detail": "Auth Credentials were not provided"
+}
+```
+
+```json 404
+{
+  "status": "error",
+  "message": "Not found"
+}
+```
+
+</ResponseExample>

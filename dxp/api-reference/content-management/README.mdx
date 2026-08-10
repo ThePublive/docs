@@ -8,7 +8,7 @@ The Content Management Service (CMS) provides full CRUD access to your content. 
 **Base URL:** `https://cms.thepublive.com/publisher/{publisher_id}/`
 
 <Info>
-All CMS endpoints require HTTP Basic Auth via the `Authorization` header. Request `Content-Type` varies by endpoint — most POST/PATCH endpoints use `application/json`, but check each endpoint's page: for example, Media Library's create/update endpoints require `multipart/form-data` or `application/x-www-form-urlencoded` instead.
+All CMS endpoints require HTTP Basic Auth via the `Authorization` header, plus `Content-Type: application/json` for POST and PATCH requests.
 </Info>
 
 ## Resources
@@ -26,7 +26,7 @@ All CMS endpoints require HTTP Basic Auth via the `Authorization` header. Reques
 
 ```bash
 -H 'Authorization: Basic <BASE64_AUTH_TOKEN>'
--H 'Content-Type: application/json'  # varies by endpoint — see each endpoint's page
+-H 'Content-Type: application/json'
 ```
 
 ### Pagination
@@ -49,7 +49,7 @@ All list endpoints return paginated results:
 
 ### Update method
 
-Most update endpoints use **PATCH** (partial update) — you only need to send the fields you want to change. Form Schema's update endpoint is the exception and uses **PUT** (full replace).
+All update endpoints use **PATCH** (partial update). You only need to send the fields you want to change.
 
 ### Success responses
 

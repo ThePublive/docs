@@ -1,0 +1,36 @@
+---
+title: "Web Content Sitemap"
+description: Fetch the publisher's web content sitemap index
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/sitemap/webcontent-sitemap.xml/"
+---
+
+Returns the web content sitemap XML, which acts as an index linking to paginated article sitemaps (`sitemap_<date>.xml`).
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "ok",
+  "data": {
+    "content": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n  <sitemap>\n    <loc>https://www.example.com/sitemap/sitemap_2026-05-01.xml</loc>\n    <lastmod>2026-05-01</lastmod>\n  </sitemap>\n  <sitemap>\n    <loc>https://www.example.com/sitemap/sitemap_2026-04-01.xml</loc>\n    <lastmod>2026-04-01</lastmod>\n  </sitemap>\n</sitemapindex>"
+  }
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+```json 404
+{
+  "detail": "File not found"
+}
+```
+
+</ResponseExample>

@@ -1,0 +1,121 @@
+---
+title: "Create Custom Component"
+description: Create a new custom component schema
+api: "POST https://cms.thepublive.com/publisher/{publisher_id}/entities/content-type/custom-component/"
+---
+
+Creates a new custom component schema with a defined set of field types.
+
+<ParamField path="publisher_id" type="string" required>
+  <Badge color="orange" size="sm">Immutable</Badge> Your Publisher ID
+</ParamField>
+
+<ParamField body="name" type="string" required>
+  Display name for the component (e.g. `"Main Section"`)
+</ParamField>
+
+<ParamField body="meta_data" type="object">
+  Additional metadata for the component.
+
+  | Key | Type | Description |
+  | --- | ---- | ----------- |
+  | `description` | string | Human-readable description of the component |
+</ParamField>
+
+<ParamField body="field_types" type="array">
+  Array of field definitions. Each object supports:
+
+  | Key | Type | Required | Description |
+  | --- | ---- | -------- | ----------- |
+  | `name` | string | Yes | Field identifier |
+  | `type` | string | Yes | Field type: `short_text`, `long_text`, `integer`, `boolean`, `media`, etc. |
+  | `meta_data` | object | No | UI metadata — `label`, `tooltip`, `type`, `placeholder`, `default` (each wrapped as `{"value": ...}`) |
+  | `validations` | object | No | Validation rules — `required`, `max_length` (each wrapped as `{"value": ...}`) |
+  | `group_id` | string | No | Field group assignment |
+</ParamField>
+
+<ParamField body="settings" type="object">
+  Component-level settings.
+</ParamField>
+
+#### Example Request
+
+```bash
+curl -X POST \
+  'https://cms.thepublive.com/publisher/123/entities/content-type/custom-component/' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name": "Main Section",
+    "meta_data": {
+      "description": "A reusable hero section component with title"
+    },
+    "field_types": [
+      {
+        "name": "title",
+        "type": "short_text",
+        "meta_data": {
+          "label": { "value": "Title" },
+          "tooltip": { "value": "The main heading for the hero section" },
+          "type": { "value": "input" }
+        },
+        "validations": {
+          "required": { "value": true },
+          "max_length": { "value": 100 }
+        },
+        "group_id": ""
+      }
+    ],
+    "settings": {}
+  }'
+```
+
+<ResponseExample>
+
+```json 201
+{
+  "status": "success",
+  "message": "Created Successfully",
+  "data": {
+    "id": "abc123",
+    "name": "Main Section",
+    "meta_data": {
+      "description": "A reusable hero section component with title"
+    },
+    "field_types": [
+      {
+        "name": "title",
+        "type": "short_text",
+        "meta_data": {
+          "label": { "value": "Title" },
+          "tooltip": { "value": "The main heading for the hero section" },
+          "type": { "value": "input" }
+        },
+        "validations": {
+          "required": { "value": true },
+          "max_length": { "value": 100 }
+        },
+        "group_id": ""
+      }
+    ],
+    "settings": {}
+  }
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+```json 400
+{
+  "error": {
+    "code": "BAD_REQUEST_ERROR",
+    "description": "Something Went Wrong"
+  }
+}
+```
+
+</ResponseExample>

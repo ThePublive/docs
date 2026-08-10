@@ -1,0 +1,140 @@
+---
+title: "Create Form Schema"
+description: Create a new form schema
+api: "POST https://cms.thepublive.com/publisher/{publisher_id}/form/schema/"
+---
+
+Creates a new form schema with a defined set of field types, groups, and settings.
+
+<ParamField path="publisher_id" type="string" required>
+  <Badge color="orange" size="sm">Immutable</Badge> Your Publisher ID
+</ParamField>
+
+<ParamField header="Authorization" type="string" required>
+  `Basic <BASE64_AUTH_TOKEN>`
+</ParamField>
+
+<ParamField body="name" type="string" required>
+  Display name for the form (e.g. `"Contact Form"`)
+</ParamField>
+
+<ParamField body="description" type="string">
+  Human-readable description of the form
+</ParamField>
+
+<ParamField body="type" type="string">
+  Form type, e.g. `custom`
+</ParamField>
+
+<ParamField body="state" type="string">
+  Schema state, e.g. `active`, `inactive`
+</ParamField>
+
+<ParamField body="field_types" type="array">
+  Array of field definitions. Each object supports:
+
+  | Key | Type | Required | Description |
+  | --- | ---- | -------- | ----------- |
+  | `name` | string | Yes | Field identifier (slug-style) |
+  | `type` | string | Yes | Field type: `short_text`, `long_text`, `email`, `integer`, `boolean`, `media`, etc. |
+  | `validations` | object | No | Validation rules — e.g. `required` |
+  | `meta_data` | object | No | UI metadata — `label`, `tooltip`, `placeholder`, etc. |
+  | `group_id` | string | No | Assign the field to a group from `groups` |
+</ParamField>
+
+<ParamField body="groups" type="array">
+  Array of field groups. Each object supports `name` and optional `meta_data`.
+</ParamField>
+
+<ParamField body="settings" type="object">
+  Schema-level settings.
+
+  | Key | Type | Description |
+  | --- | ---- | ----------- |
+  | `entry_title` | string | Field used as the title of each entry (e.g. `slug`) |
+  | `searchable_fields` | array | Field names enabled for search |
+  | `filter_fields` | array | Field names exposed as filters |
+  | `allowed_states` | array | Entry states allowed for submissions against this schema |
+  | `enable_component_preview` | boolean | Enable component preview (defaults to `false`) |
+  | `enable_content_rule` | boolean | Enable the content rules engine (defaults to `false`) |
+  | `enable_custom_date` | boolean | Enable a custom date field (defaults to `false`) |
+  | `enable_seo_properties` | boolean | Enable SEO properties (defaults to `false`) |
+  | `enable_code_ingestion` | boolean | Enable code ingestion (defaults to `false`) |
+</ParamField>
+
+#### Example Request
+
+```bash
+curl -X POST \
+  'https://cms.thepublive.com/publisher/123/form/schema/' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name": "Contact Form",
+    "description": "Test contact form",
+    "type": "custom",
+    "state": "active",
+    "field_types": [],
+    "groups": [],
+    "settings": {
+      "entry_title": "slug",
+      "searchable_fields": [],
+      "filter_fields": [],
+      "allowed_states": []
+    }
+  }'
+```
+
+<ResponseExample>
+
+```json 201
+{
+  "status": 201,
+  "message": "Created successfully",
+  "data": {
+    "id": "6a421f15a7444f1849ea3fa6",
+    "name": "Contact Form",
+    "description": "Test contact form",
+    "type": "custom",
+    "settings": {
+      "entry_title": "slug",
+      "searchable_fields": [],
+      "filter_fields": [],
+      "allowed_states": [],
+      "enable_component_preview": false,
+      "enable_content_rule": false,
+      "enable_custom_date": false,
+      "enable_seo_properties": false,
+      "enable_code_ingestion": false
+    },
+    "state": "active",
+    "created_at": "29 Jun 2026 13:00",
+    "form_page": {},
+    "deleted": false,
+    "updated_at": "29 Jun 2026 13:00",
+    "updated_by": "",
+    "field_types": [],
+    "groups": [],
+    "captcha_config": {
+      "site_key": "<RECAPTCHA_SITE_KEY>"
+    }
+  }
+}
+```
+
+```json 401
+{
+  "detail": "Auth Credentials were not provided"
+}
+```
+
+```json 400
+{
+  "error": {
+    "code": "BAD_REQUEST_ERROR",
+    "description": "Something Went Wrong"
+  }
+}
+```
+
+</ResponseExample>

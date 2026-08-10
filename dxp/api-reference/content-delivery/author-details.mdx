@@ -1,0 +1,56 @@
+---
+title: "Author Details"
+description: Fetch details of a single author by ID or slug
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/author/{identifier}/"
+---
+
+Returns detailed information about a single author, including their full profile, social links, and SEO metadata.
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField path="identifier" type="string" required>
+  Author ID or slug
+</ParamField>
+
+
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "ok",
+  "data": {
+    "id": 1,
+    "name": "Jane Doe",
+    "slug": "jane-doe",
+    "email": "jane@publication.com",
+    "description": "Senior correspondent covering technology and business.",
+    "linkedin": "https://linkedin.com/in/janedoe",
+    "twitter": "https://twitter.com/janedoe",
+    "instagram": "",
+    "facebook": "",
+    "avatar": "https://cdn.publive.com/avatars/jane-doe.jpg",
+    "created_at": "2025-01-15T10:00:00Z",
+    "updated_at": "2026-01-20T14:30:00Z",
+    "meta_title": "Jane Doe - My Publication",
+    "meta_description": "Articles by Jane Doe",
+    "og_title": "Jane Doe",
+    "og_description": "Articles by Jane Doe",
+    "og_image": "https://cdn.publive.com/avatars/jane-doe.jpg",
+    "twitter_title": "Jane Doe",
+    "twitter_description": "Articles by Jane Doe",
+    "twitter_image": "https://cdn.publive.com/avatars/jane-doe.jpg",
+    "absolute_url": "/author/jane-doe"
+  },
+  "message": ""
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+</ResponseExample>

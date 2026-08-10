@@ -1,0 +1,77 @@
+---
+title: "Update Tag"
+description: Update an existing tag
+api: "PATCH https://cms.thepublive.com/publisher/{publisher_id}/tag/{id}/"
+---
+
+Updates an existing tag. Only send the fields you want to change (partial update).
+
+<Warning>
+The following fields are **immutable after creation** and cannot be changed via update:
+- `english_name` — English name used for slug generation
+- `slug` — URL slug (derived from `english_name` at creation)
+</Warning>
+
+#### Updatable fields
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField path="id" type="integer" required>
+  Tag ID
+</ParamField>
+
+
+
+<ParamField body="name" type="string">
+  Tag name
+</ParamField>
+
+<ParamField body="meta_title" type="string">
+  SEO title
+</ParamField>
+
+<ParamField body="meta_description" type="string">
+  SEO description
+</ParamField>
+
+<ParamField body="content" type="string">
+  Tag description (HTML)
+</ParamField>
+
+#### Example request
+
+```bash
+curl -X PATCH \
+  'https://cms.thepublive.com/publisher/123/tag/500/' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
+  -H 'Content-Type: application/json' \
+  -d '{"name": "Breaking News Updated"}'
+```
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "success",
+  "message": "Updated Successfully",
+  "data": {
+    "id": 500,
+    "name": "Breaking News Updated",
+    "english_name": "Breaking News",
+    "slug": "breaking-news",
+    "absolute_url": "/tag/breaking-news",
+    "meta_title": "",
+    "meta_description": ""
+  }
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+</ResponseExample>
