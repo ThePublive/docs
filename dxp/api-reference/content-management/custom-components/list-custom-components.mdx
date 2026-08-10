@@ -1,0 +1,55 @@
+---
+title: "List Custom Components"
+description: Fetch all custom component schemas
+api: "GET https://cms.thepublive.com/publisher/{publisher_id}/entities/content-type/custom-component/"
+---
+
+Returns a list of all custom component schemas for the publisher.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ResponseExample>
+
+```json 200
+{
+  "count": 3,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "id": "abc123",
+      "name": "Main Section",
+      "meta_data": {
+        "description": "A reusable hero section component with title"
+      },
+      "field_types": [
+        {
+          "name": "title",
+          "type": "short_text",
+          "meta_data": {
+            "label": { "value": "Title" },
+            "tooltip": { "value": "The main heading for the hero section" },
+            "type": { "value": "input" }
+          },
+          "validations": {
+            "required": { "value": true },
+            "max_length": { "value": 100 }
+          },
+          "group_id": ""
+        }
+      ],
+      "settings": {}
+    }
+  ]
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+</ResponseExample>

@@ -1,0 +1,56 @@
+---
+title: "List Media"
+description: Fetch all media assets
+api: "GET https://cms.thepublive.com/publisher/{publisher_id}/media-library/"
+---
+
+Returns a paginated list of all media assets in your library.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+
+
+<ParamField query="page" type="integer" default="1">
+  Page number (max: 1000)
+</ParamField>
+
+<ParamField query="limit" type="integer" default="10">
+  Items per page (max: 50)
+</ParamField>
+
+<ResponseExample>
+
+```json 200
+{
+  "count": 15420,
+  "next": "https://cms.thepublive.com/publisher/123/media-library/?page=2&limit=10",
+  "previous": null,
+  "results": [
+    {
+      "id": 999,
+      "filename": "budget-2026.jpg",
+      "alt_text": "Union Budget 2026",
+      "caption": "Budget session in Parliament",
+      "path": "https://cdn.publive.com/images/budget-2026.jpg",
+      "source": "PTI",
+      "type": "Image",
+      "meta_data": {
+        "width": 1200,
+        "height": 630
+      },
+      "date": "2026-02-01",
+      "member": "admin"
+    }
+  ]
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+</ResponseExample>

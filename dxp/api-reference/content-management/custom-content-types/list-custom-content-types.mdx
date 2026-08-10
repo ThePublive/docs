@@ -1,0 +1,86 @@
+---
+title: "List Custom Content Types"
+description: Fetch all custom content type schemas
+api: "GET https://cms.thepublive.com/publisher/{publisher_id}/entities/content-type/"
+---
+
+Returns a list of all custom content type schemas for the publisher.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ResponseExample>
+
+```json 200
+{
+  "count": 2,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "id": "sch_abc123",
+      "type": "Collection",
+      "name": "Movies",
+      "api_slug": "movie",
+      "api_collections_slug": "movies",
+      "response_type": "json",
+      "field_types": [
+        {
+          "name": "name",
+          "type": "short_text",
+          "validations": {
+            "required": {},
+            "group_editable": true
+          },
+          "meta_data": {
+            "type": { "value": "input" },
+            "label": { "value": "name" },
+            "placeholder": { "value": "" },
+            "default": { "value": null },
+            "tooltip": { "value": "" }
+          }
+        },
+        {
+          "name": "link",
+          "type": "url",
+          "validations": {
+            "required": {},
+            "group_editable": true
+          },
+          "meta_data": {
+            "type": { "value": "input" },
+            "label": { "value": "link" },
+            "placeholder": { "value": "" },
+            "default": { "value": null },
+            "tooltip": { "value": "" }
+          }
+        }
+      ],
+      "groups": [],
+      "components": [],
+      "settings": {
+        "entry_title": "name",
+        "searchable_fields": [],
+        "filter_fields": [],
+        "allowed_states": ["Published", "Draft", "Scheduled", "Approval Pending"],
+        "access_control": {},
+        "enable_component_preview": false,
+        "enable_content_rule": false,
+        "enable_custom_date": false,
+        "enable_seo_properties": false,
+        "enable_code_ingestion": false
+      },
+      "global_system_default": false
+    }
+  ]
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+</ResponseExample>

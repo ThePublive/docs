@@ -177,184 +177,180 @@
               },
               {
                 "group": "Content Delivery API",
-                "openapi": "openapi/content-delivery.json",
                 "pages": [
                   "dxp/api-reference/content-delivery/README",
                   {
                     "group": "Site Configuration",
                     "pages": [
-                      "GET /publisher/{publisher_id}/",
-                      "GET /publisher/{publisher_id}/navbar/",
-                      "GET /publisher/{publisher_id}/footer/",
-                      "GET /publisher/{publisher_id}/active-slots/",
-                      "GET /publisher/{publisher_id}/newsletter-groups/",
-                      "GET /publisher/{publisher_id}/content-types/"
+                      "dxp/api-reference/content-delivery/publisher-data",
+                      "dxp/api-reference/content-delivery/navbar",
+                      "dxp/api-reference/content-delivery/footer",
+                      "dxp/api-reference/content-delivery/active-slots",
+                      "dxp/api-reference/content-delivery/newsletter-groups",
+                      "dxp/api-reference/content-delivery/content-types"
                     ]
                   },
                   {
                     "group": "Content",
                     "pages": [
-                      "GET /publisher/{publisher_id}/identify_url/",
-                      "GET /publisher/{publisher_id}/categories/",
-                      "GET /publisher/{publisher_id}/category/{identifier}/",
-                      "GET /publisher/{publisher_id}/tags/",
-                      "GET /publisher/{publisher_id}/tag/{identifier}/",
-                      "GET /publisher/{publisher_id}/authors/",
-                      "GET /publisher/{publisher_id}/author/{identifier}/"
+                      "dxp/api-reference/content-delivery/identify-content",
+                      "dxp/api-reference/content-delivery/category-listing",
+                      "dxp/api-reference/content-delivery/category-details",
+                      "dxp/api-reference/content-delivery/tag-listing",
+                      "dxp/api-reference/content-delivery/tag-details",
+                      "dxp/api-reference/content-delivery/author-listing",
+                      "dxp/api-reference/content-delivery/author-details"
                     ]
                   },
                   {
                     "group": "Posts",
                     "pages": [
-                      "GET /publisher/{publisher_id}/posts/",
-                      "GET /publisher/{publisher_id}/post/{identifier}/",
-                      "GET /publisher/{publisher_id}/post/",
-                      "GET /publisher/{publisher_id}/post/{post_id}/live-blog-updates/",
-                      "GET /publisher/{publisher_id}/posts/analytics/trending/"
+                      "dxp/api-reference/content-delivery/post-listing",
+                      "dxp/api-reference/content-delivery/post-details",
+                      "dxp/api-reference/content-delivery/post-details-by-url",
+                      "dxp/api-reference/content-delivery/live-blog-updates",
+                      "dxp/api-reference/content-delivery/trending-post"
                     ]
                   },
                   {
                     "group": "Forms",
                     "pages": [
-                      "GET /publisher/{publisher_id}/form_schema/reader/{schema_id}/"
+                      "dxp/api-reference/content-delivery/form-schema"
                     ]
                   },
                   {
                     "group": "Static Files",
                     "pages": [
-                      "GET /publisher/{publisher_id}/static/ads.txt/",
-                      "GET /publisher/{publisher_id}/static/robots.txt/",
-                      "GET /publisher/{publisher_id}/static/service-worker.js/",
-                      "GET /publisher/{publisher_id}/static/{filename}/"
+                      "dxp/api-reference/content-delivery/static-ads-txt",
+                      "dxp/api-reference/content-delivery/static-robots-txt",
+                      "dxp/api-reference/content-delivery/static-service-worker",
+                      "dxp/api-reference/content-delivery/static-push-notification-html"
                     ]
                   },
                   {
                     "group": "Sitemaps",
                     "pages": [
-                      "GET /publisher/{publisher_id}/sitemap/allcontent-sitemap.xml/",
-                      "GET /publisher/{publisher_id}/sitemap/webcontent-sitemap.xml/",
-                      "GET /publisher/{publisher_id}/sitemap/news-sitemap.xml/",
-                      "GET /publisher/{publisher_id}/sitemap/category-sitemap.xml/",
-                      "GET /publisher/{publisher_id}/sitemap/webstory-sitemap.xml/",
-                      "GET /publisher/{publisher_id}/sitemap/sitemap_{date}.xml/",
-                      "GET /publisher/{publisher_id}/sitemap/webstory_sitemap_{date}.xml/"
+                      "dxp/api-reference/content-delivery/sitemap-allcontent",
+                      "dxp/api-reference/content-delivery/sitemap-webcontent",
+                      "dxp/api-reference/content-delivery/sitemap-news",
+                      "dxp/api-reference/content-delivery/sitemap-category",
+                      "dxp/api-reference/content-delivery/sitemap-webstory",
+                      "dxp/api-reference/content-delivery/sitemap-paginated"
                     ]
                   }
                 ]
               },
               {
                 "group": "Content Management API",
-                "openapi": "openapi/content-management.json",
                 "pages": [
                   "dxp/api-reference/content-management/README",
                   {
                     "group": "Categories",
                     "pages": [
                       "dxp/api-reference/content-management/categories/README",
-                      "GET /publisher/{publisher_id}/category/",
-                      "POST /publisher/{publisher_id}/category/",
-                      "GET /publisher/{publisher_id}/category/{id}/",
-                      "PATCH /publisher/{publisher_id}/category/{id}/",
-                      "DELETE /publisher/{publisher_id}/category/{id}/"
+                      "dxp/api-reference/content-management/categories/list-categories",
+                      "dxp/api-reference/content-management/categories/create-category",
+                      "dxp/api-reference/content-management/categories/retrieve-category",
+                      "dxp/api-reference/content-management/categories/update-category",
+                      "dxp/api-reference/content-management/categories/delete-category"
                     ]
                   },
                   {
                     "group": "Tags",
                     "pages": [
                       "dxp/api-reference/content-management/tags/README",
-                      "GET /publisher/{publisher_id}/tag/",
-                      "POST /publisher/{publisher_id}/tag/",
-                      "GET /publisher/{publisher_id}/tag/{id}/",
-                      "PATCH /publisher/{publisher_id}/tag/{id}/",
-                      "DELETE /publisher/{publisher_id}/tag/{id}/"
+                      "dxp/api-reference/content-management/tags/list-tags",
+                      "dxp/api-reference/content-management/tags/create-tag",
+                      "dxp/api-reference/content-management/tags/retrieve-tag",
+                      "dxp/api-reference/content-management/tags/update-tag",
+                      "dxp/api-reference/content-management/tags/delete-tag"
                     ]
                   },
                   {
                     "group": "Posts",
                     "pages": [
                       "dxp/api-reference/content-management/posts/README",
-                      "GET /publisher/{publisher_id}/post/",
-                      "POST /publisher/{publisher_id}/post/",
-                      "GET /publisher/{publisher_id}/post/{id}/",
-                      "PATCH /publisher/{publisher_id}/post/{id}/",
-                      "DELETE /publisher/{publisher_id}/post/{id}/"
+                      "dxp/api-reference/content-management/posts/list-posts",
+                      "dxp/api-reference/content-management/posts/create-post",
+                      "dxp/api-reference/content-management/posts/retrieve-post",
+                      "dxp/api-reference/content-management/posts/update-post",
+                      "dxp/api-reference/content-management/posts/delete-post"
                     ]
                   },
                   {
                     "group": "Live Blogs",
                     "pages": [
-                      "GET /publisher/{publisher_id}/post/{post_id}/live-blog-update/",
-                      "GET /publisher/{publisher_id}/post/{post_id}/live-blog-update/{id}/",
-                      "POST /publisher/{publisher_id}/post/{post_id}/live-blog-update/",
-                      "PATCH /publisher/{publisher_id}/post/{post_id}/live-blog-update/{id}/",
-                      "DELETE /publisher/{publisher_id}/post/{post_id}/live-blog-update/{id}/"
+                      "dxp/api-reference/content-management/live-blogs/list-live-blog-updates",
+                      "dxp/api-reference/content-management/live-blogs/retrieve-live-blog-update",
+                      "dxp/api-reference/content-management/live-blogs/create-live-blog-update",
+                      "dxp/api-reference/content-management/live-blogs/update-live-blog-update",
+                      "dxp/api-reference/content-management/live-blogs/delete-live-blog-update"
                     ]
                   },
                   {
                     "group": "Media Library",
                     "pages": [
                       "dxp/api-reference/content-management/media/README",
-                      "GET /publisher/{publisher_id}/media-library/",
-                      "dxp/api-reference/content-management/media/register-media-url",
-                      "dxp/api-reference/content-management/media/upload-media-file",
-                      "GET /publisher/{publisher_id}/media-library/{id}/",
-                      "PATCH /publisher/{publisher_id}/media-library/{id}/",
-                      "DELETE /publisher/{publisher_id}/media-library/{id}/"
+                      "dxp/api-reference/content-management/media/list-media",
+                      "dxp/api-reference/content-management/media/create-media",
+                      "dxp/api-reference/content-management/media/retrieve-media",
+                      "dxp/api-reference/content-management/media/update-media",
+                      "dxp/api-reference/content-management/media/delete-media"
                     ]
                   },
                   {
                     "group": "Custom Content Types",
                     "pages": [
                       "dxp/api-reference/content-management/custom-content-types/README",
-                      "GET /publisher/{publisher_id}/entities/content-type/",
-                      "POST /publisher/{publisher_id}/entities/content-type/",
-                      "GET /publisher/{publisher_id}/entities/content-type/{custom_entity_schema_id}",
-                      "PATCH /publisher/{publisher_id}/entities/content-type/{custom_entity_schema_id}",
-                      "DELETE /publisher/{publisher_id}/entities/content-type/{custom_entity_schema_id}"
+                      "dxp/api-reference/content-management/custom-content-types/list-custom-content-types",
+                      "dxp/api-reference/content-management/custom-content-types/create-custom-content-type",
+                      "dxp/api-reference/content-management/custom-content-types/retrieve-custom-content-type",
+                      "dxp/api-reference/content-management/custom-content-types/update-custom-content-type",
+                      "dxp/api-reference/content-management/custom-content-types/delete-custom-content-type"
                     ]
                   },
                   {
                     "group": "Custom Components",
                     "pages": [
                       "dxp/api-reference/content-management/custom-components/README",
-                      "GET /publisher/{publisher_id}/entities/content-type/custom-component/",
-                      "POST /publisher/{publisher_id}/entities/content-type/custom-component/",
-                      "GET /publisher/{publisher_id}/entities/content-type/custom-component/{custom_entity_schema_id}",
-                      "PATCH /publisher/{publisher_id}/entities/content-type/custom-component/{custom_entity_schema_id}/",
-                      "DELETE /publisher/{publisher_id}/entities/content-type/custom-component/{custom_entity_schema_id}"
+                      "dxp/api-reference/content-management/custom-components/list-custom-components",
+                      "dxp/api-reference/content-management/custom-components/create-custom-component",
+                      "dxp/api-reference/content-management/custom-components/retrieve-custom-component",
+                      "dxp/api-reference/content-management/custom-components/update-custom-component",
+                      "dxp/api-reference/content-management/custom-components/delete-custom-component"
                     ]
                   },
                   {
                     "group": "Forms",
                     "pages": [
                       "dxp/api-reference/content-management/forms/README",
-                      "GET /publisher/{publisher_id}/form/schema/",
-                      "POST /publisher/{publisher_id}/form/schema/",
-                      "GET /publisher/{publisher_id}/form/schema/{schema_id}/",
-                      "PUT /publisher/{publisher_id}/form/schema/{schema_id}/",
-                      "DELETE /publisher/{publisher_id}/form/schema/{schema_id}",
-                      "POST /publisher/{publisher_id}/form/{pk}/submit/"
+                      "dxp/api-reference/content-management/forms/list-form-schemas",
+                      "dxp/api-reference/content-management/forms/create-form-schema",
+                      "dxp/api-reference/content-management/forms/retrieve-form-schema",
+                      "dxp/api-reference/content-management/forms/update-form-schema",
+                      "dxp/api-reference/content-management/forms/delete-form-schema",
+                      "dxp/api-reference/content-management/forms/form-submission"
                     ]
                   },
                   {
                     "group": "Reader",
                     "pages": [
                       "dxp/api-reference/content-management/reader/README",
-                      "POST /publisher/{publisher_id}/reader/login/",
-                      "POST /publisher/{publisher_id}/reader/logout/",
-                      "POST /publisher/{publisher_id}/reader/register/",
-                      "POST /publisher/{publisher_id}/reader/forgot-password/",
-                      "PATCH /publisher/{publisher_id}/reader/reset-password/",
-                      "POST /publisher/{publisher_id}/reader/verify-email/"
+                      "dxp/api-reference/content-management/reader/login",
+                      "dxp/api-reference/content-management/reader/logout",
+                      "dxp/api-reference/content-management/reader/register",
+                      "dxp/api-reference/content-management/reader/forgot-password",
+                      "dxp/api-reference/content-management/reader/reset-password",
+                      "dxp/api-reference/content-management/reader/verify-email"
                     ]
                   },
                   {
                     "group": "Newsletter",
                     "pages": [
                       "dxp/api-reference/content-management/newsletter/README",
-                      "POST /publisher/{publisher_id}/newsletter/subscribe/",
-                      "POST /publisher/{publisher_id}/newsletter/unsubscribe/",
-                      "GET /publisher/{publisher_id}/newsletter/verify-email/"
+                      "dxp/api-reference/content-management/newsletter/subscribe",
+                      "dxp/api-reference/content-management/newsletter/unsubscribe",
+                      "dxp/api-reference/content-management/newsletter/verify-email"
                     ]
                   }
                 ]
@@ -509,10 +505,6 @@
     {
       "source": "/",
       "destination": "/dxp"
-    },
-    {
-      "source": "/dxp/api-reference/content-management/media/create-media",
-      "destination": "/dxp/api-reference/content-management/media/upload-media-file"
     }
   ],
   "contextual": {

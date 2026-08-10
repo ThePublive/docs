@@ -1,0 +1,36 @@
+---
+title: "Category Sitemap"
+description: Fetch the publisher's category sitemap
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/sitemap/category-sitemap.xml/"
+---
+
+Returns the sitemap XML listing all published category pages for the publisher.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "ok",
+  "data": {
+    "content": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n  <url>\n    <loc>https://www.example.com/sports</loc>\n    <lastmod>2026-05-29</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.8</priority>\n  </url>\n  <url>\n    <loc>https://www.example.com/economy</loc>\n    <lastmod>2026-05-29</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.8</priority>\n  </url>\n</urlset>"
+  }
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+```json 404
+{
+  "detail": "File not found"
+}
+```
+
+</ResponseExample>

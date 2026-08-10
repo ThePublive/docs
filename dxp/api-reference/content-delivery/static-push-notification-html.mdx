@@ -1,0 +1,54 @@
+---
+title: "Push Notification HTML"
+description: Fetch push-notification HTML helper files (izooto.html, helper-iframe.html, permission-dialog.html)
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/static/{filename}/"
+---
+
+Returns one of three HTML files required to render the push notification permission UI on the publisher's website.
+
+<Warning>
+  All three files return `404` if push notifications are not enabled for the publisher. Check `publisher_config → widget_config_json → push_notification_config` to determine availability.
+</Warning>
+
+<Info>
+  The file is resolved in two steps: first a publisher-specific override is looked up in S3; if not found, a shared default is fetched from the Publive CDN. This means the response content may differ per publisher.
+</Info>
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField path="filename" type="string" required>
+  The name of the HTML file to fetch.
+
+  | Value                   | Description                                     |
+  | ----------------------- | ----------------------------------------------- |
+  | `izooto.html`           | Main iZooto push notification integration page  |
+  | `helper-iframe.html`    | Hidden iframe used for cross-origin permission  |
+  | `permission-dialog.html`| Permission prompt dialog rendered to the user   |
+</ParamField>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "ok",
+  "data": {
+    "content": "<!DOCTYPE html><html><head>...</head><body>...</body></html>"
+  }
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+```json 404
+{
+  "detail": "Push notifications are not enabled for this publisher"
+}
+```
+
+</ResponseExample>

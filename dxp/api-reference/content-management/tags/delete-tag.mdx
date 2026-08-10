@@ -1,0 +1,34 @@
+---
+title: "Delete Tag"
+description: Delete a tag
+api: "DELETE https://cms.thepublive.com/publisher/{publisher_id}/tag/{id}/"
+---
+
+Permanently deletes a tag.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField path="id" type="integer" required>
+  Tag ID
+</ParamField>
+
+
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "success",
+  "message": "Deleted successfully!"
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+</ResponseExample>

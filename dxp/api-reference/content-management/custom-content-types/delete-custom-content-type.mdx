@@ -1,0 +1,43 @@
+---
+title: "Delete Custom Content Type"
+description: Delete a custom content type schema
+api: "DELETE https://cms.thepublive.com/publisher/{publisher_id}/entities/content-type/{custom_entity_schema_id}"
+---
+
+Permanently deletes a custom content type schema.
+
+<Warning>
+**Warning:** This action cannot be undone. All content entries created under this schema will no longer have a valid schema reference.
+</Warning>
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField path="custom_entity_schema_id" type="string" required>
+  Custom content type schema ID
+</ParamField>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "success",
+  "message": "Deleted successfully!"
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+```json 404
+{
+  "status": "error",
+  "message": "Not found"
+}
+```
+
+</ResponseExample>

@@ -1,0 +1,38 @@
+---
+title: "Delete Media"
+description: Delete a media asset
+api: "DELETE https://cms.thepublive.com/publisher/{publisher_id}/media-library/{id}/"
+---
+
+Permanently deletes a media asset from the library.
+
+<Warning>
+**Warning:** This action cannot be undone. Posts referencing this media will lose their associated image/file.
+</Warning>
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField path="id" type="integer" required>
+  Media ID
+</ParamField>
+
+
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "success",
+  "message": "Deleted successfully!"
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+</ResponseExample>

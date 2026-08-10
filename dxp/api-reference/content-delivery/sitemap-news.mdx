@@ -1,0 +1,36 @@
+---
+title: "News Sitemap"
+description: Fetch the publisher's Google News sitemap
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/sitemap/news-sitemap.xml/"
+---
+
+Returns the Google News sitemap XML containing recently published articles eligible for Google News indexing.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "ok",
+  "data": {
+    "content": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\">\n  <url>\n    <loc>https://www.example.com/sports/ipl-2026-final-98201</loc>\n    <news:news>\n      <news:publication>\n        <news:name>My Publication</news:name>\n        <news:language>en</news:language>\n      </news:publication>\n      <news:publication_date>2026-05-25T21:00:00Z</news:publication_date>\n      <news:title>IPL 2026 Final: Highlights and Scorecard</news:title>\n    </news:news>\n  </url>\n</urlset>"
+  }
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+```json 404
+{
+  "detail": "File not found"
+}
+```
+
+</ResponseExample>

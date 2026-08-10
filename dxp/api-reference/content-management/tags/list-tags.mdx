@@ -1,0 +1,50 @@
+---
+title: "List Tags"
+description: Fetch all tags
+api: "GET https://cms.thepublive.com/publisher/{publisher_id}/tag/"
+---
+
+Returns a paginated list of all tags.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+
+
+<ParamField query="page" type="integer" default="1">
+  Page number (max: 1000)
+</ParamField>
+
+<ParamField query="limit" type="integer" default="10">
+  Items per page (max: 50)
+</ParamField>
+
+<ResponseExample>
+
+```json 200
+{
+  "count": 112118,
+  "next": "https://cms.thepublive.com/publisher/123/tag/?page=2&limit=10",
+  "previous": null,
+  "results": [
+    {
+      "id": 500,
+      "name": "Breaking News",
+      "english_name": "Breaking News",
+      "slug": "breaking-news",
+      "absolute_url": "/tag/breaking-news",
+      "meta_title": "",
+      "meta_description": ""
+    }
+  ]
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+</ResponseExample>

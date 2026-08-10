@@ -1,0 +1,92 @@
+---
+title: "Live Blog Updates"
+description: Fetch live blog update entries for a specific post
+api: "GET https://cds.thepublive.com/publisher/{publisher_id}/post/{post_id}/live-blog-updates/"
+---
+
+Returns the list of live blog updates for a specific LiveBlog post. Each update contains its own title, content, author, and timestamp.
+
+<Info>
+This endpoint only returns data for posts with `type: "LiveBlog"`. For other post types, use the [Post Details](/dxp/api-reference/content-delivery/post-details) endpoint.
+</Info>
+
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField path="post_id" type="integer" required>
+  The post ID of the LiveBlog
+</ParamField>
+
+
+
+<ParamField query="page" type="integer" default="1">
+  Page number
+</ParamField>
+
+<ParamField query="limit" type="integer" default="10">
+  Items per page (max: 50)
+</ParamField>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "ok",
+  "data": [
+    {
+      "id": 1001,
+      "author": {
+        "id": 1,
+        "name": "Jane Doe",
+        "slug": "jane-doe",
+        "description": "Senior correspondent",
+        "avatar": "https://cdn.publive.com/avatars/jane-doe.jpg"
+      },
+      "created_at": "2026-02-01T14:30:00Z",
+      "updated_at": "2026-02-01T14:30:00Z",
+      "is_pinned": true,
+      "data": {
+        "title": "Breaking: Key announcement on tax reforms",
+        "content": "<p>The Finance Minister has just announced significant changes to the income tax slabs...</p>"
+      }
+    },
+    {
+      "id": 1000,
+      "author": {
+        "id": 2,
+        "name": "John Smith",
+        "slug": "john-smith",
+        "description": "Economy reporter",
+        "avatar": null
+      },
+      "created_at": "2026-02-01T14:00:00Z",
+      "updated_at": "2026-02-01T14:00:00Z",
+      "is_pinned": false,
+      "data": {
+        "title": "Budget session begins",
+        "content": "<p>The budget session has officially commenced in Parliament...</p>"
+      }
+    }
+  ],
+  "message": "",
+  "page_no": 1,
+  "per_page": 10
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+```json 404
+{
+  "status": "error",
+  "message": "Post not found"
+}
+```
+
+</ResponseExample>

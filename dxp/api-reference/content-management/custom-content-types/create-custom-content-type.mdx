@@ -1,0 +1,204 @@
+---
+title: "Create Custom Content Type"
+description: Create a new custom content type schema
+api: "POST https://cms.thepublive.com/publisher/{publisher_id}/entities/content-type/"
+---
+
+Creates a new custom content type schema with a defined set of field types and settings.
+
+<ParamField path="publisher_id" type="string" required>
+  Your Publisher ID
+</ParamField>
+
+<ParamField body="type" type="string" required>
+  Schema type. Accepted values: `Collection` (multiple entries)
+</ParamField>
+
+<ParamField body="name" type="string" required>
+  Display name for the content type (e.g. `"Movies"`)
+</ParamField>
+
+<ParamField body="api_slug" type="string" required>
+  <Badge color="orange" size="sm">Immutable</Badge> Singular API slug used for single-entry endpoints (e.g. `"movie"`)
+</ParamField>
+
+<ParamField body="api_collections_slug" type="string" required>
+  <Badge color="orange" size="sm">Immutable</Badge> Plural API slug used for collection endpoints (e.g. `"movies"`)
+</ParamField>
+
+<ParamField body="response_type" type="string" default="json">
+  Response format. Currently supports `json`.
+</ParamField>
+
+<ParamField body="field_types" type="array">
+  Array of field definitions. Each object supports:
+
+  | Key | Type | Required | Description |
+  | --- | ---- | -------- | ----------- |
+  | `name` | string | Yes | Field identifier |
+  | `type` | string | Yes | Field type: `short_text`, `long_text`, `url`, `integer`, `boolean`, `media`, etc. |
+  | `meta_data` | object | No | UI metadata — `label`, `tooltip`, `type`, `placeholder`, `default` (each wrapped as `{"value": ...}`) |
+  | `validations` | object | No | Validation rules — `required`, `group_editable` |
+  | `group_id` | string | No | Field group assignment |
+</ParamField>
+
+<ParamField body="groups" type="array">
+  Field group definitions for organizing fields in the editor.
+</ParamField>
+
+<ParamField body="components" type="array">
+  Associated custom component schema IDs.
+</ParamField>
+
+<ParamField body="settings" type="object">
+  Type-level settings.
+
+  | Key | Type | Description |
+  | --- | ---- | ----------- |
+  | `entry_title` | string | Field name used as the entry's display title |
+  | `searchable_fields` | array | Fields available for full-text search |
+  | `filter_fields` | array | Fields available as filters in listings |
+  | `allowed_states` | array | Permitted states: `Published`, `Draft`, `Scheduled`, `Approval Pending` |
+  | `access_control` | object | Role-based access configuration |
+  | `enable_component_preview` | boolean | Enable live component preview |
+  | `enable_content_rule` | boolean | Enable content rules engine |
+  | `enable_custom_date` | boolean | Allow custom publish date |
+  | `enable_seo_properties` | boolean | Show SEO fields on entries |
+  | `enable_code_ingestion` | boolean | Allow code-based content ingestion |
+</ParamField>
+
+<ParamField body="global_system_default" type="boolean" default="false">
+  Mark this as a system-level default type.
+</ParamField>
+
+#### Example Request
+
+```bash
+curl -X POST \
+  'https://cms.thepublive.com/publisher/123/entities/content-type/' \
+  -H 'Authorization: Basic <BASE64_AUTH_TOKEN>' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "type": "Collection",
+    "name": "Movies",
+    "api_slug": "movie",
+    "api_collections_slug": "movies",
+    "response_type": "json",
+    "settings": {
+      "entry_title": "name",
+      "searchable_fields": [],
+      "filter_fields": [],
+      "allowed_states": ["Published", "Draft", "Scheduled", "Approval Pending"],
+      "access_control": {},
+      "enable_component_preview": false,
+      "enable_content_rule": false,
+      "enable_custom_date": false,
+      "enable_seo_properties": false,
+      "enable_code_ingestion": false
+    },
+    "field_types": [
+      {
+        "name": "name",
+        "type": "short_text",
+        "validations": { "required": {}, "group_editable": true },
+        "meta_data": {
+          "type": { "value": "input" },
+          "label": { "value": "name" },
+          "placeholder": { "value": "" },
+          "default": { "value": null },
+          "tooltip": { "value": "" }
+        }
+      },
+      {
+        "name": "link",
+        "type": "url",
+        "validations": { "required": {}, "group_editable": true },
+        "meta_data": {
+          "type": { "value": "input" },
+          "label": { "value": "link" },
+          "placeholder": { "value": "" },
+          "default": { "value": null },
+          "tooltip": { "value": "" }
+        }
+      }
+    ],
+    "groups": [],
+    "components": [],
+    "global_system_default": false
+  }'
+```
+
+<ResponseExample>
+
+```json 201
+{
+  "status": "success",
+  "message": "Created Successfully",
+  "data": {
+    "id": "sch_abc123",
+    "type": "Collection",
+    "name": "Movies",
+    "api_slug": "movie",
+    "api_collections_slug": "movies",
+    "response_type": "json",
+    "field_types": [
+      {
+        "name": "name",
+        "type": "short_text",
+        "validations": { "required": {}, "group_editable": true },
+        "meta_data": {
+          "type": { "value": "input" },
+          "label": { "value": "name" },
+          "placeholder": { "value": "" },
+          "default": { "value": null },
+          "tooltip": { "value": "" }
+        }
+      },
+      {
+        "name": "link",
+        "type": "url",
+        "validations": { "required": {}, "group_editable": true },
+        "meta_data": {
+          "type": { "value": "input" },
+          "label": { "value": "link" },
+          "placeholder": { "value": "" },
+          "default": { "value": null },
+          "tooltip": { "value": "" }
+        }
+      }
+    ],
+    "groups": [],
+    "components": [],
+    "settings": {
+      "entry_title": "name",
+      "searchable_fields": [],
+      "filter_fields": [],
+      "allowed_states": ["Published", "Draft", "Scheduled", "Approval Pending"],
+      "access_control": {},
+      "enable_component_preview": false,
+      "enable_content_rule": false,
+      "enable_custom_date": false,
+      "enable_seo_properties": false,
+      "enable_code_ingestion": false
+    },
+    "global_system_default": false
+  }
+}
+```
+
+```json 401
+{
+  "detail": "Invalid Auth Credentials"
+}
+```
+
+```json 400
+{
+  "error": {
+    "code": "BAD_REQUEST_ERROR",
+    "description": "Something Went Wrong"
+  }
+}
+```
+
+</ResponseExample>
