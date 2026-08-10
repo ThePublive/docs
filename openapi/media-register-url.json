@@ -1,0 +1,87 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Publive Media Library — Register by URL",
+    "version": "1.0.0",
+    "description": "Companion spec for the Register Media (URL) documentation page. Documents the same real endpoint as openapi/media-upload-file.json and the Media Library's other endpoints in openapi/content-management.json, scoped to just its application/x-www-form-urlencoded request variant so each documentation page shows only its own content type."
+  },
+  "servers": [
+    { "url": "https://cms.thepublive.com" }
+  ],
+  "security": [{ "basicAuth": [] }],
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "HTTP Basic Auth using your Publive API key pair, base64-encoded."
+      }
+    },
+    "parameters": {
+      "PublisherId": {
+        "name": "publisher_id",
+        "in": "path",
+        "required": true,
+        "schema": { "type": "string" },
+        "description": "Your Publisher ID"
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "Invalid or missing credentials",
+        "content": {
+          "application/json": {
+            "schema": { "type": "object", "properties": { "detail": { "type": "string" } } },
+            "example": { "detail": "Invalid Auth Credentials" }
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/publisher/{publisher_id}/media-library/": {
+      "post": {
+        "operationId": "registerMediaUrl",
+        "summary": "Register Media (URL)",
+        "description": "Registers an existing external media URL as a new entry in the CMS library, without uploading a file.\n\n<Note>To upload a file directly instead, see [Upload Media (File)](/dxp/api-reference/content-management/media/upload-media-file).</Note>",
+        "tags": ["Media Library"],
+        "parameters": [{ "$ref": "#/components/parameters/PublisherId" }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "filename": { "type": "string" },
+                  "path": { "type": "string", "description": "Immutable after creation. External media URL." },
+                  "alt_text": { "type": "string" },
+                  "caption": { "type": "string" },
+                  "source": { "type": "string" },
+                  "type": { "type": "string", "enum": ["Image", "Video", "File"], "description": "Immutable after creation." },
+                  "meta_data": { "type": "object" }
+                },
+                "required": ["filename", "path"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "message": "Created Successfully",
+                  "data": { "id": 1000, "filename": "hero-image.jpg", "alt_text": "Hero banner image", "caption": "", "path": "https://cdn.publive.com/images/hero-image.jpg", "source": "Staff Photographer", "type": "Image", "meta_data": {}, "date": "2026-02-12", "member": "admin" }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    }
+  }
+}
