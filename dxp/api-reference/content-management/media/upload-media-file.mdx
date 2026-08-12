@@ -6,6 +6,10 @@ openapi: "openapi/media-upload-file.json POST /publisher/{publisher_id}/media-li
 
 Uploads a file directly to the media library as `multipart/form-data`.
 
+<Warning>
+  `filename` must include a file extension, and it must match the file you send in `media` — e.g. `hero-image.jpg` for a JPEG.
+</Warning>
+
 <Info>
   To register an existing external URL instead of uploading a file, see [Register Media (URL)](/dxp/api-reference/content-management/media/register-media-url). Both pages document the same endpoint — pick whichever example below matches how you're sending the request.
 </Info>

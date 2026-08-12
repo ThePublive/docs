@@ -53,7 +53,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "filename": { "type": "string" },
+                  "filename": { "type": "string", "description": "Must include a file extension matching the file `path` points at.", "example": "hero-image.jpg" },
                   "path": { "type": "string", "description": "Immutable after creation. External media URL." },
                   "alt_text": { "type": "string" },
                   "caption": { "type": "string" },
