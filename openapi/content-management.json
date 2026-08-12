@@ -739,7 +739,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "filename": { "type": "string" },
+                  "filename": { "type": "string", "description": "Renames must keep a file extension matching the stored file." },
                   "alt_text": { "type": "string" },
                   "caption": { "type": "string" },
                   "source": { "type": "string" },
