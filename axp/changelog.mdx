@@ -8,6 +8,36 @@ rss: true
   Subscribe to this changelog via RSS at `https://docs.thepublive.com/changelog/axp/rss.xml`: paste the URL into Slack (`/feed subscribe`), an RSS reader, or a tool like Zapier to get notified of new releases.
 </Tip>
 
+<Update label="August 11, 2026" tags={["New releases", "Improvements"]} rss={{ title: "Prompt tracking, Diff Checker, Team page, and multi-CDN support" }}>
+  ### AXP Streams: Prompt tracking
+
+  * The new **Prompts** page tracks your brand's AI visibility against a set of prompts, measured on real AI assistant responses, with topic, volume, sentiment, citations, and the bots each prompt was seen on.
+
+  <Frame>
+    <img src="/images/axp/axp-prompts-tracking.png" alt="Prompts page showing total prompts tracked and a table of tracked prompts with topic, volume, sentiment, citations, and bots" style={{ borderRadius: '0.5rem' }} />
+  </Frame>
+
+  ### AXP Edge: Diff Checker
+
+  * A side-by-side view of any URL's raw HTML versus what AXP Edge serves to AI bots, with the share of content visible to AI before and after.
+
+  <Frame>
+    <img src="/images/axp/axp-edge-diff-checker.png" alt="Diff Checker showing before and after AXP Edge content for a URL, with content visible to AI going from 12% to 91%" style={{ borderRadius: '0.5rem' }} />
+  </Frame>
+
+  ### Team page
+
+  * A new **Team** page to view, add, edit, and remove team members, with search and filtering by role.
+
+  <Frame>
+    <img src="/images/axp/axp-team-page.png" alt="Team page listing team members with name, email, role, and last updated, plus an Add team member button" style={{ borderRadius: '0.5rem' }} />
+  </Frame>
+
+  ### Multi-CDN support for AXP Edge
+
+  * AXP Edge now runs on [Vercel](/axp/axp-edge/integrations/vercel), [Cloudflare](/axp/axp-edge/integrations/cloudflare), [CloudFront](/axp/axp-edge/integrations/cloudfront), [Akamai](/axp/axp-edge/integrations/akamai), and [F5 XC](/axp/axp-edge/integrations/f5-xc), including path-based URI handling for compatibility across these setups. Each CDN has its own integration guide.
+</Update>
+
 <Update label="July 28, 2026" tags={["New releases"]} rss={{ title: "Introducing Agent Analytics" }}>
   ### Agent Analytics
 
