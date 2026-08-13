@@ -52,7 +52,13 @@
                 "pages": [
                   "dxp/index",
                   "dxp/documentation/getting-started/authentication",
-                  "dxp/documentation/getting-started/mfa"
+                  {
+                    "group": "Multi-Factor Authentication (MFA)",
+                    "pages": [
+                      "dxp/documentation/getting-started/mfa",
+                      "dxp/documentation/getting-started/mfa/why-mfa-is-enforced"
+                    ]
+                  }
                 ]
               },
               {
