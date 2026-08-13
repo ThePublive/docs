@@ -1,9 +1,14 @@
 ---
 title: "Multi-Factor Authentication (MFA)"
 description: "Enable and enforce MFA for dashboard users to require OTP verification on login"
+sidebarTitle: "Overview"
 ---
 
-MFA adds a second verification step to the Publive dashboard login. When enabled, users must enter a 6-digit OTP,received on their registered email address, after their password before they can access the dashboard.
+MFA adds a second verification step to the Publive dashboard login. When enabled, users must enter a 6-digit OTP, received on their registered email address, after their password before they can access the dashboard.
+
+<Note>
+  **Effective August 2026, MFA enforcement is live for every user on every publisher account.** This is no longer opt-in — see [Why MFA Is Now Enforced](/dxp/documentation/getting-started/mfa/why-mfa-is-enforced) to learn more.
+</Note>
 
 ## Enabling MFA
 
@@ -14,13 +19,13 @@ MFA can be configured in two ways:
 **Globally for all users** — In publisher settings, enable the **Enforce MFA** option. This applies MFA to every user under that publisher immediately.
 
 <Warning>
-Enabling MFA — whether for an individual or globally — immediately signs out all affected users.
+  Enabling MFA — whether for an individual or globally — immediately signs out all affected users.
 </Warning>
 
 ## OTP mechanics
 
 | Detail | Value |
-|--------|-------|
+| --- | --- |
 | Code length | 6 digits |
 | Code validity | 5 minutes |
 | Max wrong attempts | 5 |
@@ -42,5 +47,5 @@ Publishers Admins, Super Admins, and any custom role with the **Manage Members**
 4. The member's existing sessions remain active, but they must use the new password on their next login.
 
 <Note>
-The Security section is only visible to members who have the Manage Members permission. It is not rendered for other roles.
+  The Security section is only visible to members who have the Manage Members permission. It is not rendered for other roles.
 </Note>
