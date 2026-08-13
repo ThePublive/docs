@@ -66,6 +66,7 @@
                 "group": "Core Concepts",
                 "pages": [
                   "dxp/documentation/getting-started/core-concepts",
+                  "dxp/documentation/concepts-features/conditional-fields",
                   "dxp/documentation/concepts-features/custom-entities",
                   "dxp/documentation/concepts-features/forms",
                   "dxp/documentation/concepts-features/media-library",

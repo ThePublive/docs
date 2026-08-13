@@ -1,0 +1,104 @@
+---
+title: "Conditional Fields"
+description: "Show or hide fields, components, and dynamic zones in a Custom Entity entry based on the value of another field."
+---
+
+<Info>
+  **Coming soon** — Documentation for this feature is being prepared.
+</Info>
+
+**Conditional Fields** let you attach visibility rules to a **Custom Entities** schema, so editors only see the fields that matter for the entry in front of them. A Publisher Admin sets the rules once in **Content Type Builder**, under **Field Visibility Rules**, and every entry of that content type then shows or hides those fields automatically as it is filled in. Fields without a rule are always visible, so nothing changes in your existing schemas until you add one.
+
+## How it works
+
+<Tabs>
+  <Tab title="Publisher Admin">
+    <Steps>
+      <Step title="Open the schema">
+        In **Content Type Builder**, open the Custom Entity schema you want to change.
+      </Step>
+      <Step title="Edit the field you want to make conditional">
+        Click the pencil icon on the field, component, or dynamic zone, then open the **Advanced Settings** tab. A red dot on the tab means you have unsaved changes.
+      </Step>
+      <Step title="Add a rule">
+        Scroll to **Field Visibility Rules** and click **+ Add a rule**. A rule card appears with the header **Show this field when**.
+
+        If the schema has no field that can act as a trigger at this level, the button shows a tooltip instead: *"Create a Boolean or a List field in your custom entity to make rules work."*
+      </Step>
+      <Step title="Choose a trigger field">
+        Pick the field whose value should control visibility. Only **Boolean**, **List**, and **Related** fields within the applicable scope appear in the dropdown.
+      </Step>
+      <Step title="Choose an operator and a value">
+        The operator and value inputs depend on the trigger field's type — see [Operators by trigger field type](#operators-by-trigger-field-type).
+      </Step>
+      <Step title="Add more rules, if you need them">
+        **+ Add another rule** becomes available once the current rule card is complete, and disappears once you have three rules. An **AND** badge sits between rule cards to show that every rule must be true.
+      </Step>
+      <Step title="Save">
+        Click **Save**. The field now carries a **Visibility rule applied** badge in the Content Type Builder list view. Hover the badge to read the full rule summary, for example *Show this field when: "Is Featured Artist?" = True*.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Editor">
+    <Steps>
+      <Step title="Open an entry">
+        Create or edit an entry of that Custom Entity. Fields with visibility rules are already shown or hidden based on the entry's current values.
+      </Step>
+      <Step title="Fill in the trigger field">
+        As soon as you change a trigger field, the fields, components, and dynamic zones that depend on it fade in or out. You do not have to wait for autosave.
+      </Step>
+      <Step title="Watch for the warning when hiding filled-in data">
+        If a change would hide something you have already filled in, an inline warning appears first: *"Turning this off will hide `<FIELD_NAME>`. This data won't be included when you publish, but it will be saved in your draft."* You can continue or cancel.
+      </Step>
+      <Step title="Change your mind at any point">
+        Set the trigger back to its earlier value and your data reappears, restored from the draft.
+      </Step>
+      <Step title="Publish">
+        If any hidden fields still hold data, a confirmation dialog lists them before publishing. If nothing hidden holds data, publishing runs as usual with no extra step.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+## Operators by trigger field type
+
+| Trigger field type | Operators | Value selection |
+|--------------------|-----------|-----------------|
+| **Boolean** | `is` — fixed, so no operator dropdown appears | None; True or False is implicit |
+| **List** | `has any value`, `has no value`, `is`, `is not` | Multi-select from that field's own options, shown for `is` and `is not` only |
+| **Related** | `is`, `is not` | Search by entry title; renaming an entry later does not break the rule |
+
+## Key behaviours
+
+- A field with no rule is always visible. A field with a rule is hidden by default and appears only when every rule on it is true.
+- To hide something by default, use `is not`, `has no value`, or a Boolean trigger that is switched off.
+- You can add up to three rules per field, component, or dynamic zone. Rules are joined with **AND**; multiple values inside a single rule are joined with **OR**.
+- A root-level trigger can control a root field, a whole component, a single field inside a component, or a whole dynamic zone.
+- A trigger that sits inside a component or a dynamic zone block can only control fields in that same component or block. It cannot affect anything outside it.
+- Only Publisher Admins and Super Admins can create or change rules. Editors see the results of the rules but cannot edit them.
+- Data in a hidden field stays in your draft. It is removed from the published record only, so it comes back if the field becomes visible again.
+- Required fields inside a hidden component are skipped during publish validation for as long as that component is hidden.
+- When a trigger field has no value at all, `is` and `is not` evaluate as false, `has no value` evaluates as true, and `has any value` evaluates as false.
+- Deleting a trigger field asks for confirmation first, then removes every rule that referenced it. Deleting a List option or a Related entry used as a rule value updates the affected rule and shows a warning in Content Type Builder; if that leaves the rule with no values, the rule is removed.
+- Rules that would depend on each other in a loop are blocked when you save, with an inline error.
+- If visibility rules cannot be evaluated at publish time, publishing is blocked rather than guessing which data to keep.
+
+<Note>
+  Conditional Fields apply to Custom Entities schemas only. System content types such as Articles, Videos, and Web Stories are not supported, and Content Type Builder is designed for desktop.
+</Note>
+
+{/* screenshot needed: Content Type Builder, field edit modal, Advanced Settings tab, showing the Field Visibility Rules section with one complete rule card (Boolean trigger, "Show this field when" header) */}
+
+{/* screenshot needed: Content Type Builder, same modal with three rule cards stacked and the AND badge between them, with "+ Add another rule" no longer shown */}
+
+{/* screenshot needed: Content Type Builder list view, showing the blue "Visibility rule applied" pill badge on a field with its hover tooltip open */}
+
+{/* screenshot needed: Custom Entity entry editor, at the moment a trigger is switched off and the inline data-loss warning is displayed over a filled-in component */}
+
+{/* screenshot needed: Custom Entity entry editor, pre-publish confirmation dialog listing the hidden fields that still contain data */}
+
+## Related
+
+- [Custom Entities](/dxp/documentation/concepts-features/custom-entities)
+- [Core concepts](/dxp/documentation/getting-started/core-concepts)
+- [Content access policies](/dxp/documentation/concepts-features/content-access-policies)
