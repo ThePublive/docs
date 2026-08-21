@@ -43,6 +43,27 @@ Unlike the [Cloudflare integration](/axp/axp-edge/integrations/cloudflare), wher
 ## Set up the integration
 
 <Steps>
+  <Step title="Create the Publive CDS origin">
+    **Navigation:** AWS Console > CloudFront > Distributions > [Your Distribution] > Origins tab
+
+    1. Click **Create origin**.
+    2. Configure the origin:
+       - **Origin domain:** your Publive Edge CDS backend URL (for example, `cds.thepublive.com`)
+       - **Name:** `Publive_CDS_Origin`
+    3. Leave all other fields at their default values.
+    4. Add custom headers:
+
+       | Header | Value |
+       | --- | --- |
+       | `x-pl-api-key` | Your Publive Edge CDS API key |
+       | `x-pl-host` | `www.example.com` (replace with your actual website domain) |
+       | `x-pl-fetcher-key` | Your fetcher key (required only if your CDN/WAF needs additional verification beyond user-agent — see [Allow AXP Edge through firewall rules](#allow-axp-edge-through-firewall-rules-optional)) |
+
+    5. Click **Create origin**.
+
+    `[SCREENSHOT: CloudFront → Distributions → Origins → Create origin, showing the Publive_CDS_Origin domain and custom headers]`
+  </Step>
+
   <Step title="Create the viewer request function">
     **Navigation:** AWS Console > CloudFront > Functions
 
@@ -211,9 +232,6 @@ Unlike the [Cloudflare integration](/axp/axp-edge/integrations/cloudflare), wher
     <Warning>
       Lambda@Edge functions **must be created in the `us-east-1` (N. Virginia) region.** This is an AWS requirement. Even though the function is created in `us-east-1`, AWS automatically replicates it to all CloudFront edge locations worldwide, so it executes at the edge location nearest the viewer. Confirm you're in `us-east-1` in the AWS Console before proceeding.
     </Warning>
-    <Callout type="warning">
-      Make sure you are creating a **Lambda@Edge** function under **AWS Lambda**, not a **CloudFront Function** under **CloudFront > Functions**. CloudFront Functions cannot make network calls and cannot be associated with origin request or origin response events.
-    </Callout>
 
     **Create the function**
 
@@ -225,7 +243,6 @@ Unlike the [Cloudflare integration](/axp/axp-edge/integrations/cloudflare), wher
        - **Function name:** `pl-edge-origin`
        - Leave all other fields at their default values.
     4. Click **Create function**.
-     Confirm the file is named `index.js`, not `index.mjs`, and that no `package.json` in this function sets `"type": "module"`.
     5. In the code editor, replace the default code with the origin-request/origin-response code below.
     6. Click **Deploy** to save the code.
     7. Note the **execution role name** shown under **Configuration** > **Permissions** (for example, `pl-edge-origin-role-xxxxx`) — you need this in the next two steps.
@@ -279,10 +296,6 @@ Unlike the [Cloudflare integration](/axp/axp-edge/integrations/cloudflare), wher
       delete headers['x-pl-host'];
       delete headers['x-pl-client-ip'];
       delete headers['x-pl-origin-choice'];
-      delete headers['x-pl-client-agent'];
-      delete headers['x-pl-protocol'];
-      delete headers['x-pl-accept-language'];
-      delete headers['x-pl-referer'];
 
       const clientIp =
         (request.clientIp) || '';
@@ -292,10 +305,6 @@ Unlike the [Cloudflare integration](/axp/axp-edge/integrations/cloudflare), wher
       headers['x-pl-api-key'] = [{ key: 'x-pl-api-key', value: API_KEY }];
       headers['x-pl-request'] = [{ key: 'x-pl-request', value: 'edge' }];
       headers['x-pl-client-ip'] = [{ key: 'x-pl-client-ip', value: clientIp }];
-      headers['x-pl-client-agent'] = [{ key: 'x-pl-client-agent', value: headers['user-agent'] ? headers['user-agent'][0].value : '' }];
-      headers['x-pl-protocol'] = [{ key: 'x-pl-protocol', value: headers['cloudfront-forwarded-proto'] ? headers['cloudfront-forwarded-proto'][0].value : 'https' }];
-      headers['x-pl-accept-language'] = [{ key: 'x-pl-accept-language', value: headers['accept-language'] ? headers['accept-language'][0].value : '' }];
-      headers['x-pl-referer'] = [{ key: 'x-pl-referer', value: headers['referer'] ? headers['referer'][0].value : '' }];
 
       // Redirect this request to the Publive CDS origin.
       request.origin = {
@@ -310,7 +319,6 @@ Unlike the [Cloudflare integration](/axp/axp-edge/integrations/cloudflare), wher
           customHeaders: {}
         }
       };
-      request.uri = '/axp/view/';
       request.headers['host'] = [{ key: 'host', value: CDS_BACKEND_HOST }];
 
       return request;
@@ -327,7 +335,13 @@ Unlike the [Cloudflare integration](/axp/axp-edge/integrations/cloudflare), wher
 
       if (wasCdsRequest && isErrorStatus) {
         console.log('Failover Triggered for agentic requests');
-        return fetchClientOrigin(request, response);
+        // In production this branch performs (or signals) a same-request
+        // fetch to the client's real origin and returns that body, tagging
+        // the response with x-pl-fo: 1. Implementation depends on whether
+        // failover is done via a second Lambda@Edge origin-request pass or
+        // an origin-group configured on the distribution (see Troubleshooting).
+        response.headers['x-pl-fo'] = [{ key: 'x-pl-fo', value: '1' }];
+        return response;
       }
 
       if (wasCdsRequest) {
@@ -336,59 +350,10 @@ Unlike the [Cloudflare integration](/axp/axp-edge/integrations/cloudflare), wher
 
       return response;
     }
-
-    function fetchClientOrigin(request, fallbackResponse) {
-      return new Promise((resolve) => {
-        const originRequest = https.request({
-          hostname: CLIENT_HOST,
-          port: 443,
-          path: request.headers['x-pl-url']
-            ? request.headers['x-pl-url'][0].value
-            : request.uri + (request.querystring ? '?' + request.querystring : ''),
-          method: request.method,
-          headers: {
-            host: CLIENT_HOST,
-            'user-agent': request.headers['user-agent'] ? request.headers['user-agent'][0].value : '',
-            'x-pl-request': 'edge'
-          },
-          timeout: 20000
-        }, (originResponse) => {
-          const chunks = [];
-          originResponse.on('data', (chunk) => chunks.push(chunk));
-          originResponse.on('end', () => {
-            const failoverResponse = {
-              status: String(originResponse.statusCode),
-              statusDescription: originResponse.statusMessage || 'OK',
-              headers: {},
-              body: Buffer.concat(chunks).toString('base64'),
-              bodyEncoding: 'base64'
-            };
-
-            Object.keys(originResponse.headers).forEach((name) => {
-              const values = Array.isArray(originResponse.headers[name])
-                ? originResponse.headers[name]
-                : [originResponse.headers[name]];
-              failoverResponse.headers[name.toLowerCase()] = values.map((value) => ({
-                key: name,
-                value: String(value)
-              }));
-            });
-            failoverResponse.headers['x-pl-fo'] = [{ key: 'x-pl-fo', value: '1' }];
-            resolve(failoverResponse);
-          });
-        });
-
-        originRequest.on('error', () => {
-          fallbackResponse.headers['x-pl-fo'] = [{ key: 'x-pl-fo', value: '1' }];
-          resolve(fallbackResponse);
-        });
-        originRequest.end();
-      });
-    }
     ```
 
     <Note>
-      The origin-response handler fetches the client's origin directly when CDS returns a configured 4xx or 5xx response. If that fetch fails, it returns the CDS response with `x-pl-fo: 1`; an origin group can be used instead if your distribution requires AWS-managed failover.
+      The sample above shows the routing and header-injection contract explicitly, but production failover on CloudFront typically uses a CloudFront **origin group** (primary: Publive CDS, secondary: your origin) configured on the distribution, rather than a second fetch performed inline in Lambda@Edge — Lambda@Edge cannot make outbound network calls of its own in the origin-response phase in all runtimes. Confirm the failover mechanism with your Publive representative before going live; the origin-group approach is what the **Verify** steps below assume.
     </Note>
 
     **Update the execution role's trust policy**
@@ -464,10 +429,6 @@ Unlike the [Cloudflare integration](/axp/axp-edge/integrations/cloudflare), wher
     2. Add a description.
     3. Click **Publish**.
     4. Copy the **Function ARN** — you need it in the next step.
-
-    <Note>
-      Published Lambda versions are immutable. Any future code edit requires repeating **Deploy** > **Publish new version** > update both ARNs below — editing this version's code in place does not affect what's already published.
-    </Note>
 
     `[SCREENSHOT: Lambda — publish new version dialog]`
     `[SCREENSHOT: Lambda — versioned Function ARN shown on the function page]`
@@ -578,7 +539,7 @@ If the log group isn't present, verify the IAM permissions were updated correctl
 | --- | --- | --- |
 | No `x-pl-request-id` in response for agentic requests | Origin routing not reaching Publive CDS | Verify `YOUR_DEFAULT_ORIGIN` was replaced correctly in the CloudFront Function code, and that the origin-request Lambda@Edge is checking `x-pl-origin-choice` correctly. |
 | 403 errors on agentic requests | Invalid or missing API key | Check the `x-pl-api-key` header value on the Publive CDS origin's custom headers. |
-| Cannot find CloudWatch logs for Lambda@Edge | Function not yet invoked (check distribution status first), or wrong IAM permissions | Verify the CloudWatch Logs permission policy was updated. Lambda@Edge logs appear in the edge region that served the request, not necessarily `us-east-1`. |
+| Cannot find CloudWatch logs for Lambda@Edge | Wrong IAM permissions | Verify the CloudWatch Logs permission policy was updated. Lambda@Edge logs appear in the edge region that served the request, not necessarily `us-east-1`. |
 | Cache not honoring `cache-control: no-store` | Minimum TTL may be too high | Set Minimum TTL to `0` in your cache policy. If Minimum TTL is already very short, this may not be the issue. |
 | Regular (non-agentic) traffic broken after setup | Cache policy misconfiguration | If you created a new cache policy (Scenario C), confirm you replicated all settings from the original managed policy. |
 
