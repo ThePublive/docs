@@ -446,7 +446,8 @@
                   "axp/axp-edge/integrations/akamai",
                   "axp/axp-edge/integrations/cloudfront",
                   "axp/axp-edge/integrations/fastly",
-                  "axp/axp-edge/integrations/dont-have-a-cdn"
+                  "axp/axp-edge/integrations/dont-have-a-cdn",
+                  "axp/axp-edge/integrations/cache-invalidation"
                 ]
               }
             ]
