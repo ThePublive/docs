@@ -1,0 +1,120 @@
+---
+title: "Keep AXP Edge in sync with your CDN"
+sidebarTitle: "Sync on publish"
+description: "Tell AXP Edge whenever you purge your own CDN's cache, so AI crawlers never see a stale optimized view."
+---
+
+You probably already purge your CDN's cache the moment a page is published, updated, or unpublished. Add one more call at that same trigger point, and AXP Edge stays in sync too — the next AI crawler that visits gets a fresh render instead of the page it cached before your edit.
+
+You don't strictly need this: AXP Edge also re-scans every page on its own periodic cycle, so pages stay reasonably fresh either way. This call just closes the gap — same-second freshness instead of waiting for the next scan.
+
+<Note>
+  This purges exactly one URL. It is not a site-wide cache flush — there's no client-facing bulk/global purge. If you need every page invalidated at once (e.g. a full site migration), contact [support@thepublive.com](mailto:support@thepublive.com).
+</Note>
+
+## Prerequisites
+
+- An AXP client API key for your publisher. Keys are issued per client — contact [support@thepublive.com](mailto:support@thepublive.com) if you don't have one yet (there's no self-serve key page in the dashboard yet).
+- AXP Edge enabled for your publisher.
+- The domain you send in `x-pl-host` must be a domain already registered against your publisher account (primary or alternate) — anything else is rejected.
+
+## How it works
+
+**Endpoint**
+
+```
+POST https://cds.thepublive.com/axp/invalidate/
+```
+
+**Headers**
+
+| Header | Value |
+| --- | --- |
+| `x-pl-api-key` | Your AXP client API key |
+| `x-pl-host` | The domain of the page that changed, e.g. `www.example.com` |
+| `Content-Type` | `application/json` |
+
+**Body**
+
+```json
+{
+  "host": "www.example.com",
+  "path": "/news/example-article"
+}
+```
+
+Both fields are required strings. Always set `host` to the same domain as your `x-pl-host` header — the two are checked independently, and sending different domains means the purge won't target what you expect.
+
+**Response — `200 OK`**
+
+```json
+{ "status": "success" }
+```
+
+The call clears the cache but doesn't re-render the page inline. The next AI-crawler request for that URL gets a fresh render; nothing is pre-warmed by this call.
+
+## Set up the integration
+
+<Steps>
+  <Step title="Get your API key">
+    Get your AXP client API key from Publive (see Prerequisites).
+  </Step>
+  <Step title="Hook it into your publish event">
+    In your CMS, add this call right alongside whatever already purges your CDN's cache on publish/update/unpublish. No existing CDN purge? Hook it into that same publish event directly.
+  </Step>
+  <Step title="Send the changed URL">
+    Send `host` + `path` for the exact URL that changed. Call it once per URL — there's no batch/bulk variant.
+  </Step>
+  <Step title="Test">
+    Test on staging with a URL you don't mind purging, then confirm on a real publish.
+  </Step>
+</Steps>
+
+**Example**
+
+```bash
+curl -X POST https://cds.thepublive.com/axp/invalidate/ \
+  --header "x-pl-api-key: axp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  --header "x-pl-host: www.example.com" \
+  --header "Content-Type: application/json" \
+  --data '{"host": "www.example.com", "path": "/news/example-article"}'
+```
+
+## Errors
+
+| Status | Body | Cause |
+| --- | --- | --- |
+| 401 | `Invalid API key.` | Missing/malformed `x-pl-api-key`, unknown key, or the key's publisher was deleted |
+| 403 | `Invalid Domain! You are not authorized to perform this action.` | `x-pl-host` missing, or not one of your publisher's registered domains |
+| 400 | `{"host": [...], "path": [...]}` | `host` or `path` missing from the JSON body |
+
+## Verify
+
+- Load the page once (so AXP Edge has something cached), call the webhook for that URL, then re-request it with a crawler user-agent (e.g. `ClaudeBot`) — the response should reflect your latest content, not the previous cached version.
+- A `200` with `{"status": "success"}` only confirms the call was accepted, not that the page was cached beforehand — invalidating a URL AXP Edge never rendered is a harmless no-op.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| 401 on every call | Wrong or expired key | Confirm the key with Publive support — keys are rotated, not edited, so issuing a new one immediately invalidates the old one |
+| 403 `Invalid Domain!` | `x-pl-host` doesn't match your registered domain | Check for a `www.` mismatch, or a domain change Publive hasn't been told about |
+| 400 validation error | Missing `host` or `path` | Both are required plain strings; send `path` as just the URL path (e.g. `/news/example-article`), not a full URL |
+| Call succeeds but the crawler still sees old content | An upstream CDN in front of your origin (Cloudflare, Akamai, your own cache) is still serving stale | This endpoint only purges AXP Edge's own cache — it doesn't reach any CDN layer in front of your origin |
+| Call succeeds but nothing seems to change | The page was never cached in AXP Edge yet | Expected — a no-op purge on a URL AXP Edge hadn't rendered |
+
+## Rollback
+
+Nothing to unwind. Stop calling the endpoint and AXP Edge falls back to its periodic drift check for that URL — freshness just goes back to scan-cycle latency instead of real time.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="AXP Edge dashboard" icon="gauge" href="/axp/axp-edge/dashboard">
+    Monitor agent traffic and manage optimization rules.
+  </Card>
+
+  <Card title="CDN integration guides" icon="server" href="/axp/axp-edge/setup">
+    Route AI-agent traffic to AXP Edge itself — see the Cloudflare, Akamai, Vercel, and other CDN guides.
+  </Card>
+</CardGroup>
