@@ -22,7 +22,7 @@ Configure webhooks through the Publive Dashboard:
 1. Go to **Configuration** > **Webhooks**
 2. Click **Create New Webhook**
 3. Configure the following fields:
-   - **Target URL** (Required): The endpoint URL where webhook payloads will be sent.
+   - **Target URL** (Required): The endpoint URL where webhook payloads will be sent. Must be an HTTPS URL and cannot point to localhost or a private/internal IP address.
    - **Api Secret** (Optional): A signing secret used to verify webhook payloads. Generate your own HMAC-SHA256 secret and enter it here.
    - **Alert Email**: An email address to receive notifications if the webhook fails.
    - **Select Events**(Required): Choose the specific events you want to subscribe to.
@@ -60,5 +60,5 @@ Signature verification is optional. To enable it, generate your own HMAC-SHA256 
 
 - **Respond with 200** quickly, process the payload asynchronously
 - **Implement idempotency** as webhooks may be delivered more than once
-- **Use HTTPS** endpoints for security
+- **Use HTTPS** endpoints — required, as HTTP URLs and localhost/private/internal IPs are rejected
 - **Validate signatures** to ensure requests are from Publive

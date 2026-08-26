@@ -9,6 +9,31 @@ rss: true
 </Tip>
 
 <Update
+  label="August 25, 2026"
+  tags={["Security", "Improvements", "Bug fixes"]}
+  rss={{ title: "Webhook validation, login abuse protection, role-filter search fix, and other improvements" }}
+>
+
+### Security
+
+* **Webhook endpoint validation** — webhook target URLs must now be HTTPS and can't point to localhost or private/internal IP addresses.
+* **Login & password-reset abuse protection** — rate limiting and bot-abuse blocking added to the login and password-reset flows.
+
+### Improvements
+
+* **Email Automation template editor: raw-HTML mode** — the template editor now has a raw-HTML mode, so HTML you paste or type in is used as-is instead of being altered with auto-inserted `<p>` tags.
+* **Team members: role filter now works with search** — filtering by role after searching by name now correctly narrows the list to matching members, instead of showing everyone.
+* **Custom Component page: pagination** — all available pages are now shown up front, instead of only appearing once you click through with the next arrow.
+
+### Bug fixes
+
+* **Dynamic List: summary & meta description** — posts returned by a [Custom Entity](/dxp/documentation/concepts-features/custom-entities) Dynamic List now include their summary and meta description fields, matching what's already available via the CDS API.
+* **Newsletter logo rendering** — fixed a blurred newsletter logo caused by a mislabeled file type.
+* **Video thumbnail file extensions** — video thumbnails added via Edit Post now save with their file extension intact, so their metadata can be edited in the [Media Library](/dxp/documentation/concepts-features/media-library) without error.
+
+</Update>
+
+<Update
   label="August 11, 2026"
   tags={["Improvements", "Bug fixes"]}
   rss={{ title: "Case-sensitive Smart Link matching, Web Story editor and newsletter delivery fixes" }}
