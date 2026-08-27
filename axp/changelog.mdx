@@ -8,6 +8,13 @@ rss: true
   Subscribe to this changelog via RSS at `https://docs.thepublive.com/changelog/axp/rss.xml`: paste the URL into Slack (`/feed subscribe`), an RSS reader, or a tool like Zapier to get notified of new releases.
 </Tip>
 
+<Update label="August 25, 2026" tags={["Improvements"]} rss={{ title: "Faster AXP Edge response times and CDN cache invalidation" }}>
+  ### Improvements
+
+  * **AXP Edge response time** — median response time is down from ~500ms to ~250ms, following edge passthrough-mode and autoscaling improvements.
+  * **Auto refresh CDN cache** — a new [cache-invalidation webhook](/axp/axp-edge/integrations/cache-invalidation) keeps AXP Edge synced with your content. Call it alongside your existing CDN purge on publish, update, or unpublish, and AXP Edge serves AI crawlers a fresh render instead of a stale cached one.
+</Update>
+
 <Update label="August 11, 2026" tags={["New releases", "Improvements"]} rss={{ title: "Prompt tracking, Diff Checker, Team page, and multi-CDN support" }}>
   ### AXP Streams: Prompt tracking
 
