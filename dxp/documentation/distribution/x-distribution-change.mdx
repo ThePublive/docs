@@ -1,0 +1,48 @@
+---
+title: "Changes to X (Twitter) distribution"
+sidebarTitle: "X Distribution Change (Sept 2026)"
+description: "X ended free API access for publishing, so automated Distribute to X no longer works. What we recommend doing instead."
+---
+
+If you've used Distribute to push articles to X (formerly Twitter) from your Publive dashboard, that flow has stopped working. X discontinued free API access for publishing posts, and the change took effect for everyone on 11 September 2026.
+
+Nothing is broken on the Publive side, and the rest of your Distribute workflow is unaffected. This applies only to X.
+
+## What changed
+
+X has narrowed free API access for publishers over several years and has now removed it completely.
+
+| Period | Free publishing allowance |
+| --- | --- |
+| Before 2023 | Unlimited |
+| March 2023 to October 2024 | Up to 1,500 posts |
+| October 2024 to February 2026 (in practice, until September 2026) | Up to 500 posts |
+| September 2026 onwards | None. $0.20 per post |
+
+Every post published to X through the API now costs $0.20, billed by X.
+
+## What we recommend: manual sharing
+
+For most publishers, the simplest answer is to post to X yourself, through the X app or website, with your article link and a short caption.
+
+At the volumes we see most teams publishing at, this takes a few minutes a day and it keeps you out of X's pricing entirely. It's the guidance we're giving every publisher on the platform.
+
+<Note>
+  Sharing manually doesn't change how your links look on X. Posts still carry their `twitter_title`, `twitter_description`, and `twitter_image` fields, so preview cards render exactly as before.
+</Note>
+
+## If your volume makes manual sharing impractical
+
+Some teams post to X often enough that doing it by hand adds real work. For them we're building a Bring Your Own Key (BYOK) option.
+
+With BYOK you connect your own X API key to Publive, and automated Distribute to X works as it did before. X bills you directly at $0.20 per post. That cost sits between you and X, and doesn't pass through Publive.
+
+<Info>
+  BYOK is still in development and we haven't set a general availability date. If it matters to your team, tell your CSM. We can prioritise the build for your account and share timelines.
+</Info>
+
+## Questions, or not sure which route fits?
+
+Talk to your Customer Success Manager. If you're weighing manual sharing against BYOK, your CSM can pull your recent X posting volume from your account and walk through the trade-off with you.
+
+For anything else, [raise a support ticket](mailto:support@thepublive.com).
