@@ -9,6 +9,30 @@ rss: true
 </Tip>
 
 <Update
+  label="September 21, 2026"
+  tags={["Security"]}
+  rss={{ title: "Distribute to X moving to BYOK, SVG uploads retired, session and login limits" }}
+>
+
+### Distribute to X is moving to a Bring Your Own Key model
+
+X has removed free API access for publishing, so automated **Distribute to X** no longer works. For most publishers we recommend posting to X manually — preview cards render exactly as before. For teams publishing at higher volumes, a Bring Your Own Key (BYOK) option, where you connect your own X API key, is in development.
+
+See [Changes to X (Twitter) distribution](/dxp/documentation/distribution/x-distribution-change) for the full picture, or talk to your Customer Success Manager.
+
+### Behaviour changes
+
+These come out of a round of security hardening across the dashboard, tightening how accounts, sessions, and uploads are handled.
+
+* **SVG uploads are no longer supported** — in the media library, feature images, profile pictures, logos, and the newsletter logo. Existing SVGs keep working; use PNG or JPG for anything new.
+* **Session limits** — sessions now expire 30 days after sign-in even for active users, and each member can hold at most 5 active sessions (signing in on a 6th device signs out the oldest).
+* **Your own email address and MFA** — changing your own email or switching off your own MFA now requires the member-manage permission.
+* **Login attempt limits** — 5 failed logins on the same email within a minute trigger a short lockout. Shared office IPs aren't affected.
+* **Invite resends** — an invite can be resent to the same person once every 10 minutes.
+
+</Update>
+
+<Update
   label="August 25, 2026"
   tags={["Security", "Improvements", "Bug fixes"]}
   rss={{ title: "Webhook validation, login abuse protection, role-filter search fix, and other improvements" }}
