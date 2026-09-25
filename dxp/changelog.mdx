@@ -11,24 +11,24 @@ rss: true
 <Update
   label="September 21, 2026"
   tags={["Security"]}
-  rss={{ title: "Distribute to X moving to BYOK, SVG uploads retired, session and login limits" }}
+  rss={{ title: "Distribute to X deprecated, SVG uploads retired, session and login limits" }}
 >
 
-### Distribute to X is moving to a Bring Your Own Key model
+### Deprecating Distribute to X
 
-X has removed free API access for publishing, so automated **Distribute to X** no longer works. For most publishers we recommend posting to X manually — preview cards render exactly as before. For teams publishing at higher volumes, a Bring Your Own Key (BYOK) option, where you connect your own X API key, is in development.
+X has removed free API access for publishing, so automated **Distribute to X** no longer works. For most publishers we recommend posting to X manually — preview cards render exactly as before. If you post to X at high volume, [contact us](mailto:support@thepublive.com).
 
-See [Changes to X (Twitter) distribution](/dxp/documentation/distribution/x-distribution-change) for the full picture, or talk to your Customer Success Manager.
+See [Changes to X (Twitter) distribution](/dxp/documentation/distribution/x-distribution-change) for the full picture.
 
 ### Behaviour changes
 
 These come out of a round of security hardening across the dashboard, tightening how accounts, sessions, and uploads are handled.
 
-* **SVG uploads are no longer supported** — in the media library, feature images, profile pictures, logos, and the newsletter logo. Existing SVGs keep working; use PNG or JPG for anything new.
-* **Session limits** — sessions now expire 30 days after sign-in even for active users, and each member can hold at most 5 active sessions (signing in on a 6th device signs out the oldest).
-* **Your own email address and MFA** — changing your own email or switching off your own MFA now requires the member-manage permission.
-* **Login attempt limits** — 5 failed logins on the same email within a minute trigger a short lockout. Shared office IPs aren't affected.
-* **Invite resends** — an invite can be resent to the same person once every 10 minutes.
+* **SVG uploads are no longer supported** — in the media library, feature images, profile pictures, logos, and the newsletter logo. SVG files, unlike PNGs or JPGs, can carry hidden code that runs in the browser; our security audit caught this and we closed it. Existing SVGs on your site are fine; use PNG or JPG for anything new.
+* **Session limits** — sessions now expire 30 days after sign-in even for active users, and each member can hold at most 5 active sessions (signing in on a 6th device signs out the oldest). A session that never expires keeps a compromised account compromised.
+* **Your own email address and MFA** — changing your own email or switching off your own MFA now requires the member-manage permission. If someone reaches an unattended session, this stops them from quietly taking the account over by swapping the address or turning MFA off. If you need either changed, ask an owner or admin.
+* **Login attempt limits** — 5 wrong password attempts in quick succession put the account in a brief cooldown. Wait a moment and try again, or hit **Forgot Password**. If you're on a shared office network, your IP is not affected, so a colleague's mistake won't lock you out.
+* **Invite resends** — if a new team member doesn't receive their invite email, you can resend it from the **Team Members** page. Resends to the same address are limited to once every 10 minutes.
 
 </Update>
 
