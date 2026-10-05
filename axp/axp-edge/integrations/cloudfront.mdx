@@ -36,9 +36,47 @@ A request only qualifies for AXP Edge when **all** of the following are true:
 - The method is `GET` or `HEAD`, and the path isn't a static asset (`.js`, `.css`, images, fonts, and similar are always skipped).
 - The user-agent matches a known AI agent, or the request carries a preview flag.
 
+A request with the header `x-pl-skip: 1` opts a matching AI agent user-agent out of routing, so it goes to your origin. The skip header never overrides the preview flag.
+
 If the request qualifies, the Lambda@Edge origin-request function fetches the page from CDS and returns it. If CDS errors or is unreachable, the function automatically fails over to your real origin and tags the response with a failover header. Visitors never see an error.
 
 Unlike the [Cloudflare integration](/axp/axp-edge/integrations/cloudflare), where the whole routing decision and the backend fetch live in one Worker, CloudFront splits this across the CloudFront Function (cheap, runs on every request, viewer-request only) and Lambda@Edge (heavier, only invoked for requests the CloudFront Function has already flagged as candidates). This two-tier design is a CloudFront constraint, not a Publive choice — CloudFront Functions cannot make network calls, so the actual CDS fetch has to happen in Lambda@Edge.
+
+```mermaid
+graph TD
+    Req["Viewer request"] --> CFF{"CloudFront Function<br/>pl-edge-routing"}
+    CFF -->|"Not eligible, or x-pl-request<br/>already present (loop guard)"| Default["x-pl-origin-choice: default"]
+    CFF -->|"AI agent UA without x-pl-skip: 1,<br/>or x-pl-preview: 1"| Cds["x-pl-origin-choice: cds"]
+    Default --> PassReq["Origin-request Lambda<br/>passes through"]
+    PassReq --> Origin["Your origin"]
+    Origin --> OriginOut["Origin page"]
+    Cds --> SetReq["Origin-request Lambda<br/>sets x-pl-request: edge or preview,<br/>x-pl-* headers, uri /axp/view/"]
+    SetReq --> CDS["Publive CDS"]
+    CDS --> ORS{"Origin-response Lambda<br/>CDS returned an error?"}
+    ORS -->|"No"| CdsOut["CDS page<br/>with x-pl-request-id"]
+    ORS -->|"Yes"| FO["Failover fetch to your host<br/>with x-pl-request: fo"]
+    FO -.->|"Re-enters the distribution"| CFF
+    FO --> FoOut["Origin page<br/>with x-pl-fo: 1"]
+
+    style CDS fill:#3B82F6,color:#fff
+    style Origin fill:#10B981,color:#fff
+    style FO fill:#F59E0B,color:#fff
+```
+
+Because the failover fetch carries `x-pl-request: fo`, the CloudFront Function's loop guard sends it straight to your origin. It never routes back to CDS.
+
+### Header reference
+
+| Header | Set by | Read by | On cache-policy allow list? |
+| --- | --- | --- | --- |
+| `x-pl-origin-choice` | CloudFront Function | Origin-request Lambda | Yes |
+| `x-pl-request` | Origin-request Lambda (`edge` or `preview`), failover fetch (`fo`) | CloudFront Function (loop guard, presence only), origin-response Lambda | Yes |
+| `x-pl-url` | Origin-request Lambda | Origin-response Lambda (failover path lookup) | Yes |
+| `x-pl-preview` | Client | CloudFront Function, origin-request Lambda | Yes |
+| `x-pl-skip` | Client | CloudFront Function only | No |
+| `x-pl-host`, `x-pl-api-key`, `x-pl-client-ip`, `x-pl-client-agent`, `x-pl-protocol`, `x-pl-accept-language`, `x-pl-referer` | Origin-request Lambda | CDS backend only | No |
+| `x-pl-fo` | Origin-response Lambda (failover only) | Nothing (output tag for verification) | No |
+| `x-pl-request-id` | CDS backend | Nothing (output tag for verification) | No |
 
 ## Set up the integration
 
@@ -108,7 +146,8 @@ Unlike the [Cloudflare integration](/axp/axp-edge/integrations/cloudflare), wher
       var ua = headers["user-agent"] ? headers["user-agent"].value : "";
       var alreadyRouted = !!headers["x-pl-request"];
       var previewFlag = headers["x-pl-preview"] && headers["x-pl-preview"].value === "1";
-      var botMatch = isAgenticUA(ua);
+      var skipFlag = headers["x-pl-skip"] && headers["x-pl-skip"].value === "1";
+      var botMatch = !skipFlag && isAgenticUA(ua);
 
       var eligible =
         !alreadyRouted &&
@@ -145,11 +184,11 @@ Unlike the [Cloudflare integration](/axp/axp-edge/integrations/cloudflare), wher
     **Scenario A: Legacy cache settings**
 
     1. Under **Cache key and origin requests**, confirm **Legacy cache settings** is selected.
-    2. Add `x-pl-url` and `x-pl-origin-choice` to the **Headers** allow list:
+    2. Add `x-pl-url`, `x-pl-origin-choice`, `x-pl-request`, and `x-pl-preview` to the **Headers** allow list:
        - Select **Include the following headers** from the dropdown.
-       - Add `x-pl-url` and `x-pl-origin-choice`.
+       - Add `x-pl-url`, `x-pl-origin-choice`, `x-pl-request`, and `x-pl-preview`.
 
-       `[SCREENSHOT: Legacy cache settings — Headers allow list with x-pl-url and x-pl-origin-choice added]`
+       `[SCREENSHOT: Legacy cache settings — Headers allow list with x-pl-url, x-pl-origin-choice, x-pl-request, and x-pl-preview added]`
 
        > If you already have **All** selected in the Headers dropdown, skip this step — all headers are automatically forwarded to the origin.
 
@@ -167,7 +206,7 @@ Unlike the [Cloudflare integration](/axp/axp-edge/integrations/cloudflare), wher
 
        `[SCREENSHOT: Cache policy TTL settings — generic AWS view, reusable as a layout reference]`
 
-    3. Under **Cache key settings** > **Headers**, along with your existing inclusions, add `x-pl-url` and `x-pl-origin-choice`.
+    3. Under **Cache key settings** > **Headers**, along with your existing inclusions, add `x-pl-url`, `x-pl-origin-choice`, `x-pl-request`, and `x-pl-preview`.
 
        `[SCREENSHOT: Cache policy headers — generic AWS view, reusable as a layout reference]`
 
@@ -195,7 +234,7 @@ Unlike the [Cloudflare integration](/axp/axp-edge/integrations/cloudflare), wher
 
     3. Replicate all settings noted in Part 1, with these modifications:
        - Set **Minimum TTL** to `0` — recommended, unless your current Minimum TTL is already very short.
-       - Under **Cache key settings** > **Headers**, include everything the managed policy had, plus `x-pl-url` and `x-pl-origin-choice`.
+       - Under **Cache key settings** > **Headers**, include everything the managed policy had, plus `x-pl-url`, `x-pl-origin-choice`, `x-pl-request`, and `x-pl-preview`.
     4. Click **Create**.
     5. Go back to your behavior and associate the new policy:
 
@@ -273,6 +312,8 @@ Unlike the [Cloudflare integration](/axp/axp-edge/integrations/cloudflare), wher
         return request;
       }
 
+      const previewFlag = headers['x-pl-preview'] && headers['x-pl-preview'][0].value === '1';
+
       // Strip inbound trusted headers before setting our own (header hygiene).
       delete headers['x-pl-api-key'];
       delete headers['x-pl-url'];
@@ -283,6 +324,7 @@ Unlike the [Cloudflare integration](/axp/axp-edge/integrations/cloudflare), wher
       delete headers['x-pl-protocol'];
       delete headers['x-pl-accept-language'];
       delete headers['x-pl-referer'];
+      delete headers['x-pl-preview'];
 
       const clientIp =
         (request.clientIp) || '';
@@ -290,7 +332,7 @@ Unlike the [Cloudflare integration](/axp/axp-edge/integrations/cloudflare), wher
       headers['x-pl-host'] = [{ key: 'x-pl-host', value: CLIENT_HOST }];
       headers['x-pl-url'] = [{ key: 'x-pl-url', value: request.uri + (request.querystring ? '?' + request.querystring : '') }];
       headers['x-pl-api-key'] = [{ key: 'x-pl-api-key', value: API_KEY }];
-      headers['x-pl-request'] = [{ key: 'x-pl-request', value: 'edge' }];
+      headers['x-pl-request'] = [{ key: 'x-pl-request', value: previewFlag ? 'preview' : 'edge' }];
       headers['x-pl-client-ip'] = [{ key: 'x-pl-client-ip', value: clientIp }];
       headers['x-pl-client-agent'] = [{ key: 'x-pl-client-agent', value: headers['user-agent'] ? headers['user-agent'][0].value : '' }];
       headers['x-pl-protocol'] = [{ key: 'x-pl-protocol', value: headers['cloudfront-forwarded-proto'] ? headers['cloudfront-forwarded-proto'][0].value : 'https' }];
@@ -323,7 +365,8 @@ Unlike the [Cloudflare integration](/axp/axp-edge/integrations/cloudflare), wher
         (FAILOVER_ON_5XX && status >= 500 && status < 600);
 
       const wasCdsRequest = request.headers['x-pl-request'] &&
-        request.headers['x-pl-request'][0].value === 'edge';
+        (request.headers['x-pl-request'][0].value === 'edge' ||
+         request.headers['x-pl-request'][0].value === 'preview');
 
       if (wasCdsRequest && isErrorStatus) {
         console.log('Failover Triggered for agentic requests');
@@ -349,7 +392,7 @@ Unlike the [Cloudflare integration](/axp/axp-edge/integrations/cloudflare), wher
           headers: {
             host: CLIENT_HOST,
             'user-agent': request.headers['user-agent'] ? request.headers['user-agent'][0].value : '',
-            'x-pl-request': 'edge'
+            'x-pl-request': 'fo'
           },
           timeout: 20000
         }, (originResponse) => {
@@ -364,7 +407,22 @@ Unlike the [Cloudflare integration](/axp/axp-edge/integrations/cloudflare), wher
               bodyEncoding: 'base64'
             };
 
+            // CloudFront rejects generated responses that contain these
+            // headers, so a successful failover would return a 502.
+            const blacklisted = [
+              'connection', 'expect', 'keep-alive', 'proxy-authenticate',
+              'proxy-authorization', 'proxy-connection', 'trailer', 'upgrade',
+              'transfer-encoding', 'via',
+              'x-amz-cf-id', 'x-amz-cf-pop', 'x-amzn-auth',
+              'x-amzn-cf-billing', 'x-amzn-cf-id', 'x-amzn-cf-xff',
+              'x-amzn-errortype', 'x-amzn-fle-profile',
+              'x-amzn-header-count', 'x-amzn-header-order',
+              'x-amzn-lambda-integration-tag', 'x-amzn-requestid',
+              'x-cache', 'x-edge-location', 'x-forwarded-proto'
+            ];
+
             Object.keys(originResponse.headers).forEach((name) => {
+              if (blacklisted.indexOf(name.toLowerCase()) !== -1) return;
               const values = Array.isArray(originResponse.headers[name])
                 ? originResponse.headers[name]
                 : [originResponse.headers[name]];
@@ -581,6 +639,9 @@ If the log group isn't present, verify the IAM permissions were updated correctl
 | Cannot find CloudWatch logs for Lambda@Edge | Function not yet invoked (check distribution status first), or wrong IAM permissions | Verify the CloudWatch Logs permission policy was updated. Lambda@Edge logs appear in the edge region that served the request, not necessarily `us-east-1`. |
 | Cache not honoring `cache-control: no-store` | Minimum TTL may be too high | Set Minimum TTL to `0` in your cache policy. If Minimum TTL is already very short, this may not be the issue. |
 | Regular (non-agentic) traffic broken after setup | Cache policy misconfiguration | If you created a new cache policy (Scenario C), confirm you replicated all settings from the original managed policy. |
+| Failover returns a 502 | A disallowed header (`connection`, `transfer-encoding`, `via`, and similar) was copied from your origin's response | Confirm the `blacklisted` header filter in `fetchClientOrigin` is present in your Lambda@Edge code. |
+| CDS errors but failover never fires | `x-pl-request` isn't on the cache policy's Headers allow list, so it doesn't reach the origin-response Lambda | Add `x-pl-request` to the Headers allow list as described in **Configure the cache policy**. |
+| Preview requests don't fail over | `wasCdsRequest` in `handleOriginResponse` only checks for `edge` | Update `wasCdsRequest` to accept both `edge` and `preview`. |
 
 ## Rollback
 
