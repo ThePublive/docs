@@ -7,26 +7,28 @@ This guide walks you through making your first API call to Publive.
 
 ## Step 1: Get your API credentials
 
-The Publive API uses HTTP Basic Auth. You need your **API Key**, **API Secret**, and **Publisher ID**.
+The Publive API uses HTTP Basic Auth. You need your **API Key**, **API Secret**, and **Publisher ID**. You have separate **CDS** (read-only) and **CMS** (read and write) credentials.
 
 1. Log in to your [Publive Dashboard](https://dashboard.thepublive.com/v2/configurations/api-developer-hub).
 2. Navigate to **configurations** > **API Developer Hub**.
 3. Click the **View API credentials** button.
-4. Copy your **API Key** and **API Secret**.
+4. Copy the **API Key** and **API Secret** under **CDS**. You'll use them in Step 2.
 5. Note your **Publisher ID** from the dashboard URL.
+
+Only need to read content? CDS credentials are all you need. If you plan to create content in Step 4, use your **CMS** credentials there.
 
 <Note>
 If you do not have dashboard access, please reach out via our [contact page](https://thepublive.com/contact-us).
 </Note>
 
-Generate your Base64 token by running:
+Generate your Base64 token from your CDS credentials by running:
 
 ```bash
 echo -n 'YOUR_API_KEY:YOUR_API_SECRET' | base64
 ```
 
 <Info>
-**Important:** Keep your API credentials secure. Never expose them in client-side code or public repositories.
+**Important:** Keep your API credentials secure and out of public repositories. CDS credentials are read-only and safe to use in client-side code. Never expose CMS credentials in client-side code.
 </Info>
 
 ## Step 2: Make your first API call
@@ -78,7 +80,7 @@ curl -X GET \
 
 ## Step 4: Create content via CMS API
 
-To create a new post programmatically, use the Content Management API:
+To create a new post programmatically, use the Content Management API. Generate a new Base64 token from your **CMS** credentials, and make this call from your server. A write request made with CDS credentials returns a `403 Forbidden` response on accounts set up from 7 October 2026.
 
 ```bash
 curl -X POST \

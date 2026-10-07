@@ -9,6 +9,33 @@ rss: true
 </Tip>
 
 <Update
+  label="October 7, 2026"
+  tags={["New releases", "Security", "Improvements"]}
+  rss={{ title: "Separate API keys for reading (CDS) and writing (CMS), banner_id in Create/Update Post API, 6x–8x faster newsletter sending, faster pages" }}
+>
+
+### Separate API keys for reading and writing
+
+You now get separate API keys for reading and writing, so a key used in your frontend can no longer be used to change your content.
+
+* **CDS key** — read-only. Safe to use in frontend code.
+* **CMS key** — read and write. Use it on your server only.
+
+**View API Credentials** in the Developer Hub shows the keys for the APIs you have enabled. See [Authentication](/dxp/documentation/getting-started/authentication).
+
+* **Current setups** — nothing changes. You can optionally switch your frontend to a CDS key.
+
+### Improvements
+
+* **Post API: `banner_id`** — set a post's banner by sending `banner_id` (a Media Library file ID) when you create or update a post with the [Posts API](/dxp/api-reference/content-management/posts/README). `banner_url` still works as before, and takes precedence if you send both.
+* **Faster newsletters** — newsletters now send 6x–8x faster, so subscribers get them sooner.
+* **Faster pages** — your website now fetches stored files faster, down from ~110 ms to ~70 ms per request, and post comments load faster.
+* **Reader-login articles in Google** — your page markup now marks exactly which section of the article is behind the login, so Google can clearly recognise it as login-gated content.
+* **Payment pop-up** — pages with the payment pop-up load faster, because its images no longer download on every page load.
+
+</Update>
+
+<Update
   label="September 21, 2026"
   tags={["Security"]}
   rss={{ title: "Distribute to X deprecated, SVG uploads retired, session and login limits" }}

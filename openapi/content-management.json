@@ -478,7 +478,7 @@
                   "content": { "type": "string" },
                   "tags": { "type": "string" },
                   "categories": { "type": "string" },
-                  "banner_url": { "type": "integer" },
+                  "banner_id": { "type": "integer", "description": "Media Library file ID for the post banner. The legacy alias `banner_url` is still accepted and takes precedence if both are sent." },
                   "banner_description": { "type": "string" },
                   "short_description": { "type": "string" },
                   "summary": { "type": "string" },
@@ -554,7 +554,7 @@
                   "contributors": { "type": "string" },
                   "tags": { "type": "string" },
                   "categories": { "type": "string" },
-                  "banner_url": { "type": "integer" },
+                  "banner_id": { "type": "integer", "description": "Media Library file ID for the post banner. The legacy alias `banner_url` is still accepted and takes precedence if both are sent." },
                   "short_description": { "type": "string" },
                   "hide_banner_image": { "type": "boolean" }
                 }
