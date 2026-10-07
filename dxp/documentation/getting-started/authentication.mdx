@@ -3,7 +3,22 @@ title: "Authentication"
 description: "Set up API key authentication for the Publive CDS and CMS APIs. Covers credential format, required headers, and handling auth errors in your frontend."
 ---
 
-All Publive API requests require authentication via HTTP Basic Auth. Both the Content Delivery Service (CDS) and Content Management Service (CMS) use the same method.
+All Publive API requests require authentication via HTTP Basic Auth. Both the Content Delivery Service (CDS) and Content Management Service (CMS) use the same method, with a separate set of credentials for each.
+
+## CDS and CMS credentials
+
+You have separate credentials for reading and writing, so a key used in your frontend can't be used to change your content.
+
+| Credentials | Access | Where to use them |
+| ----------- | ------ | ----------------- |
+| **CDS** | Read-only | Frontend and browser code |
+| **CMS** | Read and write | Your server only, never the browser |
+
+Your account shows credentials for the APIs you have enabled.
+
+<Info>
+If you set up your account before 7 October 2026, nothing changes and your current setup keeps working. You can optionally switch your frontend to a CDS key.
+</Info>
 
 ## How to Get Your API Credentials
 
@@ -11,9 +26,10 @@ All Publive API requests require authentication via HTTP Basic Auth. Both the Co
 2. Go to [Configurations](https://dashboard.thepublive.com/v2/configurations)
 3. Click on [API Developer Hub](https://dashboard.thepublive.com/v2/configurations/api-developer-hub)
 4. Click the **View API credentials** button.
-5. Your **API Key** is the username for Basic Auth.
-6. Your **API Secret** is the password for Basic Auth.
-7. Your **Publisher ID** is visible here.
+5. Find the **CDS** or **CMS** credentials, depending on which API you're calling.
+6. Your **API Key** is the username for Basic Auth.
+7. Your **API Secret** is the password for Basic Auth.
+8. Your **Publisher ID** is visible here.
 
 If you don't have login credentials for the dashboard, please contact us at [thepublive.com/contact-us](https://thepublive.com/contact-us).
 
@@ -27,7 +43,7 @@ Authorization: Basic <BASE64_AUTH_TOKEN>
 
 ## Generate your token
 
-Encode your credentials using the command line:
+Encode the credentials for the API you're calling, CDS or CMS, using the command line:
 
 ```bash
 echo -n 'YOUR_API_KEY:YOUR_API_SECRET' | base64
@@ -73,12 +89,14 @@ Common causes:
 * Incorrectly encoded Base64 token
 * Invalid or expired API credentials
 
+On accounts set up from 7 October 2026, a write request made with CDS credentials returns a `403 Forbidden` response. Make the request from your server with your CMS credentials instead.
+
 <Warning>
 **Security best practices:**
-* Never expose API credentials in client-side JavaScript
+* Never expose CMS credentials in client-side JavaScript
+* Use CDS credentials (read-only) for public-facing applications and reserve CMS credentials for server-side operations
 * Use environment variables to store credentials
 * Rotate API keys periodically
-* Use the CDS API (read-only) for public-facing applications and reserve CMS API access for server-side operations
 </Warning>
 
 ## API users and team membership
