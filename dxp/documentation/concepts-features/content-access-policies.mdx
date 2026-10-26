@@ -45,3 +45,9 @@ Policies can be applied to:
 - **Custom content types** — full support including field-level rules
 - **System default content types** — policy support at the content-type and action level
 - **Partial entity content types** — policy support at the content-type and action level
+
+## Workflows and role policies
+
+If a content type uses a [Content Workflow](/dxp/documentation/content-workflows/overview), the workflow's stage rules apply on top of your policies. Stage rules only **narrow** access. Being named in a stage's **Who can act** lets a member move an entry, and nothing more. It does not grant edit or publish access that no policy allows.
+
+A stage never changes who can see an entry. Visibility is decided only by the policies described on this page.

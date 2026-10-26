@@ -1,0 +1,66 @@
+---
+title: "Notifications and audit trail"
+description: "Which emails each workflow event sends, and what is recorded for every stage change."
+---
+
+## Email notifications
+
+Workflows sends **email only**. There are no in-app notifications. Recipients are worked out automatically, so there is nothing to configure beyond optional **Additional notification recipients** on a stage.
+
+### Who is emailed
+
+For each event, the recipients are:
+
+- everyone who can act at the stage the entry has arrived at
+- the assignee, if there is one
+- the author
+
+A stage can also name **additional recipients**. They are told but are not expected to act. Use this for cases like letting Marketing know when content clears Legal.
+
+Recipients are de-duplicated. Nobody receives two copies of one event, and nobody is notified about their own action.
+
+### Events
+
+One move produces exactly one event. A send back is not also an arrival.
+
+| Event | Who is emailed | Subject |
+|---|---|---|
+| Entry moves forward to a stage | Actors at the new stage, the assignee, and additional recipients for the stage | `Review needed: <ENTRY_TITLE>` |
+| Entry reaches a stage for additional recipients only | Additional recipients | `FYI: <ENTRY_TITLE> reached <STAGE_NAME>` |
+| Entry sent back to an earlier stage | The author, everyone who moved it forward since it was last at that stage, and additional recipients for the destination stage | `Sent back: <ENTRY_TITLE>` |
+| Entry assigned to someone | The new assignee | `Assigned to you: <ENTRY_TITLE>` |
+| Stage overridden | Actors at every skipped stage, and the author | `Review skipped: <ENTRY_TITLE>` |
+| Entry published or scheduled | The author | The existing publish or schedule email, unchanged |
+
+Each email has one button that opens the entry. Where a note or reason was entered, it is included in the email.
+
+People who approved an entry earlier are **not** emailed when it eventually goes live.
+
+## Audit trail
+
+Every stage change is recorded permanently and cannot be edited or deleted. Each record holds:
+
+- who acted, and their role at the time
+- when it happened
+- the entry
+- the stage it moved from and the stage it moved to
+- the note or reason, if one was entered
+- whether the move was an override
+
+Records survive the deletion or renaming of the stage or workflow that produced them, and still name the stage as it was.
+
+The same records appear in two places:
+
+- the entry's **History** timeline, for the people doing the work. See [Review and move content](/dxp/documentation/content-workflows/review-and-move-content#the-timeline).
+- [Audit Logs](/dxp/documentation/concepts-features/audit-logs), for compliance and investigation, alongside every other audited action. Retention follows your account's audit retention policy.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Audit Logs" href="/dxp/documentation/concepts-features/audit-logs">
+    See everything Publive DXP records across your workspace.
+  </Card>
+  <Card title="Content Workflows overview" href="/dxp/documentation/content-workflows/overview">
+    Back to the concepts.
+  </Card>
+</CardGroup>
