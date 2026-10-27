@@ -437,6 +437,18 @@
                   "axp/axp-edge/dashboard",
                   "axp/axp-edge/faq"
                 ]
+              },
+              {
+                "group": "Monitor",
+                "pages": [
+                  "axp/monitor/overview",
+                  "axp/monitor/track-prompts",
+                  "axp/monitor/suggested-prompts",
+                  "axp/monitor/prompt-analytics",
+                  "axp/monitor/sources",
+                  "axp/monitor/brand-visibility",
+                  "axp/monitor/metrics"
+                ]
               }
             ]
           },

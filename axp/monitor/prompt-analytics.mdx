@@ -1,0 +1,74 @@
+---
+title: "Prompt analytics"
+description: "See how your brand performs on one tracked prompt: its visibility trend, top brands, cited sources, and every AI response."
+---
+
+Each tracked prompt has its own analytics page. To open it, click the prompt on the **Tracking** tab. To open the page for a paused prompt, click the view icon on the **Paused** tab. The breadcrumb shows **Prompts** and the prompt name.
+
+Suggested prompts do not have an analytics page because AXP does not run them.
+
+## Filters
+
+- **Date range:** The default range is the last 7 days. You can select a range of up to 90 days.
+- **Platform:** The default is all platforms. Select one platform to show only its responses.
+
+Changes from the previous period compare the selected range with the period of the same length just before it.
+
+## Sections
+
+| Section | What it shows |
+|---|---|
+| **Visibility** | A chart of the visibility of each brand on this prompt over the date range |
+| **Top performing brands** | How often each brand appears in the responses to this prompt. Each row shows visibility, share of voice, position, citations, citation rate, and sentiment, with the change from the previous period. |
+| **Top domains** | The domains that the AI cites most often for this prompt. Click **See all** to open the [domains list](/axp/monitor/sources#domains) for this prompt. |
+| **Top URLs** | The pages that the AI cites most often for this prompt. Click **See all** to open the [URLs list](/axp/monitor/sources#urls) for this prompt. |
+| **Prompt responses** | Each response that AXP collected for this prompt |
+
+## Prompt responses table
+
+Each row is one response from one platform.
+
+| Column | What it shows |
+|---|---|
+| **Response** | The start of the response text |
+| **Platform** | The AI platform that gave the response |
+| **Mentions** | The brands that the response mentions. The row shows up to 5 brands and the total number. |
+| **Sources** | The domains that the response cites |
+| **Position** | The position of your brand, if the response mentions it |
+| **Citations** | The number of inline citations in the response |
+| **Response details** | When AXP collected the response, and the location. Click the column header to sort by date. |
+
+You can search, filter, and sort the table:
+
+- Search the text of the responses for a word or phrase.
+- Use **Filter sources** to show the responses that cite a domain. Use **Filter mentions** to show the responses that mention a brand.
+- Sort the responses by date or by platform.
+
+A response can show that AXP did not analyze it yet. This is different from a response that does not mention your brand.
+
+## AI response
+
+To open a response, click the view icon in the **Actions** column. The **Prompt response** view shows exactly what the platform said and what it cited. Its header shows the platform, the date and time, and the location.
+
+- **The full response.** The view shows the prompt and the response as a chat. AXP tags each brand where the response mentions it. A source chip shows after each passage that cites a URL.
+- **Brands mentioned.** The brands that the response mentions. Your brand is first and has the label **(You)**. The list contains every brand that the response mentions, not only the competitors in your Brand Profile. This shows you which brands win the response. For each brand, the panel shows if the response mentions it, its position, its sentiment, and if the response cites its domain.
+- **Sources.** The URLs that the platform cited, with their titles. Click a source to open it.
+
+If the platform did not answer the prompt, the response view shows a message in place of the response text.
+
+You cannot move to the responses of a different prompt from the response view. Close the view. Then open the other prompt.
+
+<Note>
+A response can have no citations. This happens when the AI answers from its own knowledge and does not search the web. The response is still valid.
+</Note>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Sources" icon="link" href="/axp/monitor/sources">
+    See the domains and URLs that AI assistants cite for this prompt.
+  </Card>
+  <Card title="Metrics and fields" icon="book" href="/axp/monitor/metrics">
+    See what each metric and field means.
+  </Card>
+</CardGroup>

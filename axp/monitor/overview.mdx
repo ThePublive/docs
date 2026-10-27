@@ -1,0 +1,76 @@
+---
+title: "Prompt monitoring"
+sidebarTitle: "Overview"
+description: "Track how AI assistants answer the questions your buyers ask, whether they mention your brand, and which sources they cite."
+---
+
+Prompt monitoring shows if AI assistants mention your brand when they answer questions that are relevant to your business. It also shows how your brand compares with competitors on the same questions.
+
+You choose a set of prompts. Publive AXP sends each prompt to AI platforms about every 12 hours and keeps every response. AXP then measures how often your brand appears, which brands appear with it, and which sources the AI cites. You see the results as a trend over time, not as a one-time check.
+
+## Core concepts
+
+| Concept | What it is |
+|---|---|
+| **Prompt** | A question that a buyer can ask an AI assistant, for example "Which bank is best for MSME loans in Delhi?". You cannot change the wording of a prompt after you create it. |
+| **Topic** | A name that groups related prompts, for example **Personal Loans**. Each prompt belongs to one topic. Brand Visibility uses the same topics. |
+| **Platform** | The AI assistant that AXP sends the prompt to. AXP runs prompts on **ChatGPT** and **Gemini**. The dashboard shows the platforms that your workspace can run. |
+| **Location** | The market that the prompt targets, for example `Delhi, India`. The location changes the sources that the AI finds when it searches the web. It does not change the prompt text. |
+| **Response** | One answer from one platform to one prompt, at one time, for one location. |
+| **Intent** | The goal of the buyer who asks the prompt: **Informational**, **Commercial**, or **Transactional**. |
+| **Source** | How the prompt got into your list. Refer to [Prompt sources](#prompt-sources). |
+
+For every metric, field, and value, refer to the [metrics and fields reference](/axp/monitor/metrics).
+
+## Prompt states
+
+The **Prompts** page has three tabs. Each tab holds prompts in one state.
+
+| Tab | State | Does AXP run it? |
+|---|---|---|
+| **Tracking** | Accepted and active | Yes, about every 12 hours |
+| **Suggested** | Proposed by AXP, not accepted yet | No |
+| **Paused** | Accepted, then paused | No. Data that AXP collected before the pause stays visible. |
+
+AXP runs a prompt only when it is on the **Tracking** tab. A suggested prompt has no analytics because AXP does not run it.
+
+## Prompt sources
+
+The **Source** column shows how each prompt got into your list.
+
+| Source | Meaning |
+|---|---|
+| Manual | A member wrote the prompt. |
+| Suggested | A member accepted a suggestion that AXP made from your topics and Brand Profile. |
+| Keyword import | A member accepted a suggestion that AXP made from an uploaded keyword list. |
+| Page | A member accepted a suggestion that AXP made for one of your pages in AXP Edge. |
+
+For more information, refer to [Suggested prompts](/axp/monitor/suggested-prompts).
+
+## Permissions
+
+Two permissions control access to prompt monitoring.
+
+| Permission | What it allows |
+|---|---|
+| Prompt management | View the prompt list and AI responses. Add, edit, pause, resume, and delete prompts. Create, rename, and delete topics. Accept, reject, and generate suggestions, and import keywords. |
+| Analytics view | View Brand Visibility, prompt analytics, and Sources |
+
+A member who has analytics view but not prompt management can open URL details on the Sources page. The responses table on that page is hidden for this member.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Track prompts" icon="list-check" href="/axp/monitor/track-prompts">
+    Add prompts, set their topic, platforms, and location, and pause or resume them.
+  </Card>
+  <Card title="Suggested prompts" icon="lightbulb" href="/axp/monitor/suggested-prompts">
+    Review the prompts that AXP proposes, or generate suggestions from your keywords.
+  </Card>
+  <Card title="Prompt analytics" icon="chart-line" href="/axp/monitor/prompt-analytics">
+    See how your brand performs on one prompt, and read each AI response.
+  </Card>
+  <Card title="Brand Visibility" icon="eye" href="/axp/monitor/brand-visibility">
+    See your brand-wide performance against competitors and by topic.
+  </Card>
+</CardGroup>

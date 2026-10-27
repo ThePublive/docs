@@ -1,0 +1,147 @@
+---
+title: "Track prompts"
+description: "Add prompts, set their topic, platforms, and location, organize them by topic, and pause or resume tracking."
+---
+
+The **Tracking** tab on the **Prompts** page lists the prompts that AXP runs for your brand. Use it to add prompts, change how they run, and see their metrics for a date range.
+
+## Prerequisites
+
+- To add, edit, pause, resume, or delete prompts, you must have the prompt management permission. Refer to [Permissions](/axp/monitor/overview#permissions).
+- Your [Brand Profile](/axp/axp-edge/dashboard#brand-profile) has your brand name, domains, and competitors. AXP uses these values to find your brand and its competitors in the responses.
+
+## Prompt limit
+
+Your plan sets the number of prompts that you can track. The header of the **Prompts** page shows how many prompts you track now, for example **100/150 prompts tracking**.
+
+- Only prompts on the **Tracking** tab count toward the limit. Suggested and paused prompts do not count.
+- When you reach the limit, you cannot add, accept, or resume prompts. The dashboard shows a message that you reached the prompt limit.
+- To track a new prompt at the limit, pause or delete a tracked prompt first. To increase your limit, contact [support@thepublive.com](mailto:support@thepublive.com).
+
+## Add a prompt
+
+You can add a prompt in two ways. You can write it yourself, or you can [accept a suggested prompt](/axp/monitor/suggested-prompts).
+
+<Steps>
+  <Step title="Open the form">
+    On the **Tracking** tab, click **Add prompt**.
+  </Step>
+  <Step title="Write the prompt">
+    Type the question as a buyer asks it. Read the wording carefully. You cannot change it after you save the prompt.
+  </Step>
+  <Step title="Set the topic">
+    Select a topic, or type a new name to create a topic.
+  </Step>
+  <Step title="Set the platforms and location">
+    Select the AI platforms that run the prompt. Then enter the location that the prompt targets, for example `Delhi, India`.
+  </Step>
+  <Step title="Save">
+    Click **Save**. The prompt goes to the **Tracking** tab and counts toward your prompt limit.
+  </Step>
+</Steps>
+
+The topic, platforms, and location are necessary. AXP does not collect data for a prompt until all three have a value. For the meaning of each field, refer to [Prompt fields](/axp/monitor/metrics#prompt-fields).
+
+<Tip>
+To track different wording, add it as a new prompt. A change to the wording makes the history that AXP collected for the old wording invalid.
+</Tip>
+
+## Edit a prompt
+
+You can change these fields of a prompt:
+
+- **Topic**
+- **Platforms**
+- **Location**
+- **Intent**
+- **Note**
+
+You cannot change the prompt text.
+
+1. On the **Tracking** tab, find the prompt.
+2. In the **Actions** column, click the edit icon.
+3. Change the fields.
+4. Click **Save**.
+
+A change applies to new responses only. Each past response keeps the platform and location that AXP used when it ran the prompt. An edit does not change the paused or active state of the prompt.
+
+## Pause and resume a prompt
+
+Pause a prompt to stop new data collection. AXP keeps all the data that it collected before the pause.
+
+- To pause one prompt, click the pause icon in the **Actions** column. Then confirm.
+- To pause many prompts, select their rows. Then use the bulk **Pause** action.
+- A paused prompt moves to the **Paused** tab.
+- A run that started before you paused the prompt can still finish.
+
+To start tracking again, go to the **Paused** tab. Click the resume icon (a play button) in the **Actions** column. To resume many prompts, select their rows. Then use the bulk resume action. A resumed prompt moves back to the **Tracking** tab and counts toward your [prompt limit](#prompt-limit).
+
+The **Paused** tab shows each prompt with its topic, volume, platforms (**Agents**), **Origin**, and **Date added**. **Visibility**, **Position**, and **Sentiment** show "–" because AXP does not collect data for a paused prompt. The **Actions** column on this tab has three icons: view, resume, and delete.
+
+## Delete a prompt
+
+In the **Actions** column, click the delete icon. Then confirm. You can delete a prompt from the **Tracking** tab or the **Paused** tab.
+
+## Topics
+
+Each prompt belongs to one topic. A topic contains many prompts.
+
+- The **Prompt topics** panel shows each topic and the number of prompts in it. The count does not include paused or deleted prompts.
+- Click a topic to show only its prompts. Click **All topics** to show all prompts.
+- To create a topic, click **Add topic**. Enter a name. Then click **Save**. A topic has only a name.
+- To rename a topic, open the menu next to the topic in the **Prompt topics** panel.
+- To delete a topic, open the menu next to the topic. Then select the delete option. AXP pauses the prompts in the topic and moves them to the **Paused** tab. AXP keeps the data that it collected for these prompts. Two topics cannot have the same name. The match ignores uppercase and lowercase.
+- When you add a prompt, you can also type a new topic name. AXP creates the topic. If a topic with the same name exists, AXP uses it.
+
+The **Suggested** tab groups suggestions by the same topics. [Brand Visibility](/axp/monitor/brand-visibility#brand-insights) uses the same topics for its breakdown.
+
+## Columns
+
+Each metric shows the value for the selected date range and the change from the previous period. For more information, refer to the [metrics and fields reference](/axp/monitor/metrics).
+
+| Column | What it shows |
+|---|---|
+| **Prompts** | The prompt text. Click it to open the [prompt analytics](/axp/monitor/prompt-analytics). |
+| **Visibility** | The percentage of answered responses that mention your brand |
+| **Share of voice** | Your brand mentions as a percentage of all brand mentions |
+| **Position** | The average rank of your brand in a response. Lower is better. |
+| **Sentiment** | The sentiment of the responses about your brand, from 0 to 100 |
+| **Citation rate** | The average number of inline citations in an answered response |
+| **Web search** | The percentage of responses where the AI searched the web |
+| **Mentions** | The brands that the responses mention, shown as logos. The sort order uses the number of different brands. |
+| **Volume** | The estimated search volume for the prompt. It shows "–" when no estimate is available. |
+| **Branding** | **Branded** if the prompt text mentions your brand. **Non branded** if it does not. AXP sets this value from the prompt text. |
+| **Platforms** | The AI platforms that run the prompt |
+| **Topic**, **Intent**, **Location**, **Source**, **Date added** | The details of the prompt. For the **Source** values, refer to [Prompt sources](/axp/monitor/overview#prompt-sources). |
+| **Actions** | View, edit, pause, and delete the prompt |
+
+## Filter, sort, and download
+
+- **Search:** Search the prompt text.
+- **Date range:** The default range is the last 30 days. Metrics compare the selected range with the previous period of the same length.
+- **Filters:** Click **Filters** to open the filter panel. The list updates when you change a filter. Click **Clear All** to clear all filters. The **Paused** tab has the same filters.
+
+  | Filter | Shows the prompts that |
+  |---|---|
+  | **Topic** | Belong to the selected topics |
+  | **Agent** | Run on the selected AI platforms |
+  | **Branding** | Are **Branded** or **Non branded** |
+  | **Intent** | Have the selected intent |
+  | **Source** | Have the selected source, for example **Manual** or **Suggested** |
+
+- **Sort:** Click a column header to sort by that column. You can sort by each metric, by **Location**, and by **Date added**. When you sort by a metric, prompts that have no responses yet go to the end.
+- **Columns:** Click the settings icon to select the columns that the table shows. The first column and the **Actions** column stay in place when you scroll across a wide table.
+- **Download:** Click the download icon to download the table as a CSV, XLSX, or JSON file. The file contains the columns that the table shows, in the same order.
+
+If metrics are temporarily not available, the table still shows your prompts. The metric columns are empty, and the dashboard tells you that metrics are not available.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Prompt analytics" icon="chart-line" href="/axp/monitor/prompt-analytics">
+    Open a tracked prompt to see its trend, top brands, sources, and responses.
+  </Card>
+  <Card title="Suggested prompts" icon="lightbulb" href="/axp/monitor/suggested-prompts">
+    Find prompts to track that you did not think of.
+  </Card>
+</CardGroup>

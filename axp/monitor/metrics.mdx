@@ -1,0 +1,127 @@
+---
+title: "Metrics and fields reference"
+sidebarTitle: "Metrics and fields"
+description: "Definitions of every metric, field, and value that prompt monitoring shows, and how to read them."
+---
+
+This page defines the metrics and fields that you see on the [Prompts](/axp/monitor/track-prompts), [prompt analytics](/axp/monitor/prompt-analytics), [Sources](/axp/monitor/sources), and [Brand Visibility](/axp/monitor/brand-visibility) pages.
+
+## Metrics
+
+| Metric | What it measures | How to read it |
+|---|---|---|
+| **Visibility** (**AI visibility**) | The number of answered responses that mention your brand, divided by the number of answered responses, as a percentage | Higher is better |
+| **Share of voice** | The mentions of your brand, divided by the mentions of all brands in the responses, as a percentage | Higher is better. It shows your share of the conversation against competitors. |
+| **Position** | The average rank of your brand among the brands that a response mentions | Lower is better. The dashboard shows it as `#1.5`. `#1` means that the responses mention your brand first. "–" in a response row means that the response does not mention your brand. |
+| **Sentiment** | How positive the responses are about your brand | A score, not a percentage. On the **Tracking** tab, the score goes from 0 (most negative) to 100 (most positive). 50 is neutral. Where space is small, the dashboard shows a label: **Positive**, **Neutral**, or **Negative**. |
+| **Citations** | For a domain or URL: the number of times the responses cite it. For a brand: the number of times the responses cite the domains of that brand. | Higher is better for your own domains |
+| **Citation rate** | The number of inline citations, divided by the number of answered responses. For a domain or URL, only its own inline citations count. | A plain number, for example `1.5`. It is not a percentage. |
+| **Web search** | The percentage of responses where the AI searched the web before it answered | A low value means that the AI answers this prompt mostly from its own knowledge |
+| **Mentions** | On the **Tracking** tab: the number of different brands that the responses mention. On Brand Visibility: the number of times the responses mention a brand. | The **Tracking** tab shows the brands as logos, with `+5` for 5 more brands. |
+| **Volume** | The estimated search volume of the prompt | Use it to decide which prompts are worth tracking. "–" means that no estimate is available. |
+
+An **inline citation** is a link that the AI puts in the response text. AXP counts each inline link to a URL. A URL that the AI lists as a source counts as one inline citation, also if the response text does not link to it.
+
+An **answered response** is a response in which the platform answered the prompt. If the platform did not answer, the response does not count in the percentages and averages.
+
+<Note>
+Sentiment is a score because a percentage does not describe sentiment well. "60% of responses were positive" is a useful statement. "Sentiment = 60%" is not.
+</Note>
+
+### Changes and trends
+
+Next to a metric, a small green or red value shows the change from the previous period. On the Sources pages, an arrow shows the same change: up, down, or flat.
+
+A change compares the selected date range with the period of the same length just before it. For example, a 30-day range compares with the 30 days before it. For **Position**, a decrease is an improvement.
+
+## Prompt fields
+
+These fields are on the **Tracking**, **Suggested**, and **Paused** tabs, and in the forms to add and edit a prompt.
+
+| Field | What it means | Values |
+|---|---|---|
+| **Prompts** | The prompt text. You cannot change it after you create the prompt. | Free text |
+| **Topic** | The group that the prompt belongs to. Each prompt has one topic. | A topic name |
+| **Platforms** (**Agents** on the **Paused** tab) | The AI platforms that run the prompt | **ChatGPT**, **Gemini**. If you select no platform, AXP runs the prompt on all platforms. |
+| **Location** | The market that the prompt targets. The location changes the sources that the AI finds when it searches the web. It does not change the prompt text. | Free text, for example `India` or `Delhi, India` |
+| **Intent** | The goal of the buyer who asks the prompt | Refer to [Intent values](#intent-values) |
+| **Branding** | Whether the prompt text mentions your brand. AXP sets this value from the prompt text. | **Branded**, **Non branded** |
+| **Source** (**Origin** on the **Paused** tab) | How the prompt got into your list | Refer to [Prompt sources](/axp/monitor/overview#prompt-sources) |
+| **Note** | A free-text note about the prompt. On the **Suggested** tab, this is the **Reason** column. | Free text |
+| **Reason** | Why AXP suggested the prompt. It can also show the search volume of the keyword, for example "Decision gap · vol 2.4k", or the page URL. | Free text that AXP writes |
+| **Date added** | The date that a member added the prompt, or accepted it from a suggestion | A date |
+
+### Intent values
+
+| Value | Meaning | Example |
+|---|---|---|
+| **Informational** | The buyer wants to learn about a subject. | "How does a personal loan work?" |
+| **Commercial** | The buyer compares options before a purchase. | "Best personal loan apps in India" |
+| **Transactional** | The buyer is ready to act or buy. | "Apply for a personal loan online" |
+
+## Response fields
+
+These fields are in the **Prompt responses** tables and in the **Prompt response** view.
+
+| Field | What it means |
+|---|---|
+| **Response** | The start of the response text. Open the response to see the full text. |
+| **Platform** | The AI platform that gave the response |
+| **Mentions** | The brands that the response mentions, with your brand marked **(You)** in the response view |
+| **Sources** | The domains or URLs that the response cites |
+| **Position** | The rank of your brand in this response. "–" means that the response does not mention your brand. |
+| **Citations** | The number of inline citations in this response |
+| **Response details** | The date and time that AXP collected the response, and the location that the prompt used |
+
+A response can show that AXP did not analyze it yet. This is different from a response that does not mention your brand.
+
+## Source fields
+
+These fields are on the [Sources](/axp/monitor/sources) pages.
+
+| Field | What it means |
+|---|---|
+| **Domain type** | The type of website. AXP sets it automatically. Refer to [Domain types](#domain-types). |
+| **URL type** | The type of page. AXP sets it automatically. Refer to [URL types](#url-types). |
+| **Ownership** | Who controls the page. Refer to [Ownership](#ownership). |
+| **Your brand mentioned** | **Yes** if the page content mentions your brand. **No** if it does not. |
+| **Mentions** | On a URL: the brands that the page content mentions. On a domain: the brands that the pages on the domain mention. |
+| **Position** (in **Brands mentioned**) | The order in which the page mentions the brand. `#1` means that the page mentions this brand first. |
+| **Frequency** (in **Brands mentioned**) | The number of times the page mentions the brand |
+
+These values come from the content of the cited page, not from the AI response. AXP reads the page in the background. Until it reads the page, these fields show "–".
+
+### Domain types
+
+| Value | Meaning |
+|---|---|
+| **You** | One of your own domains, from your Brand Profile |
+| **Corporate** | The website of a company |
+| **UGC** | A site with user-generated content, for example a forum, a review site, or a social platform |
+| **Institutional** | The website of an institution, for example a government body, a regulator, or a university |
+
+AXP can show other domain types when a domain does not fit these values.
+
+### URL types
+
+| Value | Meaning |
+|---|---|
+| **Homepage** | The main page of a website |
+| **Profile** | A page about one company, brand, or person, for example a company profile on a directory or a review site |
+| **Other** | All other pages, for example articles, blog posts, and product pages |
+
+### Ownership
+
+| Value | Meaning |
+|---|---|
+| **Owned** | The page is on one of the domains in your Brand Profile. |
+| **Controlled** | The page is not on your domain, but your brand controls its content, for example your company profile on another site. |
+| **Third Party** | Your brand does not control the page. |
+
+## Things to know
+
+- **Brands are not limited to your competitor list.** AXP counts every brand that a response mentions. This shows you which brands win the responses, including brands that you do not track.
+- **A citation does not mean a mention.** An AI can cite a page that does not mention your brand. The [URL details](/axp/monitor/sources#url-details) page shows if the page mentions your brand.
+- **A response without citations is valid.** When the AI does not search the web, the response has no citations.
+- **Changes apply from the date of the change.** If you change the platforms or location of a prompt, past responses keep their values.
+- **Old responses can have no value for new metrics.** AXP does not include these responses in averages. It does not count them as 0.

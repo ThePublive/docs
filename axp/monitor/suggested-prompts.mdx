@@ -1,0 +1,132 @@
+---
+title: "Suggested prompts"
+description: "Review the prompts that AXP proposes, accept the useful ones into tracking, and generate suggestions from your keywords or from one of your pages."
+---
+
+AXP proposes prompts that are worth tracking, so you are not limited to the prompts that you think of yourself. Suggestions are on the **Suggested** tab of the **Prompts** page. A suggestion does not run, and it does not count toward your [prompt limit](/axp/monitor/track-prompts#prompt-limit), until you accept it.
+
+## Prerequisites
+
+- You have the prompt management permission. Refer to [Permissions](/axp/monitor/overview#permissions).
+- Your [Brand Profile](/axp/axp-edge/dashboard#brand-profile) has your domains, products, category, location, and competitors. AXP uses these values to write suggestions.
+- To get suggestions for a page, the page must be in the **All URLs** table of [AXP Edge](/axp/axp-edge/overview).
+
+## Where suggestions come from
+
+| Source | How AXP finds the prompt |
+|---|---|
+| Your topics | For each topic, AXP finds search keywords that relate to the topic. It also finds keywords that your domain already ranks for. AXP then writes prompts for the types of question that the topic does not cover yet. |
+| Your products | AXP writes specific questions about the products in your Brand Profile, for example questions about eligibility or a use case. At least 30% of the suggestions for a topic are of this type. |
+| Keyword import | You upload a list of keywords. AXP writes prompts from them. Refer to [Import keywords](#import-keywords). |
+| One of your pages | You select a page in AXP Edge. AXP writes prompts that the page can answer. Refer to [Suggest prompts for a page](#suggest-prompts-for-a-page). |
+
+AXP uses your Brand Profile for all sources: your brand name, category, location, products, and competitors. All suggestions go to the same list on the **Suggested** tab, grouped by topic. New topics that AXP proposes show under **Suggested topics** in the **Prompt topics** panel.
+
+<Accordion title="How AXP checks suggestions">
+  AXP shows a suggestion only if it passes these checks:
+
+  - It reads like a question that a person types into an AI assistant. A string of keywords does not pass.
+  - It is on the topic, and it fits your category and location.
+  - It mentions only brands, products, and places that AXP knows from your Brand Profile and keywords.
+  - It does not contain numbers, prices, rates, or rankings that are not in the keyword.
+  - It is not the same as, or very similar to, a prompt that you track, paused, or have waiting on the **Suggested** tab.
+  - It is not similar to suggestions that you rejected before.
+
+  A second AI model reviews each suggestion before AXP shows it.
+</Accordion>
+
+At least 70% of the suggestions do not mention your brand. Prompts that do not mention your brand show if AI assistants find you when buyers ask in general.
+
+## What each suggestion shows
+
+| Column | What it shows |
+|---|---|
+| **Prompts** | The prompt text |
+| **Topic** | The topic that the prompt goes into when you accept it. This can be a new topic. |
+| **Reason** | Why AXP proposed the prompt. When AXP has an estimate, the reason also shows the search volume of the keyword, for example "Decision gap · vol 2.4k". |
+| **Branding** | **Branded** if the prompt text mentions your brand. **Non branded** if it does not. |
+| **Intent** | **Informational**, **Commercial**, or **Transactional** |
+| **Source** | Where the suggestion came from. Refer to [Prompt sources](/axp/monitor/overview#prompt-sources). |
+
+## Accept suggestions
+
+When you accept a suggestion, it moves to the **Tracking** tab and AXP starts to run it.
+
+- To accept one suggestion, click the accept icon in the **Actions** column.
+- To accept many suggestions, select their rows. Then use the bulk accept action. AXP reports the result for each row.
+- If the suggestion has a new topic name, AXP creates the topic when you accept the suggestion.
+
+Each accepted suggestion counts toward your prompt limit. You cannot accept a suggestion when you are at the limit. The dashboard shows a message that you reached the prompt limit. In a bulk accept, AXP accepts suggestions until you reach the limit. It marks each remaining row as over the limit.
+
+## Reject a suggestion
+
+In the **Actions** column, click the delete icon. A dialog asks you to approve the rejection. When you approve it, AXP deletes the suggestion from the list. AXP does not suggest similar prompts again.
+
+## Suggest more
+
+Click **Suggest more** to get new suggestions. AXP works in the background, so new suggestions show on the **Suggested** tab after a short time. When the run ends, a message tells you if it found new suggestions, found no useful suggestions, or failed.
+
+- Each run adds new suggestions to the list. It does not replace the suggestions that you did not review yet.
+- AXP uses what it knows about your brand now. It does not repeat the suggestions that it made before.
+- Each run adds up to 5 new suggestions for each topic.
+- When a topic already has 10 suggestions waiting on the **Suggested** tab, AXP does not add more to it. Accept or reject the waiting suggestions first.
+- When a topic has enough tracked prompts, AXP does not add more suggestions to it.
+- When your keywords do not fit an existing topic, AXP can propose up to 3 new topics in one run.
+
+You can generate suggestions up to 10 times a day.
+
+These numbers are maximums, not targets. AXP shows a suggestion only if it is useful. If AXP cannot find enough useful prompts, it shows fewer suggestions. It does not add weak prompts to fill the list. If AXP finds too few useful prompts, the dashboard tells you to improve your content.
+
+## Import keywords
+
+Upload a keyword list to get suggestions that come from your own search data. You can upload an export from Google Search Console or from an SEO tool, for example a rankings report, keyword research, or trending keywords.
+
+<Steps>
+  <Step title="Open the import">
+    On the **Suggested** tab, click **Import keywords**.
+  </Step>
+  <Step title="Upload the file">
+    Upload a CSV file with the keywords in the first column. To see the format, click **Download sample CSV**. The dashboard applies the same file rules as file uploads in Publive DXP.
+  </Step>
+  <Step title="Generate the suggestions">
+    Click **Generate suggestions**.
+  </Step>
+  <Step title="Review the suggestions">
+    AXP adds the new suggestions to the **Suggested** tab after a short time. Accept or reject each one.
+  </Step>
+</Steps>
+
+Keywords make suggestions, not tracked prompts. You decide which suggestions to accept.
+
+- AXP keeps every keyword that you upload, also keywords with a low search volume.
+- AXP tries to make at least one suggestion for each keyword. It cannot always do this.
+- If all the keywords in the file are already in your prompts, the dashboard tells you.
+- If AXP cannot generate suggestions, the dashboard shows an error.
+
+## Suggest prompts for a page
+
+You can get suggestions for one page that you want AI assistants to cite more often.
+
+1. In AXP Edge, open **Content**.
+2. In the **All URLs** table, find the page.
+3. In the **Actions** column, open the menu and click **Suggest prompts for this URL**.
+
+AXP reads the page and the keywords that it ranks for. It then proposes up to 10 prompts that the page can answer. The **Prompt suggestions for this URL** dialog shows the suggestions and your prompt limit. The **Reason** of each suggestion shows the page URL.
+
+- To track suggestions, select them. Then click **Start tracking**. **Start tracking** is not available until you select at least one suggestion.
+- To get new suggestions for the page, click **Refresh suggestions**.
+
+The suggestions also go to the same list on the **Suggested** tab.
+
+AXP must be able to read the text of the page. If the page builds its content only in the browser, AXP cannot read enough text, and it cannot suggest prompts for the page.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Track prompts" icon="list-check" href="/axp/monitor/track-prompts">
+    Manage the prompts that you accepted.
+  </Card>
+  <Card title="AXP Edge dashboard" icon="bolt" href="/axp/axp-edge/dashboard">
+    Find the Content page and the All URLs table.
+  </Card>
+</CardGroup>

@@ -1,0 +1,100 @@
+---
+title: "Sources"
+description: "See which domains and pages AI assistants cite when they answer your prompts, and whether those pages mention your brand."
+---
+
+Sources show the domains and pages (URLs) that AI assistants cite when they answer your prompts. Use them to find the sites that shape AI answers in your market.
+
+## Open Sources
+
+You can open Sources in two ways. Both ways show the same pages.
+
+| From | What you see |
+|---|---|
+| **Sources** in the **Monitor** group of the sidebar | Sources for all your prompts |
+| **See all** under **Top domains** or **Top URLs** on a [prompt analytics page](/axp/monitor/prompt-analytics) | Sources for that prompt only. The breadcrumb shows the prompt. |
+
+## Filters
+
+- **Date range:** The default range is the last 30 days.
+- **Platform:** Show the data for all platforms or for one platform.
+- **Filter domain type**, **Filter URL types**, and **Filter mentions** on the lists.
+
+Sources counts only the responses to prompts that do not mention your brand. This is the same as [Brand Visibility](/axp/monitor/brand-visibility).
+
+## What AXP measures for a source
+
+| Measure | What it shows |
+|---|---|
+| **Citations** | The number of times the responses cite the domain or URL |
+| **Citation rate** | The inline citations of the domain or URL, divided by the number of answered responses for the same filters |
+| **Citations over time** | A chart of citations for the date range |
+
+AXP no longer reports retrievals as a separate metric. Citations replace them.
+
+<Note>
+Source data starts on the date that citation tracking started for your workspace. Earlier dates can show no data.
+</Note>
+
+## Domains
+
+The **Domains** page shows a **Domain citations** chart and a list of each domain that the AI cites.
+
+| Column | What it shows |
+|---|---|
+| **Domain type** | The type of website |
+| **Mentions** | The brands that the pages on this domain mention |
+| **Citations** | The number of times the responses cite a URL from this domain, with the trend |
+| **Citation rate** | The citation rate of the domain, with the trend |
+
+- **Domain type:** AXP classifies each domain automatically, for example **Corporate**, **UGC**, or **Institutional**. You do not set the type. For the meaning of each type, refer to [Domain types](/axp/monitor/metrics#domain-types).
+- **Your domains:** Your own domains show **You** in place of a type. AXP uses the domains in your Brand Profile to find them.
+- AXP groups subdomains under their main domain. For example, `blog.example.com` counts as `example.com`.
+
+To open a domain, click the view icon in the **Actions** column. The domain page shows a **URL citations** chart and the URLs on that domain that the AI cites.
+
+## URLs
+
+The **URLs** page shows a **URL citations** chart and a list of each page that the AI cites.
+
+| Column | What it shows |
+|---|---|
+| **URL type** | The type of page: **Homepage**, **Profile**, or **Other**. Refer to [URL types](/axp/monitor/metrics#url-types). |
+| **Domain type** | The type of website that the page is on |
+| **Your brand mentioned** | Whether the page mentions your brand |
+| **Mentions** | The brands that the page mentions |
+| **Citations**, **Citation rate** | The citation measures of the page, with the trend |
+
+To open a URL, click the view icon in the **Actions** column.
+
+## URL details
+
+The URL details page covers every prompt that cites the page, not only the prompt that you came from.
+
+| Section | What it shows |
+|---|---|
+| **Ownership** | A tag next to the URL: **Owned**, **Controlled**, or **Third Party**. Refer to [Ownership](/axp/monitor/metrics#ownership). |
+| **URL citations** | A chart of the citations of the page over the date range |
+| **Prompt insights** | The prompts that cite this page, with the citations and citation rate for each prompt. Click a prompt to open its analytics. |
+| **Brands mentioned** | The brands that the page content mentions, with their position and frequency |
+| **Your brand mentioned** | Whether the page mentions your brand |
+| **Prompt responses** | The AI responses that cite this page. You must have the prompt management permission to see this table. |
+
+<Info>
+An AI can cite a page that does not mention your brand. **Your brand mentioned** shows when this happens.
+</Info>
+
+### Values that show "–"
+
+AXP reads each cited page in the background after the AI first cites it. Until AXP reads the page, the type, ownership, and brand fields show "–". AXP reads each page again about every 30 days. If AXP cannot read a page, for example because a paywall or a bot block stops it, those fields stay empty.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Prompt analytics" icon="chart-line" href="/axp/monitor/prompt-analytics">
+    Go back to the analytics for a prompt.
+  </Card>
+  <Card title="Metrics and fields" icon="book" href="/axp/monitor/metrics">
+    See what each source field and value means.
+  </Card>
+</CardGroup>
