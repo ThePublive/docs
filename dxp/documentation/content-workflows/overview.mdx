@@ -4,11 +4,15 @@ sidebarTitle: "Overview"
 description: "Route content through named review stages before it can go live, with enforced approvals and a permanent record of who moved what."
 ---
 
-A **workflow** is a named, ordered set of review stages that content moves through before it can be published. You build each workflow yourself and assign it to one or more content types. For every stage, you decide who can move content to its next stages, who can edit it, and whether it is the stage that means "ready to go live".
+import CustomEnterprise from '/snippets/availability/custom-enterprise.mdx';
 
-<Info>
-Content Workflows is turned on per account. To have it enabled, [contact Publive](https://axp.thepublive.com/contact). Until then, you see no new columns, filters, panels, or settings, and publishing works exactly as it does today.
-</Info>
+A **workflow** is a named, ordered set of review stages that content moves through before it can be published. You build each workflow yourself and assign it to one or more content types. For every stage, you decide who can move content to its next stages and who can edit it. You also decide whether it is the stage that means "ready to go live".
+
+## Availability
+
+<CustomEnterprise />
+
+Content Workflows is turned on per workspace. Until it's on, you see no new columns, filters, panels, or settings, and publishing works exactly as it does today.
 
 <Note>
 Workflow configuration and review actions are designed for the desktop dashboard.
@@ -16,7 +20,7 @@ Workflow configuration and review actions are designed for the desktop dashboard
 
 ## Why use workflows
 
-A workflow models the review process your team already follows, for example writer, then editor, then compliance, then publish. The gate it creates is enforced, not advisory: content cannot be published or scheduled from the dashboard until it reaches a stage you have marked **publish-ready**. Holding publish permission is no longer enough on its own.
+A workflow models the review process your team already follows, for example writer, then editor, then compliance, then publish. The gate it creates is enforced, not advisory. Content cannot be published or scheduled from the dashboard until it reaches a stage you have marked **publish-ready**. Holding publish permission is no longer enough on its own.
 
 The member who approves content does not have to be the member who publishes it. Every stage change is attributed to a member and kept in the entry's timeline and in your [Audit Logs](/dxp/documentation/concepts-features/audit-logs).
 
@@ -26,13 +30,13 @@ The member who approves content does not have to be the member who publishes it.
 |---|---|
 | **Workflow** | A named, reusable review process. It can apply to one or more content types, each of which can use only one workflow at a time. It has an ordered list of stages and a set of override actors, which always includes Admins and Owners. |
 | **Stage** | A named, colored position in the workflow, such as **Editor Review**. Each stage controls where content can go next, who can move it, who can edit it, and whether it can go live. |
-| **Transition** | Moving an entry from one stage to another. A move is allowed only when the destination is one of the current stage's **Next stages**, you are listed in **Who can act**, and **Prevent self-advancement** does not block you. |
+| **Transition** | Moving an entry from one stage to another. A move needs the destination to be one of the current stage's **Next stages**. You must be listed in **Who can act**. And **Prevent self-advancement** must not block you. |
 | **Publish-ready stage** | A stage from which content is allowed to go live. A workflow needs at least one. |
 | **Assignee** | An optional metadata field that shows which member is expected to review an entry. It is for visibility only and has no effect on permissions: anyone who is eligible at the stage can still act. |
 | **Prevent self-advancement** | A per-stage rule. The member who moved an entry into the stage cannot move it out again, so a second person is required. |
 | **Override** | An escape hatch. **Admins** and **Owners** are always override actors for every workflow and cannot be removed from that role. A workflow can also name more roles or members as override actors. Any override actor can move an entry to any stage, with a required reason that is recorded separately. |
 
-A transition can carry an optional **note**, useful for telling the next reviewer, or the author if the entry is heading back to them, what they should know. There is no fixed forward or backward path: a stage's **Next stages** can point to any other stage, and every move uses the same note, optional every time.
+A transition can carry an optional **note**. It's the place to tell the next reviewer, or the author if the entry is heading back to them, what they should know. A workflow has no fixed forward or backward path: a stage's **Next stages** can point to any other stage. Every move uses the same note, optional every time.
 
 ## Stage and status are separate
 
@@ -69,7 +73,7 @@ For content types that use a workflow, the **Approval Pending** status is not us
 | Draft | Editor Review, with a live version | Live content with an edit in review. The live version keeps serving. | No, the update cannot go out yet |
 | Published | Ready to Publish | Live, no pending edits | Already live. It can be updated. |
 
-When the gate blocks publishing, the **Publish** control stays visible but disabled, and tells the author which stage the entry must reach and which stage it is in now. It is never silently hidden.
+When the gate blocks publishing, the **Publish** control stays visible but disabled. It tells the author which stage the entry must reach and which stage it is in now. It is never silently hidden.
 
 <Warning>
 The stage gate applies to publishing from the Publive DXP dashboard. Content that arrives through the CMS API, ingestion feeds, syndication, or form (UGC) approval is not checked against workflow stages in this release.
@@ -94,10 +98,10 @@ A stage also never changes who can **see** an entry. Visibility is decided only 
 
 Workflows is opt-in at two levels:
 
-1. **Per account.** Content Workflows must be enabled.
+1. **Per workspace.** Content Workflows must be enabled.
 2. **Per content type.** A content type is governed only once a workflow is assigned to it.
 
-In an account with Workflows enabled, a content type that has a workflow uses stages and the publish gate. A content type without one keeps the existing **Send for Approval** and **Pending Approval** flow, unchanged. Both models run side by side. You can pilot a workflow on one content type, for example Articles, and leave the rest alone.
+In a workspace with Workflows enabled, a content type that has a workflow uses stages and the publish gate. A content type without one keeps the existing **Send for Approval** and **Pending Approval** flow, unchanged. Both models run side by side. You can pilot a workflow on one content type, for example Articles, and leave the rest alone.
 
 For the status-based flow, see [Maker-Checker Workflow](/dxp/documentation/guides/workflows/maker-checker).
 

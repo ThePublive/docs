@@ -3,11 +3,17 @@ title: "Configure workflows"
 description: "Create a workflow, define its stages and rules, and assign it to a content type."
 ---
 
+import CustomEnterprise from '/snippets/availability/custom-enterprise.mdx';
+
 Build a workflow once, assign it to one or more content types, and every new entry of those types moves through your stages.
+
+## Availability
+
+<CustomEnterprise />
 
 ## Prerequisites
 
-- Content Workflows is enabled for your account. See the [overview](/dxp/documentation/content-workflows/overview).
+- Content Workflows is enabled for your workspace. See the [overview](/dxp/documentation/content-workflows/overview).
 - You are an **Admin**, an **Owner**, or hold a role with workflow configuration permission.
 - Any reviewer role your stages need already exists, for example **Marketing Reviewer**. A workflow never creates roles of its own. It references the roles and members you already have. See [Content Access Policies](/dxp/documentation/concepts-features/content-access-policies) for how roles are set up.
 
@@ -20,7 +26,15 @@ There are two entry points, and both show the same assignment:
 
 ## The workflow list
 
-The list shows each workflow's **Name**, **Content types** (as chips), **Stages** (a count, shown as colored dots), a **Status** toggle to turn the workflow on or off, and **Last edited**. A content type filter above the list narrows it down. From here you can **Create workflow**, open a workflow to edit it, or delete it.
+The list shows each workflow's:
+
+- **Name**
+- **Content types**, as chips
+- **Stages**, a count shown as colored dots
+- **Status**, a toggle to turn the workflow on or off
+- **Last edited**
+
+A content type filter above the list narrows it down. From here you can **Create workflow**, open a workflow to edit it, or delete it.
 
 <Frame>
   <img src="/images/dxp/content-workflows-list.png" alt="The Workflows list, showing two workflows with their content types, stage counts, and an active/inactive toggle." style={{ borderRadius: '0.5rem' }} />
@@ -35,10 +49,10 @@ If you have no workflows yet, the page explains what a workflow is and offers a 
     Give the workflow a **Workflow name** (required, unique in your workspace) and an optional **Description**. Use the **Workflow active** toggle to turn it on or off. When it's off, content publishes without going through these stages, and nothing already in progress changes.
   </Step>
   <Step title="Choose the content types">
-    Pick one or more content types for this workflow to apply to. This field is required. System and custom content types are both available. A content type can use only one workflow at a time. If a content type you add already uses another workflow, that workflow's name is shown and the content type cannot be added until it is released from it.
+    Pick one or more content types for this workflow to apply to. This field is required. System and custom content types are both available, and a content type can use only one workflow at a time. If a content type you add already uses another workflow, that workflow's name is shown. You cannot add it until it is released from that workflow.
   </Step>
   <Step title="Add override actors (optional)">
-    **Admins** and **Owners** are always override actors for this workflow and cannot be removed. Use this step to name more, such as one or more roles, one or more members, or a mix of both, who can also move content to any stage, including straight to publishing. Overriders always have to give a reason. See [Override](/dxp/documentation/content-workflows/review-and-move-content#override-a-stage). You can leave this step empty and rely on Admins and Owners alone.
+    **Admins** and **Owners** are always override actors for this workflow and cannot be removed. Use this step to name more: one or more roles, one or more members, or a mix of both. An override actor can move content to any stage, including straight to publishing, but always has to give a reason. See [Override](/dxp/documentation/content-workflows/review-and-move-content#override-a-stage). You can leave this step empty and rely on Admins and Owners alone.
   </Step>
   <Step title="Build the stages">
     Add, duplicate, delete, and drag to reorder stages. Each row shows the stage colour, name, a publish-ready marker, and a summary of who can act. Select a row to open the stage editor.
@@ -61,7 +75,7 @@ A workflow has at least **2** and at most **20** stages. The first stage is wher
 ## Stage settings
 
 <Frame>
-  <img src="/images/dxp/content-workflows-stage-editor-legal-review.png" alt="The stage editor for a Legal Review stage, expanded to show its name, colour, who can edit, next stages, who can act, and notification settings." style={{ borderRadius: '0.5rem' }} />
+  <img src="/images/dxp/content-workflows-stage-editor-legal-review.png" alt="The stage editor for a Legal Review stage, showing its settings fields." style={{ borderRadius: '0.5rem' }} />
 </Frame>
 
 | Field | What it does |
@@ -82,7 +96,7 @@ A workflow has at least **2** and at most **20** stages. The first stage is wher
 
 ### Prevent self-advancement
 
-Switch **Prevent self-advancement** on for every review stage and no single member can walk content from draft to live. It also stops authors approving their own work: the author moves their entry out of the first stage, so with the rule on at the first review stage, they cannot also move it out of that stage.
+Switch **Prevent self-advancement** on for every review stage and no single member can walk content from draft to live. It also stops authors approving their own work. The author moves their entry out of the first stage. With the rule on at the first review stage, they cannot also move it out of that stage.
 
 There is no separate "author cannot act on their own content" setting. This one rule covers it.
 

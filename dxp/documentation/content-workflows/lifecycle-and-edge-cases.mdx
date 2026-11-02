@@ -3,6 +3,14 @@ title: "Lifecycle and edge cases"
 description: "How content behaves when live entries are edited, stages are deleted, or two members act at once."
 ---
 
+import CustomEnterprise from '/snippets/availability/custom-enterprise.mdx';
+
+A workflow touches content in ways that are easy to miss until you hit them. This page covers the cases worth knowing in advance.
+
+## Availability
+
+<CustomEnterprise />
+
 <Warning>
 Clear the **Pending Approval** tab for a content type before assigning it a workflow. Enabling a workflow hides that tab, and any entry still sitting in it becomes unreachable from the content list. Approve, reject, or publish every entry there first.
 </Warning>
@@ -27,7 +35,7 @@ Clear the **Pending Approval** tab for a content type before assigning it a work
   </Accordion>
 
   <Accordion title="Two members act at the same time">
-    The first action to land wins. The second member is told what already happened, for example that the entry was already moved to **Ready to Publish**, and the entry refreshes to its current state. This applies equally when two members choose different destinations for the same entry at the same time. Neither choice takes precedence.
+    The first action to land wins. The second member is told what already happened, for example that the entry was already moved to **Ready to Publish**. The entry then refreshes to its current state. This applies equally when two members choose different destinations for the same entry at the same time. Neither choice takes precedence.
   </Accordion>
 
   <Accordion title="A stage nobody can act on">

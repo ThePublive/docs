@@ -3,6 +3,14 @@ title: "Notifications and audit trail"
 description: "Which emails each workflow event sends, and what is recorded for every stage change."
 ---
 
+import CustomEnterprise from '/snippets/availability/custom-enterprise.mdx';
+
+Every stage change sends an email to the right people and leaves a permanent record. This page covers both.
+
+## Availability
+
+<CustomEnterprise />
+
 ## Email notifications
 
 Workflows sends **email only**. There are no in-app notifications. Recipients are worked out automatically, so there is nothing to configure beyond optional **Additional notification recipients** on a stage.
@@ -21,7 +29,7 @@ Recipients are de-duplicated. Nobody receives two copies of one event, and nobod
 
 ### Events
 
-A workflow has no fixed forward or backward path: a stage's **Next stages** can point to any other stage, and every move uses the same **Move to** dialog with the same optional note. One move produces exactly one event, whatever its destination.
+A workflow has no fixed forward or backward path: a stage's **Next stages** can point to any other stage. Every move uses the same **Move to** dialog, with the same optional note. One move produces exactly one event, whatever its destination.
 
 | Event | Who is emailed | Subject |
 |---|---|---|
@@ -52,7 +60,7 @@ Records survive the deletion or renaming of the stage or workflow that produced 
 The same records appear in two places:
 
 - the entry's **History** timeline, for the people doing the work. See [Review and move content](/dxp/documentation/content-workflows/review-and-move-content#the-timeline).
-- [Audit Logs](/dxp/documentation/concepts-features/audit-logs), for compliance and investigation, alongside every other audited action. Retention follows your account's audit retention policy.
+- [Audit Logs](/dxp/documentation/concepts-features/audit-logs), for compliance and investigation, alongside every other audited action. Retention follows your workspace's audit retention policy.
 
 ## Next steps
 
