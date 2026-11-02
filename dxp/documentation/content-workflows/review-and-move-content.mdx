@@ -31,11 +31,15 @@ Open an entry and look for the **Workflow** panel in the right-hand sidebar. It 
 |---|---|
 | **Workflow** | The name of the workflow that applies |
 | **Stage** | The current stage on its colour. You cannot change it directly. Moving is a deliberate action. |
-| **Assignee** | The current assignee, or **Unassigned**, with a **change** link |
+| **Assigned to** | The current assignee, or **Unassigned** |
 | **Move to** | A picker of the stages you can move this entry to right now |
 | **History** | The entry's timeline |
 
 For content types without a workflow, the panel does not appear at all.
+
+<Frame>
+  <img src="/images/dxp/content-workflows-panel-normal.png" alt="The Workflow panel for a freshly created entry, sitting in its first stage with no history yet." style={{ borderRadius: '0.5rem' }} />
+</Frame>
 
 ## Move an entry
 
@@ -43,13 +47,20 @@ For content types without a workflow, the panel does not appear at all.
   <Step title="Choose a destination">
     Open **Move to** and pick a stage. It lists only the stages you are allowed to move to.
   </Step>
-  <Step title="Add a note">
-    The note is optional. The dialog also shows who will be notified.
+  <Step title="Assign to (optional)">
+    Set who should pick this up at the new stage. It defaults to **Unassigned**. You can also skip this and assign it later from the panel.
+  </Step>
+  <Step title="Add a note (optional)">
+    The dialog also shows who will be notified.
   </Step>
   <Step title="Confirm">
     Select **Move**. Selecting **Cancel** does nothing.
   </Step>
 </Steps>
+
+<Frame>
+  <img src="/images/dxp/content-workflows-move-dialog.png" alt="The Move to a stage dialog, showing the from and to stages, an Assign to field, and an optional note." style={{ borderRadius: '0.5rem' }} />
+</Frame>
 
 If you cannot move the entry anywhere, the picker is replaced by a line explaining why:
 
@@ -74,7 +85,12 @@ An override ignores **Next stages**, **Who can act**, and **Prevent self-advance
 
 ## Assign an entry
 
-Use **change** next to **Assignee** to set, change, or clear the assignee. Setting an assignee emails them.
+There are two ways to set the assignee:
+
+- **While moving an entry.** The move dialog has an **Assign to** field, so you can hand the entry to someone the moment it reaches their stage.
+- **From the panel, at any time.** Open **Assigned to** to set, change, or clear it. Setting an assignee emails them.
+
+Once an entry is at a stage, only members who can act at that stage can change its assignee. This follows the same rule as everything else at a stage: **Who can act** decides who may touch it.
 
 The assignee is a metadata field that shows who is expected to review the entry. It is for visibility only and does not affect permissions. Anyone who is eligible at the current stage can still act on the entry, whether or not they are the assignee.
 
@@ -82,10 +98,13 @@ The assignee is a metadata field that shows who is expected to review the entry.
 
 The current stage's **Who can edit** setting applies on top of the permissions you already have. A stage can only restrict editing. It never grants it.
 
-When the stage prevents you from editing, the entry opens read-only and tells you why, for example:
+When the stage prevents you from editing, the entry opens read-only with a banner naming the stage, for example:
 
-- This entry is in Legal Review and cannot be edited. Send it back to Writing to make changes.
-- This entry is in Marketing Review. Only reviewers at this stage can edit it.
+> View only — content cannot be edited in "Legal Review".
+
+<Frame>
+  <img src="/images/dxp/content-workflows-panel-frozen.png" alt="The Workflow panel for an entry in Legal Review, showing the view-only banner and its stage history." style={{ borderRadius: '0.5rem' }} />
+</Frame>
 
 The existing concurrent-edit lock is unaffected. Two members still cannot edit at the same time, whatever the stage.
 
