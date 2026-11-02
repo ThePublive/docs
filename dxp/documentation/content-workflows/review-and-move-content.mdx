@@ -1,6 +1,6 @@
 ---
 title: "Review and move content"
-description: "Find work waiting at your stage, move entries forward or back, override a stage, and read an entry's timeline."
+description: "Find work waiting at your stage, move entries between stages, override a stage, and read an entry's timeline."
 ---
 
 Once a workflow is assigned to a content type, every entry of that type has a stage. This page covers what authors and reviewers see and do.
@@ -14,10 +14,15 @@ New entries start in the workflow's first stage the moment they are created. The
 For content types with a workflow, the content list gains:
 
 - a **Stage** column showing the stage name on its stage colour
+- an **Assignee** column
 - a **Stage** filter to pick one or more stages. In a view that spans several workflows, stages are grouped under their workflow name.
 - an **Assignee** filter, with **Assigned to me** as the first option
 
 Status tabs, columns, search, and existing filters are unchanged. Content types without a workflow show no **Stage** column.
+
+<Frame>
+  <img src="/images/dxp/content-workflows-list-stage-column.png" alt="The content list for Article drafts, with Stage and Assignee columns alongside the existing columns." style={{ borderRadius: '0.5rem' }} />
+</Frame>
 
 <Tip>
 **Assigned to me** plus a stage filter is the quickest way for a reviewer to find their work. Save the combination as a filter view to get back to it in one click.
@@ -67,9 +72,9 @@ If you cannot move the entry anywhere, the picker is replaced by a line explaini
 - Only the named roles or members can move this entry out of the stage.
 - You moved this entry to the stage, so someone else must move it on. This applies when **Prevent self-advancement** is on.
 
-### Send an entry back
-
-Moving an entry to an earlier stage is a **send back**. The dialog changes to **Send back**. The note is optional here too, but it is the place to tell the author what to change.
+<Note>
+There is no separate "send back" action or dialog. A workflow has no fixed forward or backward path: a stage's **Next stages** can point anywhere, including to a stage earlier in the list. Moving an entry there uses the same **Move to** dialog as any other move, with the same optional note.
+</Note>
 
 ## Override a stage
 

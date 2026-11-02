@@ -21,13 +21,13 @@ Recipients are de-duplicated. Nobody receives two copies of one event, and nobod
 
 ### Events
 
-One move produces exactly one event. A send back is not also an arrival.
+A workflow has no fixed forward or backward path: a stage's **Next stages** can point to any other stage, and every move uses the same **Move to** dialog with the same optional note. One move produces exactly one event, whatever its destination.
 
 | Event | Who is emailed | Subject |
 |---|---|---|
-| Entry moves forward to a stage | Actors at the new stage, the assignee, and additional recipients for the stage | `Review needed: <ENTRY_TITLE>` |
+| Entry arrives at a stage for the first time | Actors at the new stage, the assignee, and additional recipients for the stage | `Review needed: <ENTRY_TITLE>` |
 | Entry reaches a stage for additional recipients only | Additional recipients | `FYI: <ENTRY_TITLE> reached <STAGE_NAME>` |
-| Entry sent back to an earlier stage | The author, everyone who moved it forward since it was last at that stage, and additional recipients for the destination stage | `Sent back: <ENTRY_TITLE>` |
+| Entry returns to a stage it has already been at | The author, everyone who moved it on since it was last at that stage, and additional recipients for the destination stage | `Sent back: <ENTRY_TITLE>` |
 | Entry assigned to someone | The new assignee | `Assigned to you: <ENTRY_TITLE>` |
 | Stage overridden | Actors at every skipped stage, and the author | `Review skipped: <ENTRY_TITLE>` |
 | Entry published or scheduled | The author | The existing publish or schedule email, unchanged |

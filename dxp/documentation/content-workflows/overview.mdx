@@ -4,7 +4,7 @@ sidebarTitle: "Overview"
 description: "Route content through named review stages before it can go live, with enforced approvals and a permanent record of who moved what."
 ---
 
-A **workflow** is a named, ordered set of review stages that content moves through before it can be published. You build each workflow yourself and assign it to one or more content types. For every stage, you decide who can move content forward, who can edit it, and whether it is the stage that means "ready to go live".
+A **workflow** is a named, ordered set of review stages that content moves through before it can be published. You build each workflow yourself and assign it to one or more content types. For every stage, you decide who can move content to its next stages, who can edit it, and whether it is the stage that means "ready to go live".
 
 <Info>
 Content Workflows is turned on per account. To have it enabled, [contact Publive](https://axp.thepublive.com/contact). Until then, you see no new columns, filters, panels, or settings, and publishing works exactly as it does today.
@@ -32,7 +32,7 @@ The member who approves content does not have to be the member who publishes it.
 | **Prevent self-advancement** | A per-stage rule. The member who moved an entry into the stage cannot move it out again, so a second person is required. |
 | **Override** | An escape hatch. **Admins** and **Owners** are always override actors for every workflow and cannot be removed from that role. A workflow can also name more roles or members as override actors. Any override actor can move an entry to any stage, with a required reason that is recorded separately. |
 
-A transition can carry a **note**. The note is optional in both directions, forward or to an earlier stage, but a reviewer sending work back can use it to tell the author what to change.
+A transition can carry an optional **note**, useful for telling the next reviewer, or the author if the entry is heading back to them, what they should know. There is no fixed forward or backward path: a stage's **Next stages** can point to any other stage, and every move uses the same note, optional every time.
 
 ## Stage and status are separate
 
@@ -108,6 +108,6 @@ For the status-based flow, see [Maker-Checker Workflow](/dxp/documentation/guide
     Build stages, set who can act, and assign a workflow to a content type.
   </Card>
   <Card title="Review and move content" href="/dxp/documentation/content-workflows/review-and-move-content">
-    Move entries between stages, send them back, and read the timeline.
+    Move entries between stages, override a stage, and read the timeline.
   </Card>
 </CardGroup>

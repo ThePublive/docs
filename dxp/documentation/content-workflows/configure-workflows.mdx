@@ -72,7 +72,7 @@ A workflow has at least **2** and at most **20** stages. The first stage is wher
 | **Publish-ready** | When on, content in this stage may go live. At least one stage must be publish-ready. |
 | **Next stages** | Where content can move from this stage. Selecting none makes the stage a dead end, and the editor warns you. |
 | **Who can act on this stage** | One or more roles, one or more members, or a mix of both, who can move content out of this stage. At least one is required unless the stage is a dead end. |
-| **Who can edit content on this stage** | **Everyone with post edit access**, **Only people who can act on this stage**, or **No one**. **No one** is a hard freeze: everyone can only view, and content must be sent back to an earlier stage to be changed. |
+| **Who can edit content on this stage** | **Everyone with post edit access**, **Only people who can act on this stage**, or **No one**. **No one** is a hard freeze: everyone can only view, and content must be moved to another stage to be changed. |
 | **Prevent self-advancement** | Off by default. When on, whoever moves content into this stage cannot move it out. Requires a second person. |
 | **Also notify** | Optional. One or more roles, one or more members, or a mix of both, notified by email when content reaches this stage. People who can act on this stage are emailed automatically, so this is for anyone else who should know. |
 
@@ -113,9 +113,9 @@ flowchart LR
     W[Writing] --> E[Editor Review]
     E --> M[Marketing Review]
     M --> R["Ready to Publish"]
-    E -.->|"Send back"| W
-    M -.->|"Send back"| W
-    R -.->|"Send back"| W
+    E -.-> W
+    M -.-> W
+    R -.-> W
 ```
 
 | Stage | Next stages | Who can act | Who can edit | Prevent self-advancement | Publish-ready |
