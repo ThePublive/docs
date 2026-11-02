@@ -5,7 +5,11 @@ description: "Managing content state transitions in Publive"
 
 import ApiAccess from '/snippets/availability/api-access.mdx';
 
-Understanding how content moves through different states is key to building reliable integrations with Publive.
+<Note>
+The `Approval Pending` state below applies to content types without a [Content Workflow](/dxp/documentation/content-workflows/overview). A content type with a workflow also has a stage, which is separate from status. Publishes made through the CMS API are not checked against workflow stages in this release.
+</Note>
+
+This page explains how content moves between states, so you can build reliable integrations with Publive.
 
 ## Availability
 

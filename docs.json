@@ -94,6 +94,16 @@
                 ]
               },
               {
+                "group": "Content Workflows",
+                "pages": [
+                  "dxp/documentation/content-workflows/overview",
+                  "dxp/documentation/content-workflows/configure-workflows",
+                  "dxp/documentation/content-workflows/review-and-move-content",
+                  "dxp/documentation/content-workflows/notifications-and-audit-trail",
+                  "dxp/documentation/content-workflows/lifecycle-and-edge-cases"
+                ]
+              },
+              {
                 "group": "Roles & Permissions",
                 "pages": [
                   "dxp/documentation/concepts-features/content-access-policies"

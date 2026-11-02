@@ -5,6 +5,10 @@ description: "Configure maker-checker workflows in Publive to require dual appro
 
 import CustomEnterprise from '/snippets/availability/custom-enterprise.mdx';
 
+<Note>
+This guide describes the status-based flow using `Approval Pending`. It applies to content types without a [Content Workflow](/dxp/documentation/content-workflows/overview). A content type with a workflow tracks review progress as a stage instead. Publishes made through the CMS API are not checked against workflow stages in this release.
+</Note>
+
 The maker-checker pattern ensures that content created by one member (maker) must be reviewed and approved by another member (checker) before publication. This is essential for regulated industries like BFSI and Pharmaceuticals.
 
 ## Availability
