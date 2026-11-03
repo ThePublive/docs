@@ -58,7 +58,8 @@
                       "dxp/documentation/getting-started/mfa",
                       "dxp/documentation/getting-started/mfa/why-mfa-is-enforced"
                     ]
-                  }
+                  },
+                  "dxp/documentation/getting-started/sso"
                 ]
               },
               {
