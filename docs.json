@@ -48,33 +48,22 @@
             "tab": "Documentation",
             "groups": [
               {
-                "group": "Getting Started",
+                "group": "Overview",
                 "pages": [
-                  "dxp/index",
-                  "dxp/documentation/getting-started/authentication",
-                  {
-                    "group": "Multi-Factor Authentication (MFA)",
-                    "pages": [
-                      "dxp/documentation/getting-started/mfa",
-                      "dxp/documentation/getting-started/mfa/why-mfa-is-enforced"
-                    ]
-                  }
+                  "dxp/index"
                 ]
               },
               {
-                "group": "Quickstarts",
+                "group": "Content modelling",
                 "pages": [
-                  "dxp/documentation/quickstarts/cds",
-                  "dxp/documentation/quickstarts/cms"
-                ]
-              },
-              {
-                "group": "Core Concepts",
-                "pages": [
-                  "dxp/documentation/getting-started/core-concepts",
                   "dxp/documentation/concepts-features/custom-entities",
                   "dxp/documentation/concepts-features/forms",
-                  "dxp/documentation/concepts-features/media-library",
+                  "dxp/documentation/concepts-features/media-library"
+                ]
+              },
+              {
+                "group": "Editor features",
+                "pages": [
                   {
                     "group": "AI Features",
                     "pages": [
@@ -84,12 +73,7 @@
                     ]
                   },
                   "dxp/documentation/concepts-features/content-scoring",
-                  "dxp/documentation/concepts-features/google-discover-headline"
-                ]
-              },
-              {
-                "group": "Distribution",
-                "pages": [
+                  "dxp/documentation/concepts-features/google-discover-headline",
                   "dxp/documentation/distribution/x-distribution-change"
                 ]
               },
@@ -103,21 +87,28 @@
                 ]
               },
               {
-                "group": "Roles & Permissions",
+                "group": "Account security",
                 "pages": [
-                  "dxp/documentation/concepts-features/content-access-policies"
+                  {
+                    "group": "Multi-Factor Authentication (MFA)",
+                    "pages": [
+                      "dxp/documentation/getting-started/mfa",
+                      "dxp/documentation/getting-started/mfa/why-mfa-is-enforced"
+                    ]
+                  }
                 ]
               },
               {
-                "group": "Enterprise & Governance",
+                "group": "Workspace administration",
                 "pages": [
+                  "dxp/documentation/concepts-features/content-access-policies",
                   "dxp/documentation/concepts-features/audit-logs"
                 ]
               }
             ]
           },
           {
-            "tab": "Guides",
+            "tab": "Build your site",
             "groups": [
               {
                 "group": "Framework Integration",
@@ -130,59 +121,30 @@
                 ]
               },
               {
-                "group": "Headless Architecture",
+                "group": "Build with the Starter Kit",
                 "pages": [
                   "dxp/documentation/guides/decoupled-frontend/decoupled-frontend-infra",
                   "dxp/documentation/guides/decoupled-frontend/build-brand-website",
-                  "dxp/documentation/guides/decoupled-frontend/build-news-media"
+                  "dxp/documentation/guides/decoupled-frontend/build-news-media",
+                  "dxp/documentation/guides/deployment",
+                  {
+                    "group": "Starter Kit recipes",
+                    "pages": [
+                      "dxp/documentation/guides/decoupled-frontend/integrations/how-to-integrate-form",
+                      "dxp/documentation/guides/decoupled-frontend/integrations/how-to-integrate-component-form",
+                      "dxp/documentation/guides/decoupled-frontend/integrations/how-to-create-files-route",
+                      "dxp/documentation/guides/decoupled-frontend/integrations/how-to-have-preview-page",
+                      "dxp/documentation/guides/decoupled-frontend/integrations/how-to-have-password-protected-preview"
+                    ]
+                  }
                 ]
               },
               {
-                "group": "Integrations",
-                "pages": [
-                  "dxp/documentation/guides/decoupled-frontend/integrations/how-to-integrate-form",
-                  "dxp/documentation/guides/decoupled-frontend/integrations/how-to-integrate-component-form",
-                  "dxp/documentation/guides/decoupled-frontend/integrations/how-to-create-files-route",
-                  "dxp/documentation/guides/decoupled-frontend/integrations/how-to-have-preview-page",
-                  "dxp/documentation/guides/decoupled-frontend/integrations/how-to-have-password-protected-preview",
-                  "dxp/documentation/guides/integrations/how-to-integrate-cookie-consent"
-                ]
-              },
-              {
-                "group": "Editorial Workflows",
-                "pages": [
-                  "dxp/documentation/guides/workflows/README",
-                  "dxp/documentation/guides/workflows/maker-checker",
-                  "dxp/documentation/guides/workflows/approval-flow",
-                  "dxp/documentation/guides/workflows/state-management"
-                ]
-              },
-              {
-                "group": "Events & Automation",
+                "group": "Integrations and webhooks",
                 "pages": [
                   "dxp/documentation/webhooks-integrations/webhooks",
-                  "dxp/documentation/webhooks-integrations/third-party"
-                ]
-              },
-              {
-                "group": "Industry Solutions",
-                "pages": [
-                  "dxp/documentation/guides/industry-specific/README",
-                  "dxp/documentation/guides/industry-specific/media-publishing",
-                  "dxp/documentation/guides/industry-specific/bfsi-compliance",
-                  "dxp/documentation/guides/industry-specific/pharma-governance"
-                ]
-              },
-              {
-                "group": "Content Authoring",
-                "pages": [
-                  "dxp/documentation/guides/content-authoring/faq-block"
-                ]
-              },
-              {
-                "group": "Deployment",
-                "pages": [
-                  "dxp/documentation/guides/deployment"
+                  "dxp/documentation/webhooks-integrations/third-party",
+                  "dxp/documentation/guides/integrations/how-to-integrate-cookie-consent"
                 ]
               }
             ]
@@ -191,9 +153,23 @@
             "tab": "API Reference",
             "groups": [
               {
-                "group": "Overview",
+                "group": "Get started",
                 "pages": [
-                  "dxp/api-reference/README"
+                  "dxp/api-reference/README",
+                  "dxp/documentation/getting-started/authentication",
+                  "dxp/documentation/quickstarts/cds",
+                  "dxp/documentation/quickstarts/cms",
+                  "dxp/documentation/getting-started/core-concepts"
+                ]
+              },
+              {
+                "group": "Publishing with the CMS API",
+                "pages": [
+                  "dxp/documentation/guides/workflows/README",
+                  "dxp/documentation/guides/workflows/maker-checker",
+                  "dxp/documentation/guides/workflows/approval-flow",
+                  "dxp/documentation/guides/workflows/state-management",
+                  "dxp/documentation/guides/content-authoring/faq-block"
                 ]
               },
               {
@@ -439,16 +415,27 @@
                 ]
               },
               {
+                "group": "Account security",
+                "pages": [
+                  {
+                    "group": "Multi-Factor Authentication (MFA)",
+                    "pages": [
+                      "axp/account/mfa",
+                      "axp/account/mfa/why-mfa-is-enforced"
+                    ]
+                  }
+                ]
+              },
+              {
                 "group": "AXP Edge",
                 "pages": [
                   "axp/axp-edge/overview",
-                  "axp/axp-edge/setup",
                   "axp/axp-edge/dashboard",
                   "axp/axp-edge/faq"
                 ]
               },
               {
-                "group": "Monitor",
+                "group": "AI Streams",
                 "pages": [
                   "axp/monitor/overview",
                   "axp/monitor/track-prompts",
@@ -465,16 +452,22 @@
             "tab": "Guides",
             "groups": [
               {
-                "group": "AXP Edge",
+                "group": "Deploy AXP Edge",
                 "pages": [
-                  "axp/axp-edge/integrations/vercel",
+                  "axp/axp-edge/setup",
                   "axp/axp-edge/integrations/cloudflare",
-                  "axp/axp-edge/integrations/f5-xc",
-                  "axp/axp-edge/integrations/akamai",
+                  "axp/axp-edge/integrations/vercel",
                   "axp/axp-edge/integrations/cloudfront",
                   "axp/axp-edge/integrations/fastly",
+                  "axp/axp-edge/integrations/akamai",
+                  "axp/axp-edge/integrations/f5-xc",
                   "axp/axp-edge/integrations/azure-front-door",
-                  "axp/axp-edge/integrations/dont-have-a-cdn",
+                  "axp/axp-edge/integrations/dont-have-a-cdn"
+                ]
+              },
+              {
+                "group": "Operate AXP Edge",
+                "pages": [
                   "axp/axp-edge/integrations/cache-invalidation"
                 ]
               }
@@ -513,6 +506,26 @@
     }
   },
   "redirects": [
+    {
+      "source": "/dxp/documentation/guides/industry-specific/README",
+      "destination": "/dxp"
+    },
+    {
+      "source": "/dxp/documentation/guides/industry-specific/media-publishing",
+      "destination": "/dxp"
+    },
+    {
+      "source": "/dxp/documentation/guides/industry-specific/bfsi-compliance",
+      "destination": "/dxp"
+    },
+    {
+      "source": "/dxp/documentation/guides/industry-specific/pharma-governance",
+      "destination": "/dxp"
+    },
+    {
+      "source": "/dxp/documentation/guides/industry-specific",
+      "destination": "/dxp"
+    },
     {
       "source": "/dxp/documentation/content-workflows/lifecycle-and-edge-cases",
       "destination": "/dxp/documentation/content-workflows/review-and-move-content"
