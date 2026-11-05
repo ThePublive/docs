@@ -15,7 +15,7 @@ This page defines the metrics and fields that you see on the [Prompts](/axp/moni
 | **Position** | The average rank of your brand among the brands that a response mentions | Lower is better. The dashboard shows it as `#1.5`. `#1` means that the responses mention your brand first. "–" in a response row means that the response does not mention your brand. |
 | **Sentiment** | How positive the responses are about your brand | A score, not a percentage. On the **Tracking** tab, the score goes from 0 (most negative) to 100 (most positive). 50 is neutral. Where space is small, the dashboard shows a label: **Positive**, **Neutral**, or **Negative**. |
 | **Citations** | For a domain or URL: the number of times the responses cite it. For a brand: the number of times the responses cite the domains of that brand. | Higher is better for your own domains |
-| **Citation rate** | The number of inline citations, divided by the number of answered responses. For a domain or URL, only its own inline citations count. | A plain number, for example `1.5`. It is not a percentage. |
+| **Citation rate** | For a prompt or a brand: the number of inline citations, divided by the number of answered responses. For a domain or URL: the average number of its inline citations in each response that uses it as a source. | A plain number, for example `1.5`. It is not a percentage. |
 | **Web search** | The percentage of responses where the AI searched the web before it answered | A low value means that the AI answers this prompt mostly from its own knowledge |
 | **Mentions** | On the **Tracking** tab: the number of different brands that the responses mention. On Brand Visibility: the number of times the responses mention a brand. | The **Tracking** tab shows the brands as logos, with `+5` for 5 more brands. |
 | **Volume** | The estimated search volume of the prompt | Use it to decide which prompts are worth tracking. "–" means that no estimate is available. |
@@ -44,10 +44,9 @@ These fields are on the **Tracking**, **Suggested**, and **Paused** tabs, and in
 | **Topic** | The group that the prompt belongs to. Each prompt has one topic. | A topic name |
 | **Platforms** (**Agents** on the **Paused** tab) | The AI platforms that run the prompt | **ChatGPT**, **Gemini**. If you select no platform, AXP runs the prompt on all platforms. |
 | **Location** | The market that the prompt targets. The location changes the sources that the AI finds when it searches the web. It does not change the prompt text. | Free text, for example `India` or `Delhi, India` |
-| **Intent** | The goal of the buyer who asks the prompt | Refer to [Intent values](#intent-values) |
+| **Intent** | The goal of the buyer who asks the prompt. AXP sets it automatically. You cannot change it. | Refer to [Intent values](#intent-values) |
 | **Branding** | Whether the prompt text mentions your brand. AXP sets this value from the prompt text. | **Branded**, **Non branded** |
-| **Source** (**Origin** on the **Paused** tab) | How the prompt got into your list | Refer to [Prompt sources](/axp/monitor/overview#prompt-sources) |
-| **Note** | A free-text note about the prompt. On the **Suggested** tab, this is the **Reason** column. | Free text |
+| **Source** (**Origin** on the **Paused** tab) | How the prompt got into your list | **Manual**, **Suggested**, **Bulk**. Refer to [Prompt sources](/axp/monitor/overview#prompt-sources). |
 | **Reason** | Why AXP suggested the prompt. It can also show the search volume of the keyword, for example "Decision gap · vol 2.4k", or the page URL. | Free text that AXP writes |
 | **Date added** | The date that a member added the prompt, or accepted it from a suggestion | A date |
 
