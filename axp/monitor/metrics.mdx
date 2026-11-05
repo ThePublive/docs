@@ -12,9 +12,9 @@ The formulas on this page use these terms.
 
 | Term | Meaning |
 |---|---|
-| **Response** | One answer from one platform to one prompt, at one time. Each tracked prompt gets one response from each of its platforms every 12 hours. |
-| **Answered response** | A response in which the platform answered the prompt. If the platform did not answer, AXP leaves the response out of every percentage and average. |
-| **Mention** | Each time a response names a brand. One response can mention a brand more than one time. |
+| **Response** | What one platform returns for one prompt, at one time. Each tracked prompt gets one response from each of its platforms every 12 hours. |
+| **Answered response** | A response in which the platform answered the prompt. If the platform did not answer, AXP does not include the response in any percentage or average. |
+| **Mention** | One occurrence of a brand in a response. One response can mention a brand more than one time. |
 | **Citation** | A URL that the platform gives as a source for its response. AXP counts each URL one time per response, also if the platform lists it more than once. AXP keeps up to 25 citations for each response. |
 | **Inline citation** | A link that the platform puts in the response text. Each URL that the platform lists as a source counts as at least one inline citation. This is true also if the response text does not link to it. |
 
@@ -46,7 +46,7 @@ The sections below use this example. One prompt has 12 responses in the date ran
 | Mentions of your brand | 6 |
 | Mentions of Competitor A | 12 |
 | Mentions of Competitor B | 2 |
-| Your position in the 4 responses that mention you | 1, 2, 1, 4 |
+| Your position in the 4 responses that mention your brand | 1, 2, 1, 4 |
 | Sentiment about your brand in those 4 responses | +0.6, +0.2, +0.4, −0.2 |
 | Inline citations in all 10 responses | 15 |
 | Citations of your domain | 3 |
@@ -54,13 +54,13 @@ The sections below use this example. One prompt has 12 responses in the date ran
 
 ### Visibility
 
-Visibility is the percentage of answered responses that mention your brand. It shows how often AI assistants include you when they answer the questions that you track.
+Visibility is the percentage of answered responses that mention your brand. It shows how often the platforms mention your brand when they answer the prompts that you track.
 
 ```text
 Visibility = (answered responses that mention your brand ÷ answered responses) × 100
 ```
 
-In the example, 4 of the 10 answered responses mention your brand. Visibility is `4 ÷ 10 × 100 = 40%`. The 2 responses without an answer do not count.
+In the example, 4 of the 10 answered responses mention your brand. Visibility is `4 ÷ 10 × 100 = 40%`. The 2 unanswered responses do not count.
 
 - A response counts one time, also if it mentions your brand many times. To count each mention, use [Share of voice](#share-of-voice).
 - On the **Tracking** tab, the **Brand Visibility** column shows visibility for each prompt. On the **Brand Visibility** page, the **AI visibility** card shows it for all your prompts together.
@@ -78,7 +78,7 @@ In the example, the responses mention your brand 6 times, Competitor A 12 times,
 
 - Share of voice counts mentions, not responses. A response that mentions your brand 3 times adds 3.
 - For one prompt or one topic, the bottom of the formula is the mentions of all brands in the responses to **all** your prompts. So the share of voice of all your prompts adds up to the share of voice of your brand on the **Brand Visibility** page.
-- Visibility and share of voice can move in different directions. Your brand can appear in more responses (higher visibility) while competitors get even more mentions (lower share of voice).
+- Visibility and share of voice can move in different directions. More responses can mention your brand (higher visibility) while competitors get even more mentions (lower share of voice).
 
 ### Position
 
@@ -91,7 +91,7 @@ Position = sum of your rank in each response that mentions your brand ÷ number 
 In the example, your ranks in the 4 responses are 1, 2, 1, and 4. Position is `(1 + 2 + 1 + 4) ÷ 4 = 2.0`. The dashboard shows it as `#2.0`.
 
 - Lower is better. A decrease in position is an improvement.
-- Position uses only the responses that mention your brand. A response that does not mention your brand does not make your position worse. It shows "–" in the **Position** column. To see how often your brand is missing, use [Visibility](#visibility).
+- Position uses only the responses that mention your brand. A response that does not mention your brand does not make your position worse. That response shows "–" in the **Position** column of the **Prompt responses** table. To see how often your brand is missing, use [Visibility](#visibility).
 - The rank includes every brand that the response mentions, not only your competitors.
 - In a chart over time, the position for each day is the average of all responses on that day.
 
@@ -112,7 +112,7 @@ In the example, the scores are +0.6, +0.2, +0.4, and −0.2. The average is `0.2
 
 ### Citations
 
-Citations count how many times the responses cite a source. The source depends on where you see the metric.
+Citations count how many times the responses cite a source. What AXP counts depends on where you see the metric.
 
 | Where | What AXP counts |
 |---|---|
@@ -128,7 +128,7 @@ In the example, the responses cite your domain 3 times. The **Citations** column
 
 ### Citation rate
 
-Citation rate is an average number of inline citations. It shows how much the platform supports its response with links, and how often it links to a source in the text. The bottom of the formula depends on where you see the metric.
+Citation rate is an average number of inline citations. It shows how much the platform supports its response with links. It also shows how often the platform links to a source in the response text. The bottom of the formula depends on where you see the metric.
 
 | Where | Formula |
 |---|---|
@@ -156,7 +156,7 @@ Web search = (responses with at least one web search ÷ responses with search da
 In the example, the platform searched the web in 8 of the 10 responses. Web search is `8 ÷ 10 × 100 = 80%`.
 
 - A low value means that the platform answers the prompt mostly from its own knowledge. Such responses often have no citations.
-- Some responses do not report whether the platform searched. AXP leaves these out. It does not count them as 0.
+- Some responses do not report whether the platform searched. AXP does not include these responses. It does not count them as 0.
 - Web search has no good or bad value. It tells you if the platform answers this prompt from the web, where your pages can influence the response.
 
 ### Mentions
