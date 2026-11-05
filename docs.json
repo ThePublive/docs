@@ -99,8 +99,7 @@
                   "dxp/documentation/content-workflows/overview",
                   "dxp/documentation/content-workflows/configure-workflows",
                   "dxp/documentation/content-workflows/review-and-move-content",
-                  "dxp/documentation/content-workflows/notifications-and-audit-trail",
-                  "dxp/documentation/content-workflows/lifecycle-and-edge-cases"
+                  "dxp/documentation/content-workflows/notifications-and-audit-trail"
                 ]
               },
               {
@@ -514,6 +513,10 @@
     }
   },
   "redirects": [
+    {
+      "source": "/dxp/documentation/content-workflows/lifecycle-and-edge-cases",
+      "destination": "/dxp/documentation/content-workflows/review-and-move-content"
+    },
     {
       "source": "/changelog",
       "destination": "/dxp/changelog"
