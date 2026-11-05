@@ -6,29 +6,172 @@ description: "Definitions of every metric, field, and value that prompt monitori
 
 This page defines the metrics and fields that you see on the [Prompts](/axp/monitor/track-prompts), [prompt analytics](/axp/monitor/prompt-analytics), [Sources](/axp/monitor/sources), and [Brand Visibility](/axp/monitor/brand-visibility) pages.
 
+## Key terms
+
+The formulas on this page use these terms.
+
+| Term | Meaning |
+|---|---|
+| **Response** | One answer from one platform to one prompt, at one time. Each tracked prompt gets one response from each of its platforms every 12 hours. |
+| **Answered response** | A response in which the platform answered the prompt. If the platform did not answer, AXP leaves the response out of every percentage and average. |
+| **Mention** | Each time a response names a brand. One response can mention a brand more than one time. |
+| **Citation** | A URL that the platform gives as a source for its response. AXP counts each URL one time per response, also if the platform lists it more than once. AXP keeps up to 25 citations for each response. |
+| **Inline citation** | A link that the platform puts in the response text. Each URL that the platform lists as a source counts as at least one inline citation. This is true also if the response text does not link to it. |
+
+<Info>
+AXP compares URLs in a standard form. It removes `www.` and tracking parameters, for example `?utm_source=openai`. So `https://www.example.com/page?utm_source=openai` and `https://example.com/page` count as the same URL.
+</Info>
+
 ## Metrics
 
-| Metric | What it measures | How to read it |
+| Metric | What it measures | Better when |
 |---|---|---|
-| **Visibility** (**AI visibility**) | The number of answered responses that mention your brand, divided by the number of answered responses, as a percentage | Higher is better |
-| **Share of voice** | The mentions of your brand, divided by the mentions of all brands in the responses, as a percentage | Higher is better. It shows your share of the conversation against competitors. |
-| **Position** | The average rank of your brand among the brands that a response mentions | Lower is better. The dashboard shows it as `#1.5`. `#1` means that the responses mention your brand first. "–" in a response row means that the response does not mention your brand. |
-| **Sentiment** | How positive the responses are about your brand | A score, not a percentage. On the **Tracking** tab, the score goes from 0 (most negative) to 100 (most positive). 50 is neutral. Where space is small, the dashboard shows a label: **Positive**, **Neutral**, or **Negative**. |
-| **Citations** | For a domain or URL: the number of times the responses cite it. For a brand: the number of times the responses cite the domains of that brand. | Higher is better for your own domains |
-| **Citation rate** | For a prompt or a brand: the number of inline citations, divided by the number of answered responses. For a domain or URL: the average number of its inline citations in each response that uses it as a source. | A plain number, for example `1.5`. It is not a percentage. |
-| **Web search** | The percentage of responses where the AI searched the web before it answered | A low value means that the AI answers this prompt mostly from its own knowledge |
-| **Mentions** | On the **Tracking** tab: the number of different brands that the responses mention. On Brand Visibility: the number of times the responses mention a brand. | The **Tracking** tab shows the brands as logos, with `+5` for 5 more brands. |
-| **Volume** | The estimated search volume of the prompt | Use it to decide which prompts are worth tracking. "–" means that no estimate is available. |
+| [Visibility](#visibility) | How often the responses mention your brand | Higher |
+| [Share of voice](#share-of-voice) | Your part of all brand mentions | Higher |
+| [Position](#position) | How early the responses mention your brand | Lower |
+| [Sentiment](#sentiment) | How positive the responses are about your brand | Higher |
+| [Citations](#citations) | How many times the responses cite a domain, a URL, or your brand's domains | Higher, for your own domains |
+| [Citation rate](#citation-rate) | How many inline citations the responses contain | Higher, for your own domains |
+| [Web search](#web-search) | How often the platform searches the web before it answers | No good or bad value |
+| [Mentions](#mentions) | Which brands the responses mention | More detail below |
+| [Volume](#volume) | How much people search for the prompt | Higher, for prompts worth tracking |
 
-An **inline citation** is a link that the AI puts in the response text. AXP counts each inline link to a URL. A URL that the AI lists as a source counts as one inline citation, also if the response text does not link to it.
+### Example data
 
-An **answered response** is a response in which the platform answered the prompt. If the platform did not answer, the response does not count in the percentages and averages.
+The sections below use this example. One prompt has 12 responses in the date range. The platform did not answer 2 of them, so the prompt has 10 answered responses.
 
-<Note>
-Sentiment is a score because a percentage does not describe sentiment well. "60% of responses were positive" is a useful statement. "Sentiment = 60%" is not.
-</Note>
+| Data in the 10 answered responses | Value |
+|---|---|
+| Responses that mention your brand | 4 |
+| Mentions of your brand | 6 |
+| Mentions of Competitor A | 12 |
+| Mentions of Competitor B | 2 |
+| Your position in the 4 responses that mention you | 1, 2, 1, 4 |
+| Sentiment about your brand in those 4 responses | +0.6, +0.2, +0.4, −0.2 |
+| Inline citations in all 10 responses | 15 |
+| Citations of your domain | 3 |
+| Responses in which the platform searched the web | 8 |
 
-### Changes and trends
+### Visibility
+
+Visibility is the percentage of answered responses that mention your brand. It shows how often AI assistants include you when they answer the questions that you track.
+
+```text
+Visibility = (answered responses that mention your brand ÷ answered responses) × 100
+```
+
+In the example, 4 of the 10 answered responses mention your brand. Visibility is `4 ÷ 10 × 100 = 40%`. The 2 responses without an answer do not count.
+
+- A response counts one time, also if it mentions your brand many times. To count each mention, use [Share of voice](#share-of-voice).
+- On the **Tracking** tab, the **Brand Visibility** column shows visibility for each prompt. On the **Brand Visibility** page, the **AI visibility** card shows it for all your prompts together.
+- The **Brand Visibility** page uses only prompts that do not mention your brand. A prompt that mentions your brand almost always gets a response that mentions your brand.
+
+### Share of voice
+
+Share of voice is your brand's part of all brand mentions. It shows how much of the conversation your brand gets compared with every other brand that the responses mention.
+
+```text
+Share of voice = (mentions of your brand ÷ mentions of all brands) × 100
+```
+
+In the example, the responses mention your brand 6 times, Competitor A 12 times, and Competitor B 2 times. If this is your only prompt, share of voice is `6 ÷ (6 + 12 + 2) × 100 = 30%`.
+
+- Share of voice counts mentions, not responses. A response that mentions your brand 3 times adds 3.
+- For one prompt or one topic, the bottom of the formula is the mentions of all brands in the responses to **all** your prompts. So the share of voice of all your prompts adds up to the share of voice of your brand on the **Brand Visibility** page.
+- Visibility and share of voice can move in different directions. Your brand can appear in more responses (higher visibility) while competitors get even more mentions (lower share of voice).
+
+### Position
+
+Position is the average rank of your brand among the brands that a response mentions. Rank 1 means that the response mentions your brand before every other brand.
+
+```text
+Position = sum of your rank in each response that mentions your brand ÷ number of those responses
+```
+
+In the example, your ranks in the 4 responses are 1, 2, 1, and 4. Position is `(1 + 2 + 1 + 4) ÷ 4 = 2.0`. The dashboard shows it as `#2.0`.
+
+- Lower is better. A decrease in position is an improvement.
+- Position uses only the responses that mention your brand. A response that does not mention your brand does not make your position worse. It shows "–" in the **Position** column. To see how often your brand is missing, use [Visibility](#visibility).
+- The rank includes every brand that the response mentions, not only your competitors.
+- In a chart over time, the position for each day is the average of all responses on that day.
+
+### Sentiment
+
+Sentiment shows how positive the responses are about your brand. AXP reads each response that mentions your brand and gives your brand a score from −1 (very negative) to +1 (very positive). The dashboard changes the average score to a scale from 0 to 100.
+
+```text
+Sentiment = (average score in the responses that mention your brand + 1) × 50
+```
+
+In the example, the scores are +0.6, +0.2, +0.4, and −0.2. The average is `0.25`. Sentiment is `(0.25 + 1) × 50 = 62.5`.
+
+- 50 is neutral. A value above 50 is positive. A value below 50 is negative.
+- Sentiment uses only the responses that mention your brand.
+- Where space is small, the dashboard shows a label: **Positive**, **Neutral**, or **Negative**.
+- Sentiment is a score, not a percentage. "60% of responses were positive" is a useful statement. "Sentiment = 60%" is not.
+
+### Citations
+
+Citations count how many times the responses cite a source. The source depends on where you see the metric.
+
+| Where | What AXP counts |
+|---|---|
+| A prompt on the **Tracking** tab, or a brand | The citations of the domains of that brand |
+| A domain on the **Sources** pages | The citations of all URLs on that domain |
+| A URL on the **Sources** pages | The citations of that URL |
+| One response | The inline citations in that response |
+
+In the example, the responses cite your domain 3 times. The **Citations** column for the prompt shows `3`.
+
+- AXP counts a URL one time per response. A response that cites 2 different URLs on one domain adds 2 to that domain.
+- A citation does not mean a mention. A platform can cite your page and not mention your brand. To check, open the [URL details](/axp/monitor/sources#url-details).
+
+### Citation rate
+
+Citation rate is an average number of inline citations. It shows how much the platform supports its response with links, and how often it links to a source in the text. The bottom of the formula depends on where you see the metric.
+
+| Where | Formula |
+|---|---|
+| A prompt on the **Tracking** tab | Inline citations in the answered responses ÷ answered responses |
+| A brand | Inline citations of the brand's domains ÷ answered responses |
+| A domain | Inline citations of URLs on the domain ÷ responses that use a URL on the domain as a source |
+| A URL | Inline citations of the URL ÷ responses that use the URL as a source |
+| One response | Inline citations ÷ different URLs that the response cites |
+
+In the example, the 10 answered responses contain 15 inline citations. The citation rate of the prompt is `15 ÷ 10 = 1.5`.
+
+For a domain, look at `example.com`. 5 responses use a page on `example.com` as a source. These responses contain 8 inline citations of it. The citation rate of `example.com` is `8 ÷ 5 = 1.6`.
+
+- Citation rate is a plain number, not a percentage.
+- A source with many citations but a low citation rate gives the platform background information. The platform seldom links to it in the text.
+
+### Web search
+
+Web search is the percentage of responses in which the platform searched the web before it answered.
+
+```text
+Web search = (responses with at least one web search ÷ responses with search data) × 100
+```
+
+In the example, the platform searched the web in 8 of the 10 responses. Web search is `8 ÷ 10 × 100 = 80%`.
+
+- A low value means that the platform answers the prompt mostly from its own knowledge. Such responses often have no citations.
+- Some responses do not report whether the platform searched. AXP leaves these out. It does not count them as 0.
+- Web search has no good or bad value. It tells you if the platform answers this prompt from the web, where your pages can influence the response.
+
+### Mentions
+
+On the **Tracking** tab, **Mentions** shows the brands that the responses to the prompt mention, as logos. `+5` means 5 more brands. When you sort by **Mentions**, AXP uses the number of different brands.
+
+On the **Brand Visibility** page and in the response tables, mentions are the number of times the responses mention a brand. This is the same count that [Share of voice](#share-of-voice) uses.
+
+In the example, the responses mention 3 different brands: your brand, Competitor A, and Competitor B. The **Tracking** tab shows 3 logos.
+
+### Volume
+
+Volume is the estimated search volume of the prompt. Use it to compare prompts and to decide which prompts are worth tracking. "–" means that no estimate is available for the prompt.
+
+## Changes and trends
 
 Next to a metric, a small green or red value shows the change from the previous period. On the Sources pages, an arrow shows the same change: up, down, or flat.
 
