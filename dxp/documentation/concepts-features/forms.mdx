@@ -1,69 +1,81 @@
 ---
 title: "Forms"
-description: "Create and manage forms for collecting user data and submissions"
+description: "Collect data from your readers with forms that you define in Publive DXP"
 ---
 
 import CustomEnterprise from '/snippets/availability/custom-enterprise.mdx';
 
-Publive forms let you define fields in Publive and render them in your frontend using the returned schema.
+Use forms to collect data from your readers, for example contact requests, sign-ups, or applications. You define the form in Publive DXP. Your website shows the form and sends each response back to Publive DXP.
 
 ## Availability
 
 <CustomEnterprise />
 
-## What forms support
+## What a form contains
 
-- schema-driven field rendering
-- iframe-based rendering for faster setup
-- grouped fields and validation rules
-- reader-side schema delivery
-- server-side form submission
-- optional frontend overrides for custom use cases
+| Part | What it does |
+| ---- | ------------ |
+| Fields | Each field has a type, such as short text, long text, email, number, true or false, or media. |
+| Labels and help text | Each field can have a label, a tooltip, and placeholder text. |
+| Validation | Each field can have rules, such as **required**, that a response must pass. |
+| Groups | Put related fields together in a group. |
+| Captcha | Protects the form against automated spam submissions. |
 
-## Common docs
+## Manage forms in the dashboard
+
+- **Send responders a copy:** In **Form Settings**, turn on **Send responder a copy of their response**. Each person who submits the form then gets an email with their answers.
+- **Control who can work with forms:** Roles have separate permissions to view, create, and manage forms and form submissions.
+- **Track changes:** [Audit logs](/dxp/documentation/concepts-features/audit-logs) record when a member creates, updates, or deletes a form. To see only these records, filter by the **Form** resource type.
+
+## Add a form to your website
+
+A developer connects the form to your website. There are two ways to do this:
+
+- **Iframe:** The fastest setup. Your page loads a form that Publive DXP hosts, inside an iframe.
+- **Components:** Your website renders the form from its schema. Use this when you need a custom design, hidden fields, or control of the layout.
+
+Start with the iframe unless you already know that you need custom rendering.
 
 <CardGroup cols={2}>
   <Card
-    title="How to integrate form"
+    title="Integrate a form with an iframe"
     href="/dxp/documentation/guides/decoupled-frontend/integrations/how-to-integrate-form"
   >
-    Use the default prebuilt iframe flow for the fastest setup.
+    Use the prebuilt iframe for the fastest setup.
   </Card>
   <Card
-    title="How to integrate component form"
+    title="Integrate a form with components"
     href="/dxp/documentation/guides/decoupled-frontend/integrations/how-to-integrate-component-form"
   >
-    Use the component-rendered path when you need UI customization.
+    Render the form yourself when you need a custom design.
   </Card>
+</CardGroup>
+
+## Work with forms through the API
+
+<CardGroup cols={2}>
   <Card
-    title="Form schema"
+    title="Get a form schema"
     href="/dxp/api-reference/content-delivery/form-schema"
   >
-    Fetch the reader-side schema used to render a form.
+    Get the schema that your website uses to render a form.
   </Card>
   <Card
-    title="Form submission"
+    title="Submit a form"
     href="/dxp/api-reference/content-management/forms/form-submission"
   >
-    Submit form data and captcha to Publive.
+    Send a response and its captcha token to Publive DXP.
+  </Card>
+  <Card
+    title="Manage form schemas"
+    href="/dxp/api-reference/content-management/forms/README"
+  >
+    Create, update, and delete forms with the CMS API.
   </Card>
   <Card
     title="JavaScript SDK"
     href="/dxp/documentation/sdks/javascript"
   >
-    Use SDK helpers for form fetch and submission workflows.
+    Use the SDK helpers to get and submit forms.
   </Card>
 </CardGroup>
-
-## Send responder a copy of their response
-
-In **Form Settings**, the **Send responder a copy of their response** toggle lets you automatically email submitters a copy of their submitted field values. When enabled, the submitter receives an email with their answers immediately after submitting the form.
-
-## Integration model
-
-In a decoupled frontend, you can integrate forms in two ways:
-
-- the default iframe-based flow for fast setup
-- the component-rendered flow for deeper UI customization
-
-Start with the iframe path unless you already know you need custom rendering, hidden fields, or layout-level control.

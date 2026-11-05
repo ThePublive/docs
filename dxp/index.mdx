@@ -1,6 +1,7 @@
 ---
-title: "Introduction"
-description: "India-first headless CMS for modern digital publishers and enterprises"
+title: "Publive DXP overview"
+sidebarTitle: "Introduction"
+description: "What Publive DXP does, and where to start for your use case"
 ---
 
 export const SearchTrigger = () => (
@@ -34,129 +35,91 @@ export const SearchTrigger = () => (
 
 <SearchTrigger />
 
-## What is Publive?
+Publive DXP is a headless CMS for digital publishers and enterprises. Your team writes, reviews, and publishes content in the Publive DXP dashboard. Your website or app gets that content through APIs, so you can build the frontend with any framework.
 
-Publive is an AI-Native headless CMS (Content Management System) built for modern digital publishers and enterprises. It provides a robust backend for managing content while giving you complete freedom to build any frontend experience using your preferred framework.
+## Find your starting point
 
-<CardGroup cols={2}>
-  <Card
-    title="Content Delivery API (CDS)"
-    icon="bolt"
-    href="/dxp/api-reference/content-delivery"
-  >
-    Read-only. Fetch published posts, categories, live blogs, and site config for your frontend. Fast and cache-friendly.
-  </Card>
-  <Card
-    title="Content Management API (CMS)"
-    icon="pen-to-square"
-    href="/dxp/api-reference/content-management"
-  >
-    Full CRUD. Create, update, publish, and delete content programmatically — from migrations to automated pipelines.
-  </Card>
-</CardGroup>
-
-## Get Started
+Each section of these docs is for one type of reader. Start from the task that you want to do.
 
 <CardGroup cols={2}>
-  <Card
-    title="Fetch Content (CDS)"
-    icon="bolt"
-    href="/dxp/documentation/quickstarts/cds"
-  >
-    Use the Content Delivery API to fetch published posts, categories, and site configuration in under 5 minutes.
+  <Card title="Create and publish content" icon="pen-nib" href="/dxp/documentation/content-workflows/overview">
+    For editors and authors. Use the dashboard features, the AI tools, and Content Workflows.
+
+    <Badge>Documentation</Badge>
   </Card>
-  <Card
-    title="Manage Content (CMS)"
-    icon="pen-to-square"
-    href="/dxp/documentation/quickstarts/cms"
-  >
-    Use the Content Management API to create categories, draft posts, and publish content in under 5 minutes.
+  <Card title="Set up and secure your workspace" icon="shield-halved" href="/dxp/documentation/getting-started/mfa">
+    For workspace admins. Set up sign-in security, content access policies, and audit logs.
+
+    <Badge>Documentation</Badge>
+  </Card>
+  <Card title="Build your website" icon="browser" href="/dxp/documentation/guides/frontend-integration/README">
+    For frontend developers. Connect Next.js, React, Vue, or Angular, or start from the Starter Kit.
+
+    <Badge>Build your site</Badge>
+  </Card>
+  <Card title="Integrate with the API" icon="code" href="/dxp/api-reference/README">
+    For developers who read or write content with code. Authenticate, do a quickstart, and find every endpoint.
+
+    <Badge>API Reference</Badge>
   </Card>
 </CardGroup>
 
-## Key Capabilities
+## Use cases
 
-<CardGroup cols={3}>
-  <Card title="Multi-Format Content" icon="photo-film" href="/dxp/documentation/getting-started/core-concepts">
-    Articles, Videos, Web Stories, Galleries, Live Blogs, Custom Pages — all from one platform.
+### Publish news and digital media
+
+Publive DXP supports the main content formats of digital publishing:
+
+| Post type | Use it for |
+| --------- | ---------- |
+| `Article` | News articles, features, and opinion pieces |
+| `Video` | Video stories with embedded players |
+| `Web Story` | Visual stories for mobile readers |
+| `Gallery` | Photo galleries. You can reorder the items from the dashboard. |
+| `LiveBlog` | Live coverage of events, with updates |
+
+- **Live coverage:** Create a `LiveBlog` post, then add updates in the dashboard. Updates support pinned entries, author attribution, and rich HTML. Your site gets them from the [live blog updates endpoint](/dxp/api-reference/content-delivery/live-blog-updates).
+- **News feeds and section pages:** Get posts by category, tag, or author from the [post listing endpoint](/dxp/api-reference/content-delivery/post-listing). Filter operators such as `__eq`, `__in`, and `__gte` are in [Core concepts](/dxp/documentation/getting-started/core-concepts).
+- **Fast pages at high volume:** Content Delivery API responses include cache tags. Use them to clear only the changed pages from your CDN cache. See [Cache tags](/dxp/documentation/getting-started/core-concepts#cache-tags-cds).
+- **SEO and social sharing:** Posts include `short_description`, `seo_keyphrase`, and `seo_score`. Categories, tags, and authors include Open Graph and Twitter Card metadata. Use [Content scoring](/dxp/documentation/concepts-features/content-scoring) to check posts against your rules, and [Google Discover Headline](/dxp/documentation/concepts-features/google-discover-headline) to set a separate headline for Discover.
+- **Multilingual publishing:** Manage and deliver content in Hindi, Tamil, Bengali, and more from one workspace.
+
+### Control publishing in regulated industries
+
+Banking, financial services, insurance, pharma, and healthcare teams must review content before it goes live and keep a record of each change. This table shows the Publive DXP feature for each requirement:
+
+| Requirement | In the dashboard | Through the CMS API |
+| ----------- | ---------------- | ------------------- |
+| Review and approve before publishing | [Content Workflows](/dxp/documentation/content-workflows/overview): an entry moves through stages, and you cannot publish it until it reaches the stage that you set. | The status-based [Maker-Checker flow](/dxp/documentation/guides/workflows/maker-checker), with the `Approval Pending` status. |
+| Control who can change which content | [Content Access Policies](/dxp/documentation/concepts-features/content-access-policies): allow or deny actions for each role and content type. | Not available. |
+| Secure sign-in | [Multi-factor authentication](/dxp/documentation/getting-started/mfa) for every member. | Not applicable. |
+| Record who did what | [Audit logs](/dxp/documentation/concepts-features/audit-logs) and the workflow [audit trail](/dxp/documentation/content-workflows/notifications-and-audit-trail). | Post fields `member`, `updated_by`, `approver`, `created_at`, `updated_at`, and `published_at`. |
+| Release content at a set time | Schedule the post. | Set `status` to `Scheduled` and give a `scheduled_at` time. See the [CMS quickstart](/dxp/documentation/quickstarts/cms). |
+
+Use categories to keep content for each compliance area apart, for example **Regulatory updates**, **Investor relations**, **Drug safety**, or **Clinical trials**.
+
+<Note>
+  Content Workflows and Audit logs are available on the **Custom Enterprise** plan. The workflow stage gate applies only to publishing from the dashboard. The CMS API can change the status of an entry, but it cannot change its stage.
+</Note>
+
+### Automate content and connect other systems
+
+<CardGroup cols={2}>
+  <Card title="Import and create content with code" icon="robot" href="/dxp/documentation/quickstarts/cms">
+    Push articles from other tools, migrations, or scheduled pipelines through the CMS API.
   </Card>
-  <Card title="Enterprise Governance" icon="shield-check" href="/dxp/documentation/guides/workflows/README">
-    Maker-checker workflows, multi-step approvals, and full audit trails for regulated industries.
-  </Card>
-  <Card title="AI-Powered Features" icon="wand-magic-sparkles" href="/dxp/documentation/concepts-features/ai-features">
-    Auto-tagging, plagiarism detection, SEO scoring, and content recommendations built in.
-  </Card>
-  <Card title="Advanced Filtering" icon="filter" href="/dxp/documentation/getting-started/core-concepts">
-    Query by date range, author, tags, and more using powerful operators like `__eq`, `__in`, `__gte`.
-  </Card>
-  <Card title="India-First" icon="globe" href="/dxp/documentation/guides/industry-specific/media-publishing">
-    Built for Indian publishers with native support for Hindi, Tamil, Bengali, and more.
-  </Card>
-  <Card title="Developer Friendly" icon="code" href="/dxp/documentation/quickstarts/cds">
-    Clean REST APIs, intuitive query operators, and comprehensive documentation to ship fast.
+  <Card title="Act when content changes" icon="bell" href="/dxp/documentation/webhooks-integrations/webhooks">
+    Get a webhook when content changes. Use it to rebuild your site, notify a team channel, or update another service.
   </Card>
 </CardGroup>
 
-## Common Use Cases
+### Engage your readers
 
-<CardGroup cols={3}>
-  <Card
-    title="Build a News Feed"
-    icon="newspaper"
-    href="/dxp/api-reference/content-delivery/post-listing"
-  >
-    Fetch paginated posts filtered by category, tag, or author for any frontend or app.
+- **Forms:** Collect sign-ups, enquiries, and other reader data. See [Forms](/dxp/documentation/concepts-features/forms).
+- **Newsletters:** Let readers subscribe from your site with the [Newsletter APIs](/dxp/api-reference/content-management/newsletter/README).
+- **Reader accounts:** Let readers register and sign in on your site with the [Reader APIs](/dxp/api-reference/content-management/reader/README).
 
-    <Badge>CDS</Badge> <Badge color="blue">Content Delivery API</Badge>
-  </Card>
-  <Card
-    title="Power a Live Blog"
-    icon="rss"
-    href="/dxp/api-reference/content-delivery/live-blog-updates"
-  >
-    Stream real-time updates for breaking news, elections, or live events.
-
-    <Badge>CDS</Badge> <Badge color="blue">Content Delivery API</Badge>
-  </Card>
-  <Card
-    title="Automate Content Creation"
-    icon="robot"
-    href="/dxp/api-reference/content-management/posts/create-post"
-  >
-    Push articles from external tools, CMS migrations, or scheduled pipelines via the CMS API.
-
-    <Badge>CMS</Badge> <Badge color="blue">Content Management API</Badge>
-  </Card>
-  <Card
-    title="Search & Filter Content"
-    icon="magnifying-glass"
-    href="/dxp/documentation/getting-started/core-concepts"
-  >
-    Query by date range, author, tags, and more using Publive's flexible filter operators.
-
-    <Badge>CDS</Badge> <Badge color="blue">Content Delivery API</Badge>
-  </Card>
-  <Card
-    title="Trigger on Publish"
-    icon="bell"
-    href="/dxp/documentation/webhooks-integrations/webhooks"
-  >
-    Fire webhooks to rebuild your site, notify Slack, or sync to third-party services on any content event.
-
-    <Badge>Webhooks</Badge> <Badge color="blue">Integrations</Badge>
-  </Card>
-  <Card
-    title="Multilingual Publishing"
-    icon="language"
-    href="/dxp/documentation/guides/industry-specific/media-publishing"
-  >
-    Manage and deliver content in Hindi, Tamil, Bengali, and more from a single platform.
-
-    <Badge>India-First</Badge> <Badge color="blue">Content Delivery API</Badge>
-  </Card>
-</CardGroup>
-
-## Use AI with These Docs
+## Use AI with these docs
 
 Every page has a contextual menu with one-click options to open it in ChatGPT, Claude, or Perplexity. For deeper AI-assisted development, connect your coding tool directly to these docs via MCP.
 

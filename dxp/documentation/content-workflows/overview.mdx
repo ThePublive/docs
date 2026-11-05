@@ -77,6 +77,8 @@ When the gate blocks publishing, the **Publish** control stays visible but disab
 
 <Warning>
 The stage gate applies to publishing from the Publive DXP dashboard. Content that arrives through the CMS API, ingestion feeds, syndication, or form (UGC) approval is not checked against workflow stages in this release.
+
+The CMS API can change an entry's status, but it cannot change its stage. For API-driven review, use the [status-based Maker-Checker flow](/dxp/documentation/guides/workflows/maker-checker).
 </Warning>
 
 ## Who can do what

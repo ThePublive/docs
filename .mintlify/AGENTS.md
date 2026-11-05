@@ -26,8 +26,8 @@
 - Use **workspace** instead of **publisher** in prose. Keep literal API and UI names as they are (e.g., `publisher_id`, **Publisher ID**, **Publisher Data**).
 - Use **member** instead of **user** when referring to platform/dashboard participants. Use **user** for end-readers or generic technical contexts.
 - This site documents two distinct products — never use bare "Publive" when the product is ambiguous:
-  - **Publive DXP** — the headless CMS product (`documentation/`, `api-reference/`, existing `Documentation` / `Guides` / `API Reference` tabs).
-  - **Publive AXP** — the AI-visibility product (`axp/` folder), made up of two sub-products: **AXP Edge** and **AI Streams**.
+  - **Publive DXP** — the headless CMS product (`dxp/` folder; `Documentation` / `Build your site` / `API Reference` tabs).
+  - **Publive AXP** — the AI-visibility product (`axp/` folder), made up of two sub-products: **AXP Edge** and **AI Streams**. Prompt monitoring (**Monitor**, `axp/monitor/`) is the launched part of AI Streams. ClaimGraph is not launched; do not document it as available.
 - AXP docs are customer/technical-facing (setup, configuration, dashboard usage, FAQ). Do not port over pricing tables, ROI/case-study stats, competitor comparisons, or sales objection-handling copy from the marketing site.
 - Capitalize features correctly (e.g., **Webhooks**, **Custom Entities**).
 - Always refer to authentication as **Basic Auth** rather than legacy username/password.
@@ -49,6 +49,13 @@
 - Use JavaScript/TypeScript for generic code examples unless otherwise requested.
 
 ## Document Structure & Layout
+
+- **Page placement**: Put each page in the tab for its reader. Decide this before you write the page.
+  - **Documentation**: dashboard members (editors and workspace admins). Features, Content Workflows, account security, and workspace administration.
+  - **Build your site** (DXP) / **Guides** (AXP): developers who build or deploy the website (framework integration, Starter Kit, CDN setup).
+  - **API Reference**: developers who call the APIs. Authentication, quickstarts, API how-to guides, endpoints, and SDKs.
+  - Use-case and industry content goes on the product overview page (`dxp/index.mdx`, `axp/overview/index.mdx`), not on separate pages.
+  - Content that applies to both products (for example MFA and SSO) goes in a snippet under `snippets/account/`. Each product gets its own page that imports the snippet. Do not list one page in both products' navigation: Mintlify shows it under the first product only.
 
 - **Prerequisites**: Guides must include a Prerequisites section at the top if API keys, specific configurations, or prior setups are required.
 - **API Endpoints**: Must always explicitly document rate limits, authentication requirements, and common error codes.
