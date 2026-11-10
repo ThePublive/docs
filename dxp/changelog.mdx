@@ -8,6 +8,30 @@ rss: true
   Subscribe to this changelog via RSS at `https://docs.thepublive.com/changelog/dxp/rss.xml` — paste the URL into Slack (`/feed subscribe`), an RSS reader, or a tool like Zapier to get notified of new releases.
 </Tip>
 
+<Update label="November 10, 2026" tags={["Security", "Improvements"]} rss={{ title: "Server-side paywall protection, smaller AMP pages, faster listing pages, form image downloads" }}>
+  ### Paywalled content is now protected server-side
+
+  Before this change, the full article was sent to the browser and hidden with CSS. A reader with basic browser tools could see it.
+
+  * Now, readers without an active subscription get only the preview and the paywall prompt. The full article loads only after Publive checks the subscription.
+  * This applies to articles, galleries, videos, and live blogs.
+
+  ### Performance
+
+  * **Smaller AMP pages** — AMP article pages are about 3 KB smaller. AMP homepages are about 25 KB smaller. Logos and social icons now load from cache instead of being embedded in every page.
+  * **Faster listing pages** — listing pages and APIs now fetch authors, categories, images, and custom fields for the full list in one pass. Post listing pages load faster.
+  * **PDF caching** — Cloudflare now caches publisher PDFs for up to one month.
+
+  <Note>
+    If you replace a PDF at the same URL, clear the Cloudflare cache manually. Otherwise readers will see the old file.
+  </Note>
+
+  ### Improvements
+
+  * **Form image downloads** — each image uploaded through a [form](/dxp/documentation/concepts-features/forms) now has a download button in Form Submissions. It downloads in the original format and resolution.
+  * **Maker-Checker assignees** — in [Workflows](/dxp/documentation/content-workflows/overview), an article keeps its assignee when it moves to the next workflow stage.
+</Update>
+
 <Update label="October 21, 2026" tags={["New releases","Improvements"]} rss={{ title:"Workflows (Maker-Checker), up to 10x faster newsletters, faster dashboard and pages, structured data fixes" }}>
   ### Workflows (Maker-Checker)
 
