@@ -9,11 +9,11 @@ rss: true
 </Tip>
 
 <Update label="November 10, 2026" tags={["Security", "Improvements"]} rss={{ title: "Server-side paywall protection, smaller AMP pages, faster listing pages, form image downloads" }}>
-  ### Paywalled content is now protected server-side
+  ### Server-side paywall protection
 
-  Before this change, the full article was sent to the browser and hidden with CSS. A reader with basic browser tools could see it.
+  Paywalled content is now protected on the server, so your premium content stays premium.
 
-  * Now, readers without an active subscription get only the preview and the paywall prompt. The full article loads only after Publive checks the subscription.
+  * Readers without an active subscription get only the preview and the paywall prompt. The full article loads only after Publive checks the subscription.
   * This applies to articles, galleries, videos, and live blogs.
 
   ### Performance
@@ -29,7 +29,7 @@ rss: true
   ### Improvements
 
   * **Form image downloads** — each image uploaded through a [form](/dxp/documentation/concepts-features/forms) now has a download button in Form Submissions. It downloads in the original format and resolution.
-  * **Maker-Checker assignees** — in [Workflows](/dxp/documentation/content-workflows/overview), an article keeps its assignee when it moves to the next workflow stage.
+  * **Maker-Checker assignees** — in [Workflows](/dxp/documentation/content-workflows/overview), an article's assignee now carries over when it moves to the next workflow stage, so handoffs stay with the right person.
 </Update>
 
 <Update label="October 21, 2026" tags={["New releases","Improvements"]} rss={{ title:"Workflows (Maker-Checker), up to 10x faster newsletters, faster dashboard and pages, structured data fixes" }}>
