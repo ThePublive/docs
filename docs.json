@@ -424,7 +424,8 @@
                       "axp/account/mfa",
                       "axp/account/mfa/why-mfa-is-enforced"
                     ]
-                  }
+                  },
+                  "axp/account/sso"
                 ]
               },
               {
