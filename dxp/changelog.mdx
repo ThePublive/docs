@@ -69,6 +69,10 @@ You now get separate API keys for reading and writing, so a key used in your fro
 
 **View API Credentials** in the Developer Hub shows the keys for the APIs you have enabled. See [Authentication](/dxp/documentation/getting-started/authentication).
 
+<Frame>
+  <img src="/images/dxp/api-credentials-modal.png" alt="View API Credentials dialog showing the Publisher ID, then separate API key and secret fields for the CMS API (read and write) and the CDS API (read only)" style={{ borderRadius: '0.5rem' }} />
+</Frame>
+
 * **Current setups** — nothing changes. You can optionally switch your frontend to a CDS key.
 
 ### Improvements
@@ -487,9 +491,17 @@ Email OTP-based login verification is now available on the Publive dashboard. Se
 - MFA is account-level — if any publisher enforces it, the user must verify on all publishers they belong to
 - **Note:** enabling MFA will immediately sign out all affected users. Users belonging to multiple publishers will be signed out of all their accounts and must log in again via OTP
 
+<Frame>
+  <img src="/images/dxp/team-members-enforce-mfa.png" alt="Team Members page with an Enforce MFA banner above the member list, which shows each member's role and MFA status" style={{ borderRadius: '0.5rem' }} />
+</Frame>
+
 ### Enterprise Audit Logs
 
 All key dashboard actions are now logged with the acting user and a timestamp — track who did what and when across your entire workspace.
+
+<Frame>
+  <img src="/images/dxp/activity-logs.png" alt="Activity Logs page listing each action with the user, the resource and action, and the date" style={{ borderRadius: '0.5rem' }} />
+</Frame>
 
 - Covers content operations, team management, and configuration changes
 - The [Audit Logs](/dxp/documentation/concepts-features/audit-logs) UI is controlled by a feature flag — contact support to enable the view for your publisher
@@ -576,6 +588,10 @@ Publishers can now generate a secure API Key and Secret directly from the dashbo
 - One key pair per publisher
 - Generation restricted to Owner and Admin roles
 
+<Frame>
+  <img src="/images/dxp/api-developer-hub.png" alt="API Developer Hub page with the View API Credentials button and a payload generator for sample JSON payloads" style={{ borderRadius: '0.5rem' }} />
+</Frame>
+
 ### Bulk Role Update
 
 Select multiple members on the Team Members page and update all their roles in one action.
@@ -592,6 +608,10 @@ Several improvements to how ad positions and slots are managed.
 - All slots within a position can be disabled from the position's slots listing page
 - Device and page type fields are now mandatory when creating new positions
 - A position remains active even when all its slots are inactive
+
+<Frame>
+  <img src="/images/dxp/ad-positions-list.png" alt="Positions list showing each ad position with its type (Custom or System), activity status and slot count, device, page, and a status toggle" style={{ borderRadius: '0.5rem' }} />
+</Frame>
 
 ### Bug fixes
 

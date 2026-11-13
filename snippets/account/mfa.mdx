@@ -12,7 +12,13 @@ MFA can be configured in two ways:
 
 **Per user** — Open the user's profile via **Team Members → Edit**. Toggle MFA on for that individual. The user will be required to verify via OTP on their next login.
 
-**Globally for all users** — In publisher settings, enable the **Enforce MFA** option. This applies MFA to every user under that publisher immediately.
+**Globally for all users** — On the **Team Members** page, click **Enforce MFA**. Every member must set up MFA the next time they log in. To undo it, turn MFA off for each member individually.
+
+{enforceMfaImage && (
+  <Frame>
+    <img src={enforceMfaImage} alt="Team Members page with an Enforce MFA banner above the member list, which shows each member's role and MFA status" style={{ borderRadius: '0.5rem' }} />
+  </Frame>
+)}
 
 <Warning>
   Enabling MFA — whether for an individual or globally — immediately signs out all affected users.
