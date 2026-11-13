@@ -34,3 +34,9 @@ nav-dropdown-products-selector-item-description,
 .nav-dropdown-products-selector-trigger {
   margin-left: -1.5rem !important;
 }
+
+/* Root landing page covers both products, so hide the product switcher and the DXP tabs there */
+html[data-current-path="/"] .nav-dropdown-products-selector-trigger,
+html[data-current-path="/"] :has(> .nav-tabs) {
+  display: none !important;
+}

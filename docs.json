@@ -559,10 +559,6 @@
       "destination": "/dxp/api-reference/:slug*"
     },
     {
-      "source": "/",
-      "destination": "/dxp"
-    },
-    {
       "source": "/dxp/api-reference/content-management/media/create-media",
       "destination": "/dxp/api-reference/content-management/media/upload-media-file"
     }

@@ -1,0 +1,156 @@
+---
+title: "Publive Docs"
+description: "Documentation for Publive DXP, the headless CMS for publishers and enterprises, and Publive AXP, the platform that makes brands visible and citable in AI answers."
+mode: "custom"
+---
+
+<div className="max-w-4xl mx-auto px-6 py-16">
+
+<h1 className="text-4xl font-semibold text-gray-900 dark:text-zinc-50 mb-4">Publive Docs</h1>
+
+<p className="text-lg text-gray-600 dark:text-zinc-400 mb-10 max-w-2xl">
+  Publive makes two products. Your team uses Publive DXP to create and publish content. Publive AXP makes your content easy for AI agents to find and cite. Select the product that you use.
+</p>
+
+<CardGroup cols={2}>
+  <Card title="Publive DXP" icon="newspaper" href="/dxp">
+    A headless CMS for digital publishers and enterprises. Write, review, and publish content in the dashboard. Deliver it to any frontend through APIs.
+  </Card>
+  <Card title="Publive AXP" icon="sparkles" href="/axp/overview">
+    The Agent Experience Platform. Make your brand visible and citable in ChatGPT, Google AI Overviews, Perplexity, and Gemini.
+  </Card>
+</CardGroup>
+
+<h2 className="text-2xl font-semibold text-gray-900 dark:text-zinc-50 mt-14 mb-2">What do you want to do?</h2>
+
+<p className="text-gray-600 dark:text-zinc-400 mb-8">Find your task below. Each card opens the page for that task.</p>
+
+<h3 className="text-lg font-semibold text-gray-900 dark:text-zinc-50 mt-8 mb-3">Create and publish content</h3>
+
+<CardGroup cols={3}>
+  <Card title="Build a news or media site" icon="newspaper" href="/dxp/documentation/guides/decoupled-frontend/build-news-media">
+    Build a news site on Publive DXP, step by step.
+
+    <Badge>DXP</Badge>
+  </Card>
+  <Card title="Build a brand website" icon="browser" href="/dxp/documentation/guides/decoupled-frontend/build-brand-website">
+    Build a custom brand site with Publive DXP as the CMS.
+
+    <Badge>DXP</Badge>
+  </Card>
+  <Card title="Add review before publishing" icon="list-check" href="/dxp/documentation/content-workflows/overview">
+    Use Content Workflows to send content through review stages before it goes live. Publive DXP records each stage change.
+
+    <Badge>DXP</Badge>
+  </Card>
+  <Card title="Write faster with AI" icon="wand-magic-sparkles" href="/dxp/documentation/concepts-features/ai-features">
+    Use AI Copilot to improve titles, summaries, and meta descriptions. Use AI Tag Suggestion to find tags.
+
+    <Badge>DXP</Badge>
+  </Card>
+  <Card title="Keep content quality consistent" icon="gauge-high" href="/dxp/documentation/concepts-features/content-scoring">
+    Use Content Scoring to set quality rules. Editors see a quality score and suggestions while they write.
+
+    <Badge>DXP</Badge>
+  </Card>
+  <Card title="Model content beyond articles" icon="shapes" href="/dxp/documentation/concepts-features/custom-entities">
+    Use Custom Entities to define your own content types and structures.
+
+    <Badge>DXP</Badge>
+  </Card>
+</CardGroup>
+
+<h3 className="text-lg font-semibold text-gray-900 dark:text-zinc-50 mt-10 mb-3">Build with the API</h3>
+
+<p className="text-sm text-gray-600 dark:text-zinc-400 mb-4">API access is available on the <strong>Custom Enterprise</strong> plan only.</p>
+
+<CardGroup cols={3}>
+  <Card title="Show content on your site or app" icon="code" href="/dxp/documentation/quickstarts/cds">
+    Fetch published posts and site configuration with the Content Delivery API.
+
+    <Badge>DXP</Badge>
+  </Card>
+  <Card title="Publish from your own systems" icon="paper-plane" href="/dxp/documentation/quickstarts/cms">
+    Create and publish posts with the Content Management API.
+
+    <Badge>DXP</Badge>
+  </Card>
+  <Card title="React to content changes" icon="webhook" href="/dxp/documentation/webhooks-integrations/webhooks">
+    Use Webhooks to receive real-time notifications from Publive DXP.
+
+    <Badge>DXP</Badge>
+  </Card>
+</CardGroup>
+
+<h3 className="text-lg font-semibold text-gray-900 dark:text-zinc-50 mt-10 mb-3">Appear in AI answers</h3>
+
+<CardGroup cols={3}>
+  <Card title="Check if AI can read your site" icon="magnifying-glass-chart" href="/axp/audit-hub/overview">
+    Use the free Audit Hub tools to see what AI agents can read, cite, and recommend from your site.
+
+    <Badge>AXP</Badge>
+  </Card>
+  <Card title="Make your site readable to AI" icon="bolt" href="/axp/axp-edge/setup">
+    Connect AXP Edge to your CDN. You do not need to rebuild your site.
+
+    <Badge>AXP</Badge>
+  </Card>
+  <Card title="See which AI bots visit you" icon="robot" href="/axp/axp-edge/dashboard">
+    Use Edge Analytics to see AI agent traffic by platform, such as GPTBot and PerplexityBot.
+
+    <Badge>AXP</Badge>
+  </Card>
+  <Card title="Track what AI says about you" icon="chart-line" href="/axp/monitor/overview">
+    Use prompt monitoring to see how AI assistants answer your buyers' questions. See if the answers mention your brand.
+
+    <Badge>AXP</Badge>
+  </Card>
+  <Card title="Compare against competitors" icon="ranking-star" href="/axp/monitor/brand-visibility">
+    Compare your brand visibility with your competitors, across all tracked prompts and by topic.
+
+    <Badge>AXP</Badge>
+  </Card>
+  <Card title="Find the sources AI cites" icon="link" href="/axp/monitor/sources">
+    See which domains and pages AI assistants cite in their answers.
+
+    <Badge>AXP</Badge>
+  </Card>
+</CardGroup>
+
+<h3 className="text-lg font-semibold text-gray-900 dark:text-zinc-50 mt-10 mb-3">Secure and govern your workspace</h3>
+
+<CardGroup cols={2}>
+  <Card title="Require MFA at sign-in" icon="shield-halved">
+    Require a one-time code at every dashboard sign-in. Read the steps for [Publive DXP](/dxp/documentation/getting-started/mfa) or [Publive AXP](/axp/account/mfa).
+
+    <Badge>DXP</Badge> <Badge>AXP</Badge>
+  </Card>
+  <Card title="Control who can edit what" icon="user-lock" href="/dxp/documentation/concepts-features/content-access-policies">
+    Use Content Access Policies to set **Allow** and **Deny** rules for each content type, action, and field.
+
+    <Badge>DXP</Badge>
+  </Card>
+  <Card title="See who changed what" icon="clock-rotate-left" href="/dxp/documentation/concepts-features/audit-logs">
+    Use audit logs to see who did what, and when, across your workspace.
+
+    <Badge>DXP</Badge>
+  </Card>
+  <Card title="Meet cookie consent rules" icon="cookie-bite" href="/dxp/documentation/guides/integrations/how-to-integrate-cookie-consent">
+    Add a consent management platform (CMP) to your site to meet DPDP and GDPR requirements.
+
+    <Badge>DXP</Badge>
+  </Card>
+</CardGroup>
+
+<h2 className="text-2xl font-semibold text-gray-900 dark:text-zinc-50 mt-14 mb-4">Need help?</h2>
+
+<CardGroup cols={2}>
+  <Card title="Go to the dashboard" icon="gauge" href="https://dashboard.thepublive.com/v2">
+    Sign in to Publive DXP and Publive AXP.
+  </Card>
+  <Card title="Contact support" icon="envelope">
+    Email [support@thepublive.com](mailto:support@thepublive.com).
+  </Card>
+</CardGroup>
+
+</div>
