@@ -1,0 +1,80 @@
+---
+title: "Optimizations"
+description: "Turn on the changes that AXP Edge makes to your pages for AI agents, and review AI-generated additions before AI agents get them."
+---
+
+**Optimizations** sets how AXP Edge changes your pages for AI agents. It is in the **Content** group of the AXP dashboard sidebar. Human visitors and search crawlers always get your page without these changes.
+
+The page has two sections:
+
+- **Baseline optimizations** apply to every page that AXP Edge optimizes.
+- **Page enhancements** add content to specific pages. You review each addition before AI agents get it.
+
+## Baseline optimizations
+
+Click a group to see its optimizations. Use the switch next to an optimization to turn it on or off.
+
+| Group | Optimization | What it does |
+|---|---|---|
+| **Cleanup** | **Strip noise** | Removes scripts, styles, comments, and attributes that are not content. AI agents read your content, not the parts of the site around it. |
+| **Data structuring** | **Structure meta tags & JSON-LD** | Rebuilds a clean head with the meta tags and structured data of the page. This includes JSON-LD that the page puts in the body. |
+
+## Page enhancements
+
+Each card under **Content optimizations** is one type of addition. The card shows the number of pages that have a suggestion ready.
+
+| Optimization | What AI agents get |
+|---|---|
+| **Add Table of Contents** | A linked table of contents above the page content. AXP makes it from the headings of the page. |
+| **Add Relevant FAQs** | Some question-and-answer pairs from the page, below the page content, with matching `FAQPage` structured data |
+| **Add LLM-Friendly Summaries** | A short summary in plain language at the top of the main content of the page |
+
+AXP makes each addition from the text of the page only:
+
+- For FAQs, AXP keeps only the answers that the page text supports word for word.
+- For summaries, AXP keeps only the statements that come from the page.
+
+Use the switch on a card to turn the optimization on or off. Click **Review** to see its suggestions.
+
+<Note>
+AI agents get an addition only after you apply it. Human visitors never see it.
+</Note>
+
+## Review suggestions
+
+The review page of an optimization has these tabs:
+
+| Tab | What it shows |
+|---|---|
+| **Current suggestions** | The suggestions that are ready for your review |
+| **Fixed suggestions** | The suggestions that you applied |
+| **Ignored suggestions** | The suggestions that you ignored. You can still apply them. |
+| **Deprecated** | Older suggestions that AXP replaced, with the date. When AXP makes a new suggestion for a page, the old suggestion moves to this tab. |
+| **Overview & Guidance** | What the optimization changes, how it works, and which pages to approve first |
+
+Each row shows the **URL Path** of the page and the date in **Suggested at**. To find a page, use **Search for URLs**. To select the columns that the table shows, click **Customise columns**.
+
+To review a suggestion:
+
+1. On the **Current suggestions** tab, click the expand icon on the row. The start of the suggestion shows with the label **AI Generated**.
+2. Click **Preview** to see the full suggestion.
+3. Click **Apply** to serve the addition to AI agents, or click **Ignore** to move the suggestion to **Ignored suggestions**.
+
+### Which pages to approve first
+
+| Optimization | Start with |
+|---|---|
+| **Add Table of Contents** | Long pages. Short pages get little value from a table of contents. |
+| **Add Relevant FAQs** | How-to pages and pages that explain a subject. These pages answer the most questions. |
+| **Add LLM-Friendly Summaries** | The pages that get the most traffic |
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="AXP Edge dashboard" icon="gauge" href="/axp/axp-edge/dashboard">
+    See which pages AXP Edge optimizes, and set rules for AI agents.
+  </Card>
+  <Card title="Agent Analytics" icon="chart-line" href="/axp/monitor/agent-analytics">
+    See how AI agents visit your pages.
+  </Card>
+</CardGroup>

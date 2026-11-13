@@ -27,7 +27,7 @@
 - Use **member** instead of **user** when referring to platform/dashboard participants. Use **user** for end-readers or generic technical contexts.
 - This site documents two distinct products — never use bare "Publive" when the product is ambiguous:
   - **Publive DXP** — the headless CMS product (`dxp/` folder; `Documentation` / `Build your site` / `API Reference` tabs).
-  - **Publive AXP** — the AI-visibility product (`axp/` folder), made up of two sub-products: **AXP Edge** and **AI Streams**. Prompt monitoring (**Monitor**, `axp/monitor/`) is the launched part of AI Streams. ClaimGraph is not launched; do not document it as available.
+  - **Publive AXP** — the AI-visibility product (`axp/` folder), made up of **AXP Edge**, **AI Streams**, and prompt monitoring (**Monitor**, `axp/monitor/`). Prompt monitoring is not part of AI Streams. Keep its pages in their own **Monitor** nav group. ClaimGraph is not launched; do not document it as available.
 - AXP docs are customer/technical-facing (setup, configuration, dashboard usage, FAQ). Do not port over pricing tables, ROI/case-study stats, competitor comparisons, or sales objection-handling copy from the marketing site.
 - Capitalize features correctly (e.g., **Webhooks**, **Custom Entities**).
 - Always refer to authentication as **Basic Auth** rather than legacy username/password.
