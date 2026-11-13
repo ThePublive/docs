@@ -30,15 +30,6 @@
   },
   "favicon": "https://img-cdn.publive.online/thepublive/media/media_files/2026/07/27/favicon-2026-07-27-13-26-45.svg",
   "navigation": {
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Blog",
-          "icon": "newspaper",
-          "href": "https://www.thepublive.com/blog"
-        }
-      ]
-    },
     "products": [
       {
         "product": "Publive DXP",
@@ -398,6 +389,11 @@
                 ]
               }
             ]
+          },
+          {
+            "tab": "Blog",
+            "icon": "newspaper",
+            "href": "https://www.thepublive.com/blog"
           }
         ]
       },
@@ -437,7 +433,7 @@
                 ]
               },
               {
-                "group": "AI Streams",
+                "group": "Monitor",
                 "pages": [
                   "axp/monitor/overview",
                   "axp/monitor/track-prompts",
