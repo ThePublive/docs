@@ -429,6 +429,7 @@
                 "pages": [
                   "axp/axp-edge/overview",
                   "axp/axp-edge/dashboard",
+                  "axp/axp-edge/optimizations",
                   "axp/axp-edge/faq"
                 ]
               },
@@ -441,6 +442,7 @@
                   "axp/monitor/prompt-analytics",
                   "axp/monitor/sources",
                   "axp/monitor/brand-visibility",
+                  "axp/monitor/agent-analytics",
                   "axp/monitor/metrics"
                 ]
               }
