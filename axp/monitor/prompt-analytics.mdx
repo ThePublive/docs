@@ -9,7 +9,7 @@ Suggested prompts do not have an analytics page because AXP does not run them.
 
 ## Filters
 
-- **Date range:** The default range is the last 7 days. You can select a range of up to 6 months.
+- **Date range:** The default range is the last 30 days. You can select a range of up to 6 months.
 - **Platform:** The default is all platforms. Select one platform to show only its responses.
 
 Changes from the previous period compare the selected range with the period of the same length just before it.
@@ -19,7 +19,7 @@ Changes from the previous period compare the selected range with the period of t
 | Section | What it shows |
 |---|---|
 | **Visibility** | A chart of the visibility of each brand on this prompt over the date range |
-| **Top performing brands** | How often each brand appears in the responses to this prompt. Each row shows visibility, share of voice, position, citations, citation rate, and sentiment, with the change from the previous period. |
+| **Top performing brands** | How often each brand appears in the responses to this prompt. Each row shows visibility, share of voice, position, citations, citation rate, and sentiment. |
 | **Top domains** | The domains that the AI cites most often for this prompt. Click **See all** to open the [domains list](/axp/monitor/sources#domains) for this prompt. |
 | **Top URLs** | The pages that the AI cites most often for this prompt. Click **See all** to open the [URLs list](/axp/monitor/sources#urls) for this prompt. |
 | **Prompt responses** | Each response that AXP collected for this prompt |
@@ -36,6 +36,7 @@ Each row is one response from one platform.
 | **Sources** | The domains that the response cites |
 | **Position** | The position of your brand, if the response mentions it |
 | **Citations** | The number of inline citations in the response |
+| **Citation rate** | The number of inline citations, divided by the number of different URLs that the response cites |
 | **Response details** | When AXP collected the response, and the location. Click the column header to sort by date. |
 
 You can search, filter, and sort the table:
@@ -48,10 +49,10 @@ A response can show that AXP did not analyze it yet. This is different from a re
 
 ## AI response
 
-To open a response, click the view icon in the **Actions** column. The **Prompt response** view shows exactly what the platform said and what it cited. Its header shows the platform, the date and time, and the location.
+To open a response, click the view icon in the **Actions** column. The **Prompt response** view shows exactly what the platform said and what it cited. Its header shows the platform and the date and time. It also shows the location if the prompt has one.
 
 - **The full response.** The view shows the prompt and the response as a chat. AXP tags each brand where the response mentions it. A source chip shows after each passage that cites a URL.
-- **Brands mentioned.** The brands that the response mentions. Your brand is first and has the label **(You)**. The list contains every brand that the response mentions, not only the competitors in your Brand Profile. This shows you which brands win the response. For each brand, the panel shows if the response mentions it, its position, its sentiment, and if the response cites its domain.
+- **Brands mentioned.** The brands that the response mentions. Your brand has the label **(You)**. The list contains every brand that the response mentions, not only the competitors in your Brand Profile. This shows you which brands win the response.
 - **Sources.** The URLs that the platform cited, with their titles. Click a source to open it.
 
 If the platform did not answer the prompt, the response view shows a message in place of the response text.

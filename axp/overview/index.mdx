@@ -1,32 +1,38 @@
 ---
 title: "Publive AXP overview"
-description: "What Publive AXP is, how AXP Edge and AI Streams work together, and who they're for."
+description: "What Publive AXP is, its four products, and who they're for."
 ---
 
 Publive AXP (Agent Experience Platform) makes your brand findable and citable inside AI answers from ChatGPT, Google AI Overviews, Perplexity, and Gemini. AI agents read your site the same way human visitors and search crawlers do. If they can't parse or trust your content, they won't cite it.
 
 <Card title="Go to the AXP dashboard" icon="gauge" href="https://dashboard.thepublive.com/v2/axp" horizontal>
-  Manage your Brand Profile, Content & Global Rules, and Edge Analytics.
+  Manage your Brand Profile, AXP Edge rules, optimizations, and Agent Analytics.
 </Card>
 
 <Frame>
   <img src="/images/axp/axp-home-dashboard.png" alt="AXP dashboard home showing Content Visibility, Pages Live at Edge, Agentic Interactions, and Quick Actions" style={{ borderRadius: '0.5rem' }} />
 </Frame>
 
-AXP ships as two products:
+Publive AXP has four products:
 
 <CardGroup cols={2}>
   <Card title="AXP Edge" icon="bolt" href="/axp/axp-edge/overview">
     Makes the pages you already have readable to AI, with no rebuild.
   </Card>
+  <Card title="Brand AI Observability" icon="eye" href="/axp/monitor/overview">
+    Tracks how AI assistants answer the prompts your buyers ask, and how your brand compares with competitors.
+  </Card>
   <Card title="AI Streams" icon="sparkles">
     Publishes new, AI-first content designed to be cited. **Coming soon.**
+  </Card>
+  <Card title="AXP ClaimGraph" icon="diagram-project">
+    Builds the official record of what your brand claims, and finds pages and AI answers that disagree with it. **Coming soon.**
   </Card>
 </CardGroup>
 
 ## AXP Edge vs. AI Streams
 
-The two products solve different problems, so you can run one or both.
+AXP Edge and AI Streams both change what AI agents can read about you, but in different ways. You can run one or both.
 
 | | AXP Edge | AI Streams |
 |---|---|---|
@@ -45,11 +51,11 @@ The two products solve different problems, so you can run one or both.
 |---|---|---|
 | Make your existing site AI-citable without a rebuild | AXP Edge | Turn it on at the CDN layer. It's live in under two hours, with no code changes. |
 | Keep your current SEO unaffected while adding AI visibility | AXP Edge | Human visitors and search crawlers see your site unchanged. Only AI agents get the optimized view. |
-| See which AI platforms are crawling your site | AXP Edge | Edge Analytics breaks down agent traffic by platform, including GPTBot and PerplexityBot. |
+| See which AI platforms are crawling your site | AXP Edge | [Agent Analytics](/axp/axp-edge/agent-analytics) breaks down agent traffic by agent, including GPTBot and PerplexityBot. |
 | Keep specific pages out of the AI view | AXP Edge | Configure [bypass rules](/axp/axp-edge/setup#bypass-rules) to exclude pages or sections from optimization. |
 | Win the queries your competitors currently answer | AI Streams | Publish schema-rich pages targeted at the prompts your buyers ask AI. |
 | Add AI-first content without restructuring your site | AI Streams | Pages publish to a `/streams` subdirectory on your domain. No migration is required. |
-| Track how AI describes your brand over time | AI Streams | [Track prompts](/axp/monitor/overview) and see visibility, share of voice, sentiment, and citations against competitors. |
+| Track how AI describes your brand over time | Brand AI Observability | [Track prompts](/axp/monitor/overview) and see visibility, share of voice, sentiment, and citations against competitors. |
 | Check your AI readiness before you commit | Audit Hub | Run the free [Content Visibility Grader and Brand AI Readiness Analyzer](/axp/audit-hub/overview). |
 
 ## Who it's for
@@ -76,8 +82,8 @@ Publive AXP is built for engineering, technical SEO, and platform teams looking 
   <Card title="Getting started" icon="bolt" href="/axp/axp-edge/setup">
     Get your existing site readable to AI in under two hours.
   </Card>
-  <Card title="AI Streams" icon="sparkles">
-    See how the content engagement pipeline works end to end. **Coming soon.**
+  <Card title="Brand AI Observability" icon="eye" href="/axp/monitor/overview">
+    Track the prompts your buyers ask AI, and see how your brand compares with competitors.
   </Card>
   <Card title="Try the Audit Hub" icon="magnifying-glass" href="/axp/audit-hub/overview">
     Free tools to see what AI agents can currently read and cite from your site.

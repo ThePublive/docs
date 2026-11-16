@@ -30,15 +30,6 @@
   },
   "favicon": "https://img-cdn.publive.online/thepublive/media/media_files/2026/07/27/favicon-2026-07-27-13-26-45.svg",
   "navigation": {
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Blog",
-          "icon": "newspaper",
-          "href": "https://www.thepublive.com/blog"
-        }
-      ]
-    },
     "products": [
       {
         "product": "Publive DXP",
@@ -398,6 +389,11 @@
                 ]
               }
             ]
+          },
+          {
+            "tab": "Blog",
+            "icon": "newspaper",
+            "href": "https://www.thepublive.com/blog"
           }
         ]
       },
@@ -433,11 +429,13 @@
                 "pages": [
                   "axp/axp-edge/overview",
                   "axp/axp-edge/dashboard",
+                  "axp/axp-edge/optimizations",
+                  "axp/axp-edge/agent-analytics",
                   "axp/axp-edge/faq"
                 ]
               },
               {
-                "group": "AI Streams",
+                "group": "Brand AI Observability",
                 "pages": [
                   "axp/monitor/overview",
                   "axp/monitor/track-prompts",
