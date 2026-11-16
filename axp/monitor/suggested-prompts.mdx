@@ -1,6 +1,6 @@
 ---
 title: "Suggested prompts"
-description: "Review the prompts that AXP proposes, accept the useful ones into tracking, and generate suggestions from your keywords or from one of your pages."
+description: "Review the prompts that AXP proposes, accept the useful ones into tracking, and generate new suggestions."
 ---
 
 AXP proposes prompts that are worth tracking, so you are not limited to the prompts that you think of yourself. Suggestions are on the **Suggested** tab of the **Prompts** page. A suggestion does not run, and it does not count toward your [prompt limit](/axp/monitor/track-prompts#prompt-limit), until you accept it.
@@ -19,7 +19,7 @@ AXP proposes prompts that are worth tracking, so you are not limited to the prom
 | Keyword import | You upload a list of keywords. AXP writes prompts from them. Refer to [Import keywords](#import-keywords). |
 | One of your pages | You select a page in AXP Edge. AXP writes prompts that the page can answer. Refer to [Suggest prompts for a page](#suggest-prompts-for-a-page). |
 
-AXP uses your Brand Profile for all sources: your brand name, category, location, products, and competitors. All suggestions go to the same list on the **Suggested** tab, grouped by topic. New topics that AXP proposes show under **Suggested topics** in the **Prompt topics** panel.
+AXP uses your Brand Profile for all sources: your brand name, category, location, products, and competitors. All suggestions go to the same list on the **Suggested** tab, grouped by topic.
 
 <Accordion title="How AXP checks suggestions">
   AXP shows a suggestion only if it passes these checks:
@@ -41,11 +41,14 @@ At least 70% of the suggestions do not mention your brand. Prompts that do not m
 | Column | What it shows |
 |---|---|
 | **Prompts** | The prompt text |
-| **Topic** | The topic that the prompt goes into when you accept it. This can be a new topic. |
-| **Reason** | Why AXP proposed the prompt. When AXP has an estimate, the reason also shows the search volume of the keyword, for example "Decision gap · vol 2.4k". |
+| **Topic** | The topic that the prompt goes into when you accept it |
+| **Volume** | The estimated search volume for the prompt. It shows "–" when no estimate is available. |
 | **Branding** | **Branded** if the prompt text mentions your brand. **Non branded** if it does not. |
 | **Intent** | **Informational**, **Commercial**, or **Transactional** |
-| **Source** | Where the suggestion came from. Refer to [Prompt sources](/axp/monitor/overview#prompt-sources). |
+| **Suggested at** | The date and time of the run that made the suggestion |
+| **Actions** | The icons to accept or reject the suggestion. Hover over an icon to see its label. |
+
+To filter the list, click **Filters**. You can filter suggestions by **Topic**, **Branding**, and **Intent**.
 
 ## Accept suggestions
 
@@ -53,7 +56,6 @@ When you accept a suggestion, it moves to the **Tracking** tab and AXP starts to
 
 - To accept one suggestion, click the accept icon in the **Actions** column.
 - To accept many suggestions, select their rows. Then use the bulk accept action. AXP reports the result for each row.
-- If the suggestion has a new topic name, AXP creates the topic when you accept the suggestion.
 
 Each accepted suggestion counts toward your prompt limit. You cannot accept a suggestion when you are at the limit. The dashboard shows a message that you reached the prompt limit. In a bulk accept, AXP accepts suggestions until you reach the limit. It marks each remaining row as over the limit.
 
@@ -63,20 +65,34 @@ In the **Actions** column, click the delete icon. A dialog asks you to approve t
 
 ## Suggest more
 
-Click **Suggest more** to get new suggestions. AXP works in the background, so new suggestions show on the **Suggested** tab after a short time. When the run ends, a message tells you if it found new suggestions, found no useful suggestions, or failed.
+Click **Suggest more** to get new suggestions. AXP makes the suggestions in the background. They show on the **Suggested** tab after 2 to 3 minutes.
 
-- Each run adds new suggestions to the list. It does not replace the suggestions that you did not review yet.
+- The **Suggested** tab holds up to 25 suggestions that wait for review.
+- Each run fills the free places on the tab. For example, if 10 suggestions wait for review, a run makes up to 15 new suggestions.
+- A run does not replace the suggestions that you did not review yet.
+- When 25 suggestions wait for review, AXP makes no more. Accept or delete some suggestions first.
+- A topic gets up to 5 suggestions.
+- You can run **Suggest more** up to 25 times a day.
 - AXP uses what it knows about your brand now. It does not repeat the suggestions that it made before.
-- Each run adds up to 5 new suggestions for each topic.
-- When a topic already has 10 suggestions waiting on the **Suggested** tab, AXP does not add more to it. Accept or reject the waiting suggestions first.
-- When a topic has enough tracked prompts, AXP does not add more suggestions to it.
-- When your keywords do not fit an existing topic, AXP can propose up to 3 new topics in one run.
 
-You can generate suggestions up to 10 times a day.
+These numbers are maximums, not targets. AXP shows a suggestion only if it is useful. If AXP cannot find enough useful prompts, it shows fewer suggestions. It does not add weak prompts to fill the list.
 
-These numbers are maximums, not targets. AXP shows a suggestion only if it is useful. If AXP cannot find enough useful prompts, it shows fewer suggestions. It does not add weak prompts to fill the list. If AXP finds too few useful prompts, the dashboard tells you to improve your content.
+### Messages
+
+| Message | When it shows |
+|---|---|
+| Generating suggestions. This takes 2-3 minutes; they will appear in the Suggested tab. | AXP started the run. |
+| Suggestions are already being generated. They will appear in the Suggested tab. | You clicked **Suggest more** while a run was in progress. |
+| 25 suggestions are already waiting for review. Approve or delete some to get more. | The **Suggested** tab is full. |
+| Suggestion limit reached for today, try again tomorrow. | You used all the runs for today. |
+| Prompt suggestions are temporarily unavailable. Please try again later. | AXP cannot make suggestions now. |
+| Prompt suggestions are not enabled for this publisher. | Prompt suggestions are off for your account. Contact Publive to turn them on. |
 
 ## Import keywords
+
+<Note>
+  Keyword import is in testing. It is possible that your dashboard does not show it yet.
+</Note>
 
 Upload a keyword list to get suggestions that come from your own search data. You can upload an export from Google Search Console or from an SEO tool, for example a rankings report, keyword research, or trending keywords.
 
@@ -85,22 +101,27 @@ Upload a keyword list to get suggestions that come from your own search data. Yo
     On the **Suggested** tab, click **Import keywords**.
   </Step>
   <Step title="Upload the file">
-    Upload a CSV file with the keywords in the first column. To see the format, click **Download sample CSV**. The dashboard applies the same file rules as file uploads in Publive DXP.
+    Upload a CSV file with the keywords in the first column. To see the format, download the sample file.
   </Step>
   <Step title="Generate the suggestions">
-    Click **Generate suggestions**.
+    Click the button that generates the suggestions.
   </Step>
   <Step title="Review the suggestions">
-    AXP adds the new suggestions to the **Suggested** tab after a short time. Accept or reject each one.
+    AXP adds the new suggestions to the **Suggested** tab after 2 to 3 minutes. Accept or reject each one.
   </Step>
 </Steps>
 
 Keywords make suggestions, not tracked prompts. You decide which suggestions to accept.
 
-- AXP keeps every keyword that you upload, also keywords with a low search volume.
-- AXP tries to make at least one suggestion for each keyword. It cannot always do this.
-- If all the keywords in the file are already in your prompts, the dashboard tells you.
-- If AXP cannot generate suggestions, the dashboard shows an error.
+- The file must be a CSV file.
+- A file can have up to 200 keywords. This limit can change.
+- AXP tries to make suggestions for as many keywords as it can. It does not tell you which keywords got no suggestion.
+- The limits of [Suggest more](#suggest-more) also apply to a keyword import, for example the limit of 25 suggestions that wait for review.
+
+| Message | When it shows |
+|---|---|
+| The uploaded keywords file could not be found. Upload it again. | AXP cannot read the file that you uploaded. |
+| The uploaded keywords file is empty. | The file has no content. |
 
 ## Suggest prompts for a page
 
@@ -110,7 +131,7 @@ You can get suggestions for one page that you want AI assistants to cite more of
 2. In the **All URLs** table, find the page.
 3. In the **Actions** column, open the menu and click **Suggest prompts for this URL**.
 
-AXP reads the page and the keywords that it ranks for. It then proposes up to 10 prompts that the page can answer. The **Prompt suggestions for this URL** dialog shows the suggestions and your prompt limit. The **Reason** of each suggestion shows the page URL.
+AXP reads the page and the keywords that it ranks for. It then proposes up to 10 prompts that the page can answer. The **Prompt suggestions for this URL** dialog shows the suggestions and your prompt limit.
 
 - To track suggestions, select them. Then click **Start tracking**. **Start tracking** is not available until you select at least one suggestion.
 - To get new suggestions for the page, click **Refresh suggestions**.
