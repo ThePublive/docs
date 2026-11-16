@@ -430,11 +430,12 @@
                   "axp/axp-edge/overview",
                   "axp/axp-edge/dashboard",
                   "axp/axp-edge/optimizations",
+                  "axp/axp-edge/agent-analytics",
                   "axp/axp-edge/faq"
                 ]
               },
               {
-                "group": "Monitor",
+                "group": "Brand AI Observability",
                 "pages": [
                   "axp/monitor/overview",
                   "axp/monitor/track-prompts",
@@ -442,7 +443,6 @@
                   "axp/monitor/prompt-analytics",
                   "axp/monitor/sources",
                   "axp/monitor/brand-visibility",
-                  "axp/monitor/agent-analytics",
                   "axp/monitor/metrics"
                 ]
               }
