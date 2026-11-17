@@ -34,7 +34,7 @@ AXP compares URLs in a standard form. It removes `www.` and tracking parameters,
 | [Citation rate](#citation-rate) | How many inline citations the responses contain | Higher, for your own domains |
 | [Web search](#web-search) | How often the platform searches the web before it answers | No good or bad value |
 | [Mentions](#mentions) | Which brands the responses mention | More detail below |
-| [Volume](#volume) | How much people search for the prompt | Higher, for prompts worth tracking |
+| [Volume](#volume) | How much people search for the prompt, compared with your industry | Higher, for prompts worth tracking |
 
 ### Example data
 
@@ -169,7 +169,9 @@ In the example, the responses mention 3 different brands: your brand, Competitor
 
 ### Volume
 
-Volume is the estimated search volume of the prompt. Use it to compare prompts and to decide which prompts are worth tracking. "–" means that no estimate is available for the prompt.
+Volume is a label that estimates how much people search for the prompt, or for prompts with the same or a similar intent. AXP compares this search volume with other prompts in your industry. The dashboard shows the result as a label, for example **High** or **Medium**.
+
+Use Volume to compare prompts and to decide which prompts are worth tracking. "—" means that no estimate is available for the prompt.
 
 ## Changes and trends
 
@@ -189,9 +191,9 @@ These fields are on the **Tracking**, **Suggested**, and **Paused** tabs, and in
 | **Location** | The market that the prompt targets. The location changes the sources that the AI finds when it searches the web. It does not change the prompt text. | Free text, for example `India` or `Delhi, India` |
 | **Intent** | The goal of the buyer who asks the prompt. AXP sets it automatically. You cannot change it. | Refer to [Intent values](#intent-values) |
 | **Branding** | Whether the prompt text mentions your brand. AXP sets this value from the prompt text. | **Branded**, **Non branded** |
-| **Source** (**Origin** on the **Paused** tab) | How the prompt got into your list | **Manual**, **Suggested**, **Bulk**. Refer to [Prompt sources](/axp/monitor/overview#prompt-sources). |
-| **Reason** | Why AXP suggested the prompt. It can also show the search volume of the keyword, for example "Decision gap · vol 2.4k", or the page URL. | Free text that AXP writes |
+| **Source** (**Origin** on the **Paused** tab) | How the prompt got into your list | **Manual**, **Bulk**, **Suggested**, **Keyword import**, **URL**. Refer to [Prompt sources](/axp/monitor/overview#prompt-sources). |
 | **Date added** | The date that a member added the prompt, or accepted it from a suggestion | A date |
+| **Suggested at** | On the **Suggested** tab only. The time of the run that made the suggestion. | A date and time |
 
 ### Intent values
 
