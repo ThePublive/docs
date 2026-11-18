@@ -8,6 +8,39 @@ rss: true
   Subscribe to this changelog via RSS at `https://docs.thepublive.com/changelog/axp/rss.xml`: paste the URL into Slack (`/feed subscribe`), an RSS reader, or a tool like Zapier to get notified of new releases.
 </Tip>
 
+<Update label="November 17, 2026" tags={["New releases", "Improvements"]} rss={{ title: "Prompt Suggester, competitors as Brand Profiles, bulk prompt upload by CSV, and Heading Hierarchy Repair" }}>
+  ### Prompt Suggester: find the prompts to track
+
+  [Prompt Suggester](/axp/monitor/suggested-prompts) is a new part of Brand AI Observability. It finds the questions that your buyers ask AI assistants. You can then track more prompts than the prompts that you think of yourself.
+
+  * **Four sources of suggestions** — AXP writes suggestions from your topics, the products in your Brand Profile, or a page in AXP Edge. It also writes suggestions from keywords that you import, for example a Google Search Console export.
+  * **Data for each suggestion** — each suggestion shows its topic, search volume, intent, and if it mentions your brand. Accept a suggestion to start tracking it. You can accept one suggestion or many suggestions at a time.
+  * **Prompts that do not name your brand** — at least 70% of suggestions do not mention your brand. These prompts show if AI assistants find you when buyers ask general questions.
+  * **Checks before you see a suggestion** — a second AI model reviews each suggestion. AXP removes suggestions with prices, numbers, or brands that are not in your Brand Profile or keywords. It also removes suggestions that are similar to a prompt that you track or to a suggestion that you rejected.
+
+  <Frame>
+    <img src="/images/axp/axp-suggested-prompts.png" alt="Suggested tab of the Prompts page, with the Prompt topics and Suggested topics panels on the left and a table of suggested prompts showing topic, volume, branding, intent, suggested date, and accept and reject icons. Import keywords and Suggest more buttons are at the top." style={{ borderRadius: '0.5rem' }} />
+  </Frame>
+
+  ### Add prompts in bulk
+
+  * **CSV upload** — on the [**Prompts**](/axp/monitor/track-prompts) page, upload a CSV file to add many prompts at once.
+  * **Bulk topic assignment** — select many prompts. Then assign them to a [topic](/axp/monitor/track-prompts#topics) in one step.
+
+  ### Competitors as Brand Profiles
+
+  * Each competitor now has its own [Brand Profile](/axp/axp-edge/dashboard#brand-profile), with a status: suggested, accepted, or rejected.
+  * AXP shows the brands that it finds in AI responses as suggested competitors. You can accept or reject each one.
+  * When you rename a brand, AXP keeps its history. A brand can have more than one domain.
+  * AXP moved your existing competitor lists to the new Brand Profiles automatically.
+
+  ### Improvements
+
+  * **Heading Hierarchy Repair** — this new [optimization](/axp/axp-edge/optimizations) repairs the heading structure that AI agents get. For example, it repairs a missing or duplicate H1, or skipped heading levels. The heading text and anchor links do not change. Human visitors see no change. To turn it on, use its switch on the **Optimizations** page.
+  * **Multi-select response filters** — you can now filter prompt responses across all platforms at once. Each filter also lets you select more than one value.
+  * **Instant page optimization** — when you optimize one page from the dashboard, AXP Edge now renders the page immediately. The status of the page changes to **Optimized**. You do not wait for the next optimization cycle.
+</Update>
+
 <Update label="November 3, 2026" tags={["New releases", "Improvements"]} rss={{ title: "Prompt Monitoring in AI Streams, and Global Rules updates" }}>
   ### Track how AI platforms answer your audience's questions
 

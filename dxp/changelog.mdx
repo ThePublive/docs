@@ -8,6 +8,14 @@ rss: true
   Subscribe to this changelog via RSS at `https://docs.thepublive.com/changelog/dxp/rss.xml` — paste the URL into Slack (`/feed subscribe`), an RSS reader, or a tool like Zapier to get notified of new releases.
 </Tip>
 
+<Update label="November 17, 2026" tags={["Improvements"]} rss={{ title: "Images on your own domain, author and video structured data" }}>
+  ### Improvements
+
+  * **Images on your own domain** — your images can now load from your own custom domain, not from the Publive DXP CDN domain. This change is optional. We set it up for a workspace only when you ask. To set it up, contact [support@thepublive.com](mailto:support@thepublive.com).
+  * **Author profile links in structured data** — article structured data now links each author to their external profiles, for example LinkedIn and X. This helps Google identify the author. The links come from the author profile in the CMS. To use this feature, add the external links to each author profile.
+  * **Video structured data** — video pages now get their own VideoObject structured data, with the real description of the video. For YouTube videos, the structured data uses the embed URL. It includes the duration only when the duration is available. YouTube embeds do not supply the duration.
+</Update>
+
 <Update label="November 3, 2026" tags={["Security", "Improvements"]} rss={{ title: "Server-side paywall protection, smaller AMP pages, faster listing pages, form image downloads" }}>
   ### Server-side paywall protection
 
