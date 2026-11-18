@@ -20,7 +20,7 @@ Use this approach when your site is served from CloudFront and you want agent ro
 
 - An existing CloudFront distribution serving your website.
 - AWS IAM permissions to create CloudFront functions, Lambda functions, IAM roles, cache policies, and to edit distribution behaviors.
-- Your Publive Edge CDS API key and backend URL (issued per client, contact [support@thepublive.com](mailto:support@thepublive.com) if you don't have these).
+- Your Publive Edge CDS API key and backend URL. Publive issues these for each client. If you do not have them, [contact Publive](https://axp.thepublive.com/contact).
 
 ## How routing works
 
@@ -31,7 +31,7 @@ CloudFront splits this integration across two function types, run at two differe
 
 A request only qualifies for AXP Edge when **all** of the following are true:
 
-- The request hostname matches your configured client host.
+- The path is one of your targeted paths, if you set `TARGETED_PATHS`.
 - The request hasn't already been routed once (a loop guard header prevents re-routing looped or failed-over requests).
 - The method is `GET` or `HEAD`, and the path isn't a static asset (`.js`, `.css`, images, fonts, and similar are always skipped).
 - The user-agent matches a known AI agent, or the request carries a preview flag.
@@ -94,7 +94,7 @@ Because the failover fetch carries `x-pl-request: fo`, the CloudFront Function's
        - `YOUR_DEFAULT_ORIGIN` — the name of your existing default origin (found in CloudFront > Distributions > [Your Distribution] > Origins tab).
        - `TARGETED_PATHS` — set to `null` to target all HTML pages, or an array of specific paths, for example `['/', '/products', '/about']`.
 
-    ```js viewer-request.js expandable theme={null}
+    ```js viewer-request.js expandable
     // Publive AXP Edge — CloudFront Function (viewer request)
     // Tags eligible requests so the origin-request Lambda@Edge function
     // knows whether to route to Publive CDS or pass through to origin.
@@ -169,7 +169,6 @@ Because the failover fetch carries `x-pl-request: fo`, the CloudFront Function's
 
     4. Click **Save changes** > **Publish function**.
 
-    `[SCREENSHOT: CloudFront → Functions → pl-edge-routing, showing the published function code]`
   </Step>
 
   <Step title="Configure the cache policy">
@@ -188,9 +187,9 @@ Because the failover fetch carries `x-pl-request: fo`, the CloudFront Function's
        - Select **Include the following headers** from the dropdown.
        - Add `x-pl-url`, `x-pl-origin-choice`, `x-pl-request`, and `x-pl-preview`.
 
-       `[SCREENSHOT: Legacy cache settings — Headers allow list with x-pl-url, x-pl-origin-choice, x-pl-request, and x-pl-preview added]`
-
-       > If you already have **All** selected in the Headers dropdown, skip this step — all headers are automatically forwarded to the origin.
+       <Note>
+         If you already have **All** selected in the Headers dropdown, skip this step. CloudFront forwards all headers to the origin.
+       </Note>
 
     3. Check **Object caching**:
        - If set to **Customize**, set **Minimum TTL** to `0` — recommended. If your current Minimum TTL is already very short, you may not need to change it.
@@ -204,11 +203,7 @@ Because the failover fetch carries `x-pl-request: fo`, the CloudFront Function's
     1. Click your existing policy, then **Edit**.
     2. Set **Minimum TTL** to `0` — recommended. If your current Minimum TTL is already very short, you may not need to change it.
 
-       `[SCREENSHOT: Cache policy TTL settings — generic AWS view, reusable as a layout reference]`
-
     3. Under **Cache key settings** > **Headers**, along with your existing inclusions, add `x-pl-url`, `x-pl-origin-choice`, `x-pl-request`, and `x-pl-preview`.
-
-       `[SCREENSHOT: Cache policy headers — generic AWS view, reusable as a layout reference]`
 
     4. Click **Save changes**.
 
@@ -230,8 +225,6 @@ Because the failover fetch carries `x-pl-request: fo`, the CloudFront Function's
     1. Click **Create cache policy**.
     2. **Name:** `pl-edge-cache`
 
-       `[SCREENSHOT: Cache policy name field — generic AWS view, reusable as a layout reference]`
-
     3. Replicate all settings noted in Part 1, with these modifications:
        - Set **Minimum TTL** to `0` — recommended, unless your current Minimum TTL is already very short.
        - Under **Cache key settings** > **Headers**, include everything the managed policy had, plus `x-pl-url`, `x-pl-origin-choice`, `x-pl-request`, and `x-pl-preview`.
@@ -250,9 +243,9 @@ Because the failover fetch carries `x-pl-request: fo`, the CloudFront Function's
     <Warning>
       Lambda@Edge functions **must be created in the `us-east-1` (N. Virginia) region.** This is an AWS requirement. Even though the function is created in `us-east-1`, AWS automatically replicates it to all CloudFront edge locations worldwide, so it executes at the edge location nearest the viewer. Confirm you're in `us-east-1` in the AWS Console before proceeding.
     </Warning>
-    <Callout type="warning">
+    <Warning>
       Make sure you are creating a **Lambda@Edge** function under **AWS Lambda**, not a **CloudFront Function** under **CloudFront > Functions**. CloudFront Functions cannot make network calls and cannot be associated with origin request or origin response events.
-    </Callout>
+    </Warning>
 
     **Create the function**
 
@@ -263,13 +256,12 @@ Because the failover fetch carries `x-pl-request: fo`, the CloudFront Function's
     3. Configure:
        - **Function name:** `pl-edge-origin`
        - Leave all other fields at their default values.
-    4. Click **Create function**.
-     Confirm the file is named `index.js`, not `index.mjs`, and that no `package.json` in this function sets `"type": "module"`.
+    4. Click **Create function**. Confirm the file is named `index.js`, not `index.mjs`, and that no `package.json` in this function sets `"type": "module"`.
     5. In the code editor, replace the default code with the origin-request/origin-response code below.
     6. Click **Deploy** to save the code.
     7. Note the **execution role name** shown under **Configuration** > **Permissions** (for example, `pl-edge-origin-role-xxxxx`) — you need this in the next two steps.
 
-    ```js origin-request-response.js expandable theme={null}
+    ```js origin-request-response.js expandable
     // Publive AXP Edge — Lambda@Edge (origin request + origin response)
     // Origin request: fetches from Publive CDS for eligible requests; on
     // error, marks the request to fail over to the client's real origin.
@@ -458,7 +450,7 @@ Because the failover fetch carries `x-pl-request: fo`, the CloudFront Function's
     1. Click **Edit trust policy**.
     2. Replace the policy with:
 
-    ```json trust-policy.json theme={null}
+    ```json trust-policy.json
     {
       "Version": "2012-10-17",
       "Statement": [
@@ -491,7 +483,7 @@ Because the failover fetch carries `x-pl-request: fo`, the CloudFront Function's
     1. Click **Edit**.
     2. Replace the policy with:
 
-    ```json cloudwatch-policy.json theme={null}
+    ```json cloudwatch-policy.json
     {
       "Version": "2012-10-17",
       "Statement": [
@@ -527,8 +519,6 @@ Because the failover fetch carries `x-pl-request: fo`, the CloudFront Function's
       Published Lambda versions are immutable. Any future code edit requires repeating **Deploy** > **Publish new version** > update both ARNs below — editing this version's code in place does not affect what's already published.
     </Note>
 
-    `[SCREENSHOT: Lambda — publish new version dialog]`
-    `[SCREENSHOT: Lambda — versioned Function ARN shown on the function page]`
   </Step>
 
   <Step title="Associate the functions and cache policy with the behavior">
@@ -546,8 +536,6 @@ Because the failover fetch carries `x-pl-request: fo`, the CloudFront Function's
 
     4. Click **Save changes**.
 
-    `[SCREENSHOT: Cache policy dropdown on the behavior, set to pl-edge-cache]`
-    `[SCREENSHOT: Function associations — Viewer request / Origin request / Origin response set to Publive's functions]`
   </Step>
 </Steps>
 
@@ -557,7 +545,7 @@ If your CDN uses a WAF or Bot Manager:
 
 - Allowlist the `PubliveBot/1.0 (+https://axp.thepublive.com/bot)` user agent so the AXP Edge service can fetch your origin content during failover and cache-warming.
 - If your firewall requires additional verification beyond user agent, generate a secret (for example, `openssl rand -hex 32`) and:
-  - Add `x-pl-fetcher-key` with the secret to the Publive CDS origin's custom headers (Step 1).
+  - In the origin-request Lambda, set `x-pl-fetcher-key` to the secret, next to where it sets `x-pl-api-key`.
   - Add a WAF or Bot Manager rule allowing requests where `x-pl-fetcher-key` matches the same secret.
 - AXP Edge forwards this header as-is — you own the full key lifecycle.
 
@@ -567,7 +555,7 @@ If your CDN uses a WAF or Bot Manager:
 
 Simulate an AI bot request using an agentic user-agent:
 
-```bash theme={null}
+```bash
 curl -svo /dev/null https://www.example.com/page.html \
   --header "user-agent: ChatGPT-User"
 ```
@@ -581,7 +569,7 @@ A successful response includes the `x-pl-request-id` header, confirming the requ
 
 **2. Test human traffic (should NOT be affected)**
 
-```bash theme={null}
+```bash
 curl -svo /dev/null https://www.example.com/page.html \
   --header "user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
 ```
@@ -595,15 +583,13 @@ The response should **not** contain the `x-pl-request-id` header. Page content a
 | `x-pl-request-id` | Present — unique request ID | Absent |
 | `x-pl-fo` | Present only if failover occurred (value: `1`) | Absent |
 
-You can also check routing status in the AXP dashboard: **Brand Configuration > Integrations > CDN**.
-
-`[SCREENSHOT: AXP dashboard — CDN integration status showing "verified" for the CloudFront connection]`
+You can also check routing status on the **Integrations** page of the AXP dashboard, in the **Configurations** group of the sidebar.
 
 **4. Verify logs are flowing correctly**
 
 *CloudFront Function logs (`pl-edge-routing`)*
 
-**Navigation:** AWS Console > CloudWatch > Log groups (in `us-east-1`, or the region where your CloudFront distribution is configured)
+**Navigation:** AWS Console > CloudWatch > Log groups (in `us-east-1`)
 
 1. Look for a log group named `/aws/cloudfront/function/pl-edge-routing`.
 2. Open the latest log stream.
@@ -635,13 +621,12 @@ If the log group isn't present, verify the IAM permissions were updated correctl
 | Issue | Possible cause | Solution |
 | --- | --- | --- |
 | No `x-pl-request-id` in response for agentic requests | Origin routing not reaching Publive CDS | Verify `YOUR_DEFAULT_ORIGIN` was replaced correctly in the CloudFront Function code, and that the origin-request Lambda@Edge is checking `x-pl-origin-choice` correctly. |
-| 403 errors on agentic requests | Invalid or missing API key | Check the `x-pl-api-key` header value on the Publive CDS origin's custom headers. |
+| Every agentic response has `x-pl-fo: 1` | CDS rejects the API key. Any 4xx from CDS triggers failover, so the agent gets your origin page. | Check the `API_KEY` constant in the origin-request Lambda@Edge code. |
 | Cannot find CloudWatch logs for Lambda@Edge | Function not yet invoked (check distribution status first), or wrong IAM permissions | Verify the CloudWatch Logs permission policy was updated. Lambda@Edge logs appear in the edge region that served the request, not necessarily `us-east-1`. |
 | Cache not honoring `cache-control: no-store` | Minimum TTL may be too high | Set Minimum TTL to `0` in your cache policy. If Minimum TTL is already very short, this may not be the issue. |
 | Regular (non-agentic) traffic broken after setup | Cache policy misconfiguration | If you created a new cache policy (Scenario C), confirm you replicated all settings from the original managed policy. |
 | Failover returns a 502 | A disallowed header (`connection`, `transfer-encoding`, `via`, and similar) was copied from your origin's response | Confirm the `blacklisted` header filter in `fetchClientOrigin` is present in your Lambda@Edge code. |
 | CDS errors but failover never fires | `x-pl-request` isn't on the cache policy's Headers allow list, so it doesn't reach the origin-response Lambda | Add `x-pl-request` to the Headers allow list as described in **Configure the cache policy**. |
-| Preview requests don't fail over | `wasCdsRequest` in `handleOriginResponse` only checks for `edge` | Update `wasCdsRequest` to accept both `edge` and `preview`. |
 
 ## Rollback
 

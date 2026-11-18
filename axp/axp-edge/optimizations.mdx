@@ -19,6 +19,8 @@ Click a group to see its optimizations. Use the switch next to an optimization t
 | **Cleanup** | **Strip noise** | Removes scripts, styles, comments, and attributes that are not content. AI agents read your content, not the parts of the site around it. |
 | **Data structuring** | **Structure meta tags & JSON-LD** | Rebuilds a clean head with the meta tags and structured data of the page. This includes JSON-LD that the page puts in the body. |
 
+**Heading Hierarchy Repair** is a baseline optimization that is off by default. It repairs the heading structure that AI agents get, for example a missing or duplicate H1, or a skipped heading level. The heading text and anchor links do not change. AXP Edge repairs the headings before it makes the table of contents, so the table of contents uses the repaired headings. To turn it on, use its switch.
+
 ## Page enhancements
 
 Each card under **Content optimizations** is one type of addition. The card shows the number of pages that have a suggestion ready.
@@ -76,5 +78,8 @@ To review a suggestion:
   </Card>
   <Card title="Agent Analytics" icon="chart-line" href="/axp/axp-edge/agent-analytics">
     See how AI agents visit your pages.
+  </Card>
+  <Card title="Guide: close citation gaps" icon="route" href="/axp/guides/close-citation-gaps">
+    Find the pages that AI cites, and improve your own pages.
   </Card>
 </CardGroup>

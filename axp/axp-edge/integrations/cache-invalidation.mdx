@@ -6,7 +6,7 @@ description: "Tell AXP Edge whenever you purge your own CDN's cache, so AI crawl
 
 You probably already purge your CDN's cache the moment a page is published, updated, or unpublished. Add one more call at that same trigger point, and AXP Edge stays in sync too — the next AI crawler that visits gets a fresh render instead of the page it cached before your edit.
 
-You don't strictly need this: AXP Edge also re-scans every page on its own periodic cycle, so pages stay reasonably fresh either way. This call just closes the gap — same-second freshness instead of waiting for the next scan.
+You don't strictly need this: AXP Edge also re-scans every page on its own periodic re-scan, so pages stay reasonably fresh either way. This call just closes the gap — same-second freshness instead of waiting for the next scan.
 
 <Note>
   This purges exactly one URL. It is not a site-wide cache flush — there's no client-facing bulk/global purge. If you need every page invalidated at once (e.g. a full site migration), contact [support@thepublive.com](mailto:support@thepublive.com).
@@ -14,9 +14,9 @@ You don't strictly need this: AXP Edge also re-scans every page on its own perio
 
 ## Prerequisites
 
-- An AXP client API key for your publisher. Keys are issued per client — contact [support@thepublive.com](mailto:support@thepublive.com) if you don't have one yet (there's no self-serve key page in the dashboard yet).
-- AXP Edge enabled for your publisher.
-- The domain you send in `x-pl-host` must be a domain already registered against your publisher account (primary or alternate) — anything else is rejected.
+- An AXP client API key for your workspace. Keys are issued per client — contact [support@thepublive.com](mailto:support@thepublive.com) if you don't have one yet (there's no self-serve key page in the dashboard yet).
+- AXP Edge enabled for your workspace.
+- The domain you send in `x-pl-host` must be a domain already registered to your workspace (primary or alternate) — anything else is rejected.
 
 ## How it works
 
@@ -84,8 +84,8 @@ curl -X POST https://cds.thepublive.com/axp/invalidate/ \
 
 | Status | Body | Cause |
 | --- | --- | --- |
-| 401 | `Invalid API key.` | Missing/malformed `x-pl-api-key`, unknown key, or the key's publisher was deleted |
-| 403 | `Invalid Domain! You are not authorized to perform this action.` | `x-pl-host` missing, or not one of your publisher's registered domains |
+| 401 | `Invalid API key.` | Missing/malformed `x-pl-api-key`, unknown key, or the key's workspace was deleted |
+| 403 | `Invalid Domain! You are not authorized to perform this action.` | `x-pl-host` missing, or not one of your workspace's registered domains |
 | 400 | `{"host": [...], "path": [...]}` | `host` or `path` missing from the JSON body |
 
 ## Verify
@@ -97,7 +97,7 @@ curl -X POST https://cds.thepublive.com/axp/invalidate/ \
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
-| 401 on every call | Wrong or expired key | Confirm the key with Publive support — keys are rotated, not edited, so issuing a new one immediately invalidates the old one |
+| 401 on every call | Wrong or expired key | Confirm the key with [support@thepublive.com](mailto:support@thepublive.com) — keys are rotated, not edited, so issuing a new one immediately invalidates the old one |
 | 403 `Invalid Domain!` | `x-pl-host` doesn't match your registered domain | Check for a `www.` mismatch, or a domain change Publive hasn't been told about |
 | 400 validation error | Missing `host` or `path` | Both are required plain strings; send `path` as just the URL path (e.g. `/news/example-article`), not a full URL |
 | Call succeeds but the crawler still sees old content | An upstream CDN in front of your origin (Cloudflare, Akamai, your own cache) is still serving stale | This endpoint only purges AXP Edge's own cache — it doesn't reach any CDN layer in front of your origin |
@@ -105,7 +105,7 @@ curl -X POST https://cds.thepublive.com/axp/invalidate/ \
 
 ## Rollback
 
-Nothing to unwind. Stop calling the endpoint and AXP Edge falls back to its periodic drift check for that URL — freshness just goes back to scan-cycle latency instead of real time.
+Nothing to unwind. Stop calling the endpoint and AXP Edge falls back to its periodic re-scan for that URL. Freshness then depends on the next scan, not real time.
 
 ## Next steps
 

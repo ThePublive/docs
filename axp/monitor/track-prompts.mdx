@@ -7,7 +7,7 @@ The **Tracking** tab on the **Prompts** page lists the prompts that AXP runs for
 
 ## Prerequisites
 
-- Your [Brand Profile](/axp/axp-edge/dashboard#brand-profile) has your brand name, domains, and competitors. AXP uses these values to find your brand and its competitors in the responses.
+- Your [Brand Profile](/axp/axp-edge/dashboard#brand-profile) has your brand identity and your competitors. AXP uses these values to find your brand and its competitors in the responses.
 
 ## Prompt limit
 
@@ -19,7 +19,7 @@ Your plan sets the number of prompts that you can track. The header of the **Pro
 
 ## Add a prompt
 
-You can add a prompt in two ways. You can write it yourself, or you can [accept a suggested prompt](/axp/monitor/suggested-prompts).
+You can add a prompt in three ways. You can write it yourself, [add many prompts from a CSV file](#add-prompts-in-bulk), or [accept a suggested prompt](/axp/monitor/suggested-prompts).
 
 <Steps>
   <Step title="Click Add prompt">
@@ -44,6 +44,12 @@ You must fill in **Prompt text** and **Topic**. For the meaning of each field, r
 <Tip>
 To track different wording, add it as a new prompt. A change to the wording makes the history that AXP collected for the old wording invalid.
 </Tip>
+
+## Add prompts in bulk
+
+On the **Prompts** page, upload a CSV file to add many prompts at one time. Prompts that you add this way show **Bulk** in the **Source** column. Each prompt counts toward your [prompt limit](#prompt-limit).
+
+To put many prompts into one topic, select their rows. Then assign the topic in one step.
 
 ## Edit a prompt
 
@@ -73,7 +79,7 @@ Pause a prompt to stop new data collection. AXP keeps all the data that it colle
 
 To start tracking again, go to the **Paused** tab. Click the resume icon (a play button) in the **Actions** column. To resume many prompts, select their rows. Then use the bulk resume action. A resumed prompt moves back to the **Tracking** tab and counts toward your [prompt limit](#prompt-limit).
 
-The **Paused** tab shows each prompt with its **Topic**, **Brand Visibility**, **Position**, **Sentiment**, **Volume**, **Platforms**, **Origin**, and **Date added**. AXP does not collect new data for a paused prompt. The **Actions** column on this tab has three icons: view, resume, and delete.
+The **Paused** tab shows each prompt with its **Topic**, **Brand Visibility**, **Position**, **Sentiment**, **Volume**, **Platforms**, **Source**, and **Date added**. AXP does not collect new data for a paused prompt. The **Actions** column on this tab has three icons: view, resume, and delete.
 
 ## Delete a prompt
 
