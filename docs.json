@@ -445,6 +445,12 @@
                   "axp/monitor/brand-visibility",
                   "axp/monitor/metrics"
                 ]
+              },
+              {
+                "group": "Integrations",
+                "pages": [
+                  "axp/integrations/mcp"
+                ]
               }
             ]
           },
@@ -454,8 +460,10 @@
               {
                 "group": "Use cases",
                 "pages": [
+                  "axp/guides/improve-ai-visibility",
                   "axp/guides/benchmark-brand-against-competitors",
-                  "axp/guides/close-citation-gaps"
+                  "axp/guides/close-citation-gaps",
+                  "axp/guides/ai-visibility-action-report"
                 ]
               },
               {
