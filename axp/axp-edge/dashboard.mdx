@@ -123,7 +123,7 @@ A URL pattern override is an exception to the default behaviour for one page or 
     In **Rule name**, enter a name, for example `Block blog for AI`.
   </Step>
   <Step title="Enter the pattern">
-    In **URL Pattern**, enter a relative path, for example `/about-us`.
+    In **URL Pattern**, enter a relative path, for example `/about-us`. Use `*` as a wildcard, not regex. Refer to [URL pattern syntax](#url-pattern-syntax).
   </Step>
   <Step title="Select the AI agents">
     In **AI agent(s)**, select the AI agents that the rule applies to. The default is **All AI agents**.
@@ -135,6 +135,34 @@ A URL pattern override is an exception to the default behaviour for one page or 
     Click **Save**.
   </Step>
 </Steps>
+
+#### URL pattern syntax
+
+URL patterns are not regular expressions. A pattern matches the page path exactly. The only special character is `*`, which matches any text.
+
+| Pattern | What it matches |
+|---|---|
+| `/regulatory/terms-and-conditions` | Only that page |
+| `/blog/*` | Every page under `/blog/` |
+| `*/amp` | Every URL that ends in `/amp` |
+
+When you write a pattern:
+
+1. Start the pattern with `/`.
+2. Enter only the path. Do not include the domain or a query string, for example `?utm_source=…`.
+3. Use `*` for "any text". Do not use regex.
+
+<Warning>
+  A pattern that uses regex syntax or a full URL never matches a page. AXP Edge then continues to apply the default behaviour to that page.
+</Warning>
+
+| Do not enter | Enter this |
+|---|---|
+| `^/regulatory/terms-and-conditions$` | `/regulatory/terms-and-conditions` |
+| `/blog/.*` | `/blog/*` |
+| `https://example.com/blog` | `/blog` |
+
+If an exclude rule does not work, the page **Status** on the **Content** tab stays **Optimized**, and **Site Coverage** shows 0 excluded URLs. Examine the pattern for `^`, `$`, `.*`, or a domain, and remove them.
 
 #### AI agent overrides
 
