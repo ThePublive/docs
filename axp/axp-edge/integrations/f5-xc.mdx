@@ -4,10 +4,6 @@ sidebarTitle: "Deploy on F5 XC"
 description: "Route AI agent traffic to AXP Edge from an F5 Distributed Cloud (XC) HTTP Load Balancer, with automatic failover to your origin."
 ---
 
-# Deploy AXP Edge with F5 Distributed Cloud
-
-> Route AI agent traffic to AXP Edge from an F5 Distributed Cloud (XC) HTTP Load Balancer, with automatic failover to your origin.
-
 This guide deploys AXP Edge on **F5 Distributed Cloud (XC)** — F5's SaaS edge/CDN platform (formerly Volterra, identifiable by a `server: volt-adc` response header). XC inspects each request's user-agent at its edge; requests from recognized AI agents (GPTBot, ClaudeBot, Google-Extended, and similar) are routed to the Publive CDS backend as an alternate origin instead of your normal origin. Every other request (human visitors and SEO bots) reaches your origin untouched.
 
 Use this approach when F5 Distributed Cloud is the public-facing edge terminating your traffic and there is **no separate CDN** (Cloudflare, Akamai, Fastly, CloudFront) in front of it. If a CDN does sit in front of XC, integrate at that CDN layer instead.
@@ -24,7 +20,7 @@ Use this approach when F5 Distributed Cloud is the public-facing edge terminatin
 
 * An F5 Distributed Cloud tenant with the target domain already served by an **HTTP Load Balancer** in the XC Console.
 * Permission in that tenant to create Service Policies, Origin Pools, Route rules, and (Mesh) JavaScript / service-policy rules on the Load Balancer.
-* Your Publive Edge CDS API key and backend URL (issued per client — contact [support@thepublive.com](mailto:support@thepublive.com) if you don't have these).
+* Your Publive Edge CDS API key and backend URL. Publive issues these for each client. If you do not have them, [contact Publive](https://axp.thepublive.com/contact).
 * Confirmation that XC's data-plane JavaScript (v8) is available on your tenant plan. Header injection and the loop guard rely on it. If your plan does not include JavaScript data-plane programmability, see [Header injection without JavaScript](#header-injection-without-javascript) below.
 
 ## How routing works
@@ -219,7 +215,7 @@ If your XC tenant plan does not include JavaScript data-plane programmability, t
 
 * Set `x-pl-host`, `x-pl-api-key`, `x-pl-url` (from the built-in path variable), and `x-pl-client-ip` (from XC's client-IP variable) as fixed/route-variable request headers on the agent-match route.
 * Enforce the loop guard by making the agent-match route **not** match when `x-pl-request` is already present.
-* The trade-off: static rules are less expressive than the JS policy (e.g. conditional `referer` forwarding, dynamic loop-guard values), and header hygiene (stripping inbound spoofed `x-pl-*`) must be done as explicit delete-header rules ahead of the set-header rules. Confirm this path with Publive support before relying on it for a production client.
+* The trade-off: static rules are less expressive than the JS policy (e.g. conditional `referer` forwarding, dynamic loop-guard values), and header hygiene (stripping inbound spoofed `x-pl-*`) must be done as explicit delete-header rules ahead of the set-header rules. Before you use this path for a production client, confirm it with [support@thepublive.com](mailto:support@thepublive.com).
 
 ## Next steps
 

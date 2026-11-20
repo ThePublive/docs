@@ -408,6 +408,7 @@
                 "group": "Getting Started",
                 "pages": [
                   "axp/overview/index",
+                  "axp/axp-edge/dashboard",
                   "axp/audit-hub/overview"
                 ]
               },
@@ -428,7 +429,6 @@
                 "group": "AXP Edge",
                 "pages": [
                   "axp/axp-edge/overview",
-                  "axp/axp-edge/dashboard",
                   "axp/axp-edge/optimizations",
                   "axp/axp-edge/agent-analytics",
                   "axp/axp-edge/faq"
@@ -452,6 +452,13 @@
             "tab": "Guides",
             "groups": [
               {
+                "group": "Use cases",
+                "pages": [
+                  "axp/guides/benchmark-brand-against-competitors",
+                  "axp/guides/close-citation-gaps"
+                ]
+              },
+              {
                 "group": "Deploy AXP Edge",
                 "pages": [
                   "axp/axp-edge/setup",
@@ -461,8 +468,7 @@
                   "axp/axp-edge/integrations/fastly",
                   "axp/axp-edge/integrations/akamai",
                   "axp/axp-edge/integrations/f5-xc",
-                  "axp/axp-edge/integrations/azure-front-door",
-                  "axp/axp-edge/integrations/dont-have-a-cdn"
+                  "axp/axp-edge/integrations/azure-front-door"
                 ]
               },
               {
@@ -561,6 +567,10 @@
     {
       "source": "/dxp/api-reference/content-management/media/create-media",
       "destination": "/dxp/api-reference/content-management/media/upload-media-file"
+    },
+    {
+      "source": "/axp/axp-edge/integrations/dont-have-a-cdn",
+      "destination": "/axp/axp-edge/setup"
     }
   ],
   "contextual": {

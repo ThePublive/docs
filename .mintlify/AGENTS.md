@@ -52,9 +52,16 @@
 
 - **Page placement**: Put each page in the tab for its reader. Decide this before you write the page.
   - **Documentation**: dashboard members (editors and workspace admins). Features, Content Workflows, account security, and workspace administration.
-  - **Build your site** (DXP) / **Guides** (AXP): developers who build or deploy the website (framework integration, Starter Kit, CDN setup).
+  - **Build your site** (DXP): developers who build or deploy the website (framework integration, Starter Kit).
+  - **Guides** (AXP): goal-based walkthroughs. Two groups:
+    - **Use cases**: dashboard members (marketing, brand, content, and SEO leads) who want to reach one goal, for example "Benchmark your brand against competitors". These pages live in `axp/guides/`.
+    - **Deploy AXP Edge** / **Operate AXP Edge**: developers who set up and run AXP Edge on a CDN.
   - **API Reference**: developers who call the APIs. Authentication, quickstarts, API how-to guides, endpoints, and SDKs.
-  - Use-case and industry content goes on the product overview page (`dxp/index.mdx`, `axp/overview/index.mdx`), not on separate pages.
+- **Documentation vs Guides** (AXP):
+  - A **Documentation** page explains one feature or one screen: what it is, what each field and value means, and how to do single tasks on it ("Add a prompt"). Organize Documentation by product.
+  - A **Guide** walks the reader from start to finish to reach one goal, often across several features or products. Give it a goal title, a "Who this is for" line, Prerequisites, numbered stages, a "How you know it worked" section, and Next steps. Link to Documentation for field details. Do not copy field tables into a guide.
+  - If a section explains concepts or dashboard settings, it belongs in Documentation, even when a guide needs it. Link to it from the guide.
+- Industry and marketing positioning goes on the product overview page (`dxp/index.mdx`, `axp/overview/index.mdx`). Task-based use-case walkthroughs go in **Guides → Use cases**.
   - Content that applies to both products (for example MFA and SSO) goes in a snippet under `snippets/account/`. Each product gets its own page that imports the snippet. Do not list one page in both products' navigation: Mintlify shows it under the first product only.
 
 - **Prerequisites**: Guides must include a Prerequisites section at the top if API keys, specific configurations, or prior setups are required.

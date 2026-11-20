@@ -20,7 +20,7 @@ Use this approach when your site isn't on Next.js/Vercel, or when you need agent
 
 - A Cloudflare account with the target domain's zone already active (orange-clouded DNS or a Worker route you control).
 - Permission to create or edit Workers on that account.
-- Your Publive Edge CDS API key and backend URL (issued per client, contact [support@thepublive.com](mailto:support@thepublive.com) if you don't have these).
+- Your Publive Edge CDS API key and backend URL. Publive issues these for each client. If you do not have them, [contact Publive](https://axp.thepublive.com/contact).
 
 ## How routing works
 
@@ -35,9 +35,9 @@ If the request qualifies, the worker fetches the page from CDS and returns it. I
 
 Unlike the [Vercel integration](/axp/axp-edge/integrations/vercel), the agent bot list here is fixed in the Worker code (the `AGENT_BOTS` array) rather than configurable via an environment variable. To add or remove a bot, edit that array directly and redeploy.
 
-## Cloudflare's AI bot defaults (effective September 15, 2026)
+## Cloudflare's AI bot defaults (since September 15, 2026)
 
-For new domains, Cloudflare will block Agent and Training bots by default on ad-monetized pages ([announcement](https://blog.cloudflare.com/content-independence-day-ai-options/)), before requests reach this Worker. Most of `AGENT_BOTS` falls into those two categories.
+For new domains, Cloudflare blocks Agent and Training bots by default on ad-monetized pages ([announcement](https://blog.cloudflare.com/content-independence-day-ai-options/)), before requests reach this Worker. Most of `AGENT_BOTS` falls into those two categories.
 
 <Accordion title="Which AGENT_BOTS entries are affected">
   | Category | Bots |

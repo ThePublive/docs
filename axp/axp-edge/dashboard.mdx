@@ -1,9 +1,10 @@
 ---
-title: "Dashboard"
-description: "The AXP dashboard pages that you use to monitor and configure AXP Edge."
+title: "AXP dashboard"
+sidebarTitle: "Dashboard"
+description: "The pages of the AXP dashboard: Home, Brand Profile, AXP Edge, and where each product sits in the sidebar."
 ---
 
-The AXP dashboard shows what AXP Edge does on your domain. You also use it to control which pages AXP Edge optimizes and what AI agents receive.
+The AXP dashboard is where you use every Publive AXP product. It shows what AXP Edge does on your domain and what AI assistants say about your brand. You also use it to control which pages AXP Edge optimizes and what AI agents receive.
 
 The sidebar has these groups:
 
@@ -38,9 +39,19 @@ The quick actions open the pages that you use most, for example **Review optimiz
 |---|---|
 | **Brand Identity** | **Brand Name**, **Website**, **Alternate Names**, **Key Topics**, and **Market regions** |
 | **Brand Description** | A description that AI assistants can use to represent your brand. Click **Generate Summary** to make a draft. |
-| **Competitors** | The competitors that you track. Click **Add competitor** to add one. |
+| **Competitors** | The competitors that you track. Click **Add competitor** to add one. Refer to [Competitor profiles](#competitor-profiles). |
 
 Click **Save** to save your changes.
+
+### Competitor profiles
+
+Each competitor has its own profile, with a status: suggested, accepted, or rejected.
+
+- AXP shows the brands that it finds in AI responses as suggested competitors. Accept or reject each one.
+- When you rename a brand, AXP keeps its history.
+- A brand can have more than one domain.
+
+[Brand AI Observability](/axp/monitor/overview) uses your accepted competitors for share of voice, the leaderboard, and head-to-head comparisons.
 
 ## AXP Edge
 
@@ -69,11 +80,15 @@ The **Content** tab shows which URLs on your domain AXP Edge optimizes.
 | **Most Hits By** | The AI agents that request the page most |
 | **Last Optimized At** | The date and time that AXP Edge last optimized the page |
 
+When you optimize one page from the dashboard, AXP Edge renders the page immediately and its **Status** changes to **Optimized**. You do not wait for the next optimization cycle.
+
 The **Actions** column has three icons:
 
 - **Copy URL:** Copy the URL of the page.
 - **View before/after AI visibility:** Compare what AI agents read before and after AXP Edge optimized the page.
 - **Exclude** (a circle with a line): Open the **Add URL Pattern** dialog with the path of the page filled in. Refer to [URL pattern overrides](#url-pattern-overrides).
+
+The row menu also has **Suggest prompts for this URL**. Refer to [Suggest prompts for a page](/axp/monitor/suggested-prompts#suggest-prompts-for-a-page).
 
 ### Global Rules
 
@@ -94,7 +109,11 @@ To change the default, select an option. Then click **Save Behaviour**.
 
 #### URL pattern overrides
 
-A URL pattern override is an exception to the default behaviour for one page or section. For example, use it to exclude a page from optimization.
+A URL pattern override is an exception to the default behaviour for one page or section. Use it to:
+
+- Exclude pages that AI agents must not get in optimized form. AI agents then get your normal origin page for those paths.
+- Compare optimized and unoptimized pages on your own domain.
+- Turn on AXP Edge for one section first, when the default is **Do nothing by default**.
 
 <Steps>
   <Step title="Open the dialog">
@@ -142,6 +161,6 @@ To change the order, drag a row to a new position. Then click **Save**. You can 
     Turn on optimizations and review the additions that AXP suggests.
   </Card>
   <Card title="AXP Edge FAQ" icon="circle-question" href="https://axp.thepublive.com/faq">
-    Common questions about setup, SEO impact, and failure behavior.
+    Common questions about setup, SEO impact, and failure behaviour.
   </Card>
 </CardGroup>

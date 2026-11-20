@@ -19,8 +19,8 @@ There's no code to deploy and no EdgeWorkers entitlement needed.
 ## Prerequisites
 
 - Access to Akamai Property Manager for your domain, with permission to activate.
-- The **Advanced** behavior on your contract (used once, in [Step 5](#step-5-turn-off-caching-and-add-failover)). If you don't see it, ask your Akamai account team. Without it failover still works — you just lose the `x-pl-fo` marker.
-- Your Publive Edge CDS API key (issued per client, [support@thepublive.com](mailto:support@thepublive.com) if you don't have one).
+- The **Advanced** behavior on your contract (used once, in [Step 5, Turn off caching and add failover](#set-up-the-integration)). If you don't see it, ask your Akamai account team. Without it failover still works — you just lose the `x-pl-fo` marker.
+- Your Publive Edge CDS API key. Publive issues it for each client. If you do not have one, [contact Publive](https://axp.thepublive.com/contact).
 - Access to the Akamai staging network.
 
 ## How routing works
@@ -97,7 +97,7 @@ You'll create these rules as **siblings** at the same level:
     | `PMUSER_PL_EDGE_ACCEPT_LANGUAGE` | Leave blank | Default |
     | `PMUSER_PL_EDGE_REFERER` | Leave blank | Default |
 
-    Only the API key needs a value. The other three are scratch variables — Property Manager can't copy one header into another directly, so they act as a hop. You'll fill them at request time, later on in [Step 4](#step-4-set-the-headers).
+    Only the API key needs a value. The other three are scratch variables — Property Manager can't copy one header into another directly, so they act as a hop. You'll fill them at request time, later on in [Step 4, Set the headers](#set-up-the-integration).
   </Step>
   <Step title="Create the routing rule">
     Add a rule named **AXP Edge Routing - Bot GET** and set its criteria to match all of:
@@ -276,7 +276,7 @@ curl -sI https://www.example.com/pricing \
 
 Both should return `x-pl-request-id`.
 
-Routing status also shows in the AXP Edge dashboard under **Brand Configuration → Integrations → CDN**, which turns green once agent traffic is observed.
+Routing status also shows on the **Integrations** page of the AXP dashboard, in the **Configurations** group of the sidebar. It turns green when AXP Edge sees agent traffic.
 
 ## Troubleshooting
 
@@ -293,7 +293,7 @@ Routing status also shows in the AXP Edge dashboard under **Brand Configuration 
 | 404s on everything | Origin Base Path wrong, or a path rewrite stacked on top | Confirm it's exactly `/axp/view/` and no Modify Outgoing Request Path applies |
 | Same page returned for every URL | `x-pl-url` empty | Confirm `{{builtin.AK_URL}}` resolves with the query string |
 | `x-pl-fo: 1` on every request | CDS rejecting — usually a bad API key | Re-check `PMUSER_PL_EDGE_API_KEY` |
-| `x-pl-fo: 1` occasionally | CDS cold-miss timeouts on uncached paths | Ask Publive to pre-warm your paths from the sitemap; expect under 1% |
+| `x-pl-fo: 1` occasionally | CDS cold-miss timeouts on uncached paths | Ask [support@thepublive.com](mailto:support@thepublive.com) to pre-warm your paths from the sitemap. Expect under 1%. |
 | Failover works but no `x-pl-fo` | Test rule nested instead of sibling | Move it to the same level as the routing rule |
 | Activation fails | Origin SSL verification differs from the default rule | Match the default rule's mode |
 | CDS gets your block page | Publive's fetcher blocked | Allowlist `*PubliveBot/1.0*` in your WAF and Bot Manager |

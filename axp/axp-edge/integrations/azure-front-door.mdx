@@ -24,21 +24,7 @@ There's no code to deploy. Everything is configured in the Azure portal.
 
 - An Azure Front Door Standard or Premium profile already serving your domain, and permission to edit its origin groups, rule sets, and routes.
 - Your site's pages served by a single route matching `/*`, with no **origin path** set on that route. See [Limitations](#limitations).
-- Your Publive Edge CDS API key (issued per client, [support@thepublive.com](mailto:support@thepublive.com) if you don't have one).
-
-## Cost
-
-If you're already on Front Door Standard or Premium, this integration adds no fixed cost:
-
-- Rule sets, rules, and origin groups have no separate charge on Standard or Premium.
-- Agent requests are already billed as requests today. Routing them to CDS only adds edge-to-origin transfer for the request itself, which is negligible for `GET` and `HEAD`.
-
-Two things do show up on your bill:
-
-- **CDS fetching your pages.** When CDS builds or refreshes an agent view, it requests the page from your domain through Front Door, and renders it in a headless browser, which also loads the page's scripts, stylesheets, and images. These are ordinary requests and egress on your profile. For pages CDS can build, this happens once per page per refresh, not per agent visit. For pages it can't (404s, non-HTML responses, timeouts), it happens on every agent visit, so exclude non-HTML paths (see the Request path note in step 2).
-- **Migrating from a classic tier.** Azure CDN Standard from Microsoft (classic) has no base fee. Front Door Standard has a monthly base fee plus per-request pricing. See [Azure Front Door pricing](https://azure.microsoft.com/en-us/pricing/details/frontdoor/).
-
-Nothing in this guide requires the Premium tier.
+- Your Publive Edge CDS API key. Publive issues it for each client. If you do not have one, [contact Publive](https://axp.thepublive.com/contact).
 
 ## How routing works
 
@@ -78,7 +64,7 @@ Front Door has two constraints that shape the setup:
 - **Conditions within a rule are AND-ed.** "AI agent user-agent" and "preview header" can't be OR-ed in one rule, so the bot and preview cases each get their own rules.
 - **A rule can have at most 5 actions.** Routing needs 6 (the origin override, the URL rewrite, and 4 headers), so each case is split across two rules with identical conditions: one sets the headers, the next one routes.
 
-That gives four rules in one rule set (see [Add the rules](#set-up-the-integration)). Together they make one decision:
+That gives four rules in one rule set (see [Set up the integration](#set-up-the-integration)). Together they make one decision:
 
 ```mermaid
 graph TD
@@ -271,7 +257,7 @@ curl -svo /dev/null https://www.example.com/pricing \
   --header "x-pl-fetch: 1"
 ```
 
-Routing status also shows in the AXP Edge dashboard under **Brand Configuration → Integrations → CDN**. It turns green once Publive's connection check, a PubliveBot request to your homepage on your registered domain, comes back with `x-pl-request-id`. The check follows redirects, so if your apex redirects to `www`, matching only `www.example.com` is enough. Put only hostnames registered with Publive in the Host name condition; any other hostname gets a `403` from CDS.
+Routing status also shows on the **Integrations** page of the AXP dashboard, in the **Configurations** group of the sidebar. It turns green once Publive's connection check, a PubliveBot request to your homepage on your registered domain, comes back with `x-pl-request-id`. The check follows redirects, so if your apex redirects to `www`, matching only `www.example.com` is enough. Put only hostnames registered with Publive in the Host name condition; any other hostname gets a `403` from CDS.
 
 ## Troubleshooting
 
@@ -287,6 +273,20 @@ Routing status also shows in the AXP Edge dashboard under **Brand Configuration 
 | Rule matches but origin content is served | Move `AxpEdge` last on the route. |
 | Rule set won't save | Keep each condition to 25 values or fewer. |
 | Dashboard status not green | Add `publivebot` to the User-Agent values. |
+
+## Cost
+
+If you're already on Front Door Standard or Premium, this integration adds no fixed cost:
+
+- Rule sets, rules, and origin groups have no separate charge on Standard or Premium.
+- Agent requests are already billed as requests today. Routing them to CDS only adds edge-to-origin transfer for the request itself, which is negligible for `GET` and `HEAD`.
+
+Two things do show up on your bill:
+
+- **CDS fetching your pages.** When CDS builds or refreshes an agent view, it requests the page from your domain through Front Door, and renders it in a headless browser, which also loads the page's scripts, stylesheets, and images. These are ordinary requests and egress on your profile. For pages CDS can build, this happens once per page per refresh, not per agent visit. For pages it can't (404s, non-HTML responses, timeouts), it happens on every agent visit, so exclude non-HTML paths (see the Request path note in step 2).
+- **Migrating from a classic tier.** Azure CDN Standard from Microsoft (classic) has no base fee. Front Door Standard has a monthly base fee plus per-request pricing. See [Azure Front Door pricing](https://azure.microsoft.com/en-us/pricing/details/frontdoor/).
+
+Nothing in this guide requires the Premium tier.
 
 ## Limitations
 
@@ -308,7 +308,7 @@ So the AI agent receives whatever CDS returns. In practice:
 
 Human visitors are never affected. To take AXP Edge out of the path, follow [Rollback](#rollback).
 
-If your site needs per-request failover for agent traffic, contact [support@thepublive.com](mailto:support@thepublive.com) before you go live.
+If your site needs per-request failover for agent traffic, [contact Publive](https://axp.thepublive.com/contact) before you go live.
 
 ## Rollback
 
