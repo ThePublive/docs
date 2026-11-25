@@ -1,7 +1,7 @@
 ---
 title: "AXP dashboard"
 sidebarTitle: "Dashboard"
-description: "The pages of the AXP dashboard: Home, Brand Profile, AXP Edge, and where each product sits in the sidebar."
+description: "The pages of the AXP dashboard: Home, Brand Profile, AXP Edge, Integrations, and where each product sits in the sidebar."
 ---
 
 The AXP dashboard is where you use every Publive AXP product. It shows what AXP Edge does on your domain and what AI assistants say about your brand. You also use it to control which pages AXP Edge optimizes and what AI agents receive.
@@ -13,7 +13,7 @@ The sidebar has these groups:
 | **Content** | [**AXP Edge**](#axp-edge) and [**Optimizations**](/axp/axp-edge/optimizations) |
 | **Monitor** | [**Brand Visibility**](/axp/monitor/brand-visibility), [**Prompts**](/axp/monitor/track-prompts), [**Sources**](/axp/monitor/sources), and [**Agent Analytics**](/axp/axp-edge/agent-analytics) |
 | **Brand Truth** | [**Brand Profile**](#brand-profile) |
-| **Configurations** | **Team** and **Integrations** |
+| **Configurations** | **Team** and [**Integrations**](#integrations) |
 
 ## Home
 
@@ -181,6 +181,48 @@ To change the order, drag a row to a new position. Then click **Save**. You can 
 ## Agent Analytics
 
 **Agent Analytics** shows how AI agents visit your pages. It is in the **Monitor** group. For more information, refer to [Agent Analytics](/axp/axp-edge/agent-analytics).
+
+## Integrations
+
+**Integrations** is in the **Configurations** group. It shows a card for each service that you can connect to AXP, for example **AXP Edge**, **Google Search Console**, and **Google Analytics 4**. The chip on each card shows its status, for example **Connected** or **Not connected**.
+
+### Pause content optimization
+
+The **Content Optimization** switch on the **AXP Edge** card turns optimization on or off for all pages.
+
+- **On:** AI agents get your optimized pages. Human visitors get your normal site.
+- **Off:** AXP pauses optimization. AI agents get your standard pages without optimization.
+
+When you pause optimization, AXP keeps your URLs, statistics, and rules. AXP does not delete anything.
+
+To pause optimization:
+
+1. Go to **Configurations** > **Integrations**.
+2. On the **AXP Edge** card, turn off the **Content Optimization** switch.
+3. In **Pause content optimization?**, click **Pause**.
+
+AI agents get your standard pages immediately. The status on the **AXP Edge** card changes to **Paused**.
+
+To resume, turn on the switch again, and confirm in **Resume content optimization?**.
+
+<Tip>
+To stop optimization for some pages or AI agents only, use [Global Rules](#global-rules) instead.
+</Tip>
+
+### Crawl settings
+
+{/* TODO(label): no Figma design for this screen. Add its location in the dashboard, the field names, and the option labels. Values below come from the edge-configuration API contract. */}
+
+Crawl settings control how AXP Edge gets your pages. Changes apply immediately.
+
+**Rendering mode** sets how AXP Edge loads a page:
+
+| Mode | How AXP Edge loads the page | Use it when |
+|---|---|---|
+| Browser rendered | Opens the page in a browser and runs its JavaScript | Your site uses JavaScript to show its content |
+| cURL | Gets the HTML that your server sends, without JavaScript | Your server sends the full content in the HTML |
+
+**Frequency** sets how often AXP Edge gets your pages again to refresh the optimized version. The options are 30 minutes, 1, 2, 3, 4, 6, or 12 hours, 1 or 3 days, and 1, 2, or 4 weeks.
 
 ## Next steps
 
