@@ -25,7 +25,7 @@ Click a group to see its optimizations. Use the switch next to an optimization t
 
 ## Page enhancements
 
-{/* TODO(label): Figma (31 Aug 2026) puts the JSON-LD card under "Technical optimizations" with the title "Data Structuring", and the hidden-content card with the title "Interaction-Hidden Content". Confirm these labels in production. */}
+{/* TODO(label): the live build (25 Nov 2026) names the JSON-LD card "Fix Structured Data" (coming soon). Figma names the hidden-content card "Interaction-Hidden Content" and the group "Technical optimizations". Confirm these two labels in production. */}
 
 Each card under **Content optimizations** and **Technical optimizations** is one type of addition. The card shows the number of pages that have a suggestion ready.
 
@@ -34,7 +34,7 @@ Each card under **Content optimizations** and **Technical optimizations** is one
 | **Add Table of Contents** | A linked table of contents above the page content. AXP makes it from the headings of the page. |
 | **Add Relevant FAQs** | Some question-and-answer pairs from the page, below the page content, with matching `FAQPage` structured data |
 | **Add LLM-Friendly Summaries** | A short summary in plain language at the top of the main content of the page |
-| **Data Structuring** | JSON-LD structured data for the page, for example `Article`, `Product`, `HowTo`, or `Organization` |
+| **Fix Structured Data** (coming soon) | JSON-LD structured data for the page, for example `Article`, `Product`, `HowTo`, or `Organization` |
 | **Interaction-Hidden Content** | The text that the page shows only after a click, for example FAQ answers, tabs, drawers, and **Read more** sections |
 
 AXP makes each addition from the text of the page only:
@@ -155,9 +155,9 @@ The review page of an optimization has these tabs:
 | Tab | What it shows |
 |---|---|
 | **Current suggestions** | The suggestions that are ready for your review |
-| **Fixed suggestions** | The suggestions that you applied |
+| **Fixed suggestions** | The suggestions that you applied. The version that AI agents get shows **Live**. |
 | **Ignored suggestions** | The suggestions that you ignored. You can still apply them. |
-| **Deprecated** | Older suggestions that AXP replaced, with the date. When AXP makes a new suggestion for a page, the old suggestion moves to this tab. |
+| **Deprecated** | Older suggestions that AXP replaced, with the date in **Deprecated at**. When the content of a page changes, AXP makes new suggestions for the page, and the old suggestions move to this tab. |
 | **Overview & Guidance** | What the optimization changes, how it works, and which pages to approve first |
 
 Each row shows the **URL Path** of the page and the date in **Suggested at**. To find a page, use **Search for URLs**. To select the columns that the table shows, click **Customise columns**.
@@ -168,6 +168,73 @@ To review a suggestion:
 2. Click **Preview** to see the full suggestion.
 3. Click **Apply** to serve the addition to AI agents, or click **Ignore** to move the suggestion to **Ignored suggestions**.
 
+### Edit a suggestion
+
+You can change a suggestion before you apply it. AXP saves your edit as a new version and keeps the original version.
+
+1. Go to **Optimizations**, and click **Review** on the optimization.
+2. On the **Current suggestions** tab, expand the row of the page.
+3. Click **Edit** (the pencil icon) next to the version that you want to change.
+4. Make your changes, and then click **Save**.
+
+AXP saves your text as a new version and shows the message "Saved as a new version - it's back in Current suggestions for review."
+
+{/* TODO(confirm): FAQs - is "apply only the questions you select" live? It is in the code ("Selected questions applied - they're live now") but was not tested. If yes, add it to the FAQ row. */}
+
+| Optimization | Editor |
+|---|---|
+| **Add Table of Contents** | An HTML code editor |
+| **Add Relevant FAQs** | A field for each question and each answer |
+| **Add LLM-Friendly Summaries** | A text field |
+| **Fix Structured Data** (coming soon) | A JSON code editor |
+
+<Warning>
+**Cancel**, **×**, and the Esc key close the editor without saving. You lose your changes.
+</Warning>
+
+### Versions
+
+A suggestion has a maximum of two versions:
+
+- **AI Generated**: the version that AXP made. AXP always keeps this version.
+- **Edited manually**: your latest edit. A new edit replaces your previous edit.
+
+When a row has both versions, each version has **Apply this version**. Apply uses your latest edit, unless you select the original version.
+
+| How you apply | Version that AI agents get |
+|---|---|
+| The **Apply** icon on the row | The latest version. This is your edit, if there is one. |
+| **Apply N selected** | The latest version of each page |
+| **Apply this version** in the expanded row | The version that you click |
+
+The version that you apply shows **Live** on the **Fixed suggestions** tab.
+
+{/* TODO(confirm): if you edit a Live suggestion, does the live version stay live until you apply the new one? Add the answer here. */}
+
+### Apply many suggestions at the same time
+
+1. Open the **Current suggestions** tab.
+2. Select the checkbox next to each page. To select all the pages in the current list, select the checkbox in the header. The current list shows a maximum of 50 pages.
+3. Click **Apply N selected**.
+
+AXP applies the latest version of each page and shows the message "N pages applied". The pages move to the **Fixed suggestions** tab.
+
+<Warning>
+**Apply N selected** does not ask you to confirm, and you cannot undo it. There is no bulk ignore, so ignore pages one at a time. When you go to a different tab, AXP clears your selection.
+</Warning>
+
+### Undo an apply
+
+You cannot undo **Apply** in the dashboard. Before you apply a suggestion, examine it in **Preview**.
+
+| Action | Can you reverse it? | What you can do |
+|---|---|---|
+| **Apply** | No. The **Fixed suggestions** tab has no action to remove an applied suggestion. | To stop all optimization, [pause content optimization](/axp/axp-edge/dashboard#pause-content-optimization). |
+| **Ignore** | Partly. The suggestion cannot go back to the **Current suggestions** tab. | On the **Ignored suggestions** tab, click **Apply**. |
+
+When you pause content optimization, AI agents get your standard pages without optimization. AXP keeps your URLs, statistics, and rules.
+
+{/* TODO(confirm): (1) Can you edit a live version and apply the corrected one? If yes, add it to the Apply row. (2) When you turn an optimization off, do AI agents stop getting the pages that you already applied? Add a row for it. (3) Is there a supported way (support request or API) to remove an applied suggestion? */}
 ### Which pages to approve first
 
 | Optimization | Start with |
