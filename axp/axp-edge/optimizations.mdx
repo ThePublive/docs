@@ -1,6 +1,6 @@
 ---
 title: "Optimizations"
-description: "Turn on the changes that AXP Edge makes to your pages for AI agents, and review, edit, and apply AI-generated additions before AI agents get them."
+description: "Turn on the changes that AXP Edge makes to your pages for AI agents. Review, edit, and apply AI-generated additions before AI agents get them."
 ---
 
 **Optimizations** sets how AXP Edge changes your pages for AI agents. It is in the **Content** group of the AXP dashboard sidebar. Human visitors and search crawlers always get your page without these changes.
@@ -11,6 +11,10 @@ The page has two sections:
 - **Page enhancements** add content to specific pages. You review each addition before AI agents get it.
 
 You can also give specific AI agents different settings. Refer to [Set optimizations for specific AI agents](#set-optimizations-for-specific-ai-agents).
+
+<Frame>
+  <img src="/images/axp/axp-optimizations-page.png" alt="Optimizations page. The Baseline optimizations section has the Cleanup and Data structuring groups. The Page enhancements section shows the Add Table of Contents, Add Relevant FAQs, and Add LLM-Friendly Summaries cards under Content optimizations, each with a switch. The Add Table of Contents card shows 9 pages ready and a Review button." style={{ borderRadius: '0.5rem' }} />
+</Frame>
 
 ## Baseline optimizations
 
@@ -159,7 +163,13 @@ A page with few AI agent visits can wait for some cycles before it gets a sugges
 
 ## Review suggestions
 
-The review page of an optimization has these tabs:
+To open the review page of an optimization, click **Review** on its card.
+
+<Frame>
+  <img src="/images/axp/axp-optimizations-review-page.png" alt="Review page of an optimization. The tabs show their counts: Current suggestions (9), Fixed suggestions (4), Ignored suggestions (1), and Deprecated (0). Under the tabs are the collapsed Overview & Guidance section and the URLs with suggestions table, with Search for URLs, a settings icon, and the URL Path, Suggested at, and Actions columns." style={{ borderRadius: '0.5rem' }} />
+</Frame>
+
+The review page has these tabs. Each tab shows the number of suggestions on it.
 
 | Tab | What it shows |
 |---|---|
@@ -167,15 +177,28 @@ The review page of an optimization has these tabs:
 | **Fixed suggestions** | The suggestions that you applied. The version that AI agents get shows **Live**. |
 | **Ignored suggestions** | The suggestions that you ignored. You can still apply them. |
 | **Deprecated** | Older suggestions that AXP replaced, with the date in **Deprecated at**. When the content of a page changes, AXP makes new suggestions for the page, and the old suggestions move to this tab. |
-| **Overview & Guidance** | What the optimization changes, how it works, and which pages to approve first |
 
-Each row shows the **URL Path** of the page and the date in **Suggested at**. To find a page, use **Search for URLs**. To select the columns that the table shows, click **Customise columns**.
+Under the tabs, **Overview & Guidance** shows what the optimization changes, how it works, and which pages to approve first. Click it to expand it.
+
+The **URLs with suggestions** table shows the **URL Path** of each page and the date in **Suggested at**. To find a page, use **Search for URLs**. To select the columns that the table shows, click the settings icon.
+
+The **Actions** column has these icons:
+
+| Icon | What it does | Tabs |
+|---|---|---|
+| Page with a magnifying glass | Opens the preview of the suggestion | **Current suggestions**, **Fixed suggestions**, and **Ignored suggestions** |
+| Magic wand | Applies the suggestion, so that AI agents get it | **Current suggestions** and **Ignored suggestions** |
+| Eye with a line through it | Ignores the suggestion, and moves it to **Ignored suggestions** | **Current suggestions** |
 
 To review a suggestion:
 
-1. On the **Current suggestions** tab, click the expand icon on the row. The start of the suggestion shows with the label **AI Generated**.
-2. Click **Preview** to see the full suggestion.
-3. Click **Apply** to serve the addition to AI agents, or click **Ignore** to move the suggestion to **Ignored suggestions**.
+1. On the **Current suggestions** tab, click the expand icon on the row. The start of each version shows, with its label, for example **AI Generated**.
+2. Click **See full suggestion in preview**, or click the preview icon. The preview shows the page in two columns, **Current** and **With suggestion**. In the **Current** column, **Added by this suggestion** marks each line that the suggestion adds.
+3. To serve the suggestion to AI agents, click the apply icon. To move the suggestion to **Ignored suggestions**, click the ignore icon.
+
+<Frame>
+  <img src="/images/axp/axp-optimizations-preview.png" alt="Preview of a table of contents suggestion for /guides/home-composting. The Current column shows Added by this suggestion on each line. The With suggestion column shows the new Table of Contents heading and its eight entries, highlighted in green." style={{ borderRadius: '0.5rem' }} />
+</Frame>
 
 ### Edit a suggestion
 
@@ -183,8 +206,12 @@ You can change a suggestion before you apply it. AXP saves your edit as a new ve
 
 1. Go to **Optimizations**, and click **Review** on the optimization.
 2. On the **Current suggestions** tab, expand the row of the page.
-3. Click **Edit** (the pencil icon) next to the version that you want to change.
+3. Click the edit icon (pencil) next to the version that you want to change. The editor opens, with the title **Edit suggestion - saving creates a new version**.
 4. Make your changes, and then click **Save**.
+
+<Frame>
+  <img src="/images/axp/axp-optimizations-edit-suggestion.png" alt="Edit suggestion dialog for /guides/home-composting, with the subtitle Edit suggestion - saving creates a new version. The Code field shows the HTML of the table of contents, a nav element with an ordered list of links. Cancel and Save buttons are at the bottom." style={{ borderRadius: '0.5rem' }} />
+</Frame>
 
 AXP saves your text as a new version and shows the message "Saved as a new version - it's back in Current suggestions for review."
 
@@ -192,7 +219,7 @@ AXP saves your text as a new version and shows the message "Saved as a new versi
 
 | Optimization | Editor |
 |---|---|
-| **Add Table of Contents** | An HTML code editor |
+| **Add Table of Contents** | An HTML code editor, in the **Code** field |
 | **Add Relevant FAQs** | A field for each question and each answer |
 | **Add LLM-Friendly Summaries** | A text field |
 
@@ -207,15 +234,23 @@ A suggestion has a maximum of two versions:
 - **AI Generated**: the version that AXP made. AXP always keeps this version.
 - **Edited manually**: your latest edit. A new edit replaces your previous edit.
 
-When a row has both versions, each version has **Apply this version**. Apply uses your latest edit, unless you select the original version.
+When a row has both versions, each version has its own apply icon (**Apply this version**) and edit icon. Apply uses your latest edit, unless you select the original version.
+
+<Frame>
+  <img src="/images/axp/axp-optimizations-versions.png" alt="Expanded row for /guides/home-composting with two Table of Contents versions. The first version has the AI Generated label and the second has the Edited manually label. Each version shows its first headings, a See full suggestion in preview link, and its own apply and edit icons. The row has preview, apply, and ignore icons." style={{ borderRadius: '0.5rem' }} />
+</Frame>
 
 | How you apply | Version that AI agents get |
 |---|---|
-| The **Apply** icon on the row | The latest version. This is your edit, if there is one. |
+| The apply icon on the row | The latest version. This is your edit, if there is one. |
 | **Apply N selected** | The latest version of each page |
-| **Apply this version** in the expanded row | The version that you click |
+| The apply icon next to a version (**Apply this version**) | The version that you click |
 
 The version that you apply shows **Live** on the **Fixed suggestions** tab.
+
+<Frame>
+  <img src="/images/axp/axp-optimizations-live-version.png" alt="Fixed suggestions row for /guides/sourdough-starter. The expanded Table of Contents version shows the AI Generated and Live labels, with an edit icon." style={{ borderRadius: '0.5rem' }} />
+</Frame>
 
 {/* TODO(confirm): if you edit a Live suggestion, does the live version stay live until you apply the new one? Add the answer here. */}
 
@@ -225,6 +260,10 @@ The version that you apply shows **Live** on the **Fixed suggestions** tab.
 2. Select the checkbox next to each page. To select all the pages in the current list, select the checkbox in the header. The current list shows a maximum of 50 pages.
 3. Click **Apply N selected**.
 
+<Frame>
+  <img src="/images/axp/axp-optimizations-bulk-apply.png" alt="Current suggestions table filtered by the search term guides. The header checkbox is partly selected, and the Apply 1 selected button is next to the search field." style={{ borderRadius: '0.5rem' }} />
+</Frame>
+
 AXP applies the latest version of each page and shows the message "N pages applied". The pages move to the **Fixed suggestions** tab.
 
 <Warning>
@@ -233,12 +272,12 @@ AXP applies the latest version of each page and shows the message "N pages appli
 
 ### Undo an apply
 
-You cannot undo **Apply** in the dashboard. Before you apply a suggestion, examine it in **Preview**.
+You cannot undo an apply in the dashboard. Before you apply a suggestion, examine it in the preview.
 
 | Action | Can you reverse it? | What you can do |
 |---|---|---|
-| **Apply** | No. The **Fixed suggestions** tab has no action to remove an applied suggestion. | To stop all optimization, [pause content optimization](/axp/axp-edge/dashboard#pause-content-optimization). |
-| **Ignore** | Partly. The suggestion cannot go back to the **Current suggestions** tab. | On the **Ignored suggestions** tab, click **Apply**. |
+| Apply | No. The **Fixed suggestions** tab has no action to remove an applied suggestion. | To stop all optimization, [pause content optimization](/axp/axp-edge/dashboard#pause-content-optimization). |
+| Ignore | Partly. The suggestion cannot go back to the **Current suggestions** tab. | On the **Ignored suggestions** tab, click the apply icon. |
 
 When you pause content optimization, AI agents get your standard pages without optimization. AXP keeps your URLs, statistics, and rules.
 
