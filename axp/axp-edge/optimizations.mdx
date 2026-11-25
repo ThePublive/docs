@@ -1,6 +1,6 @@
 ---
 title: "Optimizations"
-description: "Turn on the changes that AXP Edge makes to your pages for AI agents, and review AI-generated additions before AI agents get them."
+description: "Turn on the changes that AXP Edge makes to your pages for AI agents, and review, edit, and apply AI-generated additions before AI agents get them."
 ---
 
 **Optimizations** sets how AXP Edge changes your pages for AI agents. It is in the **Content** group of the AXP dashboard sidebar. Human visitors and search crawlers always get your page without these changes.
@@ -25,7 +25,13 @@ Click a group to see its optimizations. Use the switch next to an optimization t
 
 ## Page enhancements
 
-{/* TODO(label): the live build (25 Nov 2026) names the JSON-LD card "Fix Structured Data" (coming soon). Figma names the hidden-content card "Interaction-Hidden Content" and the group "Technical optimizations". Confirm these two labels in production. */}
+{/* TODO(label): Figma names the hidden-content card "Interaction-Hidden Content" and the group "Technical optimizations". Confirm these two labels in production. */}
+
+{/* TODO(release): the live build (25 Nov 2026) shows the JSON-LD card "Fix Structured Data" as coming soon. AGENTS.md does not allow unreleased features. When it ships, add these rows back:
+  - Page enhancements table: | **Fix Structured Data** | JSON-LD structured data for the page, for example `Article`, `Product`, `HowTo`, or `Organization` |
+  - Bullet list below it: - For JSON-LD, AXP uses only the facts that are on the page.
+  - Editor table in "Edit a suggestion": | **Fix Structured Data** | A JSON code editor |
+*/}
 
 Each card under **Content optimizations** and **Technical optimizations** is one type of addition. The card shows the number of pages that have a suggestion ready.
 
@@ -34,14 +40,12 @@ Each card under **Content optimizations** and **Technical optimizations** is one
 | **Add Table of Contents** | A linked table of contents above the page content. AXP makes it from the headings of the page. |
 | **Add Relevant FAQs** | Some question-and-answer pairs from the page, below the page content, with matching `FAQPage` structured data |
 | **Add LLM-Friendly Summaries** | A short summary in plain language at the top of the main content of the page |
-| **Fix Structured Data** (coming soon) | JSON-LD structured data for the page, for example `Article`, `Product`, `HowTo`, or `Organization` |
 | **Interaction-Hidden Content** | The text that the page shows only after a click, for example FAQ answers, tabs, drawers, and **Read more** sections |
 
 AXP makes each addition from the text of the page only:
 
 - For FAQs, AXP keeps only the answers that the page text supports word for word.
 - For summaries, AXP keeps only the statements that come from the page.
-- For JSON-LD, AXP uses only the facts that are on the page.
 - For hidden content, AXP uses only the text that the page shows after a click.
 
 Use the switch on a card to turn the optimization on or off. Click **Review** to see its suggestions.
@@ -70,9 +74,10 @@ AXP does not get the text from:
 - Lists that load more items each time you click or scroll
 - Iframes and shadow DOM
 
-#### How AXP finds the hidden text
-
 You do not set up the clicks. AXP finds them automatically for each page template, for example all your product pages.
+
+<AccordionGroup>
+<Accordion title="How AXP finds the hidden text">
 
 ```mermaid
 flowchart TD
@@ -95,7 +100,8 @@ flowchart TD
 
 The first pages of a template take longer than the pages after them.
 
-#### Where AXP adds the text
+</Accordion>
+<Accordion title="Where AXP adds the text">
 
 | Element | Where AI agents get the text |
 |---|---|
@@ -104,6 +110,9 @@ The first pages of a template take longer than the pages after them.
 | Other elements | In one section at the end of the page body |
 
 AXP does not add text that is already on the page.
+
+</Accordion>
+</AccordionGroup>
 
 #### Safety
 
@@ -186,7 +195,6 @@ AXP saves your text as a new version and shows the message "Saved as a new versi
 | **Add Table of Contents** | An HTML code editor |
 | **Add Relevant FAQs** | A field for each question and each answer |
 | **Add LLM-Friendly Summaries** | A text field |
-| **Fix Structured Data** (coming soon) | A JSON code editor |
 
 <Warning>
 **Cancel**, **×**, and the Esc key close the editor without saving. You lose your changes.
