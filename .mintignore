@@ -5,3 +5,7 @@
 # Draft content
 drafts/
 *.draft.mdx
+
+# Docs automation (not published)
+automation/
+scripts/
