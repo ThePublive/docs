@@ -72,7 +72,11 @@ Use `main`, the live branch.
 ```bash
 SRC=${TMPDIR:-/tmp}/publive-src; mkdir -p "$SRC"
 for r in PubliveAPI PubliveDashboard PublisherWebsite; do
-  found=$(find / -maxdepth 4 -type d -name "$r" -not -path "*/node_modules/*" 2>/dev/null | while read d; do [ -d "$d/.git" ] && echo "$d" && break; done)
+  # Search only where cloud sessions keep repos, plus the docs repo's parent folder. Never scan / or the
+  # home folder: on macOS that triggers privacy prompts for Desktop and Documents.
+  found=$(for root in "$(cd .. && pwd)" /home /workspace /workspaces /code /repos /root /tmp; do
+            [ -d "$root" ] && find "$root" -maxdepth 3 -type d -name "$r" -not -path "*/node_modules/*" 2>/dev/null
+          done | while read d; do [ -d "$d/.git" ] && echo "$d" && break; done)
   if [ -n "$found" ]; then ln -sfn "$found" "$SRC/$r"; git -C "$found" fetch --quiet --depth 1 origin main && git -C "$found" checkout --quiet --detach FETCH_HEAD
   else git clone --quiet --depth 1 --single-branch --branch main "https://github.com/ThePublive/$r.git" "$SRC/$r"
   fi
