@@ -142,7 +142,24 @@ Applies only to `dxp/api-reference/deprecated/`, which still uses the legacy MDX
 - Use an `<Info>` callout before parameters to state endpoint-specific constraints (e.g., type restrictions, beta/prod URL differences).
 - Use markdown tables — not prose — for documenting sets of filter operators or enumerated field values.
 
+## Screenshots and automated drafts
+
+- **Screenshot placeholders**: when a page needs a screenshot you don't have yet, add an MDX comment on its own line. Don't use a broken `<img>` or a stock image.
+  - Format: `{/* SCREENSHOT: <feature>-<screen>.png | <route> → <clicks to reach the state> | show: <what must be visible> */}`
+  - The file name is lowercase kebab-case and goes in `images/dxp/` or `images/axp/`.
+  - Replace the placeholder with a `<Frame><img … /></Frame>` once the image exists. MDX comments don't render, so a page with placeholders still previews cleanly.
+- **Automated drafts**: the `dxp-doc-pipeline` and `dxp-doc-pr-comments` skills (in `.claude/skills/`) open draft PRs labelled `automated-draft` on `docs/auto/*` branches. They follow this file, and their pages must meet the same rules as hand-written pages. The backlog of undocumented DXP features lives in `automation/dxp-backlog.yml`.
+- **Deterministic checks**: run `node scripts/docs-lint.mjs <files>` (or `--changed`) on new or edited pages, together with `mint validate` and `mint broken-links`.
+
 ## Content boundaries
 
 - Do not document internal admin portal features.
+- This repository and its PRs are public. Pages, commit messages, PR descriptions, and review comments must not name:
+  - customers or workspaces
+  - Publive staff
+  - Slack channels
+  - internal tools, hostnames, or env vars
+  - code identifiers that are not part of the public API
+
+  Product code (PubliveAPI, PubliveDashboard, PublisherWebsite) is a source to verify facts. Never quote it.
 - Do not document unreleased or deprecated entities (e.g., Dynamic Custom URLs or Array field types) without explicit instructions.

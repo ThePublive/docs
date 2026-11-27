@@ -1,0 +1,69 @@
+---
+title: "<Feature name>"
+sidebarTitle: "<Short name, optional>"
+description: "<One sentence: what the member can do with this feature, and why.>"
+---
+
+{/*
+  TEMPLATE: Documentation page (one feature or one screen).
+  Audience: dashboard members (editors and workspace admins).
+  Delete every template comment before you commit. Keep SCREENSHOT comments.
+  Rules: .mintlify/AGENTS.md. Run the asd-ste100 pass on prose when done.
+*/}
+
+import CustomEnterprise from '/snippets/availability/custom-enterprise.mdx';
+
+{/* Intro: 2–4 sentences. What the feature is, who uses it, the main outcome. Bold the feature name once. */}
+**<Feature name>** lets you <outcome>. <Who uses it and when.>
+
+## Availability
+
+{/* Use the snippet when the plan is unknown or Custom Enterprise. Otherwise: "All plans include <FEATURE>." Never name tiers or prices. */}
+<CustomEnterprise />
+
+{/* Optional: what changes in the dashboard when the feature is on. */}
+
+## Before you begin
+
+{/* Only if there are real preconditions: role, setting turned on, another feature set up. Delete otherwise. */}
+
+- <Role or permission needed>
+- <Setting that must be on>
+
+## <Screen or concept name>
+
+{/* Explain the screen: where to find it (sidebar path in bold), what each area shows. */}
+To open it, go to **<Sidebar group>** > **<Page>**.
+
+{/* SCREENSHOT: <feature>-<screen>.png | <route, e.g. /v2/configurations/...> → <clicks to reach it> | show: <what must be visible> */}
+
+## Fields
+
+{/* Use a table for fields and enumerated values. Labels verbatim from the UI, in bold. */}
+
+| Field | What it does |
+|---|---|
+| **<Label>** | <Meaning, allowed values, default> |
+
+## <Task, imperative: "Create a ...">
+
+<Steps>
+  <Step title="<Action>">
+    Click **<Button>**. <Result.>
+  </Step>
+  <Step title="<Action>">
+    <Step text.>
+  </Step>
+</Steps>
+
+{/* SCREENSHOT: <feature>-<dialog>.png | <route> → <clicks> | show: <state> */}
+
+## <Another task, if any>
+
+## Limits and behaviour
+
+{/* Only facts from the sources. Unknowns go to OPEN QUESTIONS, not here. Delete if empty. */}
+
+## Related
+
+- [<Related page>](/dxp/documentation/<path>)

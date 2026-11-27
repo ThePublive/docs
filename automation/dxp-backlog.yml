@@ -1,0 +1,634 @@
+# DXP docs backlog: existing dashboard features that have no page, or only a partial one.
+#
+# The dxp-doc-pipeline routine reads this file. It takes the lowest `priority` item with
+# `status: todo` that has no docs/auto/b-<slug>-* branch or PR yet.
+# To reorder, add, or skip items, edit this file in a normal PR. Set `status: skip` to drop an item.
+# The pipeline never edits this file. An item's real state comes from its PR.
+#
+# `type` and `target_path` are hints. The writer confirms placement against .mintlify/AGENTS.md
+# and existing pages before writing.
+# Briefs come from a dashboard crawl. They are NOT verified behaviour: treat every brief as UI
+# labels + journey only, and check Asana/Slack for anything newer than the crawl date.
+
+generated: 2026-11-26
+source: publive-journeys crawl of the beta DXP dashboard, 2026-06-24, role owner
+crawl_date: 2026-06-24
+notes:
+  - "Labels come from one search(kind=element) dump of all 13,326 crawled elements, plus find_journeys. Theme, Branding, AI Modules and the editor side panels were captured shallowly."
+  - "Not in the crawl: Forms, Content Workflows stages, Developer Hub / API credentials, Version History."
+  - "Excluded: routes that render only 'Back to Home' (/v2/configurations/advanced-seo-module/redirects, /v2/team-members/role/create/:id) and test-data custom entities."
+  - "No destructive control was run during the crawl (Publish, Delete, Disable this role, Delete Role, Send For Approval, Discard)."
+  - "New nav groups proposed: 'Publishing' and 'Site settings' in the Documentation tab. The first PR that uses one adds it to docs.json and flags it for review."
+
+# Coverage of every crawled feature (status: covered | partial | missing)
+coverage:
+  - { feature: "Dashboard home and navigation", routes: ["/v2/home", "/v2", "/v2/configurations"], status: missing }
+  - { feature: "Posts list", routes: ["/v2/posts/published", "/v2/posts/draft", "/v2/posts/pending-approval"], status: missing }
+  - { feature: "Article editor", routes: ["/v2/posts/article/create", "/v2/posts/article/:id"], status: partial, doc: "ai-copilot, google-discover-headline, content-scoring (single editor features only)" }
+  - { feature: "Post detail / feedback view", routes: ["/v2/posts/:id"], status: missing }
+  - { feature: "Video posts", routes: ["/v2/posts/video/create"], status: missing }
+  - { feature: "Web stories", routes: ["/v2/posts/web-story/create"], status: missing }
+  - { feature: "Photo galleries", routes: ["/v2/posts/gallery/create"], status: missing }
+  - { feature: "Live blogs", routes: ["/v2/posts/live-blog/create", "/v2/posts/live-blog/:id"], status: missing }
+  - { feature: "Newsletter post type and module", routes: ["/v2/posts/news-letter/create", "/v2/configurations/newsletter"], status: missing }
+  - { feature: "Custom Content / custom pages", routes: ["/v2/posts/custom-page/create", "/v2/pages"], status: missing }
+  - { feature: "Custom entity entries", routes: ["/v2/posts/entity/<plural>/<singular>/create"], status: partial, doc: "/dxp/documentation/concepts-features/custom-entities" }
+  - { feature: "Featured Posts", routes: ["/v2/posts/featured"], status: missing }
+  - { feature: "Media Library", routes: ["/v2/media"], status: partial, doc: "/dxp/documentation/concepts-features/media-library" }
+  - { feature: "Categories", routes: ["/v2/categories", "/v2/categories/new"], status: partial, doc: "/dxp/documentation/getting-started/core-concepts" }
+  - { feature: "Tags", routes: ["/v2/tags", "/v2/tags/create"], status: partial, doc: "core-concepts, ai-tag-suggestion" }
+  - { feature: "Banners and announcements", routes: ["/v2/banners", "/v2/configurations/banner"], status: missing }
+  - { feature: "Content Distribution", routes: ["/v2/content-distribution"], status: partial, doc: "/dxp/documentation/distribution/x-distribution-change" }
+  - { feature: "Insights (analytics)", routes: ["/v2/analytics"], status: missing }
+  - { feature: "Team members", routes: ["/v2/team-members", "/v2/team-members/create"], status: partial, doc: "/dxp/documentation/getting-started/mfa (Enforce MFA only)" }
+  - { feature: "Roles and permissions", routes: ["/v2/team-members/role/create", "/v2/team-members/role/:id"], status: partial, doc: "/dxp/documentation/concepts-features/content-access-policies" }
+  - { feature: "MFA enforcement", routes: ["/v2/team-members"], status: covered, doc: "/dxp/documentation/getting-started/mfa" }
+  - { feature: "Title & Description, Site Timezone, Publication Language, Google News, Important links", routes: ["/v2/configurations/title-description", "/v2/configurations/site-timezone", "/v2/configurations/publication-language", "/v2/configurations/news-publication", "/v2/configurations/important-links"], status: missing }
+  - { feature: "Activity Logs", routes: ["/v2/configurations/activity-logs", "/v2/configurations/log-activity"], status: covered, doc: "/dxp/documentation/concepts-features/audit-logs" }
+  - { feature: "Navigation, Theme, Branding", routes: ["/v2/configurations/navigation", "/v2/configurations/theme", "/v2/configurations/branding"], status: missing }
+  - { feature: "Redirects", routes: ["/v2/configurations/redirects"], status: missing }
+  - { feature: "Misc (advanced SEO settings)", routes: ["/v2/configurations/misc"], status: missing }
+  - { feature: "Readers", routes: ["/v2/configurations/readers"], status: missing }
+  - { feature: "AI Modules", routes: ["/v2/configurations/ai-module"], status: partial, doc: "/dxp/documentation/concepts-features/ai-features" }
+  - { feature: "Webhook", routes: ["/v2/configurations/webhook"], status: covered, doc: "/dxp/documentation/webhooks-integrations/webhooks" }
+  - { feature: "Integrations (Razorpay, Zapier, newsletter sender)", routes: ["/v2/configurations/integrations"], status: missing }
+  - { feature: "Content Type Builder", routes: ["/v2/configurations/content-type-builder"], status: partial, doc: "/dxp/documentation/concepts-features/custom-entities" }
+  - { feature: "Export Data", routes: ["/v2/configurations/export-data"], status: missing }
+  - { feature: "Billing", routes: ["/v2/configurations/billing"], status: missing }
+  - { feature: "Forms (not in crawl)", routes: [], status: covered, doc: "/dxp/documentation/concepts-features/forms" }
+  - { feature: "Content Workflows (not in crawl)", routes: [], status: covered, doc: "/dxp/documentation/content-workflows/overview" }
+
+items:
+  - slug: manage-posts
+    title: "Posts list"
+    type: doc
+    action: new
+    target_path: dxp/documentation/publishing/posts-list.mdx
+    nav_group: "Publishing (new group)"
+    priority: 1
+    status: todo
+    routes: ["/v2/posts/published?content=true", "/v2/posts/draft", "/v2/posts/pending-approval"]
+    brief: |
+      Purpose: The Posts list for every post type, split into status tabs, with filters and a create entry point.
+      UI labels: sidebar "Posts", "Created by me"; tabs "Published", "Draft", "Pending Approval", "Scheduled";
+        "Start date" / "End date"; "Filter"; "Preferences"; "Select all"; row "Edit"; row "Mark as complete"
+        (live blog rows); "Discard" (Draft rows; not exercised); pagination.
+      Create menu ("Create" in sidebar, "Quick Create" in header): "Article", "Video", "Web Story", "Photo Gallery",
+        "Live Blog", "Custom Content", plus custom entity types. Each type opens a list with "<Type> Create".
+      Preferences (column toggles): "Status", "Categories", "Content Writer", "Credits", "Page Views", "SEO Score", "Timeline".
+      Journey: 1. Sidebar > Posts. 2. Pick a status tab. 3. Set Start/End date or Filter. 4. Preferences to choose
+        columns. 5. Edit a row, or Create > Article > "Article Create".
+      Likely changed: Content Workflows (Oct 21, 2026) may change "Pending Approval" for workflow-enabled content types.
+    open_questions:
+      - "Which fields does the Filter dialog offer?"
+      - "What bulk actions appear after 'Select all'?"
+      - "What does 'Mark as complete' do, and on which post types?"
+      - "Does 'Discard' delete a draft permanently?"
+
+  - slug: article-editor
+    title: "Article editor"
+    type: doc
+    action: new
+    target_path: dxp/documentation/publishing/article-editor.mdx
+    nav_group: "Publishing (new group)"
+    priority: 2
+    status: todo
+    routes: ["/v2/posts/article/create", "/v2/posts/article/:id"]
+    brief: |
+      Purpose: The main post editor. Video, gallery, live blog, newsletter and custom page editors share most of it.
+      Header: "Preview", "Publish" (not exercised). Entity editors also show "Send For Approval" and "Schedule".
+      Fields: "Title", "English Title ( Permalink )", "Summary", "Meta Description", "Banner Description",
+        "Primary Category", "Additional Category (Optional)", "Tags", "Credits", "Focus Keyphrase".
+      Featured image: "Add Featured Image Recommended Size 1280X720" opens the Media Library picker.
+      Body toolbar includes: "Block Paragraph", "Bold", "Italic", "Insert/edit link", "Media Library",
+        "Insert/edit media", "Table", lists, "AI Internal Links", "Internal Links", "Anchor",
+        "Insert/edit code sample", "Emojis", "Fullscreen", "Undo"/"Redo".
+      Dialogs: "Insert/edit link" ("URL", "Browse links"); "Insert/edit media" ("General", "Source", "Browse files");
+        "Internal Links" ("Search by Name or Url", "All", "ID", "Language").
+      Autosave indicator: "Saving..." / "Saved".
+      Journey: Create > Article > "Article Create" > fill fields and body > categories, Tags, Credits > featured image
+        > "Preview" > "Publish".
+      Likely changed: Google Discover Headline (Jul 28); AI tag sparkle (Jul 1); Version History restore (Jul 1);
+        Workflows (Oct 21). Link to the existing pages for these instead of repeating them.
+    open_questions:
+      - "The right sidebar (SEO Properties, schedule, settings) was not captured. What sections does it have?"
+      - "What does 'AI Internal Links' do compared with 'Internal Links'?"
+      - "Is 'Banner Description' the featured image caption?"
+      - "Where is Version History opened from?"
+
+  - slug: categories
+    title: "Categories"
+    type: doc
+    action: new
+    target_path: dxp/documentation/concepts-features/categories.mdx
+    nav_group: "Content modelling"
+    priority: 3
+    status: todo
+    routes: ["/v2/categories", "/v2/categories/new"]
+    brief: |
+      Purpose: Hierarchical sections for content. Core Concepts says a primary category is required to publish.
+      List: "Add New Category", "Search Category", row "Edit", pagination.
+      Form: "Name", "Name in English (Permalink)", "Content Type", "Meta Title", "Meta Description",
+        rich-text description, "Parent Category", "+ Add Smart Rules". Save button: "Save Category".
+      Journey: Sidebar > Categories (or Home > "Create Category") > Name and Permalink > Content Type and optional
+        Parent Category > SEO meta > "Save Category".
+      Related: posts use "Primary Category" / "Additional Category (Optional)".
+    open_questions:
+      - "What are Smart Rules, and what options do they have?"
+      - "What does the 'Content Type' field restrict?"
+      - "Can categories be deleted? (no delete control captured)"
+
+  - slug: tags
+    title: "Tags"
+    type: doc
+    action: new
+    target_path: dxp/documentation/concepts-features/tags.mdx
+    nav_group: "Content modelling"
+    priority: 4
+    status: todo
+    routes: ["/v2/tags", "/v2/tags/create", "/v2/tags/edit/:id"]
+    brief: |
+      Purpose: Flat labels for posts, each with optional SEO meta and description.
+      List: "Add Tag", "Search Tag", row edit link, "Delete" (not exercised), pagination.
+      Form: "Name", "Meta Title", "Meta Description", rich-text description (toolbar incl. "Source code").
+        Buttons "Cancel", "Save".
+      Journey: Sidebar > Tags (or Home > "Create Tag") > "Add Tag" > Name and meta > "Save".
+      Cross-link: AI Tag Suggestion.
+    open_questions:
+      - "Is there a slug or permalink field?"
+      - "What happens to posts when their tag is deleted?"
+      - "Can tags be merged?"
+
+  - slug: media-library
+    title: "Media Library"
+    type: doc
+    action: update
+    target_path: dxp/documentation/concepts-features/media-library.mdx
+    nav_group: "Content modelling"
+    priority: 5
+    status: todo
+    routes: ["/v2/media"]
+    brief: |
+      Purpose: Expand the existing page, which covers only Change Image Globally.
+      UI labels: sidebar "Media Library"; "Upload Media"; search "Search by name, path, or alt text".
+        Also opens as a picker from editors (toolbar "Media Library", "Add Featured Image ...").
+      Journey: Sidebar > Media Library > "Upload Media" > search > open an asset.
+      Likely changed: SVG uploads no longer supported (Sep 21, 2026).
+    open_questions:
+      - "Which fields does the asset detail view have (alt text, caption, metadata)?"
+      - "Which file types and size limits apply?"
+      - "Are there folder, filter, or delete controls?"
+
+  - slug: featured-posts
+    title: "Featured posts"
+    type: doc
+    action: new
+    target_path: dxp/documentation/publishing/featured-posts.mdx
+    nav_group: "Publishing (new group)"
+    priority: 6
+    status: todo
+    routes: ["/v2/posts/featured"]
+    brief: |
+      Purpose: An ordered list of featured posts. Rows look like "1 | <title> Article <category> <date>".
+      UI labels: sidebar "Featured Posts"; one unlabelled control per row (probably reorder); row "View"; "Save".
+      Journey: Sidebar > Featured Posts > reorder > "Save".
+    open_questions:
+      - "How does a post become featured?"
+      - "Is ordering drag-and-drop? Is there a maximum?"
+      - "Where do featured posts appear on the site or in the API?"
+
+  - slug: live-blogs
+    title: "Live blogs"
+    type: doc
+    action: new
+    target_path: dxp/documentation/publishing/live-blogs.mdx
+    nav_group: "Publishing (new group)"
+    priority: 7
+    status: todo
+    routes: ["/v2/posts/live-blog/create", "/v2/posts/live-blog/:id?tab=edit", "/v2/posts/live-blog/:id?tab=update"]
+    brief: |
+      Purpose: A post with a main body plus a stream of timestamped updates.
+      Create: same fields as the article editor; "Preview", "Publish".
+      Edit view tabs: "Main Blog", "Updates". Buttons: "Update", "Copy Post link". Updates tab: "Create New Update".
+      Posts list: live blog rows show "Mark as complete".
+      Journey: Create > Live Blog > write main blog > Publish > "Updates" > "Create New Update" > "Mark as complete"
+        from the list when coverage ends.
+    open_questions:
+      - "Which fields does a single update have?"
+      - "Can updates be pinned, edited or deleted?"
+      - "What does 'Mark as complete' change on the site?"
+
+  - slug: photo-galleries
+    title: "Photo galleries"
+    type: doc
+    action: new
+    target_path: dxp/documentation/publishing/photo-galleries.mdx
+    nav_group: "Publishing (new group)"
+    priority: 8
+    status: todo
+    routes: ["/v2/posts/gallery/create", "/v2/posts/gallery/:id"]
+    brief: |
+      Purpose: A post type built around a set of images.
+      Fields: article fields (Title, Permalink, Summary, Meta Description, Banner Description, categories, Tags,
+        Credits, Focus Keyphrase). Media: "Upload Media", Media Library search. "Preview", "Publish".
+      Journey: Create > Photo Gallery > "Gallery Create" > fields > add images > Preview > Publish.
+      Changelog: gallery reordering (May 7), rich text in gallery descriptions (Mar 13).
+    open_questions:
+      - "How are images added and reordered? Is there a caption per image?"
+      - "Is there a maximum number of images?"
+
+  - slug: video-posts
+    title: "Video posts"
+    type: doc
+    action: new
+    target_path: dxp/documentation/publishing/video-posts.mdx
+    nav_group: "Publishing (new group)"
+    priority: 9
+    status: todo
+    routes: ["/v2/posts/video/create", "/v2/posts/video/:id"]
+    brief: |
+      Purpose: A post type centred on a featured video.
+      Fields: article fields minus Banner Description, plus "Type caption for featured video (Optional)".
+      Journey: Create > Video > add featured video and caption > metadata > Preview > Publish.
+      Likely changed: VideoObject structured data (Nov 17, 2026).
+    open_questions:
+      - "How is the featured video added (upload, YouTube URL, embed)?"
+      - "Is there a thumbnail field?"
+
+  - slug: web-stories
+    title: "Web stories"
+    type: doc
+    action: new
+    target_path: dxp/documentation/publishing/web-stories.mdx
+    nav_group: "Publishing (new group)"
+    priority: 10
+    status: todo
+    routes: ["/v2/posts/web-story/create", "/v2/posts/web-story/:id"]
+    brief: |
+      Purpose: A slide-based story post.
+      Fields: "Title", "English Title ( Permalink )", "Meta Description", "Primary Category",
+        "Additional Category (Optional)", "Tags", "Credits" (no Summary or Focus Keyphrase).
+      Buttons: "Change Template", "Upload Media", "Preview", "Publish".
+      Journey: Create > Web Story > "Web Story Create" > "Change Template" > slides and media > metadata > Publish.
+    open_questions:
+      - "Which templates exist?"
+      - "How are slides added and reordered?"
+      - "Is the output AMP?"
+
+  - slug: custom-entity-entries
+    title: "Create custom entity entries"
+    type: doc
+    action: update
+    target_path: dxp/documentation/concepts-features/custom-entities.mdx
+    nav_group: "Content modelling"
+    priority: 11
+    status: todo
+    routes: ["/v2/posts/entity/jobs/job/create", "/v2/posts/entity/footers/footer/create", "/v2/posts/published/jobs?create=job&page_type=Job"]
+    brief: |
+      Purpose: The editor side of Custom Entities. The existing page covers schemas only.
+      Entry point: the Create menu lists each custom type.
+      List: tabs "Published", "Draft", "Scheduled", "Pending Approval"; "<Type> Create"; "Preferences";
+        columns "Title", "Timeline", "Actions".
+      Editor: "Name in English ( Slug )" plus the schema's fields.
+      Publish menu: "Publish", "Send For Approval", "Schedule" (none exercised).
+      Journey: Create > <Type> > "<Type> Create" > fill fields > Publish / Send For Approval / Schedule.
+    open_questions:
+      - "How does Send For Approval interact with Content Workflows?"
+      - "Where are import and export of entries (May 7 changelog)?"
+
+  - slug: newsletters
+    title: "Newsletters"
+    type: doc
+    action: new
+    target_path: dxp/documentation/publishing/newsletters.mdx
+    nav_group: "Publishing (new group)"
+    priority: 12
+    status: todo
+    routes: ["/v2/configurations/newsletter", "/v2/posts/news-letter/create", "/v2/configurations/integrations/newsletter-setup"]
+    brief: |
+      Purpose: Write newsletter issues as a post type, and manage groups, templates and analytics.
+      Module: tabs "Newsletter Analytics", "Newsletter Groups", "Newsletter Custom Template"; campaign select;
+        "Start date"; "View Reader Details".
+      Newsletter post: Create > "Newsletter Create"; article-like fields; "Preview", "Publish".
+      Sender setup (Integrations > "Manage"): "Sender email"; table rows with "Copy to clipboard".
+      Likely changed: usage bar and limit alerts (Jul 1); raw-HTML template editor (Aug 25); faster sending (Oct 2026).
+    open_questions:
+      - "Does publishing a Newsletter post send it, or is there a separate send step?"
+      - "What do the sender setup rows copy (DNS records?)"
+      - "Which fields do Newsletter Groups have? Which metrics are in Analytics?"
+
+  - slug: banners
+    title: "Banners and announcements"
+    type: doc
+    action: new
+    target_path: dxp/documentation/site-settings/banners.mdx
+    nav_group: "Site settings (new group)"
+    priority: 13
+    status: todo
+    routes: ["/v2/banners", "/v2/configurations/banner"]
+    brief: |
+      Purpose: Banner images (with link and expiry) in slots per page type, plus announcements.
+      /v2/banners: tabs "Desktop", "Mobile", "Announcement"; page tabs "Home Page", "Category Page", "Article Page",
+        "Author Page", "Tag Page"; each slot: "Add Banner Image", "Enter URL", "Select date"; "Save".
+      /v2/configurations/banner: list with "Search here..." and pagination.
+    open_questions:
+      - "How many slots per page type, and where do they render?"
+      - "Which fields does the Announcement tab have?"
+      - "How does the Configuration list relate to /v2/banners? What happens on expiry?"
+
+  - slug: content-distribution
+    title: "Content Distribution"
+    type: doc
+    action: new
+    target_path: dxp/documentation/distribution/content-distribution.mdx
+    nav_group: "Editor features"
+    priority: 14
+    status: todo
+    routes: ["/v2/content-distribution"]
+    brief: |
+      Purpose: A log of distributed posts and the place to start a new distribution.
+      UI labels: sidebar "CONTENT DISTRIBUTION" > "All"; "Start date" / "End date"; "+ Distribute Content";
+        "Filter" ("distributed_by"); "Preferences"; row action; pagination.
+      Likely changed: Distribute to X deprecated (Sep 21, 2026). Link to x-distribution-change.
+    open_questions:
+      - "Which channels are supported now that X is gone?"
+      - "What does the + Distribute Content flow look like?"
+
+  - slug: team-members
+    title: "Team members"
+    type: doc
+    action: new
+    target_path: dxp/documentation/concepts-features/team-members.mdx
+    nav_group: "Workspace administration"
+    priority: 15
+    status: todo
+    routes: ["/v2/team-members", "/v2/team-members/create", "/v2/team-members/edit/:id"]
+    brief: |
+      Purpose: Invite and edit dashboard members and assign roles.
+      List: tabs "Members", "Roles And Permission"; "Add Team Member"; "Enforce MFA"; "Search here..."; role filter;
+        "Select all"; row edit; pagination.
+      Form: "Email", "Name", "Role", "Slug", "Upload" (photo); "Cancel", "Save".
+      Likely changed: invite resend (Sep 21); role filter with search (Aug 25); API users hidden (Jun 2).
+    open_questions:
+      - "How is a member removed or deactivated?"
+      - "Is Slug the author URL slug?"
+      - "Where is the invite resend control?"
+
+  - slug: roles-and-permissions
+    title: "Roles and permissions"
+    type: doc
+    action: new
+    target_path: dxp/documentation/concepts-features/roles-and-permissions.mdx
+    nav_group: "Workspace administration"
+    priority: 16
+    status: todo
+    routes: ["/v2/team-members?tab=:id", "/v2/team-members/role/create", "/v2/team-members/role/:id"]
+    brief: |
+      Purpose: Custom roles. Content Access Policies already covers the Content Permissions tab.
+      Roles tab: "Create Role"; per-role menu "Edit Role", "Duplicate Role", "Disable this role", "Delete Role";
+        notice "System roles are not editable".
+      Role form: "Role Title", "Role Description", "Search"; tabs "System & Module Permissions", "Content Permissions";
+        "Cancel", "Save".
+    open_questions:
+      - "What are the system roles called?"
+      - "Which permission groups are under System & Module Permissions?"
+      - "What happens to members whose role is disabled or deleted?"
+
+  - slug: readers
+    title: "Readers and segments"
+    type: doc
+    action: new
+    target_path: dxp/documentation/concepts-features/readers.mdx
+    nav_group: "Workspace administration"
+    priority: 17
+    status: todo
+    routes: ["/v2/configurations/readers"]
+    brief: |
+      Purpose: Manage site readers and segments.
+      UI labels: tabs "Readers", "Segments", "Configuration"; "Search by name or email"; "Download Data";
+        "Create" > "Upload a List - Import readers from a CSV file."
+    open_questions:
+      - "What CSV format does import require?"
+      - "How are segments defined? What does the Configuration tab control?"
+
+  - slug: redirects
+    title: "Redirects"
+    type: doc
+    action: new
+    target_path: dxp/documentation/site-settings/redirects.mdx
+    nav_group: "Site settings (new group)"
+    priority: 18
+    status: todo
+    routes: ["/v2/configurations/redirects"]
+    brief: |
+      Purpose: Advanced SEO module for URL redirects.
+      UI labels: tabs "Redirect", "Regex Redirects", "Guess Redirects"; "Add Redirect"; "Search".
+      Add dialog: "Select Redirect Type", "Old URL", "New URL".
+    open_questions:
+      - "Which redirect types exist (301/302)?"
+      - "Which regex syntax is supported? What are Guess Redirects?"
+      - "Is there bulk import?"
+
+  - slug: content-type-builder
+    title: "Content Type Builder"
+    type: doc
+    action: update
+    target_path: dxp/documentation/concepts-features/custom-entities.mdx
+    nav_group: "Content modelling"
+    priority: 19
+    status: todo
+    routes: ["/v2/configurations/content-type-builder/custom-content", "/v2/configurations/content-type-builder/schema/:id"]
+    brief: |
+      Purpose: The dashboard journey for the Custom Entities concepts page.
+      Tabs: "System Defaults", "Custom Content Type", "Custom Components".
+      "Create New Content Type": "Display Name", "Slug ( Singular )", "Slug ( Plural )".
+      "Create New Component": "Display Name", "Description".
+      Schema editor: "Add New Field", "Configure View", "Save". Field types: "Text", "Media", "Email", "Rich Text",
+        "Date And Time", "Numbers", "Phone Number", "List", "Boolean", "JSON", "Relation", "Dynamic List", "Links",
+        "Embed", "Component", "Dynamic Zone".
+      Field settings: "Basic Settings" / "Advance Settings"; "Display Name *", "Name (Slug) *", "Placeholder",
+        "Default value (optional)", "Make this field required", "Limit Char count".
+    open_questions:
+      - "What is under Advance Settings?"
+      - "Can System Defaults be edited? Can types or fields be deleted?"
+
+  - slug: custom-pages
+    title: "Custom pages"
+    type: doc
+    action: new
+    target_path: dxp/documentation/publishing/custom-pages.mdx
+    nav_group: "Publishing (new group)"
+    priority: 20
+    status: todo
+    routes: ["/v2/posts/custom-page/create", "/v2/posts/custom-page/blank-page/:id", "/v2/pages"]
+    brief: |
+      Purpose: "Custom Content" pages, including a code-based blank page, and the Pages list.
+      Blank page: "Response Type"; code editor; "Update", "Copy Post link".
+      Pages list: "Add New Page", row "Edit".
+    open_questions:
+      - "Which Response Type options exist?"
+      - "How do /v2/pages entries relate to Custom Content posts?"
+
+  - slug: insights
+    title: "Insights"
+    type: doc
+    action: new
+    target_path: dxp/documentation/concepts-features/insights.mdx
+    nav_group: "Editor features"
+    priority: 21
+    status: todo
+    routes: ["/v2/analytics"]
+    brief: |
+      Purpose: Traffic and content performance in the dashboard.
+      Crawled labels: "Choose dates"; "Filter"; "Visit Google Analytics".
+      Likely changed: Insights now opens the new analytics dashboard (Jul 28); bot and spam filtering (Oct 21).
+        The crawled screen is probably out of date. Get current UI from Asana/Slack/Figma before drafting.
+    open_questions:
+      - "Which metrics and widgets does the new dashboard have?"
+
+  - slug: dashboard-overview
+    title: "Find your way around the dashboard"
+    type: guide
+    action: new
+    target_path: dxp/documentation/getting-started/dashboard-overview.mdx
+    nav_group: "Overview"
+    priority: 22
+    status: todo
+    routes: ["/v2/home", "/v2/configurations"]
+    brief: |
+      Purpose: Orientation for new members.
+      Sidebar: "Home", "Posts", "Create", "Featured Posts", "Media Library", "Categories", "Tags", "Banners", "Pages",
+        "CONTENT DISTRIBUTION", "Newsletter", "Insights", "Team", "Configuration"; "View Website".
+      Header: workspace switcher, "Quick Create".
+      Home tabs: "Announcements", "Product Updates", "Resources". Quick links: "Add Team Member", "Create Category",
+        "Create Tag", "Check Log Activity".
+      Configuration sections: "General", "Website", "Advanced SEO Modules", "Publive Modules", "Account Details".
+    open_questions:
+      - "Does the sidebar vary by role?"
+
+  - slug: seo-settings
+    title: "SEO settings"
+    type: doc
+    action: new
+    target_path: dxp/documentation/site-settings/seo-settings.mdx
+    nav_group: "Site settings (new group)"
+    priority: 23
+    status: todo
+    routes: ["/v2/configurations/misc"]
+    brief: |
+      Purpose: "Misc Other advanced SEO settings".
+      UI labels: tabs "Configurations", "SEO Meta"; one toggle (id index_id_present).
+    open_questions:
+      - "Field labels on both tabs were not captured. Which settings exist?"
+
+  - slug: website-appearance
+    title: "Navigation, theme and branding"
+    type: doc
+    action: new
+    target_path: dxp/documentation/site-settings/website-appearance.mdx
+    nav_group: "Site settings (new group)"
+    priority: 24
+    status: todo
+    routes: ["/v2/configurations/navigation", "/v2/configurations/theme", "/v2/configurations/branding"]
+    brief: |
+      Navigation: tabs "Navbar", "Footer"; reorder control; "Save".
+      Theme and Branding: no named controls captured.
+    open_questions:
+      - "What can a navigation item point to?"
+      - "What do Theme and Branding contain? Do they apply only to Publive-hosted frontends?"
+
+  - slug: general-site-settings
+    title: "General site settings"
+    type: doc
+    action: new
+    target_path: dxp/documentation/site-settings/general.mdx
+    nav_group: "Site settings (new group)"
+    priority: 25
+    status: todo
+    routes: ["/v2/configurations/title-description", "/v2/configurations/site-timezone", "/v2/configurations/publication-language", "/v2/configurations/news-publication", "/v2/configurations/important-links"]
+    brief: |
+      Title & Description: "Site title", "Site description", "Save".
+      Site Timezone: "Site Timezone" select, "Save".
+      Publication Language: "Choose Language", "Save".
+      Google News Publication: "Publication Name", "Publication Link", "Save".
+      Important links: read-only list with "Copy".
+    open_questions:
+      - "Can more than one Publication Language be chosen?"
+      - "Which links does Important links list?"
+
+  - slug: dashboard-integrations
+    title: "Dashboard integrations"
+    type: doc
+    action: new
+    target_path: dxp/documentation/webhooks-integrations/dashboard-integrations.mdx
+    nav_group: "Integrations and webhooks"
+    priority: 26
+    status: todo
+    routes: ["/v2/configurations/integrations", "/v2/configurations/integrations/razorpay", "/v2/configurations/integrations/zapier"]
+    brief: |
+      Hub: cards with "Connect" (Razorpay), "Manage" (newsletter setup), Zapier ("How does it work?").
+      Razorpay: "API Key", "Razorpay API Secret Key", "Merchant ID", "Save".
+      Zapier: read-only "auth key" with "Copy".
+    open_questions:
+      - "Are there more integration cards?"
+      - "What is Razorpay used for? Which Zapier triggers exist?"
+
+  - slug: export-data
+    title: "Export data"
+    type: doc
+    action: new
+    target_path: dxp/documentation/concepts-features/export-data.mdx
+    nav_group: "Workspace administration"
+    priority: 27
+    status: todo
+    routes: ["/v2/configurations/export-data"]
+    brief: |
+      UI labels: "Export Data" button only.
+    open_questions:
+      - "What data is exported, in which format, and how is it delivered?"
+
+  - slug: billing
+    title: "Billing"
+    type: doc
+    action: new
+    target_path: dxp/documentation/concepts-features/billing.mdx
+    nav_group: "Workspace administration"
+    priority: 28
+    status: todo
+    routes: ["/v2/configurations/billing"]
+    brief: |
+      UI labels: "Specify Recipients (separate by ,)" for invoice emails; "Cancel"; "Show All Invoices".
+    open_questions:
+      - "Is the page Owner-only? Can invoices be downloaded?"
+
+  - slug: ai-modules-settings
+    title: "AI features"
+    type: doc
+    action: update
+    target_path: dxp/documentation/concepts-features/ai-features.mdx
+    nav_group: "Editor features"
+    priority: 29
+    status: todo
+    routes: ["/v2/configurations/ai-module"]
+    brief: |
+      Purpose: Add the settings screen (Configuration > Publive Modules > "AI Modules") to the AI overview.
+      No named controls captured. Also mention the "AI Internal Links" editor button.
+    open_questions:
+      - "Which AI modules can be turned on here? Is it self-serve?"
+
+  - slug: audit-logs-ui
+    title: "Audit logs"
+    type: doc
+    action: update
+    target_path: dxp/documentation/concepts-features/audit-logs.mdx
+    nav_group: "Workspace administration"
+    priority: 30
+    status: todo
+    routes: ["/v2/configurations/activity-logs", "/v2/configurations/log-activity"]
+    brief: |
+      Purpose: Add the exact path and controls. The page says only "workspace settings".
+      Path: Configuration > General > "Activity Logs" (or Home > "Check Log Activity").
+      UI labels: "Search by user or activity", "Filters" ("Start date", "Clear All"), "Export Logs",
+        "View old logs" ("Start date"/"End date", "Add activity").
+    open_questions:
+      - "What is the export format? Are old logs read-only legacy data?"
